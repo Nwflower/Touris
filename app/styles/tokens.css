@@ -1,0 +1,66 @@
+/* ==========================================================================
+   Touris 知途 · 设计令牌
+
+   视觉语言沿用原型：米白底 + 陶土橙（操作/选择）+ 靛蓝（记忆专属色）。
+   靛蓝在全站**只用来表示记忆**，别拿去做普通按钮或装饰——这条是原型里
+   定下的规矩，重建时保留。
+   ========================================================================== */
+
+:root{
+  /* 底色与文字 */
+  --paper:#FBF7F1;
+  --paper-2:#F4EDE3;
+  --card:#FFFFFF;
+  --ink:#241F1B;
+  --ink-2:#6E655B;
+  --ink-3:#9A9188;
+  --line:#E8E0D5;
+  --line-2:#D9CFC0;
+
+  /* 陶土橙：操作、选择、主按钮 */
+  --clay:#C4622D;
+  --clay-soft:#FBEFE7;
+  --clay-line:#EBC7AE;
+
+  /* 靛蓝：记忆专属，全站唯一 */
+  --indigo:#3A4C8F;
+  --indigo-2:#5566A8;
+  --indigo-soft:#EEF0FA;
+  --indigo-line:#C3CAE8;
+
+  /* 语义色 */
+  --red:#B3453C;
+  --red-soft:#FBEDEB;
+  --green:#3E7A5E;
+  --green-soft:#EAF4EF;
+  --amber:#9A6B1F;
+  --amber-soft:#FBF3E2;
+
+  /* 圆角 */
+  --r-s:8px;
+  --r-m:12px;
+  --r-l:16px;
+  --r-pill:999px;
+
+  /* 阴影与动效 */
+  --shadow:0 1px 2px rgba(36,31,27,.05), 0 8px 24px rgba(36,31,27,.06);
+  --shadow-pop:0 12px 40px rgba(36,31,27,.18);
+  --ease:.16s ease;
+
+  /* 布局尺寸 */
+  --top-h:58px;
+  --pad:18px;
+  --maxw:1120px;
+
+  /* z-index 阶梯。新增浮层时必须落在这条线上，不要随手写 9999。
+     toast 300 是当前最高，模态层取 400。 */
+  --z-topbar:100;
+  --z-pop:200;
+  --z-toast:300;
+  --z-modal:400;
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{ animation-duration:.01ms !important; animation-iteration-count:1 !important;
+     transition-duration:.01ms !important; scroll-behavior:auto !important; }
+}

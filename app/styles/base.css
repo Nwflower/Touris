@@ -1,0 +1,88 @@
+/* ==========================================================================
+   Touris 知途 · 基础样式（重置 + 排版 + 布局骨架）
+   ========================================================================== */
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+html,body{ height:100%; }
+
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font:14px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+       "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+
+h1,h2,h3,h4,p,figure{ margin:0; }
+
+button{
+  font:inherit; color:inherit; cursor:pointer;
+  background:none; border:none; padding:0;
+}
+
+input,select,textarea{ font:inherit; color:inherit; }
+
+a{ color:inherit; text-decoration:none; }
+
+img{ max-width:100%; display:block; }
+
+/* 键盘可达性：只用 :focus-visible，避免鼠标点击也出现焦点环 */
+:focus-visible{
+  outline:2px solid var(--clay);
+  outline-offset:2px;
+  border-radius:var(--r-s);
+}
+
+/* 视觉上隐藏但读屏可见 */
+.sr{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+}
+
+/* ---------------- 布局骨架 ---------------- */
+
+/* 页面外壳：顶栏 + 内容区。内容区自己滚，顶栏固定。 */
+#app{ min-height:100%; display:flex; flex-direction:column; }
+
+.topbar{
+  position:sticky; top:0; z-index:var(--z-topbar);
+  height:var(--top-h); flex:none;
+  display:flex; align-items:center; gap:16px;
+  padding:0 var(--pad);
+  background:rgba(251,247,241,.92);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+
+.wrap{
+  width:100%; max-width:var(--maxw);
+  margin:0 auto; padding:0 var(--pad);
+}
+
+/* 两栏：主区 + 侧栏。侧栏放记忆资产，窄屏折到下面。 */
+.split{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 300px;
+  gap:20px;
+  align-items:start;
+}
+@media (max-width:860px){
+  .split{ grid-template-columns:minmax(0,1fr); }
+}
+
+/* ---------------- 通用排版 ---------------- */
+
+.muted{ color:var(--ink-3); }
+.dim{ color:var(--ink-2); }
+.tiny{ font-size:11.5px; }
+.small{ font-size:12.5px; }
+.strong{ font-weight:700; }
+.center{ text-align:center; }
+
+.stack > * + *{ margin-top:12px; }
+.row{ display:flex; align-items:center; gap:8px; }
+.row.wrap{ flex-wrap:wrap; }
+.spacer{ flex:1; }
+.hr{ height:1px; background:var(--line); margin:14px 0; }

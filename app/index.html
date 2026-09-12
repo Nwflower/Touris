@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Touris 知途</title>
+
+<!-- 样式按「令牌 → 基础 → 组件 → 视图」的顺序加载。
+     没有构建步骤，靠顺序保证层叠，改顺序会出问题。 -->
+<!-- logo.css 只声明 :root 里的三个 LOGO 变量（base64 内联），
+     放在最前面，后面任何样式表都能直接用 --logo-mark / --logo-lock。 -->
+<link rel="stylesheet" href="logo.css">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/components.css">
+<link rel="stylesheet" href="styles/hero.css">
+<link rel="stylesheet" href="styles/views.css">
+<link rel="stylesheet" href="account.css">
+</head>
+<body>
+
+<div id="app">
+  <header class="topbar" id="topbar"></header>
+  <main id="view" class="view"></main>
+</div>
+
+<!-- 记忆溯源浮卡 -->
+<div class="mempop" id="mempop" hidden></div>
+
+<!-- 登录 / 注册（静态容器 + hidden，与浮卡一致） -->
+<div id="authOverlay" hidden></div>
+
+<!-- toast -->
+<div class="toasts" id="toasts"></div>
+
+<!-- 脚本按依赖顺序加载：工具 → 数据 → 记忆模型 → 账号 → 视图 → 启动。
+     全是普通 <script>，没有 type="module"——部署目标是静态托管，
+     不需要构建，也就不能让浏览器去解析模块图。 -->
+<script src="core/dom.js"></script>
+<script src="core/store.js"></script>
+<script src="core/router.js"></script>
+<script src="core/state.js"></script>
+
+<script src="data/city-seed.js"></script>
+<script src="data/memory.js"></script>
+<script src="data/city.js"></script>
+<script src="data/ui.js"></script>
+
+<script src="memory/archive.js"></script>
+<script src="memory/derive.js"></script>
+
+<script src="llm.js"></script>
+
+<script src="account.js"></script>
+
+<script src="views/ui.js"></script>
+<script src="views/auth.js"></script>
+<script src="views/thumb.js"></script>
+<script src="views/hero.js"></script>
+<script src="views/home.js"></script>
+<script src="views/plan.js"></script>
+<script src="views/memory.js"></script>
+
+<script src="validate.js"></script>
+<script src="core/bootstrap.js"></script>
+</body>
+</html>
