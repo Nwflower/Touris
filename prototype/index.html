@@ -40,8 +40,15 @@
 <script src="city-data.js"></script>
 <script src="city-expansion.js"></script>
 <script src="city-hangzhou-guangzhou.js"></script>
+<script src="coords.js"></script>
 <script src="account.js"></script>
 <script src="vendor/leaflet/leaflet.js"></script>
+<!-- 离线矢量瓦片：pmtiles 负责读归档，basemaps 提供样式，protomaps-leaflet 用
+     Canvas 把它们画成 Leaflet 图层。三者都是普通 <script> 构建，无需模块系统。
+     底图数据来自 Protomaps 每日构建包，本地归档在 tiles/，见 tiles/CREDITS.md。 -->
+<script src="vendor/pmtiles.js"></script>
+<script src="vendor/basemaps.js"></script>
+<script src="vendor/protomaps-leaflet.js"></script>
 <script src="real-maps.js"></script>
 <script src="app.js"></script>
 </body>
