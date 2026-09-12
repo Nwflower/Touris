@@ -1,5 +1,5 @@
 /* ==========================================================================
-   旅行记忆规划 · 原型交互层
+   Touris · 原型交互层
    单页状态机：S0 需求 → S1 三方案(含概览图) → S2 详情(元素级反馈) → S5 对照 diff
    ========================================================================== */
 
@@ -144,11 +144,22 @@ const THUMB = {
     '<rect class="s2" x="10" y="26" width="60" height="22"/><rect class="s3" x="20" y="32" width="40" height="10" rx="2"/>' +
     '<path class="rake" d="M0 52h80M0 56h80"/>'
 };
+/* 本机直连 upload.wikimedia.org 不通（整个 wikipedia.org 都不通），
+   所以默认经 wsrv.nl 图片代理取图；直连可用的环境把 USE_PROXY 改 false 即可。 */
+const USE_PROXY = true;
+function photoURL(name){
+  const raw = (typeof SPOT_IMG !== 'undefined') ? SPOT_IMG[name] : null;
+  if(!raw) return null;
+  if(!USE_PROXY) return raw;
+  return 'https://wsrv.nl/?url=' + encodeURIComponent(raw.replace(/^https?:\/\//, '')) +
+         '&w=960&output=jpg';
+}
+
 /** 缩略图：底层始终是 SVG 占位插画，有联网图就盖在上面；加载失败自动露出占位 */
 function spotThumb(name, cls, extra){
   const s = SPOTS[name];
   const cat = (s && s.cat) || 'temple';
-  const url = (typeof SPOT_IMG !== 'undefined') ? SPOT_IMG[name] : null;
+  const url = photoURL(name);
   return `<div class="sthumb ${cls||''} c-${cat}">
     <svg viewBox="0 0 80 60" preserveAspectRatio="none">${THUMB[cat]||THUMB.temple}</svg>
     ${url ? `<img src="${esc(url)}" alt="${esc(name)}" loading="lazy" referrerpolicy="no-referrer">` : ''}
@@ -239,7 +250,7 @@ function renderTop(){
   $('topbar').innerHTML = `
     <div class="brand">
       <span class="logo">🧠</span>
-      <span>旅行记忆规划<br><small>MEMORY-DRIVEN TRAVEL</small></span>
+      <span>Touris<br><small>MEMORY-DRIVEN TRAVEL</small></span>
     </div>
     <div class="top-sep"></div>
     <div class="persona-sw">
