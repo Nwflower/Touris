@@ -1,4 +1,4 @@
-/* 一次性校验脚本：数据交叉引用 + 桩 DOM 实跑 render()。用完即删。 */
+/* 回归校验：数据交叉引用 + 桩 DOM 实跑 render()。在 prototype 目录运行 node _verify.js。 */
 const fs = require('fs'), vm = require('vm');
 
 /* ---------- 桩 DOM ---------- */
@@ -17,7 +17,7 @@ function el(id){
   };
 }
 const nodes = {};
-['topbar','shell','railLeft','work','railRight','demoDock','memPop','toastWrap']
+['topbar','shell','railLeft','work','railRight','demoDock','demoDockWrap','authOverlay','memPop','toastWrap']
   .forEach(id => nodes[id] = el(id));
 
 const document = {
@@ -34,7 +34,7 @@ const ctx = { document, window, console, setTimeout:()=>0, requestAnimationFrame
   IntersectionObserver: class { observe(){} unobserve(){} disconnect(){} }, Math, JSON, Set, Map,
   Array, Object, String, Number, RegExp };
 vm.createContext(ctx);
-for(const f of ['images.js','data.js','city-data.js','app.js']){
+for(const f of ['images.js','data.js','city-data.js','city-hangzhou-guangzhou.js','account.js','app.js']){
   vm.runInContext(fs.readFileSync(f,'utf8'), ctx, { filename:f });
 }
 const g = n => vm.runInContext(n, ctx);
@@ -143,7 +143,7 @@ const render = g('_doRender'), S = g('S'), usedMemoryIds = g('usedMemoryIds');
 for(const p of ['blank','veteran']){
   for(const on of [true,false]){
     for(const sc of ['s0','s1','s2','s5']){
-      S.persona = p; S.memoryOn = on; S.screen = sc; S.diffPlayed = true;
+      S.session = p === 'veteran' ? {mode:'user',id:'demo'} : {mode:'guest',id:null}; S.memoryOn = on; S.screen = sc; S.diffPlayed = true;
       try{
         render();
         const h = nodes.work.innerHTML;
@@ -164,12 +164,12 @@ for(const p of ['blank','veteran']){
 console.log('--- 关键断言 ---');
 function assert(cond, msg){ console.log((cond?'  ok   ':'  FAIL ') + msg); if(!cond) fails++; }
 
-S.persona='blank'; S.memoryOn=true; S.screen='s1'; render();
+S.session={mode:'guest',id:null}; S.memoryOn=true; S.screen='s1'; render();
 assert((nodes.work.innerHTML.match(/mem-tag/g)||[]).length === 0, '空记忆 S1 无 🧠 标签');
 assert((nodes.work.innerHTML.match(/class="sim-map/g)||[]).length === 3, 'S1 三张方案概览图');
 assert((nodes.work.innerHTML.match(/class="plan-shots"/g)||[]).length === 3, 'S1 三条缩略图带');
 
-S.persona='veteran'; S.memoryOn=true; S.screen='s2'; render();
+S.session={mode:'user',id:'demo'}; S.memoryOn=true; S.screen='s2'; render();
 const h2 = nodes.work.innerHTML;
 assert((h2.match(/class="sim-map/g)||[]).length === 2, 'S2 两张模拟地图（概览 + 当日）');
 assert((h2.match(/class="rec-group/g)||[]).length >= 3, 'S2 餐饮/住宿都是候选组形式');
@@ -187,12 +187,12 @@ const imgCount = Object.values(SPOT_IMG||{}).filter(Boolean).length;
 console.log(`--- 配图 ${imgCount} / ${Object.keys(SPOTS).length} 个景点（缺图回退占位插画）---`);
 
 /* ---------- 新增城市：全数据引用 + 各屏渲染 ---------- */
-console.log('--- 北京 / 上海 / 杭州 / 威海城市数据 ---');
+console.log('--- 扩展城市数据 ---');
 Object.entries(CITY_DATA).forEach(([name,c]) => {
   const ids = new Set(MEMORIES.map(m=>m.id));
   const cityBad = [];
   [['默认',c.itinDefault],['记忆',c.itinMemory]].forEach(([mode,it]) => {
-    if(it.days.length !== 4) cityBad.push(mode+'行程不是 4 天');
+    if(it.days.length !== (c.staticDays||4)) cityBad.push(mode+'行程天数与城市配置不符');
     it.days.forEach(d => d.items.forEach(i => {
       if(i.kind === 'spot' && (!c.poi[i.name] || !c.spots[i.name])) cityBad.push('景点引用缺失 '+i.name);
       if(i.kind === 'food' && (!c.dining[i.name] || !c.restPoi[i.name] || !c.poi[c.restPoi[i.name]])) cityBad.push('餐饮引用缺失 '+i.name);
@@ -200,7 +200,7 @@ Object.entries(CITY_DATA).forEach(([name,c]) => {
     }));
   });
   [...c.plansDefault,...c.plansMemory].forEach(p => {
-    if(p.routeDays.length !== 4 || p.highlights.length < 4) cityBad.push('方案结构不完整 '+p.id);
+    if(p.routeDays.length !== (c.staticDays||4) || p.highlights.length < (c.staticDays?1:4)) cityBad.push('方案结构不完整 '+p.id);
     p.routeDays.flat().forEach(n => { if(!c.poi[n]) cityBad.push('方案点位缺失 '+n); });
     p.highlights.forEach(n => { if(!c.spots[n]) cityBad.push('方案景点资料缺失 '+n); });
   });
@@ -212,7 +212,7 @@ Object.entries(CITY_DATA).forEach(([name,c]) => {
     if(!c.images[n]) cityBad.push(name+'景点缺少图片 '+n);
   });
   for(const persona of ['blank','veteran']) for(const on of [false,true]) for(const screen of ['s0','s1','s2','s5']){
-    S.req.dest=name; S.persona=persona; S.memoryOn=on; S.screen=screen; S.diffPlayed=true;
+    S.req.dest=name; S.session=persona === 'veteran' ? {mode:'user',id:'demo'} : {mode:'guest',id:null}; S.req.days=c.staticDays||4; S.memoryOn=on; S.screen=screen; S.diffPlayed=true;
     try{
       render(); const html=nodes.work.innerHTML;
       if(!html || html.includes('undefined') || html.includes('[object Object]')) throw new Error('输出内容异常');
@@ -221,6 +221,8 @@ Object.entries(CITY_DATA).forEach(([name,c]) => {
   }
   assert(!cityBad.length, `${name} 数据与 16 种页面状态完整${cityBad.length?'：'+cityBad.join('；'):''}`);
 });
+
+require('./_verify-cities.js')({S,g,render,nodes,CITY_DATA,assert,fs});
 
 console.log(bad.length ? '\n数据问题:\n - ' + bad.join('\n - ') : '\n数据交叉引用：全部通过');
 process.exit(fails || bad.length ? 1 : 0);

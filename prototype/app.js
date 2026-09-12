@@ -13,7 +13,7 @@ const REST_POI = {
 /* ---------------- 状态 ---------------- */
 const S = {
   screen: 'home',
-  persona: 'blank',
+  session: { mode:'guest', id:null },   // 会话：游客（0 记忆）/ 已登录账号
   memoryOn: true,
   req: { dest:'京都', date:'2026-10-02', days:4, people:2 },
   submitted: false,
@@ -35,11 +35,18 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c =>
   ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
 
-function persona(){ return PERSONAS.find(p => p.id === S.persona); }
-
+/* 当前会话的记忆档案。
+   游客 = 0 记忆模式，不读任何持久化数据（S.learned 仍在内存里积累，
+   只是刷新即散，这正是游客模式该有的行为）。
+   已登录 = 该账号持久化的记忆。上游的 memCount / memActive / plans / itin
+   全部经由 allMemories()，所以只换这一个函数就够。 */
+function currentArchive(){
+  if(S.session.mode !== 'user') return [];
+  const acc = getAccount(S.session.id);
+  return (acc && acc.memories) || [];
+}
 function allMemories(){
-  const base = persona().hasMemory ? MEMORIES : [];
-  return base.concat(S.learned);
+  return currentArchive().concat(S.learned);
 }
 function memCount(){ return allMemories().length; }
 function memById(id){ return allMemories().find(m => m.id === id); }
@@ -54,9 +61,10 @@ function spots(){ return city() ? city().spots : SPOTS; }
 function dining(){ return city() ? city().dining : DINING; }
 function restPoi(){ return city() ? city().restPoi : REST_POI; }
 function spotImages(){ return city() ? (city().images || {}) : SPOT_IMG; }
-function plans(){ const c=city(); return memActive() ? (c?c.plansMemory:PLANS_MEMORY) : (c?c.plansDefault:PLANS_DEFAULT); }
-function itin(){ const c=city(); return memActive() ? (c?c.itinMemory:ITIN_MEMORY) : (c?c.itinDefault:ITIN_DEFAULT); }
-function diffs(){ const c=city(); return c ? c.diffs : DIFFS; }
+function cityContent(){ const c=city(); return c && c.resolve ? c.resolve(S.req,S.chosenPlan,allMemories()) : c; }
+function plans(){ const c=cityContent(); return memActive() ? (c?c.plansMemory:PLANS_MEMORY) : (c?c.plansDefault:PLANS_DEFAULT); }
+function itin(){ const c=cityContent(); return memActive() ? (c?c.itinMemory:ITIN_MEMORY) : (c?c.itinDefault:ITIN_DEFAULT); }
+function diffs(){ const c=cityContent(); return c ? c.diffs : DIFFS; }
 
 function usedMemoryIds(){
   if(!memActive()) return [];
@@ -69,7 +77,7 @@ function usedMemoryIds(){
     d.items.forEach(i => (i.memoryIds||[]).forEach(id => set.add(id)));
   });
   diffs().forEach(x => x.memoryIds.forEach(id => set.add(id)));
-  S.learned.forEach(m => set.add(m.id));
+  if(!city()?.staticDays) S.learned.forEach(m => set.add(m.id));
   return [...set].filter(id => memById(id));
 }
 
@@ -170,7 +178,7 @@ function spotThumb(name, cls, extra){
   const s = spots()[name];
   const cat = (s && s.cat) || 'temple';
   const raw = (typeof SPOT_IMG !== 'undefined') ? spotImages()[name] : null;
-  const url = raw ? (USE_PROXY
+  const url = raw ? (USE_PROXY && /^https?:\/\//.test(raw)
     ? 'https://wsrv.nl/?url=' + encodeURIComponent(raw.replace(/^https?:\/\//, '')) + '&w=960&output=jpg'
     : raw) : null;
   return `<div class="sthumb ${cls||''} c-${cat}">
@@ -239,7 +247,7 @@ function overviewMap(routeDays, opt){
   }).join('');
   return `<div class="sim-map ${small?'small':''}">
     <svg viewBox="0 0 100 100" preserveAspectRatio="none">${mapBase(!small)}${paths}${dots}</svg>
-    ${small ? '' : '<div class="map-scale"><i></i><span>约 2km</span></div>'}
+    ${small ? '' : `<div class="map-scale"><i></i><span>${city()?.staticDays ? '行程示意' : '约 2km'}</span></div>`}
   </div>`;
 }
 
@@ -262,7 +270,7 @@ function dayMap(day){
         <div class="dot">${i+1}</div>
         ${S.hoverItem===p.nm ? `<span class="lbl">${esc(p.nm)}</span>` : ''}
       </div>`).join('')}
-    <div class="map-scale"><i></i><span>约 2km</span></div>
+    <div class="map-scale"><i></i><span>${city()?.staticDays ? '行程示意' : '约 2km'}</span></div>
   </div>`;
 }
 
@@ -277,6 +285,8 @@ const HOME_HERO_IMAGES = [
 ];
 
 const DEST_CARDS = [
+  {name:'杭州',en:'Hangzhou',tagline:'西湖古寺 · 湿地与老城',days:'2 天',price:'两日游素材版',img:'assets/cities/hangzhou/west-lake-panorama.jpg',tags:['湖景','古寺','文博']},
+  {name:'广州',en:'Guangzhou',tagline:'西关人文 · 珠江天际线',days:'2 天',price:'两日游素材版',img:'assets/cities/guangzhou/canton-tower.jpg',tags:['老城','展馆','夜景']} ,
   { name:'京都', en:'Kyoto', tagline:'千年古都 · 竹林与佛寺', days:'3-5 天', price:'¥4,200 起',
     img: HOME_IMG('Kyoto Japan Kiyomizu-dera temple wooden stage with autumn foliage, classic Japanese temple, aerial view', 'landscape_4_3'),
     tags:['🏯 佛寺','🎋 竹林','🍡 美食'] },
@@ -305,7 +315,7 @@ const FEATURES = [
 
 const STATS = [
   { n:'20+', l:'记忆维度' },
-  { n:'4', l:'核心城市' },
+  { n:String(1+Object.keys(CITY_DATA).length), l:'核心城市' },
   { n:'7', l:'对照差异' },
   { n:'0', l:'问卷必填项' }
 ];
@@ -382,7 +392,7 @@ function viewHome(){
           <div class="hs-field hs-days">
             <span class="hs-ic">⏱</span>
             <select id="home-days">
-              ${[3,4,5,6,7].map(d=>`<option>${d} 天</option>`).join('')}
+              ${[2,3,4,5,6,7].map(d=>`<option ${d===4?'selected':''}>${d} 天</option>`).join('')}
             </select>
           </div>
           <button class="hs-btn" data-act="start">
@@ -392,7 +402,7 @@ function viewHome(){
 
         <div class="hero-quick">
           <span>🔥 热门:</span>
-          ${['京都','北京','上海','杭州','威海'].map(d=>`<button class="chip" data-act="quick" data-d="${d}">${d}</button>`).join('')}
+          ${['京都','北京','上海','杭州','威海','广州'].map(d=>`<button class="chip" data-act="quick" data-d="${d}">${d}</button>`).join('')}
         </div>
       </div>
 
@@ -546,26 +556,33 @@ function bindHomeAct(t){
   if(act === 'home'){ S.screen = 'home'; render(); return true; }
   if(act === 'start' || act === 'quick'){
     // 从搜索框/快捷 chip 进入
-    const dest = t.dataset.d || ($('home-dest')?.value || '京都');
+    const dest = (t.dataset.d || ($('home-dest')?.value || '京都')).trim();
     const date = $('home-date')?.value || '2026-10-02';
-    const days = +(($('home-days')?.value || '4 天').match(/\d+/)?.[0] || 4);
+    let days = +(($('home-days')?.value || '4 天').match(/\d+/)?.[0] || 4);
+    if(CITY_DATA[dest]?.staticDays) days = CITY_DATA[dest].staticDays;
     S.req = { dest, date, days, people: 2 };
+    resetRouteSelection();
     S.submitted = true; S.screen = 's1'; render();
     toast(`已为你生成 ${days} 天「${dest}」行程方案`, 'mem');
     return true;
   }
   if(act === 'dest'){
-    // 目的地卡片点击:预设好日程,带记忆进入
+    // 目的地卡片点击:预设好日程直接进 S1。
+    // 注意不要在这里偷换档案——游客就该以 0 记忆跑完，否则对照演示不成立。
     const dest = t.dataset.dest;
-    S.req = { dest, date:'2026-10-02', days:4, people:2 };
-    S.persona = 'veteran'; S.memoryOn = true;
+    S.req = { dest, date:'2026-10-02', days:CITY_DATA[dest]?.staticDays || 4, people:2 };
+    resetRouteSelection();
+    S.memoryOn = true;
     S.screen = 's1'; render();
-    toast(`已载入「${dest}」行程 · 20 条记忆参与排序`, 'mem');
+    const n = memCount();
+    toast(n ? `已载入「${dest}」行程 · <b>${n} 条记忆</b>参与排序`
+            : `已载入「${dest}」行程 · 还没有记忆，先出通用方案`, n ? 'mem' : '');
     return true;
   }
   if(act === 'demo'){
-    // 直接跳到 S1 Demo
-    S.persona = 'veteran'; S.screen = 's1'; render();
+    // 一键进对照演示：登录预置演示账号，让评委直接看到 20 条记忆的档案
+    loginAsDemo();
+    S.screen = 's1'; render();
     return true;
   }
   if(act === 'scroll'){
@@ -575,6 +592,145 @@ function bindHomeAct(t){
     return true;
   }
   return false;
+}
+
+/* ---------------- 账号 / 会话 ---------------- */
+
+/** 顶栏账号入口：游客显示「未登录」+ 登录；已登录显示名字 + 记忆数 */
+function accountBtnHTML(n){
+  if(S.session.mode === 'user'){
+    const acc = getAccount(S.session.id) || { name: S.session.id, avatar: '🧳' };
+    return `<button class="acct-btn" data-act="account" title="切换账号 / 退出">
+      <span class="em">${acc.avatar || '🧳'}</span>
+      <b>${esc(acc.name)}</b>
+      <span class="cnt">${n}</span>
+    </button>`;
+  }
+  return `<button class="acct-btn guest" data-act="account" title="登录后可跨会话积累记忆">
+    <span class="em">🫥</span><span>未登录</span>
+    <span class="cnt">${n}</span>
+  </button>`;
+}
+
+/** 一键登录预置演示账号（首页 Demo 入口、S0 提示、登录面板都用它） */
+function loginAsDemo(){
+  const r = login(DEMO_ACCOUNT.user, DEMO_ACCOUNT.pass);
+  if(!r.ok){ toast('演示账号不可用：' + esc(r.err)); return false; }
+  S.session = { mode:'user', id:r.user };
+  persistSession(S.session);
+  S.diffPlayed = false; S.memHit = [];
+  renderTop(); renderLeft();
+  const a = getAccount(r.user);
+  toast(`已登录 <b>${esc(a.name)}</b> · ${(a.memories||[]).length} 条记忆已载入`, 'mem');
+  return true;
+}
+
+/** 切到游客：不写任何持久化数据 */
+function logoutToGuest(silent){
+  // 先把本次会话新学的记忆回写档案，再断开——否则现场积累的会白丢
+  if(S.session.mode === 'user' && S.learned.length) saveLearned(S.session.id, S.learned);
+  S.session = { mode:'guest', id:null };
+  persistSession(S.session);
+  S.learned = [];
+  S.diffPlayed = false; S.memHit = [];
+  hideAuth();
+  render();
+  if(!silent) toast('已退出登录 · 现在是游客模式，0 条记忆');
+}
+
+/* ---------------- 登录 / 注册面板 ---------------- */
+
+let AUTH_MODE = 'login';    // 'login' | 'register'
+let AUTH_ERR = '';          // 面板内的错误提示
+
+function authBody(){
+  const isLogin = AUTH_MODE === 'login';
+  return `
+  <div class="auth-overlay" data-act="authback">
+    <div class="auth-card" role="dialog" aria-modal="true" aria-label="登录或注册">
+      <h3>${isLogin ? '登录' : '创建账号'}</h3>
+      <p class="auth-sub">记忆归属于账号。登录后，你每次的 👍👎 都会跨会话积累下来。</p>
+
+      <div class="auth-tabs">
+        <button class="${isLogin?'on':''}" data-act="authtab" data-v="login">登录</button>
+        <button class="${isLogin?'':'on'}" data-act="authtab" data-v="register">注册</button>
+      </div>
+
+      ${AUTH_ERR ? `<div class="auth-err">${esc(AUTH_ERR)}</div>` : ''}
+
+      <div class="field">
+        <label>账号</label>
+        <input id="au-user" autocomplete="username" placeholder="例如 demo">
+      </div>
+      <div class="field">
+        <label>密码</label>
+        <input id="au-pass" type="password" autocomplete="${isLogin?'current-password':'new-password'}"
+               placeholder="${isLogin?'':'至少 4 位'}">
+      </div>
+      ${isLogin ? '' : `
+      <div class="field">
+        <label>怎么称呼你（可留空）</label>
+        <input id="au-name" placeholder="不填就用账号名">
+      </div>`}
+
+      <div class="auth-actions">
+        <button class="btn xl" data-act="${isLogin?'dologin':'doregister'}">
+          ${isLogin ? '登录' : '创建并开始'}
+        </button>
+        <button class="btn ghost" data-act="guest">以游客身份继续（0 记忆）</button>
+      </div>
+
+      <div class="auth-demo">
+        想看「用了三个月、已经积累 20 条记忆」的档案？
+        直接用演示账号 <code>${DEMO_ACCOUNT.user}</code> / <code>${DEMO_ACCOUNT.pass}</code>，
+        或点这里 <b data-act="demologin" style="cursor:pointer;text-decoration:underline">一键登录演示账号</b>。
+      </div>
+
+      <div class="auth-note">
+        演示声明：本站是纯静态原型，没有后端。账号与密码哈希都只存在你这台浏览器的
+        localStorage 里，换设备或换浏览器就会重新开始，也请勿填入任何真实密码。
+      </div>
+    </div>
+  </div>`;
+}
+
+
+function showAuth(mode){
+  AUTH_MODE = mode || 'login';
+  AUTH_ERR = '';
+  const ov = $('authOverlay');
+  if(!ov) return;
+  ov.innerHTML = authBody();
+  ov.hidden = false;
+  const f = $('au-user'); if(f) f.focus();
+}
+
+function hideAuth(){
+  const ov = $('authOverlay');
+  if(ov){ ov.hidden = true; ov.innerHTML = ''; }
+  AUTH_ERR = '';
+}
+
+/** 重画面板并保留已输入的内容（切 tab / 报错时用，免得用户重打） */
+function repaintAuth(){
+  const u = $('au-user'), p = $('au-pass'), nm = $('au-name');
+  const keep = { u: u && u.value, p: p && p.value, n: nm && nm.value };
+  const ov = $('authOverlay');
+  if(!ov) return;
+  ov.innerHTML = authBody();
+  const u2 = $('au-user'), p2 = $('au-pass'), n2 = $('au-name');
+  if(u2 && keep.u) u2.value = keep.u;
+  if(p2 && keep.p) p2.value = keep.p;
+  if(n2 && keep.n) n2.value = keep.n;
+  if(u2) u2.focus();
+}
+
+/** 登录/注册成功后落到已登录态 */
+function afterAuth(){
+  hideAuth();
+  S.learned = [];          // 已并入档案，清空避免重复计数
+  S.diffPlayed = false; S.memHit = [];
+  render();
 }
 
 /* ---------------- 顶栏 ---------------- */
@@ -587,17 +743,7 @@ function renderTop(){
       <span>Touris 知途<br><small>MEMORY-DRIVEN TRAVEL</small></span>
     </div>
     <div class="top-sep"></div>
-    <div class="persona-sw">
-      <span class="lbl">记忆档案</span>
-      <div class="seg">
-        ${PERSONAS.map(p => `
-          <button class="${p.id===S.persona?'on':''}" data-act="persona" data-id="${p.id}" title="${esc(p.desc)}">
-            <span class="em">${p.avatar}</span><span>${esc(p.name)}</span>
-            ${p.hasMemory ? `<span class="cnt">${MEMORIES.length + (p.id===S.persona?S.learned.length:0)}</span>`
-                          : `<span class="cnt">${p.id===S.persona?S.learned.length:0}</span>`}
-          </button>`).join('')}
-      </div>
-    </div>
+    ${accountBtnHTML(n)}
     <div class="top-right">
       <button class="mem-switch ${S.memoryOn?'':'off'} ${swDisabled?'disabled':''}" data-act="memsw"
         title="${swDisabled?'当前档案没有记忆可用':'开关记忆，观察推荐变化'}">
@@ -611,17 +757,46 @@ function renderTop(){
 }
 
 /* ---------------- 左栏 ---------------- */
+/* ---------------- 左栏：需求 + 记忆资产 + 本次用到的记忆 ---------------- */
 function renderLeft(){
   const n = memCount();
-  const navs = [
-    { id:'s0', step:1, t:'出行需求', tail:'S0' },
-    { id:'s1', step:2, t:'三方案对比', tail:'S1' },
-    { id:'s2', step:3, t:'攻略详情', tail:'S2' },
-    { id:'s5', step:4, t:'再次推荐对照', tail:'S5' }
-  ];
-  const order = ['s0','s1','s2','s5'];
-  const cur = order.indexOf(S.screen);
+  const cur = ['s0','s1','s2','s5'].indexOf(S.screen);
   const r = S.req;
+  const list = usedMemoryIds().map(memById).filter(Boolean);
+
+  /* 本次推荐实际用到的记忆 */
+  let memBody;
+  if(!list.length){
+    memBody = `<div class="rr-empty">
+        <span class="big">🫥</span>
+        ${memCount()===0
+          ? '第一次使用，没有历史。<br>去详情页对景点、餐饮、节奏点几个 👍👎，<br>记忆会当场长出来。'
+          : '开关已关闭。<br>把顶栏「默认推荐」拨回「使用记忆」，<br>这里会列出每条起作用的记忆。'}
+      </div>`;
+  }else{
+    memBody = list.map(m => {
+      const fresh = S.learned.some(x => x.id === m.id);
+      const hit = S.memHit.includes(m.id);
+      return `<div class="mcard ${hit?'hit':''} ${fresh?'fresh':''}" id="mc-${m.id}">
+        <div class="mtxt">${esc(m.text)}</div>
+        <div class="msrc">来源：<b>${esc(m.source.trip)}</b> · ${esc(m.source.action)}${
+          m.source.quote ? `（“${esc(m.source.quote)}”）` : ''}</div>
+        <div class="mfoot">
+          <span class="chip-xs">${esc(m.type)}</span>
+          <span class="chip-xs scope ${m.scope==='session'?'session':''}">${m.scope==='session'?'仅本次':'长期'}</span>
+          <span class="chip-xs cited">被引用 ${m.cited} 次</span>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  const navs = [
+    { id:'s0', label:'S0', t:'出行需求' },
+    { id:'s1', label:'S1', t:'三方案对比' },
+    { id:'s2', label:'S2', t:'攻略详情' },
+    { id:'s5', label:'S5', t:'再次推荐对照' }
+  ];
+
   $('railLeft').innerHTML = `
     <div class="rail-block">
       <p class="rail-title">本次出行需求</p>
@@ -645,78 +820,29 @@ function renderLeft(){
     </div>
 
     <div class="rail-block">
-      <p class="rail-title">Demo 动线</p>
+      <div class="rail-head">
+        <p class="rail-title" style="margin:0">🧠 本次用到的记忆</p>
+        ${list.length ? `<span class="rail-cnt">${list.length} 条</span>` : ''}
+      </div>
+      <p class="rail-sub">${memActive()
+        ? '每条都可点回它的来源'
+        : (memCount()===0 ? '还没有任何记忆' : '记忆开关已关闭')}</p>
+      <div class="rail-mems">${memBody}</div>
+    </div>
+
+    <div class="rail-block">
+      <p class="rail-title">流程</p>
       <div class="nav-list">
         ${navs.map((v,i) => `
           <button class="nav-item ${S.screen===v.id?'on':''} ${i<cur?'done':''}" data-act="go" data-screen="${v.id}">
-            <span class="step">${i<cur?'✓':v.step}</span>
+            <span class="tail">${v.label}</span>
             <span>${esc(v.t)}</span>
-            <span class="tail">${v.tail}</span>
+            ${i<cur?'<span class="tick">✓</span>':''}
           </button>`).join('')}
       </div>
     </div>`;
 }
 
-/* ---------------- 右栏：记忆侧栏 ---------------- */
-function renderRight(){
-  if(!$('railRight')) return;
-  const list = usedMemoryIds().map(memById).filter(Boolean);
-  const head = `
-    <div class="rr-head">
-      <h3><span class="brain">🧠</span> 本次推荐用到的记忆</h3>
-      <p>${memActive()
-        ? `共 ${list.length} 条参与了这次推荐 · 每条都可点回它的来源`
-        : (memCount()===0 ? '还没有任何记忆。现在的推荐和通用工具没有区别。'
-                          : '记忆开关已关闭，这次按默认逻辑推荐。')}</p>
-    </div>`;
-
-  let body;
-  if(!list.length){
-    body = `<div class="rr-body">
-      <div class="rr-empty">
-        <span class="big">🫥</span>
-        ${memCount()===0
-          ? '第一次使用，没有历史。<br>去详情页对景点、餐饮、节奏点几个 👍👎，<br>记忆会当场长出来。'
-          : '开关已关闭。<br>把顶栏「默认推荐」拨回「使用记忆」，<br>右栏会列出每条起作用的记忆。'}
-      </div>
-    </div>`;
-  }else{
-    body = `<div class="rr-body">
-      ${list.map(m => {
-        const fresh = S.learned.some(x => x.id === m.id);
-        const hit = S.memHit.includes(m.id);
-        return `<div class="mcard ${hit?'hit':''} ${fresh?'fresh':''}" id="mc-${m.id}">
-          <div class="mtxt">${esc(m.text)}</div>
-          <div class="msrc">来源：<b>${esc(m.source.trip)}</b> · ${esc(m.source.action)}${
-            m.source.quote ? `（“${esc(m.source.quote)}”）` : ''}</div>
-          <div class="mfoot">
-            <span class="chip-xs">${esc(m.type)}</span>
-            <span class="chip-xs scope ${m.scope==='session'?'session':''}">${m.scope==='session'?'仅本次':'长期'}</span>
-            <span class="chip-xs cited">被引用 ${m.cited} 次</span>
-          </div>
-        </div>`;
-      }).join('')}
-    </div>`;
-  }
-  $('railRight').innerHTML = head + body;
-}
-
-/* ---------------- Demo 提词器 ---------------- */
-function renderDock(){
-  if(!$('demoDock')) return;
-  $('demoDock').innerHTML = `
-    <span class="dk-lbl">DEMO 动线</span>
-    ${DEMO_STEPS.map(s => `
-      <button class="dstep ${S.demoStep===s.n?'on':''}" data-act="demo" data-n="${s.n}">
-        <span class="n">${s.n}</span><span class="tt">${esc(s.title)}</span>
-        <span class="hh">${esc(s.hint)}</span>
-      </button>`).join('')}
-    <div class="dock-right">
-      <span class="kbd">F</span><span class="hh muted" style="font-size:11px">全屏</span>
-    </div>`;
-}
-
-/* ============================ S0 ============================ */
 function viewS0(){
   const n = memCount();
   return `
@@ -730,16 +856,17 @@ function viewS0(){
     <div class="card s0-form">
       <div class="f-grid">
         <div class="field"><label>目的地</label><input id="f-dest" list="city-list" value="${esc(S.req.dest)}">
-          <datalist id="city-list"><option value="京都"><option value="北京"><option value="上海"><option value="杭州"><option value="威海"></datalist></div>
+          <datalist id="city-list"><option value="京都"><option value="北京"><option value="上海"><option value="杭州"><option value="威海"><option value="广州"></datalist></div>
         <div class="field"><label>出发日期</label><input id="f-date" type="date" value="${esc(S.req.date)}"></div>
         <div class="field"><label>游玩天数</label>
-          <select id="f-days">${[3,4,5,6].map(d=>`<option ${d===S.req.days?'selected':''}>${d}</option>`).join('')}</select>
+          <select id="f-days">${[2,3,4,5,6].map(d=>`<option ${d===S.req.days?'selected':''}>${d}</option>`).join('')}</select>
         </div>
         <div class="field"><label>人数</label>
           <select id="f-people">${[1,2,3,4].map(d=>`<option ${d===S.req.people?'selected':''}>${d}</option>`).join('')}</select>
         </div>
       </div>
 
+      <p class="muted">杭州、广州目前提供固定 2 日路线；选择其他天数时会按 2 日素材版生成。</p>
       <div class="s0-badge ${n===0?'empty':''}">
         <span class="ic">${n===0?'🌱':'🧠'}</span>
         <div>
@@ -809,7 +936,7 @@ function planCard(p){
       <div class="rrow"><span class="rlab">景点密度</span><div class="rval">
         <div class="density"><b>${p.density}</b><span>个/天</span>
           <span class="bar"><i style="width:${Math.round(p.density/4*100)}%"></i></span></div></div></div>
-      <div class="rrow"><span class="rlab">每日步数</span><div class="rval">${walkBars(p.walk)}</div></div>
+      <div class="rrow"><span class="rlab">${p.walkNote ? '交通耗时' : '每日步数'}</span><div class="rval">${p.walkNote ? esc(p.walkNote) : walkBars(p.walk)}</div></div>
       <div class="rrow" style="margin-top:6px"><span class="rlab">住宿范围</span><div class="rval stay-val">
         <div class="a">${esc(p.stay.area)}</div><div class="d">${esc(p.stay.dist)}</div></div></div>
       <div class="rrow"><span class="rlab">餐饮策略</span><div class="rval">
@@ -818,7 +945,7 @@ function planCard(p){
 
     <div class="plan-hl">${p.highlights.map(h=>{
       const s = spots()[h];
-      return `<span class="hl">${esc(h)}${s?`<b>${s.score}</b>`:''}</span>`;
+      return `<span class="hl">${esc(h)}${s && Number.isFinite(s.score)?`<b>${s.score}</b>`:''}</span>`;
     }).join('')}</div>
 
     ${on && tags.length ? `
@@ -841,6 +968,23 @@ function planCard(p){
     </div>
   </div>`;
 }
+function resetRouteSelection(){
+  S.chosenPlan=null; S.planStance={}; S.stance={}; S.openReason=null;
+  S.openFree={}; S.s2day=1; S.hoverItem=null; S.diffPlayed=false;
+}
+function cityGuide(){
+  const c=city();
+  if(!c?.sources) return '';
+  return `<aside class="card city-guide">
+    <strong>${esc(c.name)} · 两日游素材版</strong>
+    <p>路线为整理建议，地图为行程示意。出行前请核对开放、预约和交通；可按体力删减景点。</p>
+    <details><summary>查看攻略参考 · 官方资料与小红书</summary>
+      <p>小红书为个人经验参考，可能需要登录。日期沿用原帖显示，未推断年份。</p>
+      <ul>${c.sources.map(x=>`<li><a href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.title)} ↗</a>
+        ${x.author?`<small>${esc(x.author)} · ${esc(x.date)}</small>`:''}<p>${esc(x.note)}</p></li>`).join('')}</ul>
+    </details>
+  </aside>`;
+}
 function viewS1(){
   const on = memActive();
   return `
@@ -849,9 +993,10 @@ function viewS1(){
       <span class="eyebrow">S1 · 首次路线推荐</span>
       <h2>${esc(S.req.dest)} ${S.req.days} 天 · 三套风格方案</h2>
       <p>${on
-        ? '同一份需求，因为读了你的 <b>' + memCount() + ' 条记忆</b>，方案排序和内容都变了。带 🧠 的地方都能点开看来源。'
+        ? (city()?.staticDays ? '已读取你的记忆；匹配到的偏好会调整路线，未匹配时保留原安排。当前档案：<b>' : '同一份需求，因为读了你的 <b>') + memCount() + (city()?.staticDays ? ' 条</b>。带 🧠 的安排可查看记忆来源。' : ' 条记忆</b>，方案排序和内容都变了。带 🧠 的地方都能点开看来源。')
         : '目前没有记忆参与——<b>这三套和任何通用工具给的没有区别</b>。去详情页表个态，第二次就不一样了。'}</p>
     </div>
+    ${cityGuide()}
     <div class="plan-grid">${plans().map(planCard).join('')}</div>
     <div class="semantic-note">
       <span><b>✓ 已选择</b> 记为正反馈</span>
@@ -906,14 +1051,14 @@ function recGroup(g, ic, kindLbl){
         <div class="pick">
           <div class="p1">
             <span class="pstyle">${esc(k.style)}</span>
-            <span class="pscore">${k.score}<i>${stars(k.score)}</i></span>
+            ${Number.isFinite(k.score) ? `<span class="pscore">${k.score}<i>${stars(k.score)}</i></span>` : '<span class="muted">类型建议</span>'}
           </div>
           <div class="p2">
             <span class="tag">${esc(k.cuisine || k.room)}</span>
             <span class="price">${k.room ? '' : '人均 '}${esc(k.price)}</span>
           </div>
           <div class="p3">${esc(k.note)}</div>
-          <div class="p4">${esc(k.src)} · ${k.count} 条评价</div>
+          <div class="p4">${esc(k.src)}${Number.isFinite(k.count) ? ` · ${k.count} 条评价` : ''}</div>
         </div>`).join('')}
     </div>
     <div class="rg-tip">具体选哪家由你定 · 需要时可按候选类型再筛一轮</div>
@@ -946,9 +1091,8 @@ function itemView(it, day){
           </div>
           ${sp ? `
             <div class="sp-meta">
-              <span class="sp-score">${sp.score}</span>
-              <span class="sp-stars">${stars(sp.score)}</span>
-              <span class="sp-src">${esc(sp.src)} · ${sp.count} 条评价</span>
+              ${Number.isFinite(sp.score) ? `<span class="sp-score">${sp.score}</span><span class="sp-stars">${stars(sp.score)}</span>` : ''}
+              <span class="sp-src">${esc(sp.src)}${Number.isFinite(sp.count) ? ` · ${sp.count} 条评价` : ''}</span>
             </div>
             <div class="sp-intro">${esc(sp.intro)}</div>
             <div class="sp-tags">${sp.tags.map(t=>{
@@ -1011,6 +1155,7 @@ function viewS2(){
         ? '每个带 🧠 的安排都能点开看它是哪条记忆推出来的。餐饮住宿只给区域和候选类型，具体挑哪家你决定。'
         : '对下面任意<b>景点 / 某天节奏 / 餐饮</b>点 👍👎 并选个原因，右栏会当场长出记忆。'}</p>
     </div>
+    ${cityGuide()}
     <div class="s2-grid">
       <div>
         <div class="card stay-card">
@@ -1064,18 +1209,18 @@ function itemKey(i){ return i.kind === 'free' ? 'free' : i.name; }
 function itemLabel(i){ return i.kind === 'food' ? dining()[i.name].area : i.name; }
 
 /** 逐日 diff 只认 DIFFS 里那几处；day:0 的两处是全局，走下面的清单 */
-function dayDiffMap(){
+function dayDiffMap(day){
   const m = {};
-  diffs().forEach(x => { if(x.day !== 0) m[x.target] = x; });
+  diffs().forEach(x => { if(x.day !== 0 && (!day || x.day === day)) m[x.target] = x; });
   return m;
 }
 
 function cmpDay(idx){
   const on = memActive();
-  const c=city(), baseDef=c?c.itinDefault:ITIN_DEFAULT, baseMem=c?c.itinMemory:ITIN_MEMORY;
+  const c=cityContent(), baseDef=c?c.itinDefault:ITIN_DEFAULT, baseMem=c?c.itinMemory:ITIN_MEMORY;
   const src = on ? baseMem.days[idx] : baseDef.days[idx];
   const def = baseDef.days[idx];
-  const tg = dayDiffMap();
+  const tg = dayDiffMap(idx+1);
 
   const rows = src.items.map(i => {
     const x = on ? tg[itemKey(i)] : null;
@@ -1120,7 +1265,7 @@ function viewS5(){
     ${on ? `
       <div class="stats-bar">
         <span class="n">${diffs().length}</span>
-        <div class="tx">记忆改变了本次 <b>${diffs().length} 处</b>安排：${esc(city() ? city().diffSummary : '砍掉 1 个大型博物馆、午餐从排队连锁换到市集一带、住宿从京都站前换到西阵町屋、新增 1 个早市、每天补 1 段午后休息、清水寺挪到傍晚、日均步行 14.8→8.4km。')}</div>
+        <div class="tx">记忆改变了本次 <b>${diffs().length} 处</b>安排：${esc(cityContent() ? cityContent().diffSummary : '砍掉 1 个大型博物馆、午餐从排队连锁换到市集一带、住宿从京都站前换到西阵町屋、新增 1 个早市、每天补 1 段午后休息、清水寺挪到傍晚、日均步行 14.8→8.4km。')}</div>
         <button class="replay" data-act="replay">重播动画</button>
       </div>` : `
       <div class="stats-bar plain">
@@ -1128,7 +1273,7 @@ function viewS5(){
         <div class="tx">没有任何记忆参与。这是<b>通用默认版</b>——把开关拨到「使用记忆」，看 ${diffs().length} 处变化逐个亮起。</div>
       </div>`}
 
-    <div class="cmp-grid">${[0,1,2,3].map(cmpDay).join('')}</div>
+    <div class="cmp-grid">${itin().days.map((_,i)=>cmpDay(i)).join('')}</div>
 
     ${on ? `<div class="diff-list">
       ${diffs().map(x => `
@@ -1219,8 +1364,6 @@ function _doRender(){
     renderTop();
     $('topbar').classList.add('home-top');
     $('railLeft').innerHTML = '';
-    if($('railRight')) $('railRight').innerHTML = '';
-    if($('demoDock')) $('demoDock').innerHTML = '';
     $('work').innerHTML = viewHome();
     // 滚动揭示 + Hero 轮播
     requestAnimationFrame(() => {
@@ -1233,7 +1376,7 @@ function _doRender(){
   }
   document.body.classList.remove('home-mode');
   $('topbar').classList.remove('home-top');
-  renderTop(); renderLeft(); renderRight(); renderDock();
+  renderTop(); renderLeft();
   const map = { s0:viewS0, s1:viewS1, s2:viewS2, s5:viewS5 };
   $('work').innerHTML = (map[S.screen] || viewS0)();
   if(S.screen === 's5' && memActive() && !S.diffPlayed) playDiff();
@@ -1385,13 +1528,13 @@ function showPop(btn, ids){
   pop.style.top = top + 'px';
 
   S.memHit = list.map(m => m.id);
-  renderRight();
+  renderLeft();
   const first = document.getElementById('mc-' + S.memHit[0]);
   if(first) first.scrollIntoView({ block:'center', behavior:'smooth' });
 }
 function hidePop(){
   $('memPop').hidden = true;
-  if(S.memHit.length){ S.memHit = []; renderRight(); }
+  if(S.memHit.length){ S.memHit = []; renderLeft(); }
 }
 
 /* ---------------- 把反馈变成记忆 ---------------- */
@@ -1428,15 +1571,67 @@ document.addEventListener('click', e => {
   }
 
   switch(act){
-    case 'persona': {
-      S.persona = t.dataset.id;
-      S.diffPlayed = false;
-      S.memHit = [];
-      render();
-      const p = persona();
-      toast(p.hasMemory
-        ? `已切到 <b>${esc(p.name)}</b> · ${MEMORIES.length} 条记忆已载入`
-        : `已切到 <b>${esc(p.name)}</b> · 0 条记忆，从零开始`, p.hasMemory ? 'mem' : '');
+    case 'account': {
+      // 顶栏入口：游客直接开登录面板；已登录则给退出/重置的选择
+      if(S.session.mode === 'user'){
+        if(confirm('要退出登录吗？\n\n本次会话新学的记忆会先存进你的账号，之后可以再登录取回。')){
+          logoutToGuest();
+        }
+      } else {
+        showAuth('login');
+      }
+      break;
+    }
+    case 'authtab': {
+      AUTH_MODE = t.dataset.v === 'register' ? 'register' : 'login';
+      AUTH_ERR = '';
+      repaintAuth();
+      break;
+    }
+    case 'authback': {
+      // 只在点到遮罩本身时关闭；点卡片内部（含输入框）不关
+      if(e.target === t) hideAuth();
+      break;
+    }
+    case 'guest': {
+      // 「以游客身份继续」——不写任何持久化数据
+      hideAuth();
+      toast('已进入游客模式 · <b>0 条记忆</b>，刷新即重新开始');
+      break;
+    }
+    case 'demologin': {
+      if(loginAsDemo()) hideAuth();
+      break;
+    }
+    case 'dologin': {
+      const u = $('au-user'), p = $('au-pass');
+      const r = login(u && u.value, p && p.value);
+      if(!r.ok){ AUTH_ERR = r.err; repaintAuth(); break; }
+      S.session = { mode:'user', id:r.user };
+      persistSession(S.session);
+      afterAuth();
+      const a = getAccount(r.user);
+      toast(`已登录 <b>${esc(a.name)}</b> · ${(a.memories||[]).length} 条记忆已载入`, 'mem');
+      break;
+    }
+    case 'doregister': {
+      const u = $('au-user'), p = $('au-pass'), nm = $('au-name');
+      const r = register(u && u.value, p && p.value, nm && nm.value);
+      if(!r.ok){ AUTH_ERR = r.err; repaintAuth(); break; }
+      S.session = { mode:'user', id:r.user };
+      persistSession(S.session);
+      afterAuth();
+      toast(`账号已创建 · <b>${esc(getAccount(r.user).name)}</b>，从 0 条记忆开始`);
+      break;
+    }
+    case 'reset': {
+      if(confirm('清空本机全部账号与记忆？\n\n这会删除所有本地数据，且无法撤销。演示账号会保留。')){
+        resetAll();
+        S.session = { mode:'guest', id:null };
+        S.learned = [];
+        render();
+        toast('本地数据已清空');
+      }
       break;
     }
     case 'memsw':
@@ -1462,13 +1657,14 @@ document.addEventListener('click', e => {
       const d = $('f-dest'), dt = $('f-date'), dy = $('f-days'), pp = $('f-people');
       if(d){
         const dest = d.value.trim() || '京都';
-        S.req.dest = ['京都','北京','上海','杭州','威海'].includes(dest) ? dest : '京都';
-        if(dest !== S.req.dest) toast('当前演示已支持京都、北京、上海、杭州、威海，先为你显示京都。');
+        S.req.dest = ['京都',...Object.keys(CITY_DATA)].includes(dest) ? dest : '京都';
+        if(dest !== S.req.dest) toast('当前演示已支持京都、北京、上海、杭州、威海、广州，先为你显示京都。');
       }
       if(dt) S.req.date = dt.value || S.req.date;
       if(dy) S.req.days = +dy.value;
       if(pp) S.req.people = +pp.value;
-      S.planStance = {}; S.chosenPlan = null; S.stance = {}; S.s2day = 1;
+      if(city()?.staticDays) S.req.days = city().staticDays;
+      resetRouteSelection();
       S.submitted = true; S.screen = 's1'; S.demoStep = 2; render();
       toast(memActive()
         ? `已生成 3 套方案 · <b>${memCount()} 条记忆</b>参与了排序`
@@ -1544,7 +1740,9 @@ document.addEventListener('click', e => {
     case 'demo': {
       const st = DEMO_STEPS.find(x => x.n === +t.dataset.n);
       S.demoStep = st.n;
-      S.persona = st.persona;
+      // 演示动线自己决定档案：前 3 步是「空记忆开场」，后 3 步要看到 20 条记忆的档案。
+      // 不沿用用户当前会话，否则从任意状态点进来都会跑偏。
+      if(st.seeded) loginAsDemo(); else logoutToGuest(true);
       if(st.n >= 5) S.memoryOn = true;
       if(st.screen === 's5') S.diffPlayed = false;
       if(st.n === 6) document.body.classList.add('present');
@@ -1580,13 +1778,14 @@ document.addEventListener('mouseover', e => {
 document.addEventListener('keydown', e => {
   if(/input|textarea|select/i.test(e.target.tagName)) return;
   if(e.key === 'f' || e.key === 'F') document.body.classList.toggle('present');
-  if(e.key === 'Escape'){ document.body.classList.remove('present'); hidePop(); }
+  if(e.key === 'Escape'){ document.body.classList.remove('present'); hidePop(); hideAuth(); }
   if(e.key === 'm' || e.key === 'M'){
     if(memCount()){ S.memoryOn = !S.memoryOn; S.diffPlayed = false; render(); }
   }
   if(/^[1-6]$/.test(e.key)){
     const st = DEMO_STEPS.find(x => x.n === +e.key);
-    S.demoStep = st.n; S.persona = st.persona;
+    S.demoStep = st.n;
+    if(st.seeded) loginAsDemo(); else logoutToGuest(true);
     if(st.n >= 5) S.memoryOn = true;
     if(st.screen === 's5') S.diffPlayed = false;
     document.body.classList.toggle('present', st.n === 6);
@@ -1611,5 +1810,9 @@ document.addEventListener('error', e => {
 
 window.addEventListener('resize', hidePop);
 document.addEventListener('wheel', hidePop, { passive:true });
+
+/* 启动：从 localStorage 恢复上次的登录态。
+   没登录过 / 存储不可用 → 保持在游客态（0 记忆），这正是默认行为。 */
+S.session = getStoredSession();
 
 render();
