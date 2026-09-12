@@ -61,9 +61,10 @@ function spots(){ return city() ? city().spots : SPOTS; }
 function dining(){ return city() ? city().dining : DINING; }
 function restPoi(){ return city() ? city().restPoi : REST_POI; }
 function spotImages(){ return city() ? (city().images || {}) : SPOT_IMG; }
-function plans(){ const c=city(); return memActive() ? (c?c.plansMemory:PLANS_MEMORY) : (c?c.plansDefault:PLANS_DEFAULT); }
-function itin(){ const c=city(); return memActive() ? (c?c.itinMemory:ITIN_MEMORY) : (c?c.itinDefault:ITIN_DEFAULT); }
-function diffs(){ const c=city(); return c ? c.diffs : DIFFS; }
+function cityContent(){ const c=city(); return c && c.resolve ? c.resolve(S.req,S.chosenPlan,allMemories()) : c; }
+function plans(){ const c=cityContent(); return memActive() ? (c?c.plansMemory:PLANS_MEMORY) : (c?c.plansDefault:PLANS_DEFAULT); }
+function itin(){ const c=cityContent(); return memActive() ? (c?c.itinMemory:ITIN_MEMORY) : (c?c.itinDefault:ITIN_DEFAULT); }
+function diffs(){ const c=cityContent(); return c ? c.diffs : DIFFS; }
 
 function usedMemoryIds(){
   if(!memActive()) return [];
@@ -76,7 +77,7 @@ function usedMemoryIds(){
     d.items.forEach(i => (i.memoryIds||[]).forEach(id => set.add(id)));
   });
   diffs().forEach(x => x.memoryIds.forEach(id => set.add(id)));
-  S.learned.forEach(m => set.add(m.id));
+  if(!city()?.staticDays) S.learned.forEach(m => set.add(m.id));
   return [...set].filter(id => memById(id));
 }
 
@@ -177,7 +178,7 @@ function spotThumb(name, cls, extra){
   const s = spots()[name];
   const cat = (s && s.cat) || 'temple';
   const raw = (typeof SPOT_IMG !== 'undefined') ? spotImages()[name] : null;
-  const url = raw ? (USE_PROXY
+  const url = raw ? (USE_PROXY && /^https?:\/\//.test(raw)
     ? 'https://wsrv.nl/?url=' + encodeURIComponent(raw.replace(/^https?:\/\//, '')) + '&w=960&output=jpg'
     : raw) : null;
   return `<div class="sthumb ${cls||''} c-${cat}">
@@ -246,7 +247,7 @@ function overviewMap(routeDays, opt){
   }).join('');
   return `<div class="sim-map ${small?'small':''}">
     <svg viewBox="0 0 100 100" preserveAspectRatio="none">${mapBase(!small)}${paths}${dots}</svg>
-    ${small ? '' : '<div class="map-scale"><i></i><span>约 2km</span></div>'}
+    ${small ? '' : `<div class="map-scale"><i></i><span>${city()?.staticDays ? '行程示意' : '约 2km'}</span></div>`}
   </div>`;
 }
 
@@ -269,7 +270,7 @@ function dayMap(day){
         <div class="dot">${i+1}</div>
         ${S.hoverItem===p.nm ? `<span class="lbl">${esc(p.nm)}</span>` : ''}
       </div>`).join('')}
-    <div class="map-scale"><i></i><span>约 2km</span></div>
+    <div class="map-scale"><i></i><span>${city()?.staticDays ? '行程示意' : '约 2km'}</span></div>
   </div>`;
 }
 
@@ -284,6 +285,8 @@ const HOME_HERO_IMAGES = [
 ];
 
 const DEST_CARDS = [
+  {name:'杭州',en:'Hangzhou',tagline:'西湖古寺 · 湿地与老城',days:'2 天',price:'两日游素材版',img:'assets/cities/hangzhou/west-lake-panorama.jpg',tags:['湖景','古寺','文博']},
+  {name:'广州',en:'Guangzhou',tagline:'西关人文 · 珠江天际线',days:'2 天',price:'两日游素材版',img:'assets/cities/guangzhou/canton-tower.jpg',tags:['老城','展馆','夜景']} ,
   { name:'京都', en:'Kyoto', tagline:'千年古都 · 竹林与佛寺', days:'3-5 天', price:'¥4,200 起',
     img: HOME_IMG('Kyoto Japan Kiyomizu-dera temple wooden stage with autumn foliage, classic Japanese temple, aerial view', 'landscape_4_3'),
     tags:['🏯 佛寺','🎋 竹林','🍡 美食'] },
@@ -312,7 +315,7 @@ const FEATURES = [
 
 const STATS = [
   { n:'20+', l:'记忆维度' },
-  { n:'4', l:'核心城市' },
+  { n:String(1+Object.keys(CITY_DATA).length), l:'核心城市' },
   { n:'7', l:'对照差异' },
   { n:'0', l:'问卷必填项' }
 ];
@@ -389,7 +392,7 @@ function viewHome(){
           <div class="hs-field hs-days">
             <span class="hs-ic">⏱</span>
             <select id="home-days">
-              ${[3,4,5,6,7].map(d=>`<option>${d} 天</option>`).join('')}
+              ${[2,3,4,5,6,7].map(d=>`<option ${d===4?'selected':''}>${d} 天</option>`).join('')}
             </select>
           </div>
           <button class="hs-btn" data-act="start">
@@ -399,7 +402,7 @@ function viewHome(){
 
         <div class="hero-quick">
           <span>🔥 热门:</span>
-          ${['京都','奈良','箱根','大阪'].map(d=>`<button class="chip" data-act="quick" data-d="${d}">${d}</button>`).join('')}
+          ${['京都','北京','上海','杭州','威海','广州'].map(d=>`<button class="chip" data-act="quick" data-d="${d}">${d}</button>`).join('')}
         </div>
       </div>
 
@@ -553,10 +556,12 @@ function bindHomeAct(t){
   if(act === 'home'){ S.screen = 'home'; render(); return true; }
   if(act === 'start' || act === 'quick'){
     // 从搜索框/快捷 chip 进入
-    const dest = t.dataset.d || ($('home-dest')?.value || '京都');
+    const dest = (t.dataset.d || ($('home-dest')?.value || '京都')).trim();
     const date = $('home-date')?.value || '2026-10-02';
-    const days = +(($('home-days')?.value || '4 天').match(/\d+/)?.[0] || 4);
+    let days = +(($('home-days')?.value || '4 天').match(/\d+/)?.[0] || 4);
+    if(CITY_DATA[dest]?.staticDays) days = CITY_DATA[dest].staticDays;
     S.req = { dest, date, days, people: 2 };
+    resetRouteSelection();
     S.submitted = true; S.screen = 's1'; render();
     toast(`已为你生成 ${days} 天「${dest}」行程方案`, 'mem');
     return true;
@@ -565,7 +570,8 @@ function bindHomeAct(t){
     // 目的地卡片点击:预设好日程直接进 S1。
     // 注意不要在这里偷换档案——游客就该以 0 记忆跑完，否则对照演示不成立。
     const dest = t.dataset.dest;
-    S.req = { dest, date:'2026-10-02', days:4, people:2 };
+    S.req = { dest, date:'2026-10-02', days:CITY_DATA[dest]?.staticDays || 4, people:2 };
+    resetRouteSelection();
     S.memoryOn = true;
     S.screen = 's1'; render();
     const n = memCount();
@@ -850,16 +856,17 @@ function viewS0(){
     <div class="card s0-form">
       <div class="f-grid">
         <div class="field"><label>目的地</label><input id="f-dest" list="city-list" value="${esc(S.req.dest)}">
-          <datalist id="city-list"><option value="京都"><option value="北京"><option value="上海"></datalist></div>
+          <datalist id="city-list"><option value="京都"><option value="北京"><option value="上海"><option value="杭州"><option value="威海"><option value="广州"></datalist></div>
         <div class="field"><label>出发日期</label><input id="f-date" type="date" value="${esc(S.req.date)}"></div>
         <div class="field"><label>游玩天数</label>
-          <select id="f-days">${[3,4,5,6].map(d=>`<option ${d===S.req.days?'selected':''}>${d}</option>`).join('')}</select>
+          <select id="f-days">${[2,3,4,5,6].map(d=>`<option ${d===S.req.days?'selected':''}>${d}</option>`).join('')}</select>
         </div>
         <div class="field"><label>人数</label>
           <select id="f-people">${[1,2,3,4].map(d=>`<option ${d===S.req.people?'selected':''}>${d}</option>`).join('')}</select>
         </div>
       </div>
 
+      <p class="muted">杭州、广州目前提供固定 2 日路线；选择其他天数时会按 2 日素材版生成。</p>
       <div class="s0-badge ${n===0?'empty':''}">
         <span class="ic">${n===0?'🌱':'🧠'}</span>
         <div>
@@ -929,7 +936,7 @@ function planCard(p){
       <div class="rrow"><span class="rlab">景点密度</span><div class="rval">
         <div class="density"><b>${p.density}</b><span>个/天</span>
           <span class="bar"><i style="width:${Math.round(p.density/4*100)}%"></i></span></div></div></div>
-      <div class="rrow"><span class="rlab">每日步数</span><div class="rval">${walkBars(p.walk)}</div></div>
+      <div class="rrow"><span class="rlab">${p.walkNote ? '交通耗时' : '每日步数'}</span><div class="rval">${p.walkNote ? esc(p.walkNote) : walkBars(p.walk)}</div></div>
       <div class="rrow" style="margin-top:6px"><span class="rlab">住宿范围</span><div class="rval stay-val">
         <div class="a">${esc(p.stay.area)}</div><div class="d">${esc(p.stay.dist)}</div></div></div>
       <div class="rrow"><span class="rlab">餐饮策略</span><div class="rval">
@@ -938,7 +945,7 @@ function planCard(p){
 
     <div class="plan-hl">${p.highlights.map(h=>{
       const s = spots()[h];
-      return `<span class="hl">${esc(h)}${s?`<b>${s.score}</b>`:''}</span>`;
+      return `<span class="hl">${esc(h)}${s && Number.isFinite(s.score)?`<b>${s.score}</b>`:''}</span>`;
     }).join('')}</div>
 
     ${on && tags.length ? `
@@ -961,6 +968,23 @@ function planCard(p){
     </div>
   </div>`;
 }
+function resetRouteSelection(){
+  S.chosenPlan=null; S.planStance={}; S.stance={}; S.openReason=null;
+  S.openFree={}; S.s2day=1; S.hoverItem=null; S.diffPlayed=false;
+}
+function cityGuide(){
+  const c=city();
+  if(!c?.sources) return '';
+  return `<aside class="card city-guide">
+    <strong>${esc(c.name)} · 两日游素材版</strong>
+    <p>路线为整理建议，地图为行程示意。出行前请核对开放、预约和交通；可按体力删减景点。</p>
+    <details><summary>查看攻略参考 · 官方资料与小红书</summary>
+      <p>小红书为个人经验参考，可能需要登录。日期沿用原帖显示，未推断年份。</p>
+      <ul>${c.sources.map(x=>`<li><a href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.title)} ↗</a>
+        ${x.author?`<small>${esc(x.author)} · ${esc(x.date)}</small>`:''}<p>${esc(x.note)}</p></li>`).join('')}</ul>
+    </details>
+  </aside>`;
+}
 function viewS1(){
   const on = memActive();
   return `
@@ -969,9 +993,10 @@ function viewS1(){
       <span class="eyebrow">S1 · 首次路线推荐</span>
       <h2>${esc(S.req.dest)} ${S.req.days} 天 · 三套风格方案</h2>
       <p>${on
-        ? '同一份需求，因为读了你的 <b>' + memCount() + ' 条记忆</b>，方案排序和内容都变了。带 🧠 的地方都能点开看来源。'
+        ? (city()?.staticDays ? '已读取你的记忆；匹配到的偏好会调整路线，未匹配时保留原安排。当前档案：<b>' : '同一份需求，因为读了你的 <b>') + memCount() + (city()?.staticDays ? ' 条</b>。带 🧠 的安排可查看记忆来源。' : ' 条记忆</b>，方案排序和内容都变了。带 🧠 的地方都能点开看来源。')
         : '目前没有记忆参与——<b>这三套和任何通用工具给的没有区别</b>。去详情页表个态，第二次就不一样了。'}</p>
     </div>
+    ${cityGuide()}
     <div class="plan-grid">${plans().map(planCard).join('')}</div>
     <div class="semantic-note">
       <span><b>✓ 已选择</b> 记为正反馈</span>
@@ -1026,14 +1051,14 @@ function recGroup(g, ic, kindLbl){
         <div class="pick">
           <div class="p1">
             <span class="pstyle">${esc(k.style)}</span>
-            <span class="pscore">${k.score}<i>${stars(k.score)}</i></span>
+            ${Number.isFinite(k.score) ? `<span class="pscore">${k.score}<i>${stars(k.score)}</i></span>` : '<span class="muted">类型建议</span>'}
           </div>
           <div class="p2">
             <span class="tag">${esc(k.cuisine || k.room)}</span>
             <span class="price">${k.room ? '' : '人均 '}${esc(k.price)}</span>
           </div>
           <div class="p3">${esc(k.note)}</div>
-          <div class="p4">${esc(k.src)} · ${k.count} 条评价</div>
+          <div class="p4">${esc(k.src)}${Number.isFinite(k.count) ? ` · ${k.count} 条评价` : ''}</div>
         </div>`).join('')}
     </div>
     <div class="rg-tip">具体选哪家由你定 · 需要时可按候选类型再筛一轮</div>
@@ -1066,9 +1091,8 @@ function itemView(it, day){
           </div>
           ${sp ? `
             <div class="sp-meta">
-              <span class="sp-score">${sp.score}</span>
-              <span class="sp-stars">${stars(sp.score)}</span>
-              <span class="sp-src">${esc(sp.src)} · ${sp.count} 条评价</span>
+              ${Number.isFinite(sp.score) ? `<span class="sp-score">${sp.score}</span><span class="sp-stars">${stars(sp.score)}</span>` : ''}
+              <span class="sp-src">${esc(sp.src)}${Number.isFinite(sp.count) ? ` · ${sp.count} 条评价` : ''}</span>
             </div>
             <div class="sp-intro">${esc(sp.intro)}</div>
             <div class="sp-tags">${sp.tags.map(t=>{
@@ -1131,6 +1155,7 @@ function viewS2(){
         ? '每个带 🧠 的安排都能点开看它是哪条记忆推出来的。餐饮住宿只给区域和候选类型，具体挑哪家你决定。'
         : '对下面任意<b>景点 / 某天节奏 / 餐饮</b>点 👍👎 并选个原因，右栏会当场长出记忆。'}</p>
     </div>
+    ${cityGuide()}
     <div class="s2-grid">
       <div>
         <div class="card stay-card">
@@ -1184,18 +1209,18 @@ function itemKey(i){ return i.kind === 'free' ? 'free' : i.name; }
 function itemLabel(i){ return i.kind === 'food' ? dining()[i.name].area : i.name; }
 
 /** 逐日 diff 只认 DIFFS 里那几处；day:0 的两处是全局，走下面的清单 */
-function dayDiffMap(){
+function dayDiffMap(day){
   const m = {};
-  diffs().forEach(x => { if(x.day !== 0) m[x.target] = x; });
+  diffs().forEach(x => { if(x.day !== 0 && (!day || x.day === day)) m[x.target] = x; });
   return m;
 }
 
 function cmpDay(idx){
   const on = memActive();
-  const c=city(), baseDef=c?c.itinDefault:ITIN_DEFAULT, baseMem=c?c.itinMemory:ITIN_MEMORY;
+  const c=cityContent(), baseDef=c?c.itinDefault:ITIN_DEFAULT, baseMem=c?c.itinMemory:ITIN_MEMORY;
   const src = on ? baseMem.days[idx] : baseDef.days[idx];
   const def = baseDef.days[idx];
-  const tg = dayDiffMap();
+  const tg = dayDiffMap(idx+1);
 
   const rows = src.items.map(i => {
     const x = on ? tg[itemKey(i)] : null;
@@ -1240,7 +1265,7 @@ function viewS5(){
     ${on ? `
       <div class="stats-bar">
         <span class="n">${diffs().length}</span>
-        <div class="tx">记忆改变了本次 <b>${diffs().length} 处</b>安排：${esc(city() ? city().diffSummary : '砍掉 1 个大型博物馆、午餐从排队连锁换到市集一带、住宿从京都站前换到西阵町屋、新增 1 个早市、每天补 1 段午后休息、清水寺挪到傍晚、日均步行 14.8→8.4km。')}</div>
+        <div class="tx">记忆改变了本次 <b>${diffs().length} 处</b>安排：${esc(cityContent() ? cityContent().diffSummary : '砍掉 1 个大型博物馆、午餐从排队连锁换到市集一带、住宿从京都站前换到西阵町屋、新增 1 个早市、每天补 1 段午后休息、清水寺挪到傍晚、日均步行 14.8→8.4km。')}</div>
         <button class="replay" data-act="replay">重播动画</button>
       </div>` : `
       <div class="stats-bar plain">
@@ -1248,7 +1273,7 @@ function viewS5(){
         <div class="tx">没有任何记忆参与。这是<b>通用默认版</b>——把开关拨到「使用记忆」，看 ${diffs().length} 处变化逐个亮起。</div>
       </div>`}
 
-    <div class="cmp-grid">${[0,1,2,3].map(cmpDay).join('')}</div>
+    <div class="cmp-grid">${itin().days.map((_,i)=>cmpDay(i)).join('')}</div>
 
     ${on ? `<div class="diff-list">
       ${diffs().map(x => `
@@ -1632,13 +1657,14 @@ document.addEventListener('click', e => {
       const d = $('f-dest'), dt = $('f-date'), dy = $('f-days'), pp = $('f-people');
       if(d){
         const dest = d.value.trim() || '京都';
-        S.req.dest = ['京都','北京','上海'].includes(dest) ? dest : '京都';
-        if(dest !== S.req.dest) toast('当前演示已支持京都、北京、上海，先为你显示京都。');
+        S.req.dest = ['京都',...Object.keys(CITY_DATA)].includes(dest) ? dest : '京都';
+        if(dest !== S.req.dest) toast('当前演示已支持京都、北京、上海、杭州、威海、广州，先为你显示京都。');
       }
       if(dt) S.req.date = dt.value || S.req.date;
       if(dy) S.req.days = +dy.value;
       if(pp) S.req.people = +pp.value;
-      S.planStance = {}; S.chosenPlan = null; S.stance = {}; S.s2day = 1;
+      if(city()?.staticDays) S.req.days = city().staticDays;
+      resetRouteSelection();
       S.submitted = true; S.screen = 's1'; S.demoStep = 2; render();
       toast(memActive()
         ? `已生成 3 套方案 · <b>${memCount()} 条记忆</b>参与了排序`
