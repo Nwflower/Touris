@@ -24,6 +24,7 @@ FILES=(
   app.js
   data.js
   city-data.js
+  city-hangzhou-guangzhou.js
   images.js
   account.js
   styles.css
@@ -32,6 +33,13 @@ FILES=(
   logo.css
   account.css
 )
+
+# 保留相对路径发布本地城市图片；不包含测试脚本和研究文档。
+if [ -d "$SRC/assets/cities" ]; then
+  while IFS= read -r -d '' asset; do
+    FILES+=("${asset#"$SRC/"}")
+  done < <(find "$SRC/assets/cities" -type f -print0)
+fi
 
 missing=0
 for f in "${FILES[@]}"; do
@@ -46,7 +54,10 @@ for f in "${FILES[@]}"; do
   else
     changed=$((changed + 1))
     if [ -f "$f" ]; then echo "  更新  $f"; else echo "  新增  $f"; fi
-    [ "$CHECK" = 0 ] && cp -f "$SRC/$f" "$f"
+    if [ "$CHECK" = 0 ]; then
+      mkdir -p "$(dirname "$f")"
+      cp -f "$SRC/$f" "$f"
+    fi
   fi
 done
 
