@@ -27,5 +27,10 @@ python -m http.server 8000 --directory prototype
 - `index.html` — 三栏骨架（左栏导航 / 主工作区 / 记忆侧栏）
 - `app.js` — 渲染与交互逻辑
 - `data.js` — 演示数据（记忆条目、行程、点评）
+- `city-data.js` — 北京、上海城市资料（方案、四日行程、景点、餐饮住宿与地图点位）
 - `images.js` — 图片资源映射
 - `styles.css` / `styles-extra.css` — 样式
+
+## 支持城市
+
+目的地输入框支持从 `京都`、`北京`、`上海` 中选择。每个城市都有独立的三套方案、默认/记忆版四日行程、景点资料、餐饮住宿候选和地图点位。

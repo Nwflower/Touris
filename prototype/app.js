@@ -45,8 +45,18 @@ function memCount(){ return allMemories().length; }
 function memById(id){ return allMemories().find(m => m.id === id); }
 function memActive(){ return S.memoryOn && memCount() > 0; }
 
-function plans(){ return memActive() ? PLANS_MEMORY : PLANS_DEFAULT; }
-function itin(){ return memActive() ? ITIN_MEMORY : ITIN_DEFAULT; }
+function city(){
+  const key = String(S.req.dest || '').trim();
+  return (typeof CITY_DATA !== 'undefined' && CITY_DATA[key]) || null;
+}
+function poi(){ return city() ? city().poi : POI; }
+function spots(){ return city() ? city().spots : SPOTS; }
+function dining(){ return city() ? city().dining : DINING; }
+function restPoi(){ return city() ? city().restPoi : REST_POI; }
+function spotImages(){ return city() ? (city().images || {}) : SPOT_IMG; }
+function plans(){ const c=city(); return memActive() ? (c?c.plansMemory:PLANS_MEMORY) : (c?c.plansDefault:PLANS_DEFAULT); }
+function itin(){ const c=city(); return memActive() ? (c?c.itinMemory:ITIN_MEMORY) : (c?c.itinDefault:ITIN_DEFAULT); }
+function diffs(){ const c=city(); return c ? c.diffs : DIFFS; }
 
 function usedMemoryIds(){
   if(!memActive()) return [];
@@ -58,7 +68,7 @@ function usedMemoryIds(){
     (d.memoryIds||[]).forEach(id => set.add(id));
     d.items.forEach(i => (i.memoryIds||[]).forEach(id => set.add(id)));
   });
-  DIFFS.forEach(x => x.memoryIds.forEach(id => set.add(id)));
+  diffs().forEach(x => x.memoryIds.forEach(id => set.add(id)));
   S.learned.forEach(m => set.add(m.id));
   return [...set].filter(id => memById(id));
 }
@@ -146,9 +156,9 @@ const THUMB = {
 };
 /** 缩略图：底层始终是 SVG 占位插画，有联网图就盖在上面；加载失败自动露出占位 */
 function spotThumb(name, cls, extra){
-  const s = SPOTS[name];
+  const s = spots()[name];
   const cat = (s && s.cat) || 'temple';
-  const url = (typeof SPOT_IMG !== 'undefined') ? SPOT_IMG[name] : null;
+  const url = (typeof SPOT_IMG !== 'undefined') ? spotImages()[name] : null;
   return `<div class="sthumb ${cls||''} c-${cat}">
     <svg viewBox="0 0 80 60" preserveAspectRatio="none">${THUMB[cat]||THUMB.temple}</svg>
     ${url ? `<img src="${esc(url)}" alt="${esc(name)}" loading="lazy" referrerpolicy="no-referrer">` : ''}
@@ -170,6 +180,7 @@ function planShots(p){
 const DAY_C = ['var(--d1)','var(--d2)','var(--d3)','var(--d4)'];
 
 function mapBase(labels){
+  const cityLabels = city() && city().mapLabels;
   return `
     <g class="m-block">
       <rect x="30" y="42" width="26" height="20" rx="2"/><rect x="60" y="46" width="18" height="14" rx="2"/>
@@ -185,9 +196,9 @@ function mapBase(labels){
     </g>
     <path class="m-river" d="M64 6 C61 28, 58 46, 57 68 S56 88, 54 100"/>
     <g class="m-green"><circle cx="11" cy="47" r="8"/><circle cx="76" cy="33" r="6"/><circle cx="24" cy="23" r="6"/></g>
-    ${labels ? `<g class="m-lab">
-      <text x="4" y="62">岚山</text><text x="18" y="15">金阁寺周边</text>
-      <text x="40" y="45">市中心</text><text x="80" y="56">东山</text><text x="56" y="97">伏见</text>
+    ${labels ? `<g class="m-lab">${cityLabels
+      ? cityLabels.map(x=>`<text x="${x[0]}" y="${x[1]}">${esc(x[2])}</text>`).join('')
+      : '<text x="4" y="62">岚山</text><text x="18" y="15">金阁寺周边</text><text x="40" y="45">市中心</text><text x="80" y="56">东山</text><text x="56" y="97">伏见</text>'}
     </g>` : ''}`;
 }
 
@@ -195,12 +206,12 @@ function mapBase(labels){
 function overviewMap(routeDays, opt){
   const small = opt && opt.small;
   const paths = routeDays.map((names, di) => {
-    const pts = names.map(n => POI[n]).filter(Boolean);
+    const pts = names.map(n => poi()[n]).filter(Boolean);
     if(pts.length < 2) return '';
     return `<path class="m-route" style="stroke:${DAY_C[di]}" d="${pts.map((p,i)=>`${i?'L':'M'}${p.x} ${p.y}`).join(' ')}"/>`;
   }).join('');
   const dots = routeDays.map((names, di) => names.map(n => {
-    const p = POI[n]; if(!p) return '';
+    const p = poi()[n]; if(!p) return '';
     return `<circle class="m-dot" cx="${p.x}" cy="${p.y}" r="${small?2.4:2.8}" style="fill:${DAY_C[di]}"/>`;
   }).join('')).join('');
   return `<div class="sim-map ${small?'small':''}">
@@ -213,8 +224,8 @@ function overviewMap(routeDays, opt){
 function dayMap(day){
   const pts = [];
   day.items.forEach(i => {
-    const nm = i.kind === 'food' ? REST_POI[i.name] : (i.kind === 'free' ? null : i.name);
-    const p = nm && POI[nm];
+    const nm = i.kind === 'food' ? restPoi()[i.name] : (i.kind === 'free' ? null : i.name);
+    const p = nm && poi()[nm];
     if(p) pts.push({ nm, x:p.x, y:p.y, kind:i.kind, mem:!!(i.memoryIds&&i.memoryIds.length&&memActive()) });
   });
   const path = pts.map((p,i)=>`${i?'L':'M'}${p.x} ${p.y}`).join(' ');
@@ -382,7 +393,8 @@ function viewS0(){
 
     <div class="card s0-form">
       <div class="f-grid">
-        <div class="field"><label>目的地</label><input id="f-dest" value="${esc(S.req.dest)}"></div>
+        <div class="field"><label>目的地</label><input id="f-dest" list="city-list" value="${esc(S.req.dest)}">
+          <datalist id="city-list"><option value="京都"><option value="北京"><option value="上海"></datalist></div>
         <div class="field"><label>出发日期</label><input id="f-date" type="date" value="${esc(S.req.date)}"></div>
         <div class="field"><label>游玩天数</label>
           <select id="f-days">${[3,4,5,6].map(d=>`<option ${d===S.req.days?'selected':''}>${d}</option>`).join('')}</select>
@@ -469,7 +481,7 @@ function planCard(p){
     </div>
 
     <div class="plan-hl">${p.highlights.map(h=>{
-      const s = SPOTS[h];
+      const s = spots()[h];
       return `<span class="hl">${esc(h)}${s?`<b>${s.score}</b>`:''}</span>`;
     }).join('')}</div>
 
@@ -576,11 +588,11 @@ function itemView(it, day){
   const key = `d${day}-${it.id}`;
   const isFood = it.kind === 'food';
   const isFree = it.kind === 'free';
-  const g = isFood ? DINING[it.name] : null;
-  const sp = (!isFood && !isFree) ? SPOTS[it.name] : null;
+  const g = isFood ? dining()[it.name] : null;
+  const sp = (!isFood && !isFree) ? spots()[it.name] : null;
   const nm = isFood ? g.area : it.name;
   const kindLbl = isFood ? '餐饮' : isFree ? '空档' : '景点';
-  const hoverName = isFood ? (REST_POI[it.name]||'') : (isFree ? '' : it.name);
+  const hoverName = isFood ? (restPoi()[it.name]||'') : (isFree ? '' : it.name);
 
   return `
   <div class="tl-item ${it.kind} ${(it.memoryIds&&it.memoryIds.length&&memActive())?'mem':''}"
@@ -622,8 +634,8 @@ function mapPanel(){
   const it = itin();
   const day = it.days.find(d => d.day === S.s2day) || it.days[0];
   const routeDays = it.days.map(d => d.items
-    .map(i => i.kind === 'food' ? REST_POI[i.name] : (i.kind === 'free' ? null : i.name))
-    .filter(n => n && POI[n]));
+    .map(i => i.kind === 'food' ? restPoi()[i.name] : (i.kind === 'free' ? null : i.name))
+    .filter(n => n && poi()[n]));
   return `
   <div class="map-col">
     <div class="card map-panel">
@@ -713,19 +725,20 @@ function viewS2(){
 
 /* ============================ S5 ============================ */
 function itemKey(i){ return i.kind === 'free' ? 'free' : i.name; }
-function itemLabel(i){ return i.kind === 'food' ? DINING[i.name].area : i.name; }
+function itemLabel(i){ return i.kind === 'food' ? dining()[i.name].area : i.name; }
 
 /** 逐日 diff 只认 DIFFS 里那几处；day:0 的两处是全局，走下面的清单 */
 function dayDiffMap(){
   const m = {};
-  DIFFS.forEach(x => { if(x.day !== 0) m[x.target] = x; });
+  diffs().forEach(x => { if(x.day !== 0) m[x.target] = x; });
   return m;
 }
 
 function cmpDay(idx){
   const on = memActive();
-  const src = on ? ITIN_MEMORY.days[idx] : ITIN_DEFAULT.days[idx];
-  const def = ITIN_DEFAULT.days[idx];
+  const c=city(), baseDef=c?c.itinDefault:ITIN_DEFAULT, baseMem=c?c.itinMemory:ITIN_MEMORY;
+  const src = on ? baseMem.days[idx] : baseDef.days[idx];
+  const def = baseDef.days[idx];
   const tg = dayDiffMap();
 
   const rows = src.items.map(i => {
@@ -770,19 +783,19 @@ function viewS5(){
 
     ${on ? `
       <div class="stats-bar">
-        <span class="n">${DIFFS.length}</span>
-        <div class="tx">记忆改变了本次 <b>${DIFFS.length} 处</b>安排：砍掉 1 个大型博物馆、午餐从排队连锁换到市集一带、住宿从京都站前换到西阵町屋、新增 1 个早市、每天补 1 段午后休息、清水寺挪到傍晚、日均步行 14.8→8.4km。</div>
+        <span class="n">${diffs().length}</span>
+        <div class="tx">记忆改变了本次 <b>${diffs().length} 处</b>安排：${esc(city() ? city().diffSummary : '砍掉 1 个大型博物馆、午餐从排队连锁换到市集一带、住宿从京都站前换到西阵町屋、新增 1 个早市、每天补 1 段午后休息、清水寺挪到傍晚、日均步行 14.8→8.4km。')}</div>
         <button class="replay" data-act="replay">重播动画</button>
       </div>` : `
       <div class="stats-bar plain">
         <span class="n">0</span>
-        <div class="tx">没有任何记忆参与。这是<b>通用默认版</b>——把开关拨到「使用记忆」，看 ${DIFFS.length} 处变化逐个亮起。</div>
+        <div class="tx">没有任何记忆参与。这是<b>通用默认版</b>——把开关拨到「使用记忆」，看 ${diffs().length} 处变化逐个亮起。</div>
       </div>`}
 
     <div class="cmp-grid">${[0,1,2,3].map(cmpDay).join('')}</div>
 
     ${on ? `<div class="diff-list">
-      ${DIFFS.map(x => `
+      ${diffs().map(x => `
         <div class="diff-row ${x.kind}" data-diffrow="1">
           <span class="kk">${x.kind==='removed'?'砍掉':x.kind==='added'?'新增':'调整'}</span>
           <div style="flex:1;min-width:0">
@@ -925,10 +938,15 @@ document.addEventListener('click', e => {
       break;
     case 'submit': {
       const d = $('f-dest'), dt = $('f-date'), dy = $('f-days'), pp = $('f-people');
-      if(d) S.req.dest = d.value.trim() || '京都';
+      if(d){
+        const dest = d.value.trim() || '京都';
+        S.req.dest = ['京都','北京','上海'].includes(dest) ? dest : '京都';
+        if(dest !== S.req.dest) toast('当前演示已支持京都、北京、上海，先为你显示京都。');
+      }
       if(dt) S.req.date = dt.value || S.req.date;
       if(dy) S.req.days = +dy.value;
       if(pp) S.req.people = +pp.value;
+      S.planStance = {}; S.chosenPlan = null; S.stance = {}; S.s2day = 1;
       S.submitted = true; S.screen = 's1'; S.demoStep = 2; render();
       toast(memActive()
         ? `已生成 3 套方案 · <b>${memCount()} 条记忆</b>参与了排序`

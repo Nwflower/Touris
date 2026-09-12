@@ -33,7 +33,7 @@ const window = { addEventListener:()=>{}, innerWidth:1600, innerHeight:900 };
 const ctx = { document, window, console, setTimeout:()=>0, Math, JSON, Set, Map,
   Array, Object, String, Number, RegExp };
 vm.createContext(ctx);
-for(const f of ['images.js','data.js','app.js']){
+for(const f of ['images.js','data.js','city-data.js','app.js']){
   vm.runInContext(fs.readFileSync(f,'utf8'), ctx, { filename:f });
 }
 const g = n => vm.runInContext(n, ctx);
@@ -46,6 +46,7 @@ const SPOTS = g('SPOTS'), POI = g('POI'), DINING = g('DINING'),
       ITIN_DEFAULT = g('ITIN_DEFAULT'), ITIN_MEMORY = g('ITIN_MEMORY'),
       REASONS = g('REASONS'), REASON_TO_MEMORY = g('REASON_TO_MEMORY'),
       SPOT_IMG = g('SPOT_IMG'), REST_POI = g('REST_POI');
+const CITY_DATA = g('CITY_DATA');
 
 const bad = [];
 const allMem = new Set(MEMORIES.map(m => m.id));
@@ -182,6 +183,42 @@ console.log(`  S5 网格高亮 ${(nodes.work.innerHTML.match(/data-diff="1"/g)||
 
 const imgCount = Object.values(SPOT_IMG||{}).filter(Boolean).length;
 console.log(`--- 配图 ${imgCount} / ${Object.keys(SPOTS).length} 个景点（缺图回退占位插画）---`);
+
+/* ---------- 新增城市：全数据引用 + 各屏渲染 ---------- */
+console.log('--- 北京 / 上海城市数据 ---');
+Object.entries(CITY_DATA).forEach(([name,c]) => {
+  const ids = new Set(MEMORIES.map(m=>m.id));
+  const cityBad = [];
+  [['默认',c.itinDefault],['记忆',c.itinMemory]].forEach(([mode,it]) => {
+    if(it.days.length !== 4) cityBad.push(mode+'行程不是 4 天');
+    it.days.forEach(d => d.items.forEach(i => {
+      if(i.kind === 'spot' && (!c.poi[i.name] || !c.spots[i.name])) cityBad.push('景点引用缺失 '+i.name);
+      if(i.kind === 'food' && (!c.dining[i.name] || !c.restPoi[i.name] || !c.poi[c.restPoi[i.name]])) cityBad.push('餐饮引用缺失 '+i.name);
+      (i.memoryIds||[]).forEach(id => { if(!ids.has(id)) cityBad.push('记忆引用缺失 '+id); });
+    }));
+  });
+  [...c.plansDefault,...c.plansMemory].forEach(p => {
+    if(p.routeDays.length !== 4 || p.highlights.length < 4) cityBad.push('方案结构不完整 '+p.id);
+    p.routeDays.flat().forEach(n => { if(!c.poi[n]) cityBad.push('方案点位缺失 '+n); });
+    p.highlights.forEach(n => { if(!c.spots[n]) cityBad.push('方案景点资料缺失 '+n); });
+  });
+  Object.entries(c.dining).forEach(([id,d]) => {
+    if(d.picks.length < 2) cityBad.push('餐饮候选不足 '+id);
+    if(!/一带/.test(d.area)) cityBad.push('餐饮区域口径错误 '+id);
+  });
+  if(name === '北京') Object.keys(c.spots).forEach(n => {
+    if(!c.images[n]) cityBad.push('北京景点缺少图片 '+n);
+  });
+  for(const persona of ['blank','veteran']) for(const on of [false,true]) for(const screen of ['s0','s1','s2','s5']){
+    S.req.dest=name; S.persona=persona; S.memoryOn=on; S.screen=screen; S.diffPlayed=true;
+    try{
+      render(); const html=nodes.work.innerHTML;
+      if(!html || html.includes('undefined') || html.includes('[object Object]')) throw new Error('输出内容异常');
+      if(screen==='s1' && !html.includes(name)) throw new Error('方案页未显示城市名');
+    }catch(e){ cityBad.push(`${persona}/${on}/${screen}: ${e.message}`); }
+  }
+  assert(!cityBad.length, `${name} 数据与 16 种页面状态完整${cityBad.length?'：'+cityBad.join('；'):''}`);
+});
 
 console.log(bad.length ? '\n数据问题:\n - ' + bad.join('\n - ') : '\n数据交叉引用：全部通过');
 process.exit(fails || bad.length ? 1 : 0);
