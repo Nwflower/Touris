@@ -7,6 +7,12 @@ dist/
 build/
 *.log
 
+# 离线地图瓦片（本地暂存验证，暂不入库）
+tiles/
+
+# Pages 发布用的临时 worktree（sync-pages.sh 创建，用完即删）
+.gh-pages-worktree/
+
 # 编辑器 / 系统
 .vscode/
 .idea/
