@@ -370,7 +370,7 @@ function viewHome(){
       <!-- 顶栏 logo 位置 -->
       <div class="hero-top">
         <div class="h-logo">
-          <span>🧠</span> 旅行记忆规划
+          <span>🧠</span> Touris 知途
         </div>
         <div class="h-nav">
           <button class="h-link" data-act="home">首页</button>
@@ -489,7 +489,7 @@ function viewHome(){
       <div class="f-brand">
         <span>🧠</span>
         <div>
-          <div class="f-name">旅行记忆规划</div>
+          <div class="f-name">Touris 知途</div>
           <div class="f-sub">MEMORY-DRIVEN TRAVEL</div>
         </div>
       </div>
@@ -550,7 +550,7 @@ function renderTop(){
   $('topbar').innerHTML = `
     <div class="brand" data-act="home" title="返回首页" style="cursor:pointer">
       <span class="logo">🧠</span>
-      <span>Touris<br><small>MEMORY-DRIVEN TRAVEL</small></span>
+      <span>Touris 知途<br><small>MEMORY-DRIVEN TRAVEL</small></span>
     </div>
     <div class="top-sep"></div>
     <div class="persona-sw">
