@@ -21,7 +21,7 @@ const vm = require('vm');
 const HERE = __dirname;
 const ctx = { console };
 vm.createContext(ctx);
-for(const f of ['images.js', 'data.js', 'city-data.js', 'city-hangzhou-guangzhou.js']){
+for(const f of ['semantics.js', 'images.js', 'data.js', 'city-data.js', 'city-expansion.js', 'city-hangzhou-guangzhou.js']){
   vm.runInContext(fs.readFileSync(path.join(HERE, f), 'utf8'), ctx, { filename: f });
 }
 const g = n => vm.runInContext(n, ctx);
