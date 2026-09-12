@@ -370,7 +370,7 @@ function viewHome(){
       <!-- 顶栏 logo 位置 -->
       <div class="hero-top">
         <div class="h-logo">
-          <span>🧠</span> Touris 知途
+          <span class="logo" role="img" aria-label="知途"></span> Touris 知途
         </div>
         <div class="h-nav">
           <button class="h-link" data-act="home">首页</button>
@@ -549,7 +549,7 @@ function renderTop(){
   const swDisabled = n === 0;
   $('topbar').innerHTML = `
     <div class="brand" data-act="home" title="返回首页" style="cursor:pointer">
-      <span class="logo">🧠</span>
+      <span class="logo" role="img" aria-label="知途"></span>
       <span>Touris 知途<br><small>MEMORY-DRIVEN TRAVEL</small></span>
     </div>
     <div class="top-sep"></div>

@@ -1,9 +1,20 @@
 /* ==========================================================================
-   Touris 知途 · 追加样式
-   景点照片（联网图 + SVG 占位）· 两张模拟地图 · 方案概览图 · 区域候选推荐组
+   Touris 知途 · 追加样式（第二批）
+   品牌 LOGO 落位 · 景点照片层 · 模拟地图 · 区域候选推荐组
    ========================================================================== */
 
-:root{ --d1:#C4622D; --d2:#3A4C8F; --d3:#3E7A5E; --d4:#9A6B33 }
+/* ============================ 品牌 LOGO ============================ */
+/* 顶栏只放「知途」二字标：英文名用实时文本，可选中、可被读屏识别，也不与图重复 */
+.brand .logo{
+  width:62px;height:30px;flex:none;border-radius:0;
+  background:var(--logo-mark) center/contain no-repeat;
+}
+/* S0 首屏用完整中英组合，作为品牌入口 */
+.hero-logo{
+  display:block;width:152px;aspect-ratio:177/134;margin:0 auto;
+  background:var(--logo-lock) center/contain no-repeat;
+}
+.s0-hero .say{margin-top:18px}
 
 /* ============================ 景点缩略图 ============================ */
 .sthumb{
@@ -67,11 +78,9 @@
 .m-river{stroke:#BCD2E0;stroke-width:2.6;fill:none;opacity:.95}
 .m-green circle{fill:#CBD8BF;opacity:.85}
 .m-lab text{fill:#A79C8B;font-size:3.4px;font-weight:700;letter-spacing:.3px}
-.m-route{fill:none;stroke-width:1.5;stroke-dasharray:3 2.4;stroke-linecap:round;opacity:.92;transition:opacity .25s}
+.m-route{fill:none;stroke-width:1.5;stroke-dasharray:3 2.4;stroke-linecap:round;opacity:.92}
 .m-route.day{stroke:var(--clay);stroke-width:1.7}
-.m-dot{stroke:#fff;stroke-width:.9;transition:opacity .25s}
-.m-route.dim{opacity:.18;stroke-width:1}
-.m-dot.dim{opacity:.22}
+.m-dot{stroke:#fff;stroke-width:.9}
 
 .map-scale{
   position:absolute;left:9px;bottom:8px;display:flex;align-items:center;gap:5px;
@@ -172,3 +181,11 @@
 
 /* 时间轴条目多了缩略图，稍微加点呼吸 */
 .tl-item{padding:13px 0}
+
+/* ============================ 首页 Hero 品牌位 ============================ */
+/* 原 LOGO 是纯黑，hero 是深色遮罩配白字，这里整体反白使用 */
+.hero-top .h-logo .logo{
+  width:58px;height:29px;flex:none;border-radius:0;
+  background:var(--logo-mark) center/contain no-repeat;
+  filter:brightness(0) invert(1);
+}

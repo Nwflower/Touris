@@ -111,11 +111,10 @@ h1,h2,h3,h4{margin:0;font-weight:650;letter-spacing:.2px}
 
 /* ============================ 三栏骨架 ============================ */
 .shell{
-  height:calc(100vh - var(--top-h) - var(--dock-h));
-  display:grid;grid-template-columns:236px minmax(0,1fr) 322px;
+  height:100vh;
+  display:grid;grid-template-columns:268px minmax(0,1fr);
 }
 .rail-left{border-right:1px solid var(--line);padding:16px 14px;overflow-y:auto;background:#FAF5EE}
-.rail-right{border-left:1px solid var(--line);overflow-y:auto;background:#FAF8F4}
 .work{overflow-y:auto;padding:22px 26px 48px;min-width:0;scroll-behavior:smooth}
 
 /* 全屏演示模式 */
