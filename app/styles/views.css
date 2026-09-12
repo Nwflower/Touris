@@ -226,6 +226,9 @@
 }
 .diffitem.added .dkind{ background:var(--green-soft); color:var(--green); }
 .diffitem.changed .dkind{ background:var(--indigo-soft); color:var(--indigo); }
+/* 节奏裁剪用中性色，刻意不用 amber：amber 是「你不喜欢」，
+   而裁掉只是因为你要慢——两者混淆会让人以为自己否决过那些点。 */
+.diffitem.trimmed .dkind{ background:var(--paper-2); color:var(--ink-2); }
 
 .uselist{ list-style:none; padding:0; margin:0; }
 .uselist li{ padding:7px 0; border-bottom:1px dashed var(--line); font-size:12.5px; }

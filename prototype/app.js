@@ -60,7 +60,11 @@ function poi(){ return city() ? city().poi : POI; }
 function spots(){ return city() ? city().spots : SPOTS; }
 function dining(){ return city() ? city().dining : DINING; }
 function restPoi(){ return city() ? city().restPoi : REST_POI; }
-function spotImages(){ return city() ? (city().images || {}) : SPOT_IMG; }
+function spotImages(){
+  const c = city();
+  // 城市自带的图（杭州/广州走 assets/cities/）优先，其余从公共图库补
+  return Object.assign({}, (typeof SPOT_IMG !== 'undefined') ? SPOT_IMG : {}, (c && c.images) || {});
+}
 function cityContent(){ const c=city(); return c && c.resolve ? c.resolve(S.req,S.chosenPlan,allMemories()) : c; }
 function plans(){ const c=cityContent(); return memActive() ? (c?c.plansMemory:PLANS_MEMORY) : (c?c.plansDefault:PLANS_DEFAULT); }
 function itin(){ const c=cityContent(); return memActive() ? (c?c.itinMemory:ITIN_MEMORY) : (c?c.itinDefault:ITIN_DEFAULT); }
@@ -162,28 +166,21 @@ const THUMB = {
     '<rect class="s2" x="10" y="26" width="60" height="22"/><rect class="s3" x="20" y="32" width="40" height="10" rx="2"/>' +
     '<path class="rake" d="M0 52h80M0 56h80"/>'
 };
-/* 本机直连 upload.wikimedia.org 不通（整个 wikipedia.org 都不通），
-   所以默认经 wsrv.nl 图片代理取图；直连可用的环境把 USE_PROXY 改 false 即可。 */
-const USE_PROXY = true;
-function photoURL(name){
-  const raw = (typeof SPOT_IMG !== 'undefined') ? SPOT_IMG[name] : null;
-  if(!raw) return null;
-  if(!USE_PROXY) return raw;
-  return 'https://wsrv.nl/?url=' + encodeURIComponent(raw.replace(/^https?:\/\//, '')) +
-         '&w=960&output=jpg';
-}
+/* 图片全部在本仓库内（img/ 与 assets/），运行时零外部请求。
+   早先这里默认经 wsrv.nl 代理去取 upload.wikimedia.org——因为本机连不通
+   wikipedia.org。代价是所有图片请求都要过一个不受控的第三方，代理挂了全站开天窗。
+   图已经一次性下载进 img/（见 tools/fetch-images.js），这层代理不再需要。
+   ★ 想加城市的图，走 tools/fetch-images.js，不要在这里恢复代理。 */
 
-/** 缩略图：底层始终是 SVG 占位插画，有联网图就盖在上面；加载失败自动露出占位 */
+/** 缩略图：底层是 SVG 占位插画，本地图加载成功后盖在上面；
+    加载失败（文件缺失）就自动露出占位，不会开天窗。 */
 function spotThumb(name, cls, extra){
   const s = spots()[name];
   const cat = (s && s.cat) || 'temple';
-  const raw = (typeof SPOT_IMG !== 'undefined') ? spotImages()[name] : null;
-  const url = raw ? (USE_PROXY && /^https?:\/\//.test(raw)
-    ? 'https://wsrv.nl/?url=' + encodeURIComponent(raw.replace(/^https?:\/\//, '')) + '&w=960&output=jpg'
-    : raw) : null;
+  const url = spotImages()[name] || null;
   return `<div class="sthumb ${cls||''} c-${cat}">
     <svg viewBox="0 0 80 60" preserveAspectRatio="none">${THUMB[cat]||THUMB.temple}</svg>
-    ${url ? `<img src="${esc(url)}" alt="${esc(name)}" loading="lazy" referrerpolicy="no-referrer">` : ''}
+    ${url ? `<img src="${esc(url)}" alt="${esc(name)}" loading="lazy">` : ''}
     <span class="ph-mark">示意</span>
     ${extra || ''}
   </div>`;
@@ -275,36 +272,37 @@ function dayMap(day){
 }
 
 /* ============================ 首页数据 ============================ */
-const HOME_IMG = (prompt, size='landscape_16_9') =>
-  `https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=${encodeURIComponent(prompt)}&image_size=${size}`;
 
+/* ★ 这里曾经接的是 Trae IDE 的私有生图接口（trae-api-cn.mchost.guru），
+   用 AI 生成「京都实景照片」。两个问题都致命：
+     1) 那是 IDE 的内部端点，无文档、无 SLA、随时可下线，而它撑的是首页第一屏；
+     2) 产品的卖点是「可溯源、可核验」，拿生成的假照片当实景，等于自己拆自己的台。
+   现在换成从 img/ 里取真实照片——同样是 Commons 的 CC 授权图，
+   与景点卡片同源，署名统一记在 img/CREDITS.md。 */
 const HOME_HERO_IMAGES = [
-  HOME_IMG('Kyoto Japan, Fushimi Inari shrine red torii gates at golden hour sunset, travel photography, cinematic wide angle', 'landscape_16_9'),
-  HOME_IMG('Arashiyama Bamboo Grove Kyoto Japan, tall green bamboo stalks, morning sunlight rays through bamboo, travel', 'landscape_16_9'),
-  HOME_IMG('Nishiki Market Kyoto Japan, colorful food stalls with lanterns, tourists exploring local food, vibrant atmosphere', 'landscape_16_9')
+  'img/Torii_path_with_lantern_at_Fushimi_Inari_Taisha_Shrine_Kyoto_Japan.jpg',
+  'img/2021_Sagano_Bamboo_forest_in_Arashiyama_Kyoto_Japan.jpg',
+  'img/Nishiki_Ichiba_by_matsuyuki.jpg'
 ];
 
+/* ★ 卡片必须对上真实存在的城市
+   CITY_DATA 里只有 京都/北京/上海/杭州/威海/广州。早先这里有奈良、箱根、大阪、
+   东京、富士山五张卡，点进去 city() 返回 null，八处访问器全部静默退回京都数据——
+   挂着「奈良」的标题显示京都的景点，且没人发现。
+   下面这个列表要和 CITY_DATA 的键保持一致；加城市时同步加卡。 */
 const DEST_CARDS = [
-  {name:'杭州',en:'Hangzhou',tagline:'西湖古寺 · 湿地与老城',days:'2 天',price:'两日游素材版',img:'assets/cities/hangzhou/west-lake-panorama.jpg',tags:['湖景','古寺','文博']},
-  {name:'广州',en:'Guangzhou',tagline:'西关人文 · 珠江天际线',days:'2 天',price:'两日游素材版',img:'assets/cities/guangzhou/canton-tower.jpg',tags:['老城','展馆','夜景']} ,
-  { name:'京都', en:'Kyoto', tagline:'千年古都 · 竹林与佛寺', days:'3-5 天', price:'¥4,200 起',
-    img: HOME_IMG('Kyoto Japan Kiyomizu-dera temple wooden stage with autumn foliage, classic Japanese temple, aerial view', 'landscape_4_3'),
-    tags:['🏯 佛寺','🎋 竹林','🍡 美食'] },
-  { name:'奈良', en:'Nara', tagline:'小鹿成群 · 古寺巡礼', days:'2-3 天', price:'¥3,100 起',
-    img: HOME_IMG('Nara Japan, friendly wild deer bowing to tourists in Nara Park, cherry blossoms, Todai-ji temple', 'landscape_4_3'),
-    tags:['🦌 小鹿','🏛 大佛','🌸 樱花'] },
-  { name:'箱根', en:'Hakone', tagline:'温泉之乡 · 富士山景', days:'2-4 天', price:'¥3,800 起',
-    img: HOME_IMG('Hakone Japan, hot spring onsen with view of Mount Fuji reflection, ryokan traditional inn, scenic', 'landscape_4_3'),
-    tags:['♨️ 温泉','🗻 富士','🏔 自然'] },
-  { name:'大阪', en:'Osaka', tagline:'美食之都 · 现代活力', days:'3-4 天', price:'¥3,500 起',
-    img: HOME_IMG('Osaka Japan cityscape with Dotonbori canal, neon signs at night, Glico running man, vibrant food district', 'landscape_4_3'),
-    tags:['🍜 美食','🏙 城市','🎢 乐园'] },
-  { name:'东京', en:'Tokyo', tagline:'潮流前线 · 传统韵味', days:'4-7 天', price:'¥5,800 起',
-    img: HOME_IMG('Tokyo Japan skyline at night with Shibuya Crossing neon lights, Skytree tower, bustling cityscape aerial', 'landscape_4_3'),
-    tags:['🗼 地标','🛍 购物','🎎 文化'] },
-  { name:'富士山', en:'Mt.Fuji', tagline:'日本象征 · 摄影圣地', days:'1-2 天', price:'¥1,600 起',
-    img: HOME_IMG('Mount Fuji Japan, serene reflection in lake, cherry blossoms in foreground, classic Japanese landscape photo', 'landscape_4_3'),
-    tags:['🗻 自然','📷 摄影','⛰ 登山'] }
+  { name:'杭州', en:'Hangzhou', tagline:'西湖古寺 · 湿地与老城', days:'2 天', price:'两日游素材版',
+    img:'assets/cities/hangzhou/west-lake-panorama.jpg', tags:['湖景','古寺','文博'] },
+  { name:'广州', en:'Guangzhou', tagline:'西关人文 · 珠江天际线', days:'2 天', price:'两日游素材版',
+    img:'assets/cities/guangzhou/canton-tower.jpg', tags:['老城','展馆','夜景'] },
+  { name:'京都', en:'Kyoto', tagline:'千年古都 · 竹林与佛寺', days:'4 天', price:'3 套方案',
+    img:'img/Kiyomizu.jpg', tags:['佛寺','竹林','美食'] },
+  { name:'北京', en:'Beijing', tagline:'中轴线 · 古建与胡同', days:'4 天', price:'3 套方案',
+    img:'img/Sunset_of_the_Forbidden_City_2006.jpg', tags:['古建','胡同','市集'] },
+  { name:'上海', en:'Shanghai', tagline:'梧桐街区 · 滨水天际线', days:'4 天', price:'3 套方案',
+    img:'img/Pudong_Shanghai_November_2017_panorama.jpg', tags:['街区','滨水','展馆'] },
+  { name:'威海', en:'Weihai', tagline:'海湾海岛 · 甲午故地', days:'4 天', price:'3 套方案',
+    img:'img/Weihai.port_de_Liugong_dao.jpg', tags:['海湾','海岛','渔村'] }
 ];
 
 const FEATURES = [

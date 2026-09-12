@@ -16,7 +16,22 @@ FROM debian:bookworm-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# 换源：官方 deb.debian.org 实测只有 ~200 kB/s，且拉 142 MB 依赖时中途
+# unexpected EOF（clang 那个包）。国内镜像快一个数量级，也更少断。
+# 换源方式对 sources.list 和 deb822 两种格式都做，省得跟着基础镜像版本变。
+ARG DEBIAN_MIRROR=mirrors.tuna.tsinghua.edu.cn
+RUN set -eux; \
+    if [ -f /etc/apt/sources.list ]; then \
+      sed -i "s|deb.debian.org|${DEBIAN_MIRROR}|g; s|security.debian.org|${DEBIAN_MIRROR}|g" /etc/apt/sources.list; \
+    fi; \
+    if [ -f /etc/apt/sources.list.d/debian.sources ]; then \
+      sed -i "s|deb.debian.org|${DEBIAN_MIRROR}|g; s|security.debian.org|${DEBIAN_MIRROR}|g" /etc/apt/sources.list.d/debian.sources; \
+    fi
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+         -o Acquire::Retries=5 \
+         -o Acquire::http::Timeout=30 \
       ca-certificates curl git \
       cmake make clang \
       libboost-dev libboost-iostreams-dev \

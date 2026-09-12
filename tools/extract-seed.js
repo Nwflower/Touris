@@ -132,8 +132,10 @@ function build(){
   lines.push('');
 
   /* ---- 图片 ---- */
-  lines.push('  /* 图片来自 Wikimedia Commons。注意：部分网络环境下 wikipedia.org 不通，');
-  lines.push('     运行时可经图片代理取图；加载失败会回落到内联 SVG 占位插画。 */');
+  lines.push('  /* 图片已下载到本地（app/img/），运行时只读同目录文件，不依赖外部服务。');
+  lines.push('     原始来源与署名见 app/img/CREDITS.md。');
+  lines.push('     取图逻辑见 views/thumb.js —— 本地相对路径直接用，只有外链才套代理；');
+  lines.push('     加载失败会回落到内联 SVG 占位插画，所以缺图不会开天窗。 */');
   lines.push('  images: {');
   Object.keys(img).forEach(name => {
     lines.push(`    ${JSON.stringify(name)}: ${JSON.stringify(img[name])},`);

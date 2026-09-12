@@ -97,9 +97,33 @@ function loadSources(){
   return { sources: out, urlCache: raw.urlCache || {} };
 }
 
+/** 扫描 prototype/ 下所有 js，把新出现的 Commons 图片收进清单。
+ *
+ *  加城市的人只会在城市数据里写一行 `'西湖':'https://upload.wikimedia.org/...'`，
+ *  不会记得来改本脚本的清单。所以每次运行都扫一遍，只补新名字、绝不覆盖已有条目
+ *  （否则手工修正过的条目会被脏数据顶掉，北京南站就吃过这个亏）。 */
+function discover(sources){
+  const added = [];
+  fs.readdirSync(PROTO).filter(f => f.endsWith('.js')).forEach(f => {
+    const src = fs.readFileSync(path.join(PROTO, f), 'utf8');
+    for(const m of src.matchAll(/'([^']+)'\s*:\s*'(https:\/\/upload\.wikimedia\.org[^']+)'/g)){
+      const [, name, url] = m;
+      if(sources[name]) continue;
+      sources[name] = commonsNameFromURL(url);
+      added.push(name);
+    }
+  });
+  return added;
+}
+
 /* ---------------- 2. 用 Commons API 解析真实地址 ---------------- */
 
-/** 文件名去重后按 50 个一批问 API，拿原图直链。 */
+/** 文件名去重后按 50 个一批问 API，拿可下载的地址。
+ *
+ *  ★ 为什么要 thumburl 而不是原图直链
+ *  有几张原图特别大（上海北外滩 16.5MB、龙华寺 9.3MB），wsrv.nl 取原图会直接 404；
+ *  换成 Commons 自己生成的缩略图（thumb.wikimedia.org 上的小图）就都能取到。
+ *  所以这里要 1600px 缩略图，优先用它，取不到才退回原图。 */
 function resolveURLs(fileNames){
   const uniq = [...new Set(fileNames)];
   const out = {};
@@ -113,7 +137,7 @@ function resolveURLs(fileNames){
       const batch = uniq.slice(i, i + 50);
       i += 50;
       const u = 'https://commons.wikimedia.org/w/api.php?action=query&format=json' +
-                '&prop=imageinfo&iiprop=url&titles=' +
+                '&prop=imageinfo&iiprop=url&iiurlwidth=1600&titles=' +
                 batch.map(f => encodeURIComponent('File:' + f)).join('%7C');
       const req = https.get(u, { headers: { 'User-Agent': 'Touris-image-fetcher/1.0' } }, r => {
         let d = '';
@@ -128,8 +152,9 @@ function resolveURLs(fileNames){
             const got = new Map();
             Object.values(pages).forEach(p => {
               if(p.missing !== undefined) return;
-              const url = ((p.imageinfo || [])[0] || {}).url;
-              if(url) got.set(key(p.title), url.split('?')[0]);
+              const ii = (p.imageinfo || [])[0] || {};
+              const src = ii.thumburl || ii.url;
+              if(src) got.set(key(p.title), src.split('?')[0]);
             });
             batch.forEach(f => {
               const hit = got.get(key(f));
@@ -230,6 +255,10 @@ async function pool(items, limit, worker){
     urlCache = {};
     log(`已建立出处清单 tools/image-sources.json（${Object.keys(sources).length} 条）`);
   }
+
+  /* ---- 收编城市数据里新出现的 Commons 图 ---- */
+  const fresh = discover(sources);
+  if(fresh.length) log(`发现 ${fresh.length} 个新景点的配图：${fresh.join('、')}`);
 
   /* ---- 解析真实地址 ---- */
   const need = [...new Set(Object.values(sources))].filter(f => RE_RESOLVE || !urlCache[f]);

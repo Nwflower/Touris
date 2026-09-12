@@ -219,7 +219,7 @@ CITY_DATA['北京'] = (() => {
     ['南锣鼓巷','street',4.3,12800,['old-town','craft'],[],'胡同街区，两侧小店密。'],
     ['什刹海','river',4.5,9800,['river','quiet','evening'],[],'沿湖走一圈，傍晚光线最好。'],
     ['雍和宫','temple',4.6,11200,['temple'],['crowd'],'藏传佛教寺院，香火很旺。'],
-    ['798 艺术区','street',4.4,7600,['craft','quiet'],[],'旧厂房改造的画廊区，工作日下午人少。'],
+    ['798艺术区','street',4.4,7600,['craft','quiet'],[],'旧厂房改造的画廊区，工作日下午人少。'],
     ['牛街','market',4.5,5400,['market','street-food','local-food'],[],'清真小吃一条街，本地人常去。'],
     ['景山公园','view',4.6,8100,['view','evening'],[],'万春亭俯瞰故宫全景，日落时最好。'],
     ['北海公园','garden',4.6,9200,['garden','river'],['walk-heavy'],'白塔与湖面，划船的人多。'],
@@ -231,7 +231,7 @@ CITY_DATA['北京'] = (() => {
   });
 
   const poiList = ['故宫博物院','景山公园','北海公园','什刹海','南锣鼓巷','雍和宫','天坛公园',
-    '前门大街','牛街','798 艺术区','颐和园','八达岭长城'];
+    '前门大街','牛街','798艺术区','颐和园','八达岭长城'];
   const P = {};
   poiList.forEach((n, i) => {
     // 手绘示意坐标：中心区聚拢，颐和园/长城拉远
@@ -242,7 +242,7 @@ CITY_DATA['北京'] = (() => {
 
   return {
     key: '北京', label: '北京', maxDays: 5,
-    spots: S, poi: P, images: {},
+    spots: S, poi: P, images: CITY_SEED.images,
     canvas: { w:100, h:100, scale:'约 5km' },
 
     dineByDay: { 1:['sanlitun'], 2:['sanlitun'], 3:['niujie'], 4:['nanluoguxiang'] },
@@ -329,7 +329,7 @@ CITY_DATA['北京'] = (() => {
         times: ['10:00','14:00'], durs: ['90 min','120 min'],
         notes: ['避开主街的人流','沿湖走到日落']
       }),
-      day(4, ['798 艺术区','景山公园'], {
+      day(4, ['798艺术区','景山公园'], {
         theme: '下午看展 · 傍晚登高',
         paceNote: '11:00 出发 · 步行 6.4km · 换乘 2 次',
         times: ['11:00','16:30'], durs: ['150 min','60 min'],
@@ -374,7 +374,7 @@ CITY_DATA['上海'] = (() => {
 
   return {
     key: '上海', label: '上海', maxDays: 5,
-    spots: S, poi: P, images: {},
+    spots: S, poi: P, images: CITY_SEED.images,
     canvas: { w:100, h:100, scale:'约 4km' },
 
     dineByDay: { 1:['yuyuan','xintiandi'], 2:['xintiandi'], 3:['wukang','xintiandi'], 4:['yuyuan'] },

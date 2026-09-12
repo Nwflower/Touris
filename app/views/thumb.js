@@ -8,20 +8,33 @@
      · 真实照片盖在插画之上，加载成功才淡入；失败就摘掉 img，露出插画
    于是「有网 / 没网」两种情况下都不会开天窗——路演现场网络不可靠时这点很值钱。
 
-   ★ 图片代理
+   ★ 图片来源
 
-   本机直连 upload.wikimedia.org 不通（整个 wikipedia.org 都不通），
-   所以默认经 wsrv.nl 取图。直连可用的环境把 USE_PROXY 改成 false。
+   素材已经**全部下载到本地**（app/img/，64 张，约 12MB），由
+   prototype/tools/fetch-images.js 抓取并署名，见 app/img/CREDITS.md。
+   运行时只读同目录文件，不依赖任何外部服务——路演现场网络不可靠时这点很关键。
+
+   ★ 图片代理（只对外链生效）
+
+   早先用的是 Wikimedia 外链，本机连不通（整个 wikipedia.org 都不通），
+   所以套了 wsrv.nl 代理。改成本地文件后代理已无必要，但保留这条路径，
+   以防日后又把某张图换成外链。
+
+   ⚠️ 代理**只能套绝对 URL**。曾经这里没做判断，把 'img/xxx.jpg' 这种相对
+   路径也 encode 进代理地址（wsrv.nl/?url=img%2Fxxx.jpg），外部服务解析不了
+   相对路径，64 张图全 404，页面上只剩 SVG 占位插画。
    ========================================================================== */
 
 const Thumb = (() => {
   const USE_PROXY = true;
 
-  /** 图片 URL → 经代理的 URL。没有图时返回 null。 */
+  /** 图片 URL → 可用的 src。没有图时返回 null。
+      本地相对路径原样返回；只有绝对外链才考虑走代理。 */
   function photoURL(name){
     const c = city();
     const raw = c && c.images && c.images[name];
     if(!raw) return null;
+    if(!/^https?:\/\//i.test(raw)) return raw;          // 本地文件，直接用
     if(!USE_PROXY) return raw;
     return 'https://wsrv.nl/?url=' + encodeURIComponent(raw.replace(/^https?:\/\//, '')) + '&w=960&output=jpg';
   }

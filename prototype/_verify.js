@@ -208,8 +208,9 @@ Object.entries(CITY_DATA).forEach(([name,c]) => {
     if(d.picks.length < 2) cityBad.push('餐饮候选不足 '+id);
     if(!/一带/.test(d.area)) cityBad.push('餐饮区域口径错误 '+id);
   });
-  if(['北京','上海','杭州','威海'].includes(name)) Object.keys(c.spots).forEach(n => {
-    if(!c.images[n]) cityBad.push(name+'景点缺少图片 '+n);
+  if(['北京','上海','杭州','威海','广州'].includes(name)) Object.keys(c.spots).forEach(n => {
+    // 图可能来自城市自带的 assets/，也可能来自公共图库 SPOT_IMG（img/）
+    if(!(c.images && c.images[n]) && !SPOT_IMG[n]) cityBad.push(name+'景点缺少图片 '+n);
   });
   for(const persona of ['blank','veteran']) for(const on of [false,true]) for(const screen of ['s0','s1','s2','s5']){
     S.req.dest=name; S.session=persona === 'veteran' ? {mode:'user',id:'demo'} : {mode:'guest',id:null}; S.req.days=c.staticDays||4; S.memoryOn=on; S.screen=screen; S.diffPlayed=true;

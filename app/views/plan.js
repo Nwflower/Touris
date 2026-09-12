@@ -39,19 +39,16 @@ const ViewPlan = (() => {
       <span>🧠</span><span>${esc(label)}</span></button>`;
   }
 
-  /** 把一天里的景点与它的时间/时长/备注绑在一起，避免过滤后错位 */
-  function dayEntries(d, keptNames){
-    return keptNames.map(name => {
-      const i = d.spots.indexOf(name);
-      return {
-        name,
-        // 被过滤掉的点会让时间轴出现空档，但不要把后面的时间往前挪——
-        // 只如实显示原始时刻，别伪造一份没算过的行程。
-        time: (d.times || [])[i] || '',
-        dur: (d.durs || [])[i] || '',
-        note: (d.notes || [])[i] || ''
-      };
-    });
+  /** 补进来的点：把选中它的那几条偏好记忆挂上，让「为什么是它」可查。
+      时间轴的对齐已经由 Derive.compose 在引擎里做了（每个点带自己的槽位），
+      这一页不再自己对齐——显示的就是算出来的那一份。 */
+  function addedTag(e){
+    if(e.origin !== 'added' || !(e.tags || []).length) return '';
+    const ids = [];
+    e.tags.forEach(t => Archive.whoContributes('prefer', t).forEach(id => {
+      if(!ids.includes(id)) ids.push(id);
+    }));
+    return memTag(ids, '按偏好补进');
   }
 
   /* ---------------- 一行安排 ---------------- */
@@ -75,8 +72,9 @@ const ViewPlan = (() => {
           <div class="tl-main">
             <div class="row wrap" style="gap:7px">
               <b>${esc(e.name)}</b>
-              ${rel ? memTag(rel.ids, `因为你喜欢${LIKE_TEXT(rel.tag)}`)
-                    : (Archive.all().length ? '<span class="badge badge-plain">记忆未涉及</span>' : '')}
+              ${addedTag(e) || (rel
+                    ? memTag(rel.ids, `因为你喜欢${LIKE_TEXT(rel.tag)}`)
+                    : (Archive.all().length ? '<span class="badge badge-plain">记忆未涉及</span>' : ''))}
               ${tag.v === 'up' ? '<span class="badge badge-ok">喜欢</span>' : ''}
               ${tag.v === 'down' ? '<span class="badge badge-warn">不喜欢</span>' : ''}
             </div>
@@ -206,6 +204,10 @@ const ViewPlan = (() => {
 
   /* ---------------- 对照面板 ---------------- */
 
+  /* 对照条目的类型标签。trimmed 和 removed 必须分开显示：前者是「你要慢」，
+     后者是「你不喜欢」——混成一个"去掉"会让用户以为自己否决过那个点。 */
+  const DKIND = { removed:'去掉', added:'新增', trimmed:'裁剪', changed:'调整' };
+
   function compare(diff, n){
     if(!n){
       return `<div class="empty">
@@ -224,7 +226,7 @@ const ViewPlan = (() => {
       <ul class="difflist">
         ${diff.entries.map(e => `
           <li class="diffitem ${e.kind}">
-            <span class="dkind">${e.kind === 'removed' ? '去掉' : e.kind === 'added' ? '新增' : '调整'}</span>
+            <span class="dkind">${DKIND[e.kind] || '调整'}</span>
             <div>
               <div>${esc(e.text)}</div>
               ${e.from ? `<div class="tiny muted">${esc(e.from)} → ${esc(e.to)}</div>` : ''}
@@ -242,14 +244,26 @@ const ViewPlan = (() => {
 
     const cons = Archive.constraints();
     const n = Archive.all().length;
+    const on = !!(n && App.memoryOn);
     const empty = { avoid: [], prefer: [], pace: null };
-    const diff = Derive.diffs(c, n && App.memoryOn ? cons : empty);
-    const days = (c.routeDefault || []).slice(0, tripDays());
+
+    /* 显示的就是算出来的那一份：行程和对照都出自同一次 compose，
+       不各算一遍，也就不可能对不上。 */
+    const plan = Derive.compose(c, on ? cons : empty);
+    const diff = Derive.diffs(c, on ? cons : empty);
+    const days = plan.days.slice(0, tripDays());
 
     /* 顶部汇总：这一趟大概什么强度 */
-    const totalSpots = days.reduce((a, d) => a + d.spots.length, 0);
-    const keptSpots = days.reduce((a, d) =>
-      a + Derive.filterDay(d.spots, c.spots, App.memoryOn && n ? cons : empty).kept.length, 0);
+    const totalSpots = (c.routeDefault || []).slice(0, tripDays())
+      .reduce((a, d) => a + (d.spots || []).length, 0);
+    const keptSpots = days.reduce((a, d) => a + d.spots.length, 0);
+
+    /* 被节奏裁掉的点按天分组，给当天挂一句说明 */
+    const trimmedByDay = new Map();
+    if(on) plan.trimmed.forEach(t => {
+      if(!trimmedByDay.has(t.day)) trimmedByDay.set(t.day, []);
+      trimmedByDay.get(t.day).push(t.name);
+    });
 
     /* 住宿是被「安静」「老城区」这类偏好推出来的，把贡献这些偏好的记忆挂上去 */
     const stayIds = (n && App.memoryOn)
@@ -274,27 +288,41 @@ const ViewPlan = (() => {
       <div class="split" style="margin-top:14px">
         <main>
           ${days.map(d => {
-            const f = Derive.filterDay(d.spots, c.spots, App.memoryOn && n ? cons : empty);
-            const entries = dayEntries(d, f.kept);
+            const entries = d.entries || [];
+            const dropped = d.dropped || [];
+            const cut = trimmedByDay.get(d.n) || [];
+            const filled = entries.filter(e => e.origin === 'added').length;
+
+            /* 改动过的天，原作那句「步行 14.2km」已经不准了——它是为原路线写的。
+               与其显示一个错的数字，不如只如实说清这一天被调整过。 */
+            const paceLine = (on && d.changed)
+              ? `${entries.length} 个点 · 记忆调整过`
+              : esc(d.paceNote || '');
+            // 住宿插在 Day 1 与 Day 2 之间：读作「今晚住下了，后面几天都在这儿」
             const panel = `<section class="panel day">
               <div class="dayhead">
                 <div class="row wrap" style="gap:8px">
                   <span class="daynum">D${d.n}</span>
                   <b>${esc(d.theme || '')}</b>
-                  ${f.dropped.length ? `<span class="badge badge-warn">记忆去掉了 ${f.dropped.length} 处</span>` : ''}
+                  ${dropped.length ? `<span class="badge badge-warn">记忆去掉了 ${dropped.length} 处</span>` : ''}
+                  ${cut.length ? `<span class="badge badge-plain">节奏裁掉 ${cut.length} 处</span>` : ''}
+                  ${filled ? `<span class="badge badge-ok">按偏好补进 ${filled} 处</span>` : ''}
+                  ${d.memoryIds && d.memoryIds.length ? memTag(d.memoryIds, '这一天由记忆排的') : ''}
                 </div>
-                <div class="tiny muted" style="margin-top:4px">${esc(d.paceNote || '')}</div>
-                ${d.memoryIds && d.memoryIds.length ? memTag(d.memoryIds, '这一天由记忆排的') : ''}
+                <div class="tiny muted" style="margin-top:4px">${paceLine}</div>
               </div>
               ${entries.length
                 ? `<ul class="timeline">${entries.map((e, i) => spotRow(e, i)).join('')}</ul>`
-                : `<div class="empty">这一天没有可用的安排了</div>`}
-              ${f.dropped.length && App.memoryOn ? `<div class="dropped tiny">
-                已按记忆去掉：${f.dropped.map(x => esc(x.name)).join('、')}
+                : `<div class="empty">${on && d.changed
+                    ? '<b>这一天没能凑出安排</b><br>你避开的条件把原作路线掏空了，库里也没有合适的替换——这天的空缺是数据不够，不是"已经安排好了"。'
+                    : '这一天没有可用的安排了'}</div>`}
+              ${(dropped.length || cut.length) && on ? `<div class="dropped tiny">
+                ${dropped.length ? `已按记忆去掉：${dropped.map(x => esc(x.name)).join('、')}` : ''}
+                ${dropped.length && cut.length ? '<br>' : ''}
+                ${cut.length ? `按节奏裁掉：${cut.map(x => esc(x)).join('、')}` : ''}
               </div>` : ''}
               ${dayDining(c, d.n)}
             </section>`;
-            // 住宿插在 Day 1 与 Day 2 之间：读作「今晚住下了，后面几天都在这儿」
             return d.n === 1 ? panel + stayPanel(c, stayIds) : panel;
           }).join('')}
         </main>

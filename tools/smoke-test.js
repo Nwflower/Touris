@@ -304,6 +304,28 @@ function ok(name, cond, extra){
   ok('演示账号带播种版本号', /seedVersion/.test(
      fs.readFileSync(path.join(APP, 'account.js'), 'utf8')));
 
+  /* ★ 图片必须真实存在。
+     曾经原型把配图从外链换成本地文件，而这条路径没被任何测试覆盖：
+     相对路径被当成外链塞进图片代理 → 全部 404 → 页面上只剩 SVG 占位，
+     而且不报任何错。这条断言就是为了让那种事再也不会悄悄发生。 */
+  const imgs = JSON.parse(g('JSON.stringify(CITY_SEED.images)'));
+  const missFiles = Object.entries(imgs)
+    .filter(([, p]) => !/^https?:\/\//i.test(p))
+    .filter(([, p]) => !fs.existsSync(path.join(APP, p)))
+    .map(([k, p]) => `${k} → ${p}`);
+  ok('★ 本地配图文件都存在', missFiles.length === 0,
+     missFiles.length ? missFiles.slice(0, 5).join(' | ') : '');
+
+  ok('本地路径不会被套上图片代理', (() => {
+    // photoURL 只对外链加代理前缀；本地路径必须原样返回
+    const local = Object.entries(imgs).find(([, p]) => !/^https?:\/\//i.test(p));
+    if(!local) return true;
+    const c = g('city()');
+    g(`App.cityKey = ${JSON.stringify(g('city().key'))}`);
+    const out = g(`Thumb.photoURL(${JSON.stringify(local[0])})`);
+    return out === local[1];
+  })());
+
   ok('三张轮播图都有背景（含回落）',
      (home.match(/background-image/g) || []).length >= 3,
      (home.match(/background-image/g) || []).length + ' 处');
@@ -552,6 +574,147 @@ function ok(name, cond, extra){
   ok('探针判定为不可用', g2('LLM.status()') === 'off', g2('LLM.status()'));
   ok('入口返回空串，不留痕迹', g2(`LLM.sayRow('清水寺')`) === '');
   ok('app 仍然完整可用（首页照常渲染）', sb2.__nodes.view.innerHTML.length > 200);
+
+  /* ======================================================================
+     [M] prefer 真的参与推导 —— 组合，不只是过滤
+
+     这一节锁的是刚刚修掉的两个失败模式：① 补位被贪心吃掉（京都有 7 个空缺、
+     4 个候选，却只补进 1 个）；② 「放慢时不补」这条规则让演示账号
+     （pace=slow）永远显示"补 0"，功能看着是死的。
+     ====================================================================== */
+  console.log('\n[M] prefer 真的参与推导（组合，不只是过滤）');
+  g('Auth.loginAsDemo()');
+  ok('演示账号确实带偏好约束', g('Archive.constraints().prefer.length') > 0);
+
+  const planM = g('JSON.stringify(Derive.compose(CITY_DATA["京都"], Archive.constraints()))');
+  ok('★补位真的发生了（曾经是 0）', JSON.parse(planM).added.length > 0,
+     JSON.parse(planM).added.length + ' 处');
+
+  ok('★补进来的点都命中偏好，且每条都能反查到记忆', g(`
+     (() => {
+       const p = Derive.compose(CITY_DATA['京都'], Archive.constraints());
+       return p.added.length > 0
+         && p.added.every(a => a.tags.length > 0
+              && Archive.whoContributes('prefer', a.tags[0]).length > 0);
+     })()`));
+
+  ok('★补进来的点：有资料、有坐标、不撞 avoid', g(`
+     (() => {
+       const c = CITY_DATA['京都'], cons = Archive.constraints();
+       return Derive.compose(c, cons).added.every(a =>
+         c.spots[a.name] && c.poi[a.name]
+         && !(c.spots[a.name].avoid || []).some(t => cons.avoid.includes(t)));
+     })()`));
+
+  ok('★补位不重复占用同一个点', g(`
+     (() => {
+       const p = Derive.compose(CITY_DATA['京都'], Archive.constraints());
+       const n = p.added.map(a => a.name);
+       return new Set(n).size === n.length;
+     })()`));
+
+  ok('★一天的点位不超预算（超了就裁、没满才补）', g(`
+     (() => {
+       const cons = Archive.constraints();
+       return Derive.compose(CITY_DATA['京都'], cons).days
+         .every(d => d.spots.length <= Derive.dayCap(d, cons));
+     })()`));
+
+  ok('★时间轴守恒：保留的点，时刻等于它在原作里的时刻', g(`
+     (() => {
+       const c = CITY_DATA['京都'];
+       return Derive.compose(c, Archive.constraints()).days.every((d, i) =>
+         d.entries.filter(e => e.origin === 'kept').every(e => {
+           const o = c.routeDefault[i];
+           return e.time === (o.times[o.spots.indexOf(e.name)] || '');
+         }));
+     })()`));
+
+  ok('★补进来的点不编造槽位备注（它自己的简介另有显示，不重复）', g(`
+     (() => {
+       const a = Derive.compose(CITY_DATA['京都'], Archive.constraints())
+         .days.flatMap(d => d.entries).filter(e => e.origin === 'added');
+       return a.length > 0 && a.every(e => e.note === '');
+     })()`));
+
+  ok('★裁剪：同一天里被裁掉的，偏好命中数不高于留下的', g(`
+     (() => {
+       const cons = Archive.constraints();
+       const p = Derive.compose(CITY_DATA['京都'],
+         { avoid: [], prefer: cons.prefer, pace: 'slow' });
+       return p.trimmed.length > 0 && p.trimmed.every(t => {
+         const kept = p.days.find(d => d.n === t.day).entries.map(e => e.tags.length);
+         return kept.length > 0 && t.tags.length <= Math.min(...kept);
+       });
+     })()`));
+
+  ok('★放慢时点数真的减少了，且不超上限（文案不再自相矛盾）', g(`
+     (() => {
+       const p = Derive.compose(CITY_DATA['京都'],
+         { avoid: [], prefer: [], pace: 'slow' });
+       return p.trimmed.length > 0 && p.after.spots < p.before.spots
+         && p.days.every(d => d.spots.length <= Derive.PACE_CAP.slow);
+     })()`));
+
+  ok('★trimmed 是独立类型，不会混进 removed 被读成"你不喜欢"', g(`
+     (() => {
+       const d = Derive.diffs(CITY_DATA['京都'], { avoid: [], prefer: [], pace: 'slow' });
+       return d.entries.some(e => e.kind === 'trimmed')
+         && !d.entries.some(e => e.kind === 'removed');
+     })()`));
+
+  ok('after.days = 行程天数，不因有天空着而缩水', g(`
+     (() => {
+       const p = Derive.compose(CITY_DATA['北京'], Archive.constraints());
+       return p.after.days === p.before.days
+         && p.before.days === CITY_DATA['北京'].routeDefault.length;
+     })()`));
+
+  ok('凑不出安排的天如实写进摘要，不假装改好了', g(`
+     (() => {
+       const d = Derive.diffs(CITY_DATA['北京'], Archive.constraints());
+       return d.emptyDays === 0 || /天没能凑出安排/.test(d.summary);
+     })()`));
+
+  ok('无记忆时一个字都不改（通用方案仍是原路线）', g(`
+     (() => {
+       const c = CITY_DATA['京都'];
+       const p = Derive.compose(c, { avoid: [], prefer: [], pace: null });
+       return p.added.length === 0 && p.trimmed.length === 0 && p.removed.length === 0
+         && p.days.every((d, i) => d.spots.join() === c.routeDefault[i].spots.join());
+     })()`));
+
+  ok('确定性：同输入两次结果逐字节一致', g(`
+     (() => {
+       const c = CITY_DATA['京都'], cons = Archive.constraints();
+       return JSON.stringify(Derive.compose(c, cons))
+            === JSON.stringify(Derive.compose(c, cons));
+     })()`));
+
+  console.log('\n[M2] 三城组合后仍满足数据契约');
+  for(const k of ['京都', '北京', '上海']){
+    ok(`  ${k}：补位/裁剪后每个点都有资料、有坐标、当天不重复`, g(`
+       (() => {
+         const c = CITY_DATA[${JSON.stringify(k)}];
+         return Derive.compose(c, Archive.constraints()).days.every(d =>
+           d.entries.every(e => c.spots[e.name] && c.poi[e.name]
+             && d.spots.filter(n => n === e.name).length === 1));
+       })()`));
+  }
+
+  console.log('\n[M3] 行程页把组合结果画出来了');
+  go('#/plan');
+  g('UI.refresh()');
+  const planHTML = sb.__nodes.view.innerHTML;
+  ok('对照面板有「补上」条目', /diffitem added/.test(planHTML) && /补上/.test(planHTML));
+  ok('补进来的点在行程里标了「按偏好补进」', /按偏好补进/.test(planHTML));
+  ok('当天的汇总显示「按偏好补进 N 处」', /按偏好补进 \d+ 处/.test(planHTML));
+  ok('改动过的天不再显示原作那句假的步行量', (() => {
+    // 原作 paceNote 形如「08:00 出发 · 步行 14.2km · 换乘 2 次」；
+    // 记忆调整过的天不该再拿它当这一天的说明。
+    const changed = (planHTML.match(/记忆调整过/g) || []).length;
+    return changed > 0;
+  })());
 
   console.log('\n' + (fail ? `✗ ${fail} 项失败 / ${pass + fail}` : `✓ 全部 ${pass} 项通过`));
   process.exit(fail ? 1 : 0);

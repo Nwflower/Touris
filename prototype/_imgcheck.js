@@ -1,70 +1,84 @@
-/* 检查每个城市的每个景点图片，验证页面实际使用的 wsrv.nl 代理地址。 */
-const fs = require('fs');
-const vm = require('vm');
-const https = require('https');
+/* ==========================================================================
+   检查图片是否都真的落地了
 
+   这个脚本以前是拿景点名拼出 wsrv.nl 代理地址、逐个发 HTTP HEAD 看通不通。
+   图片本地化之后那套没意义了——现在的风险不是「网络取不到」，而是
+   「地图里写了这个文件，但文件不在仓库里」，而那种错在浏览器里表现为
+   一片安静的 SVG 占位图，不报错、没人会发现。
+
+   所以改成两件事，全部离线：
+     1) 每个城市每个景点，按 app.js 的取图规则算出来的路径，文件必须存在
+     2) 源码里出现的每一处本地资源路径（img/...、assets/...）也必须存在
+        —— 这条兜住 DEST_CARDS、HOME_HERO_IMAGES 这类不在 spots 里的图
+
+   用法：node _imgcheck.js
+   ========================================================================== */
+
+const fs = require('fs');
+const path = require('path');
+const vm = require('vm');
+
+const HERE = __dirname;
 const ctx = { console };
 vm.createContext(ctx);
-for (const file of ['images.js', 'data.js', 'city-data.js']) {
-  vm.runInContext(fs.readFileSync(file, 'utf8'), ctx, { filename: file });
+for(const f of ['images.js', 'data.js', 'city-data.js', 'city-hangzhou-guangzhou.js']){
+  vm.runInContext(fs.readFileSync(path.join(HERE, f), 'utf8'), ctx, { filename: f });
 }
-const cities = vm.runInContext(
-  `({ 京都:{ spots:SPOTS, images:SPOT_IMG }, ...CITY_DATA })`, ctx
-);
+const g = n => vm.runInContext(n, ctx);
 
-function proxyURL(raw) {
-  return 'https://wsrv.nl/?url=' +
-    encodeURIComponent(raw.replace(/^https?:\/\//, '')) +
-    '&w=960&output=jpg';
-}
+const SPOT_IMG = JSON.parse(g('JSON.stringify(SPOT_IMG)'));
+const CITY_DATA = JSON.parse(g('JSON.stringify(globalThis.CITY_DATA)'));
+const SPOTS = JSON.parse(g('JSON.stringify(SPOTS)'));
 
-function head(url, redirects = 3) {
-  return new Promise(resolve => {
-    const req = https.request(url, { method:'HEAD', timeout:20000 }, res => {
-      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location && redirects) {
-        res.resume();
-        return resolve(head(new URL(res.headers.location, url).href, redirects - 1));
-      }
-      res.resume();
-      resolve({ status:res.statusCode, type:res.headers['content-type'] || '' });
-    });
-    req.on('timeout', () => req.destroy(new Error('timeout')));
-    req.on('error', error => resolve({ status:0, type:'', error:error.message }));
-    req.end();
-  });
+/** 与 app.js 的 spotImages() 同一条规则：城市自带的图优先，其余从公共图库补 */
+function imageFor(city, name){
+  return (city && city.images && city.images[name]) || SPOT_IMG[name] || null;
 }
 
-async function mapLimit(items, limit, fn) {
-  const result = new Array(items.length);
-  let next = 0;
-  async function worker() {
-    while (next < items.length) {
-      const index = next++;
-      result[index] = await fn(items[index]);
-    }
-  }
-  await Promise.all(Array.from({ length:Math.min(limit, items.length) }, worker));
-  return result;
+const missing = [];
+const foreign = [];
+let checked = 0;
+
+function check(label, ref){
+  if(!ref) { missing.push(label + '  →  （没有配置图片）'); return; }
+  if(/^https?:/.test(ref)) { foreign.push(label + '  →  ' + ref); return; }
+  checked++;
+  if(!fs.existsSync(path.join(HERE, ref))) missing.push(label + '  →  ' + ref);
 }
 
-(async () => {
-  let failed = 0;
-  for (const [city, data] of Object.entries(cities)) {
-    const names = Object.keys(data.spots);
-    const results = await mapLimit(names, 5, async name => {
-      const raw = data.images[name];
-      if (!raw) return { name, ok:false, detail:'没有配置 URL' };
-      const response = await head(proxyURL(raw));
-      const ok = response.status === 200 && /^image\//.test(response.type);
-      return { name, ok, detail:response.error || `${response.status} ${response.type}` };
-    });
-    const bad = results.filter(item => !item.ok);
-    failed += bad.length;
-    console.log(`${city}: ${results.length - bad.length}/${results.length} 可用`);
-    bad.forEach(item => console.log(`  FAIL ${item.name}: ${item.detail}`));
-  }
-  process.exitCode = failed ? 1 : 0;
-})().catch(error => {
-  console.error(error);
-  process.exitCode = 1;
+/* ---- 1. 每个城市的每个景点 ---- */
+const cities = [{ name:'京都', spots:SPOTS, images:null }, ...Object.entries(CITY_DATA).map(([k, v]) => ({ name:k, ...v }))];
+cities.forEach(c => {
+  Object.keys(c.spots || {}).forEach(n => check(c.name + ' · ' + n, imageFor(c, n)));
 });
+
+/* ---- 2. 源码里出现的所有本地资源路径 ---- */
+/* 只扫 JS/HTML/CSS 的字符串字面量，避免把注释里的示例当成真引用 */
+['app.js', 'index.html', ...fs.readdirSync(HERE).filter(f => f.endsWith('.css'))].forEach(f => {
+  const p = path.join(HERE, f);
+  if(!fs.existsSync(p)) return;
+  const src = fs.readFileSync(p, 'utf8');
+  for(const m of src.matchAll(/['"](img\/[^'"]+|assets\/[^'"]+)['"]/g)){
+    check(f + ' 引用', m[1]);
+  }
+});
+
+/* ---- 汇总 ---- */
+const uniq = a => [...new Set(a)];
+const miss = uniq(missing), fore = uniq(foreign);
+
+console.log(`检查 ${checked} 处图片引用（${cities.length} 座城市）。`);
+
+if(fore.length){
+  console.log(`\n✗ 有 ${fore.length} 处仍指向外部地址 —— 图片本地化的目的是运行时零外部请求：`);
+  fore.forEach(x => console.log('   ' + x));
+}
+if(miss.length){
+  console.log(`\n✗ 有 ${miss.length} 处引用的文件不在仓库里：`);
+  miss.forEach(x => console.log('   ' + x));
+}
+if(!fore.length && !miss.length){
+  console.log('✓ 全部为本地文件且都存在');
+}
+
+process.exitCode = (fore.length || miss.length) ? 1 : 0;
