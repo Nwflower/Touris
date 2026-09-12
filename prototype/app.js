@@ -1,5 +1,5 @@
 /* ==========================================================================
-   旅行记忆规划 · 原型交互层
+   Touris 知途 · 原型交互层
    单页状态机：S0 需求 → S1 三方案(含概览图) → S2 详情(元素级反馈) → S5 对照 diff
    ========================================================================== */
 
@@ -144,11 +144,22 @@ const THUMB = {
     '<rect class="s2" x="10" y="26" width="60" height="22"/><rect class="s3" x="20" y="32" width="40" height="10" rx="2"/>' +
     '<path class="rake" d="M0 52h80M0 56h80"/>'
 };
+/* 本机直连 upload.wikimedia.org 不通（整个 wikipedia.org 都不通），
+   所以默认经 wsrv.nl 图片代理取图；直连可用的环境把 USE_PROXY 改 false 即可。 */
+const USE_PROXY = true;
+function photoURL(name){
+  const raw = (typeof SPOT_IMG !== 'undefined') ? SPOT_IMG[name] : null;
+  if(!raw) return null;
+  if(!USE_PROXY) return raw;
+  return 'https://wsrv.nl/?url=' + encodeURIComponent(raw.replace(/^https?:\/\//, '')) +
+         '&w=960&output=jpg';
+}
+
 /** 缩略图：底层始终是 SVG 占位插画，有联网图就盖在上面；加载失败自动露出占位 */
 function spotThumb(name, cls, extra){
   const s = SPOTS[name];
   const cat = (s && s.cat) || 'temple';
-  const url = (typeof SPOT_IMG !== 'undefined') ? SPOT_IMG[name] : null;
+  const url = photoURL(name);
   return `<div class="sthumb ${cls||''} c-${cat}">
     <svg viewBox="0 0 80 60" preserveAspectRatio="none">${THUMB[cat]||THUMB.temple}</svg>
     ${url ? `<img src="${esc(url)}" alt="${esc(name)}" loading="lazy" referrerpolicy="no-referrer">` : ''}
@@ -379,7 +390,7 @@ function viewHome(){
       <!-- 顶栏 logo 位置 -->
       <div class="hero-top">
         <div class="h-logo">
-          <span>🧠</span> 旅行记忆规划
+          <span class="logo" role="img" aria-label="知途"></span> Touris 知途
         </div>
         <div class="h-nav">
           <button class="h-link" data-act="home">首页</button>
@@ -498,7 +509,7 @@ function viewHome(){
       <div class="f-brand">
         <span>🧠</span>
         <div>
-          <div class="f-name">旅行记忆规划</div>
+          <div class="f-name">Touris 知途</div>
           <div class="f-sub">MEMORY-DRIVEN TRAVEL</div>
         </div>
       </div>
@@ -558,8 +569,8 @@ function renderTop(){
   const swDisabled = n === 0;
   $('topbar').innerHTML = `
     <div class="brand" data-act="home" title="返回首页" style="cursor:pointer">
-      <span class="logo">🧠</span>
-      <span>旅行记忆规划<br><small>MEMORY-DRIVEN TRAVEL</small></span>
+      <span class="logo" role="img" aria-label="知途"></span>
+      <span>Touris 知途<br><small>MEMORY-DRIVEN TRAVEL</small></span>
     </div>
     <div class="top-sep"></div>
     <div class="persona-sw">
@@ -695,7 +706,7 @@ function viewS0(){
   return `
   <div class="s0-wrap">
     <div class="s0-hero">
-      <span class="kicker">🧠 记忆驱动的行程规划</span>
+      <span class="kicker">🧠 知途 · 老马识途，越走越懂你</span>
       <h1>这次去哪儿？</h1>
       <p class="say">我们<b>不问预算和偏好</b>——你的选择历史会告诉我们。</p>
     </div>

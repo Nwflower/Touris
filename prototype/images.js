@@ -33,5 +33,6 @@ const SPOT_IMG = {
   '西阵':          'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Kyoto_Nishijin_Textile_show.jpg/960px-Kyoto_Nishijin_Textile_show.jpg',
   '出町柳桝形商店街':'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Demachiyanagi_station_building_20221008.jpg/960px-Demachiyanagi_station_building_20221008.jpg',
   '嵯峨野':        'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Arashiyama%2C_Part_II_-_Arashiyama7534.jpg/960px-Arashiyama%2C_Part_II_-_Arashiyama7534.jpg',
-  '京都站伊势丹':  'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/JR-Kyoto-Isetan-01.jpg/960px-JR-Kyoto-Isetan-01.jpg'
+  // 伊势丹就在京都站大楼内，Commons 无单独可用图，复用京都站外观
+  '京都站伊势丹':  'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Kyoto-STA_Central.jpg/960px-Kyoto-STA_Central.jpg'
 };
