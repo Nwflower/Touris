@@ -1411,8 +1411,6 @@ function startHeroSlides(){
       s.style.zIndex = k === n ? 2 : 1;
     });
     dots.forEach((d,k) => d.classList.toggle('on', k === n));
-    const cur = document.querySelector('#heroLabel .hc-cur');
-    if(cur) cur.textContent = n + 1;
   };
 
   const next = () => go(_heroState.idx + 1);
@@ -1427,30 +1425,20 @@ function startHeroSlides(){
   };
   autoPlay();
 
-  // 悬停暂停
   const hero = document.querySelector('#hero');
-  if(hero){
-    hero.addEventListener('mouseenter', () => { _heroState.paused = true; _updatePlayBtn(); });
-    hero.addEventListener('mouseleave', () => { _heroState.paused = false; _updatePlayBtn(); });
-  }
 
-  // 箭头点击
-  document.querySelectorAll('[data-act="hero-prev"]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); prev(); _restartAuto(); }));
-  document.querySelectorAll('[data-act="hero-next"]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); next(); _restartAuto(); }));
+  /* 切到后台标签页时暂停，回来接着放。
+     原先是「鼠标悬停在 hero 上就暂停」——可 hero 是整屏（100vh），
+     鼠标随便动一下就永远落在它上面，自动播放等于直接失效。
+     以前还有个播放键能看出来、能点回来，现在控制台只剩进度条了，
+     再留着这个会变成「轮播莫名其妙不动」。 */
+  document.addEventListener('visibilitychange', () => { _heroState.paused = document.hidden; });
 
   // 圆点点击
   dots.forEach(d => d.addEventListener('click', e => {
     e.stopPropagation();
     go(+d.dataset.i);
     _restartAuto();
-  }));
-
-  // 播放/暂停切换
-  document.querySelectorAll('[data-act="hero-toggle"]').forEach(b => b.addEventListener('click', e => {
-    e.stopPropagation();
-    _heroState.paused = !_heroState.paused;
-    _updatePlayBtn();
-    if(!_heroState.paused) _restartAuto();
   }));
 
   // 键盘:← → 切换
@@ -1474,10 +1462,6 @@ function startHeroSlides(){
   _heroGo = go;
 }
 
-function _updatePlayBtn(){
-  const btn = document.querySelector('#heroPlayBtn');
-  if(btn) btn.classList.toggle('paused', _heroState.paused);
-}
 function _restartAuto(){
   if(_heroState.timer) clearInterval(_heroState.timer);
   _heroState.timer = setInterval(() => {

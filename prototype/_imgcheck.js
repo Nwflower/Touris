@@ -28,7 +28,6 @@ const g = n => vm.runInContext(n, ctx);
 
 const SPOT_IMG = JSON.parse(g('JSON.stringify(SPOT_IMG)'));
 const CITY_DATA = JSON.parse(g('JSON.stringify(globalThis.CITY_DATA)'));
-const SPOTS = JSON.parse(g('JSON.stringify(SPOTS)'));
 
 /** 与 app.js 的 spotImages() 同一条规则：城市自带的图优先，其余从公共图库补 */
 function imageFor(city, name){

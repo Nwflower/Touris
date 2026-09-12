@@ -24,6 +24,13 @@
 (function(){
   const DIR = 'tiles-raster/{z}/{x}/{y}.jpg';
   const ZMIN = 11, ZMAX = 14;          // 烤进去的层级范围
+  /* 可拖动范围在点位外扩这么多**度**。
+     必须小于 fetch-pmtiles.js / render-tiles.js 里的 PAD（0.03°）——
+     那边是按点位 bbox 外扩 0.03° 去烤的，而且瓦片是整张烤的、只会烤多不会烤少。
+     这里取 0.02，保证拖到边界的任何一帧都还踩在烤过的瓦片上。
+     之前给的是 box.pad(0.6)，那是**比例**不是度，等于外扩 60%——
+     超出烤制范围一大截，一拖就请求没烤过的瓦片，状态条弹「部分底图未加载」。 */
+  const BOUNDS_PAD = 0.02;
   const ATTRIB = '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'
                + ' · 底图 <a href="https://protomaps.com/" target="_blank" rel="noopener">Protomaps</a>';
   /* 一张 1×1 透明 GIF。任何真缺的瓦片都用它兜住，
@@ -63,7 +70,11 @@
        （下面按点位范围设 maxBounds）。 */
     const map=L.map(canvas,{
       scrollWheelZoom:false, dragging:true, zoomControl:true,
-      minZoom: ZMIN, maxZoom: 19
+      minZoom: ZMIN, maxZoom: 19,
+      /* 黏度 1 = 拖不动就是拖不动。默认 0 是「能拖出去、松手弹回来」，
+         可拖动过程中 Leaflet 照样会去取屏幕外那圈瓦片——弹回来也白搭，
+         没烤过的那几张已经 404 了。 */
+      maxBoundsViscosity: 1
     }); maps.push(map);
 
     let loaded=0,failed=0;
@@ -86,12 +97,27 @@
     data.forEach(day=>{if(day.length>1)L.polyline(day.map(p=>[p.lat,p.lng]),{color:colors[(day[0].day-1)%colors.length],weight:3,dashArray:'6 7'}).addTo(map);});
     if(points.length){
       const box=L.latLngBounds(points);
-      /* 可拖动范围锁在点位范围外扩一圈以内——拖出去只有空白，没有意义。
-         0.6 是取的经验值：够看清城市轮廓，又不至于到没瓦片的地方。 */
-      map.setMaxBounds(box.pad(0.6));
+      /* 拖动范围锁在点位外扩 BOUNDS_PAD 度以内——拖出去只有空白，没有意义。
+         注意别用 box.pad()：那个参数是**比例**不是度。 */
+      map.setMaxBounds(L.latLngBounds(
+        [box.getSouth()-BOUNDS_PAD, box.getWest()-BOUNDS_PAD],
+        [box.getNorth()+BOUNDS_PAD, box.getEast()+BOUNDS_PAD]
+      ));
       map.fitBounds(box,{padding:[26,26],maxZoom:14});
     }
-    else {map.setView(JSON.parse(container.dataset.center),11);status.textContent='当天没有需标记的景点，可切换其他天。';}
+    else {
+      /* 当天没有景点，只能按城市中心站住脚。这里也上锁：不然这一天可以
+         一路拖到烤制范围外面去，同样是满屏 404。锁得紧一点没关系，
+         本来就没有东西可看。 */
+      const c=JSON.parse(container.dataset.center);
+      const cen=L.latLng(c[0],c[1]);
+      map.setMaxBounds(L.latLngBounds(
+        [cen.lat-BOUNDS_PAD, cen.lng-BOUNDS_PAD],
+        [cen.lat+BOUNDS_PAD, cen.lng+BOUNDS_PAD]
+      ));
+      map.setView(cen, ZMIN);
+      status.textContent='当天没有需标记的景点，可切换其他天。';
+    }
     container.querySelector('[data-map-retry]').addEventListener('click',()=>{status.hidden=false;status.textContent='正在重新加载底图…';tiles.redraw();});
     map.on('click',()=>map.scrollWheelZoom.enable());
     map.on('mouseout',()=>map.scrollWheelZoom.disable());
