@@ -161,61 +161,6 @@
     bigMuseum:'上海博物馆',queueFood:'s-lujiazui',marketArea:'老城厢一带',sunsetSpot:'外滩',localMarket:'愚园路',resortArea:'衡山路一带',cultureStyle:'海派街区型',cultureTagline:'沿梧桐街区与滨水空间慢慢走',
     });
 
-  /* 杭州：西湖、茶园、运河与江南生活 */
-  const hangzhou = makeCity({
-    name:'杭州',mapLabels:[['10','22','西溪'],['36','42','西湖'],['72','35','运河'],['67','78','钱塘江'],['30','85','湘湖']],
-    poi:{'西湖':{x:38,y:46},'断桥残雪':{x:41,y:34},'苏堤':{x:34,y:51},'雷峰塔':{x:40,y:62},'灵隐寺':{x:21,y:42},'飞来峰':{x:23,y:44},'龙井村':{x:27,y:58},'九溪烟树':{x:31,y:68},'中国茶叶博物馆':{x:29,y:54},'西溪湿地':{x:13,y:30},'河坊街':{x:50,y:58},'南宋御街':{x:51,y:54},'京杭大运河':{x:62,y:29},'小河直街':{x:61,y:25},'良渚博物院':{x:54,y:10},'湘湖':{x:37,y:82},'钱塘江城市阳台':{x:70,y:69},'杭州植物园':{x:29,y:39},'杭州东站':{x:74,y:45}},
-    spots:{
-      '西湖':spot(4.9,156000,'river','湖山、堤桥与城市相接，四季都有不同景致。',['世界遗产','湖景','免费','可久坐']),
-      '断桥残雪':spot(4.6,46000,'bridge','白堤东端的西湖名景，清晨与傍晚更舒展。',['西湖十景','免费','日落','人多']),
-      '苏堤':spot(4.8,52000,'path','纵贯西湖的长堤，串联六桥与大片湖景。',['步道','湖景','免费','动线长']),
-      '雷峰塔':spot(4.6,39000,'tower','登塔可看西湖全景与南屏山色。',['观景台','文化','日落','需购票']),
-      '灵隐寺':spot(4.8,86000,'temple','古刹藏于北高峰林木间，香火与山林并存。',['古寺','山林','需预约','人多']),
-      '飞来峰':spot(4.7,34000,'garden','溪谷石窟造像密集，与灵隐寺可连游。',['石窟','自然','文化','步行']),
-      '龙井村':spot(4.7,22000,'garden','茶园沿山铺开，可体验杭州茶乡日常。',['茶园','本地','自然','安静']),
-      '九溪烟树':spot(4.8,28000,'path','溪流、林荫与茶园组成清凉的徒步线。',['溪谷','自然','免费','步行']),
-      '中国茶叶博物馆':spot(4.7,9200,'museum','以茶文化为主题的小型园林式博物馆。',['小型展馆','茶文化','安静','免费']),
-      '西溪湿地':spot(4.7,44000,'river','河港、芦苇与村落交错的城市湿地。',['湿地','自然','可乘船','动线长']),
-      '河坊街':spot(4.4,51000,'street','南宋老城商业街，集中传统小吃与手作。',['老街','小吃','夜景','人多']),
-      '南宋御街':spot(4.5,23000,'street','保留历史街巷尺度的城市漫步线。',['历史街区','免费','本地','散步']),
-      '京杭大运河':spot(4.7,27000,'river','古桥、仓库与河岸生活组成运河文化带。',['世界遗产','河川','夜景','免费']),
-      '小河直街':spot(4.7,16000,'street','沿运河保存较好的清末民居街区。',['水乡街区','本地','安静','免费']),
-      '良渚博物院':spot(4.8,15000,'museum','展示五千年良渚文明的重要专题馆。',['专题展馆','需预约','建筑','室内']),
-      '湘湖':spot(4.7,21000,'river','比西湖更安静的开阔湖区，适合骑行散步。',['湖景','人少','免费','自然']),
-      '钱塘江城市阳台':spot(4.6,12000,'river','看城市天际线与钱塘江日落的开放空间。',['江景','日落','免费','散步']),
-      '杭州植物园':spot(4.7,17000,'garden','山林植物与溪流庭园相连，四季清幽。',['植物','安静','自然','可久坐']),
-      '杭州东站':spot(4.4,32000,'station','杭州主要高铁枢纽。',['交通枢纽','返程','室内'])
-    },
-    restPoi:{'h-hefang':'河坊街','h-longjing':'龙井村','h-canal':'小河直街','h-westlake':'西湖','h-qianjiang':'钱塘江城市阳台','h-hotel':'南宋御街'},
-    dining:{
-      'h-hefang':dining('河坊街一带','杭帮小吃 · 边逛边吃','老城动线上',[pick('片儿川面馆','杭帮面食','¥25-45',4.6,3800,'翻台快'),pick('传统糕团铺','江南点心','¥15-35',4.5,2600,'可买小份'),pick('家常杭帮菜','杭帮菜','¥80-130',4.5,1900,'午市更轻松')]),
-      'h-longjing':dining('龙井村一带','茶园农家菜 · 午饭','茶园步行可达',[pick('茶园家常菜','杭帮菜','¥90-140',4.6,1200,'可坐院子'),pick('龙井茶点小院','茶点','¥60-110',4.5,860,'适合休息')]),
-      'h-canal':dining('小河直街一带','运河本地小馆 · 晚饭','沿河动线上',[pick('运河家常菜馆','杭帮菜','¥75-120',4.6,980,'本地客多'),pick('旧仓库创意餐吧','融合菜','¥110-170',4.4,720,'夜间氛围好')]),
-      'h-westlake':dining('湖滨一带','热门景区餐饮','方便但高峰排队',[pick('湖景杭帮菜','杭帮菜','¥180-280',4.1,5200,'午晚高峰等位'),pick('商场连锁简餐','简餐','¥60-100',4.0,3600,'出餐快')]),
-      'h-qianjiang':dining('钱江新城一带','江景晚餐','日落动线上',[pick('江景融合菜','融合菜','¥130-210',4.5,1100,'靠窗位需预约'),pick('社区杭帮小馆','杭帮菜','¥80-130',4.6,900,'不追景观更实惠')]),
-      'h-hotel':dining('南宋御街一带','住处周边早餐','步行可达',[pick('街坊早餐铺','杭州早餐','¥12-28',4.7,1600,'本地居民常去'),pick('老街咖啡早餐','咖啡 · 烘焙','¥45-75',4.5,780,'9 点后有座')])
-    },
-    defaultStay:stay('湖滨一带','核心景区旁 · 连锁酒店','距西湖 0.5km · 游客集中',[],[room('湖滨连锁酒店','标准双床','¥650-950/晚',4.2,4200,'交通方便'),room('商圈精品酒店','景观大床','¥900-1400/晚',4.4,1500,'部分房间看湖')]),
-    memoryStay:stay('南宋御街一带','老城生活区 · 小院旅宿','夜间小馆多 · 可步行到西湖',['m05','m16'],[room('老宅小院旅宿','庭院双人房','¥750-1100/晚',4.7,520,'院落安静'),room('街巷设计民宿','复式双人房','¥600-900/晚',4.6,390,'周边餐饮丰富')]),
-    packedRoutes:[['断桥残雪','西湖','雷峰塔','河坊街'],['灵隐寺','飞来峰','龙井村','九溪烟树'],['西溪湿地','良渚博物院','京杭大运河'],['湘湖','钱塘江城市阳台','杭州东站']],
-    localRoutes:[['河坊街','南宋御街','西湖'],['龙井村','中国茶叶博物馆','杭州植物园'],['小河直街','京杭大运河','西溪湿地'],['湘湖','钱塘江城市阳台','杭州东站']],
-    relaxedRoutes:[['西湖','雷峰塔'],['灵隐寺','杭州植物园'],['西溪湿地','小河直街'],['钱塘江城市阳台','杭州东站']],
-    cultureRoutes:[['南宋御街','河坊街'],['龙井村','中国茶叶博物馆'],['良渚博物院','京杭大运河'],['杭州植物园','西湖']],
-    defaultDays:[
-      {day:1,date:'10-02',theme:'西湖全景打卡',pace:5,paceNote:'08:00 出发 · 步行 14.5km',items:[{id:'d1-1',kind:'spot',time:'08:00',name:'断桥残雪',dur:'60 min'},{id:'d1-2',kind:'spot',time:'09:30',name:'西湖',dur:'120 min'},{id:'d1-3',kind:'food',time:'12:00',name:'h-westlake'},{id:'d1-4',kind:'spot',time:'14:00',name:'中国茶叶博物馆',dur:'120 min'},{id:'d1-5',kind:'spot',time:'17:00',name:'雷峰塔',dur:'90 min'}]},
-      {day:2,date:'10-03',theme:'灵隐 + 龙井',pace:5,paceNote:'07:30 出发 · 步行 16.1km',items:[{id:'d2-1',kind:'spot',time:'07:30',name:'灵隐寺',dur:'150 min'},{id:'d2-2',kind:'spot',time:'10:30',name:'飞来峰',dur:'90 min'},{id:'d2-3',kind:'spot',time:'13:00',name:'龙井村',dur:'120 min'},{id:'d2-4',kind:'spot',time:'16:00',name:'九溪烟树',dur:'120 min'}]},
-      {day:3,date:'10-04',theme:'湿地 + 运河',pace:4,paceNote:'08:00 出发 · 步行 14.2km',items:[{id:'d3-1',kind:'spot',time:'08:00',name:'西溪湿地',dur:'180 min'},{id:'d3-2',kind:'spot',time:'13:00',name:'良渚博物院',dur:'120 min'},{id:'d3-3',kind:'spot',time:'16:00',name:'京杭大运河',dur:'90 min'},{id:'d3-4',kind:'food',time:'18:00',name:'h-canal'}]},
-      {day:4,date:'10-05',theme:'老城 + 返程',pace:3,paceNote:'09:00 出发 · 步行 11.8km',items:[{id:'d4-1',kind:'spot',time:'09:00',name:'河坊街',dur:'90 min'},{id:'d4-2',kind:'spot',time:'11:00',name:'南宋御街',dur:'75 min'},{id:'d4-3',kind:'spot',time:'15:30',name:'杭州东站',dur:'—',note:'返程'}]}
-    ],
-    memoryDays:[
-      {day:1,date:'10-02',theme:'老城早餐 · 西湖落日',pace:2,paceNote:'09:30 出发 · 步行 8.0km',memoryIds:baseMem.slow,items:[{id:'d1-1',kind:'food',time:'09:30',name:'h-hefang',memoryIds:baseMem.market},{id:'d1-2',kind:'spot',time:'10:30',name:'河坊街',dur:'90 min',memoryIds:baseMem.market},{id:'d1-3',kind:'free',time:'13:30',name:'回住处休息',dur:'120 min',memoryIds:baseMem.rest},{id:'d1-4',kind:'spot',time:'16:30',name:'雷峰塔',dur:'90 min',memoryIds:['m17']},{id:'d1-5',kind:'spot',time:'18:00',name:'西湖',dur:'75 min',memoryIds:baseMem.river}]},
-      {day:2,date:'10-03',theme:'龙井茶乡慢走',pace:2,paceNote:'09:00 出发 · 步行 8.7km',items:[{id:'d2-1',kind:'spot',time:'09:00',name:'龙井村',dur:'120 min',memoryIds:baseMem.nature},{id:'d2-2',kind:'food',time:'11:30',name:'h-longjing',memoryIds:baseMem.local},{id:'d2-3',kind:'spot',time:'13:30',name:'中国茶叶博物馆',dur:'90 min',memoryIds:['m13']},{id:'d2-4',kind:'spot',time:'16:00',name:'杭州植物园',dur:'120 min',memoryIds:baseMem.nature}]},
-      {day:3,date:'10-04',theme:'运河生活半日',pace:2,paceNote:'09:30 出发 · 步行 7.6km',items:[{id:'d3-1',kind:'spot',time:'09:30',name:'小河直街',dur:'120 min',memoryIds:baseMem.market},{id:'d3-2',kind:'spot',time:'12:00',name:'京杭大运河',dur:'90 min'},{id:'d3-3',kind:'free',time:'14:00',name:'午后休息',dur:'90 min',memoryIds:baseMem.rest},{id:'d3-4',kind:'food',time:'17:00',name:'h-canal',memoryIds:baseMem.local}]},
-      {day:4,date:'10-05',theme:'钱塘江散步 · 返程',pace:1,paceNote:'10:00 出发 · 步行 8.2km',memoryIds:['m01'],items:[{id:'d4-1',kind:'spot',time:'10:00',name:'湘湖',dur:'120 min',memoryIds:baseMem.nature},{id:'d4-2',kind:'food',time:'13:00',name:'h-qianjiang',memoryIds:baseMem.local},{id:'d4-3',kind:'spot',time:'15:00',name:'钱塘江城市阳台',dur:'75 min',memoryIds:baseMem.river},{id:'d4-4',kind:'spot',time:'17:00',name:'杭州东站',dur:'—',note:'返程'}]}
-    ],
-    bigMuseum:'中国茶叶博物馆',queueFood:'h-westlake',marketArea:'河坊街一带',sunsetSpot:'雷峰塔',localMarket:'河坊街',resortArea:'湖滨一带',cultureStyle:'茶园运河型',cultureTagline:'从龙井茶山走到千年运河',
-    });
-
   /* 威海：海岸、岛屿、近代史与胶东渔村 */
   const weihai = makeCity({
     name:'威海',mapLabels:[['8','20','高区'],['40','45','环翠'],['76','25','刘公岛'],['71','76','荣成'],['18','82','经区']],
@@ -270,5 +215,5 @@
     bigMuseum:'中国甲午战争博物院',queueFood:'w-island',marketArea:'威海湾一带',sunsetSpot:'幸福门',localMarket:'荣成海草房',resortArea:'国际海水浴场一带',cultureStyle:'海岛人文型',cultureTagline:'在海风里读懂甲午历史与胶东渔村',
     });
 
-  globalThis.CITY_DATA = {北京:beijing,上海:shanghai,杭州:hangzhou,威海:weihai};
+  globalThis.CITY_DATA = {北京:beijing,上海:shanghai,威海:weihai};
 })();
