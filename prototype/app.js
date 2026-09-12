@@ -1,5 +1,5 @@
 /* ==========================================================================
-   旅行记忆规划 · 原型交互层
+   Touris 知途 · 原型交互层
    单页状态机：S0 需求 → S1 三方案(含概览图) → S2 详情(元素级反馈) → S5 对照 diff
    ========================================================================== */
 
@@ -12,7 +12,7 @@ const REST_POI = {
 
 /* ---------------- 状态 ---------------- */
 const S = {
-  screen: 's0',
+  screen: 'home',
   persona: 'blank',
   memoryOn: true,
   req: { dest:'京都', date:'2026-10-02', days:4, people:2 },
@@ -154,11 +154,25 @@ const THUMB = {
     '<rect class="s2" x="10" y="26" width="60" height="22"/><rect class="s3" x="20" y="32" width="40" height="10" rx="2"/>' +
     '<path class="rake" d="M0 52h80M0 56h80"/>'
 };
+/* 本机直连 upload.wikimedia.org 不通（整个 wikipedia.org 都不通），
+   所以默认经 wsrv.nl 图片代理取图；直连可用的环境把 USE_PROXY 改 false 即可。 */
+const USE_PROXY = true;
+function photoURL(name){
+  const raw = (typeof SPOT_IMG !== 'undefined') ? SPOT_IMG[name] : null;
+  if(!raw) return null;
+  if(!USE_PROXY) return raw;
+  return 'https://wsrv.nl/?url=' + encodeURIComponent(raw.replace(/^https?:\/\//, '')) +
+         '&w=960&output=jpg';
+}
+
 /** 缩略图：底层始终是 SVG 占位插画，有联网图就盖在上面；加载失败自动露出占位 */
 function spotThumb(name, cls, extra){
   const s = spots()[name];
   const cat = (s && s.cat) || 'temple';
-  const url = (typeof SPOT_IMG !== 'undefined') ? spotImages()[name] : null;
+  const raw = (typeof SPOT_IMG !== 'undefined') ? spotImages()[name] : null;
+  const url = raw ? (USE_PROXY
+    ? 'https://wsrv.nl/?url=' + encodeURIComponent(raw.replace(/^https?:\/\//, '')) + '&w=960&output=jpg'
+    : raw) : null;
   return `<div class="sthumb ${cls||''} c-${cat}">
     <svg viewBox="0 0 80 60" preserveAspectRatio="none">${THUMB[cat]||THUMB.temple}</svg>
     ${url ? `<img src="${esc(url)}" alt="${esc(name)}" loading="lazy" referrerpolicy="no-referrer">` : ''}
@@ -202,18 +216,27 @@ function mapBase(labels){
     </g>` : ''}`;
 }
 
-/** 概览图：整趟 4 天全部点位，按天配色 */
+/** 概览图：整趟 4 天全部点位，按天配色
+ *  opt.highlightDay: 1-based，高亮指定天的路线，淡化其他
+ */
 function overviewMap(routeDays, opt){
   const small = opt && opt.small;
+  const hl = opt && opt.highlightDay;
   const paths = routeDays.map((names, di) => {
     const pts = names.map(n => poi()[n]).filter(Boolean);
     if(pts.length < 2) return '';
-    return `<path class="m-route" style="stroke:${DAY_C[di]}" d="${pts.map((p,i)=>`${i?'L':'M'}${p.x} ${p.y}`).join(' ')}"/>`;
+    const dayNum = di + 1;
+    const cls = hl && hl !== dayNum ? 'm-route dim' : 'm-route';
+    return `<path class="${cls}" style="stroke:${DAY_C[di]}" d="${pts.map((p,i)=>`${i?'L':'M'}${p.x} ${p.y}`).join(' ')}"/>`;
   }).join('');
-  const dots = routeDays.map((names, di) => names.map(n => {
-    const p = poi()[n]; if(!p) return '';
-    return `<circle class="m-dot" cx="${p.x}" cy="${p.y}" r="${small?2.4:2.8}" style="fill:${DAY_C[di]}"/>`;
-  }).join('')).join('');
+  const dots = routeDays.map((names, di) => {
+    const dayNum = di + 1;
+    const dimCls = hl && hl !== dayNum ? ' dim' : '';
+    return names.map(n => {
+      const p = poi()[n]; if(!p) return '';
+      return `<circle class="m-dot${dimCls}" cx="${p.x}" cy="${p.y}" r="${small?2.4:2.8}" style="fill:${DAY_C[di]}"/>`;
+    }).join('');
+  }).join('');
   return `<div class="sim-map ${small?'small':''}">
     <svg viewBox="0 0 100 100" preserveAspectRatio="none">${mapBase(!small)}${paths}${dots}</svg>
     ${small ? '' : '<div class="map-scale"><i></i><span>约 2km</span></div>'}
@@ -243,14 +266,325 @@ function dayMap(day){
   </div>`;
 }
 
+/* ============================ 首页数据 ============================ */
+const HOME_IMG = (prompt, size='landscape_16_9') =>
+  `https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=${encodeURIComponent(prompt)}&image_size=${size}`;
+
+const HOME_HERO_IMAGES = [
+  HOME_IMG('Kyoto Japan, Fushimi Inari shrine red torii gates at golden hour sunset, travel photography, cinematic wide angle', 'landscape_16_9'),
+  HOME_IMG('Arashiyama Bamboo Grove Kyoto Japan, tall green bamboo stalks, morning sunlight rays through bamboo, travel', 'landscape_16_9'),
+  HOME_IMG('Nishiki Market Kyoto Japan, colorful food stalls with lanterns, tourists exploring local food, vibrant atmosphere', 'landscape_16_9')
+];
+
+const DEST_CARDS = [
+  { name:'京都', en:'Kyoto', tagline:'千年古都 · 竹林与佛寺', days:'3-5 天', price:'¥4,200 起',
+    img: HOME_IMG('Kyoto Japan Kiyomizu-dera temple wooden stage with autumn foliage, classic Japanese temple, aerial view', 'landscape_4_3'),
+    tags:['🏯 佛寺','🎋 竹林','🍡 美食'] },
+  { name:'奈良', en:'Nara', tagline:'小鹿成群 · 古寺巡礼', days:'2-3 天', price:'¥3,100 起',
+    img: HOME_IMG('Nara Japan, friendly wild deer bowing to tourists in Nara Park, cherry blossoms, Todai-ji temple', 'landscape_4_3'),
+    tags:['🦌 小鹿','🏛 大佛','🌸 樱花'] },
+  { name:'箱根', en:'Hakone', tagline:'温泉之乡 · 富士山景', days:'2-4 天', price:'¥3,800 起',
+    img: HOME_IMG('Hakone Japan, hot spring onsen with view of Mount Fuji reflection, ryokan traditional inn, scenic', 'landscape_4_3'),
+    tags:['♨️ 温泉','🗻 富士','🏔 自然'] },
+  { name:'大阪', en:'Osaka', tagline:'美食之都 · 现代活力', days:'3-4 天', price:'¥3,500 起',
+    img: HOME_IMG('Osaka Japan cityscape with Dotonbori canal, neon signs at night, Glico running man, vibrant food district', 'landscape_4_3'),
+    tags:['🍜 美食','🏙 城市','🎢 乐园'] },
+  { name:'东京', en:'Tokyo', tagline:'潮流前线 · 传统韵味', days:'4-7 天', price:'¥5,800 起',
+    img: HOME_IMG('Tokyo Japan skyline at night with Shibuya Crossing neon lights, Skytree tower, bustling cityscape aerial', 'landscape_4_3'),
+    tags:['🗼 地标','🛍 购物','🎎 文化'] },
+  { name:'富士山', en:'Mt.Fuji', tagline:'日本象征 · 摄影圣地', days:'1-2 天', price:'¥1,600 起',
+    img: HOME_IMG('Mount Fuji Japan, serene reflection in lake, cherry blossoms in foreground, classic Japanese landscape photo', 'landscape_4_3'),
+    tags:['🗻 自然','📷 摄影','⛰ 登山'] }
+];
+
+const FEATURES = [
+  { icon:'🧠', title:'记忆可见', desc:'每次选择都变成可查、可改、可溯源的旅行记忆资产。' },
+  { icon:'🔄', title:'一键对照', desc:'开关记忆,同一套系统给你两套结果——差异一目了然。' },
+  { icon:'👥', title:'多人共用', desc:'顶栏切换人设,家人朋友各自积累,互不干扰。' }
+];
+
+const STATS = [
+  { n:'20+', l:'记忆维度' },
+  { n:'4', l:'核心城市' },
+  { n:'7', l:'对照差异' },
+  { n:'0', l:'问卷必填项' }
+];
+
+/* ============================ 首页渲染 ============================ */
+function setupScrollReveal(){
+  const els = document.querySelectorAll('[data-reveal]');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add('revealed');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  els.forEach(el => io.observe(el));
+}
+
+function viewHome(){
+  return `
+  <div class="home">
+
+    <!-- ========== HERO ========== -->
+    <section class="hero" id="hero">
+      <div class="hero-bg" id="heroBg"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-slides" id="heroSlides">
+        ${HOME_HERO_IMAGES.map((u,i)=>`<div class="hs ${i===0?'on':''}" style="background-image:url('${u}')"></div>`).join('')}
+      </div>
+
+      <!-- Hero 滑动控制(手动切换) -->
+      <div class="hero-ctrl">
+        <button class="hc-arrow hc-prev" data-act="hero-prev" aria-label="上一张">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="hc-arrow hc-next" data-act="hero-next" aria-label="下一张">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <div class="hc-dots" id="heroDots">
+          ${HOME_HERO_IMAGES.map((_,i)=>`<button class="hc-dot ${i===0?'on':''}" data-i="${i}" aria-label="切换到第${i+1}张"></button>`).join('')}
+        </div>
+        <button class="hc-play" id="heroPlayBtn" data-act="hero-toggle" aria-label="暂停/播放">
+          <svg class="hc-icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg class="hc-icon-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
+        </button>
+        <div class="hc-label" id="heroLabel">
+          <span class="hc-cur">1</span> / <span class="hc-total">${HOME_HERO_IMAGES.length}</span>
+        </div>
+      </div>
+
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="dot"></span>
+          让 AI 记住你的每一次选择
+        </div>
+        <h1 class="hero-title">
+          <span class="line1">旅行不该每次都</span>
+          <span class="line2">从零开始<span class="cursor">_</span></span>
+        </h1>
+        <p class="hero-sub">
+          以「记忆」为护城河的旅行规划 · 每次喜欢与不喜欢都变成可溯源、可对比的资产
+        </p>
+
+        <!-- 搜索框(模拟 Trip.com 搜索条) -->
+        <div class="hero-search">
+          <div class="hs-field">
+            <span class="hs-ic">📍</span>
+            <input id="home-dest" value="京都" placeholder="去哪儿？">
+          </div>
+          <div class="hs-field">
+            <span class="hs-ic">📅</span>
+            <input id="home-date" type="date" value="2026-10-02">
+          </div>
+          <div class="hs-field hs-days">
+            <span class="hs-ic">⏱</span>
+            <select id="home-days">
+              ${[3,4,5,6,7].map(d=>`<option>${d} 天</option>`).join('')}
+            </select>
+          </div>
+          <button class="hs-btn" data-act="start">
+            <span>🧠 用记忆规划</span>
+          </button>
+        </div>
+
+        <div class="hero-quick">
+          <span>🔥 热门:</span>
+          ${['京都','奈良','箱根','大阪'].map(d=>`<button class="chip" data-act="quick" data-d="${d}">${d}</button>`).join('')}
+        </div>
+      </div>
+
+      <div class="hero-scroll" data-act="scroll">
+        <div class="scroll-line"></div>
+        <span>向下探索</span>
+      </div>
+
+      <!-- 顶栏 logo 位置 -->
+      <div class="hero-top">
+        <div class="h-logo">
+          <span class="logo" role="img" aria-label="知途"></span> Touris 知途
+        </div>
+        <div class="h-nav">
+          <button class="h-link" data-act="home">首页</button>
+          <button class="h-link" data-act="go" data-screen="s0">规划</button>
+          <button class="h-link" data-act="demo">Demo</button>
+          <button class="h-btn" data-act="go" data-screen="s0">开始规划 →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 统计条 ========== -->
+    <section class="section stats-bar">
+      ${STATS.map(s=>`
+        <div class="stat-item" data-reveal>
+          <div class="n">${s.n}</div>
+          <div class="l">${s.l}</div>
+        </div>`).join('')}
+    </section>
+
+    <!-- ========== 核心价值 ========== -->
+    <section class="section features">
+      <div class="sec-head" data-reveal>
+        <span class="eyebrow">为什么选择我们</span>
+        <h2>记忆看得见,推荐才靠谱</h2>
+        <p>通用工具给你答案,<b>我们给你差异</b>——开关记忆,同一套系统喂进去不同的人,产出完全不同。</p>
+      </div>
+      <div class="feat-grid">
+        ${FEATURES.map((f,i)=>`
+          <div class="feat-card" data-reveal data-d="${i}">
+            <div class="feat-ic">${f.icon}</div>
+            <h3>${f.title}</h3>
+            <p>${f.desc}</p>
+            <div class="feat-num">0${i+1}</div>
+          </div>`).join('')}
+      </div>
+    </section>
+
+    <!-- ========== 热门目的地 ========== -->
+    <section class="section destinations">
+      <div class="sec-head" data-reveal>
+        <span class="eyebrow">热门目的地</span>
+        <h2>选个地方,开始你的下一次</h2>
+        <p>快速进入 Demo · 一键加载预设行程</p>
+      </div>
+      <div class="dest-grid">
+        ${DEST_CARDS.map((d,i)=>`
+          <div class="dest-card" data-reveal data-d="${i}" data-act="dest" data-dest="${d.name}">
+            <div class="dc-img" style="background-image:url('${d.img}')">
+              <div class="dc-overlay"></div>
+              <span class="dc-tag">${d.days}</span>
+              <span class="dc-price">${d.price}</span>
+            </div>
+            <div class="dc-body">
+              <div class="dc-title">
+                <h3>${d.name}</h3>
+                <span class="dc-en">${d.en}</span>
+              </div>
+              <p>${d.tagline}</p>
+              <div class="dc-tags">
+                ${d.tags.map(t=>`<span>${t}</span>`).join('')}
+              </div>
+            </div>
+          </div>`).join('')}
+      </div>
+    </section>
+
+    <!-- ========== Demo 演示 ========== -->
+    <section class="section demo">
+      <div class="demo-wrap">
+        <div class="demo-text" data-reveal>
+          <span class="eyebrow">现场 Demo</span>
+          <h2>6 步讲完这个故事</h2>
+          <p>空记忆开场 → 3 套方案无差异 → 表态积累记忆 → 切人设 → 一键对照 → 记忆改变 7 处安排</p>
+          <button class="btn-lg" data-act="go" data-screen="s1">
+            立即体验完整 Demo →
+          </button>
+        </div>
+        <div class="demo-visual" data-reveal>
+          <div class="demo-steps">
+            ${[
+              { t:'空记忆', d:'0 条记忆,从零开始' },
+              { t:'表态积累', d:'👍👎 变成长久资产' },
+              { t:'一键对照', d:'记忆开关一拨,差异浮现' }
+            ].map((s,i)=>`
+              <div class="d-step">
+                <div class="d-num">${i+1}</div>
+                <div class="d-t">${s.t}</div>
+                <div class="d-d">${s.d}</div>
+              </div>`).join('')}
+            <div class="d-arrow">→</div>
+          </div>
+          <div class="demo-mem-vis">
+            <div class="mem-cloud">
+              ${['不喜欢早起','喜欢逛早市','我晕博物馆','偏好本地小馆','喜欢安静庭园'].map((t,i)=>
+                `<span class="mc mc-${i}">🧠 ${t}</span>`).join('')}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CTA ========== -->
+    <section class="section cta">
+      <div class="cta-inner" data-reveal>
+        <h2>你的旅行记忆<br>换个 App <b>带不走</b>。</h2>
+        <p>这就是它抄不走、你离不开的原因。</p>
+        <div class="cta-btns">
+          <button class="btn-lg" data-act="go" data-screen="s0">免费开始规划 →</button>
+          <button class="btn-lg ghost" data-act="go" data-screen="s1">先看 Demo</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Footer ========== -->
+    <footer class="footer">
+      <div class="f-brand">
+        <span>🧠</span>
+        <div>
+          <div class="f-name">Touris 知途</div>
+          <div class="f-sub">MEMORY-DRIVEN TRAVEL</div>
+        </div>
+      </div>
+      <div class="f-links">
+        <a data-act="home">首页</a>
+        <a data-act="go" data-screen="s0">规划</a>
+        <a data-act="demo">Demo</a>
+      </div>
+      <div class="f-copy">© 2026 · 原型演示</div>
+    </footer>
+
+  </div>`;
+}
+
+/* ====================================================================
+   事件扩展:home 专属 data-act
+   ==================================================================== */
+function bindHomeAct(t){
+  const act = t.dataset.act;
+  if(act === 'home'){ S.screen = 'home'; render(); return true; }
+  if(act === 'start' || act === 'quick'){
+    // 从搜索框/快捷 chip 进入
+    const dest = t.dataset.d || ($('home-dest')?.value || '京都');
+    const date = $('home-date')?.value || '2026-10-02';
+    const days = +(($('home-days')?.value || '4 天').match(/\d+/)?.[0] || 4);
+    S.req = { dest, date, days, people: 2 };
+    S.submitted = true; S.screen = 's1'; render();
+    toast(`已为你生成 ${days} 天「${dest}」行程方案`, 'mem');
+    return true;
+  }
+  if(act === 'dest'){
+    // 目的地卡片点击:预设好日程,带记忆进入
+    const dest = t.dataset.dest;
+    S.req = { dest, date:'2026-10-02', days:4, people:2 };
+    S.persona = 'veteran'; S.memoryOn = true;
+    S.screen = 's1'; render();
+    toast(`已载入「${dest}」行程 · 20 条记忆参与排序`, 'mem');
+    return true;
+  }
+  if(act === 'demo'){
+    // 直接跳到 S1 Demo
+    S.persona = 'veteran'; S.screen = 's1'; render();
+    return true;
+  }
+  if(act === 'scroll'){
+    // 滚动到下一个 section
+    const next = document.querySelector('.stats-bar');
+    if(next) next.scrollIntoView({ behavior:'smooth' });
+    return true;
+  }
+  return false;
+}
+
 /* ---------------- 顶栏 ---------------- */
 function renderTop(){
   const n = memCount();
   const swDisabled = n === 0;
   $('topbar').innerHTML = `
-    <div class="brand">
-      <span class="logo">🧠</span>
-      <span>旅行记忆规划<br><small>MEMORY-DRIVEN TRAVEL</small></span>
+    <div class="brand" data-act="home" title="返回首页" style="cursor:pointer">
+      <span class="logo" role="img" aria-label="知途"></span>
+      <span>Touris 知途<br><small>MEMORY-DRIVEN TRAVEL</small></span>
     </div>
     <div class="top-sep"></div>
     <div class="persona-sw">
@@ -325,6 +659,7 @@ function renderLeft(){
 
 /* ---------------- 右栏：记忆侧栏 ---------------- */
 function renderRight(){
+  if(!$('railRight')) return;
   const list = usedMemoryIds().map(memById).filter(Boolean);
   const head = `
     <div class="rr-head">
@@ -368,6 +703,7 @@ function renderRight(){
 
 /* ---------------- Demo 提词器 ---------------- */
 function renderDock(){
+  if(!$('demoDock')) return;
   $('demoDock').innerHTML = `
     <span class="dk-lbl">DEMO 动线</span>
     ${DEMO_STEPS.map(s => `
@@ -386,7 +722,7 @@ function viewS0(){
   return `
   <div class="s0-wrap">
     <div class="s0-hero">
-      <span class="kicker">🧠 记忆驱动的行程规划</span>
+      <span class="kicker">🧠 知途 · 老马识途，越走越懂你</span>
       <h1>这次去哪儿？</h1>
       <p class="say">我们<b>不问预算和偏好</b>——你的选择历史会告诉我们。</p>
     </div>
@@ -639,10 +975,10 @@ function mapPanel(){
   return `
   <div class="map-col">
     <div class="card map-panel">
-      <h4>🗺 全程概览<span class="mini-lbl">${it.days.length} 天 · 按天配色</span></h4>
-      ${overviewMap(routeDays)}
-      <div class="map-legend">
-        ${routeDays.map((d,i)=>`<span><i style="background:${DAY_C[i]}"></i>D${i+1}</span>`).join('')}
+      <h4>🗺 全程概览<span class="mini-lbl">${it.days.length} 天 · 按天配色 · 点击切换</span></h4>
+      ${overviewMap(routeDays, { highlightDay: S.s2day })}
+      <div class="day-switch">
+        ${routeDays.map((d,i)=>`<button class="${S.s2day===i+1?'on':''}" data-act="s2day" data-d="${i+1}"><i style="background:${DAY_C[i]}"></i>D${i+1}</button>`).join('')}
       </div>
     </div>
 
@@ -820,11 +1156,192 @@ function viewS5(){
 }
 
 /* ---------------- 渲染总入口 ---------------- */
+let heroSlideTimer = null;
+let _currentScreen = null;   // 上次的 screen,用来检测 screen 是否真的变了
+let _rendering = false;      // 防重入:过渡中不再次触发
+
 function render(){
+  if(_rendering){ _deferredRender = true; return; }
+
+  const newScreen = S.screen;
+  const screenChanged = _currentScreen !== null && _currentScreen !== newScreen;
+
+  if(screenChanged){
+    _transitionRender();
+  }else{
+    _doRender();
+  }
+}
+
+let _deferredRender = false;
+async function _transitionRender(){
+  _rendering = true;
+  _deferredRender = false;
+
+  const work = $('work');
+  const top = $('topbar');
+  const shell = $('shell');
+
+  // 1) 淡出
+  if(work){ work.classList.add('page-fade-out'); }
+  if(top && !top.classList.contains('home-top')){ top.classList.add('top-fade'); }
+
+  await new Promise(r => setTimeout(r, 170));
+
+  // 2) 真正渲染
+  _doRender();
+
+  // 3) 淡入
+  requestAnimationFrame(() => {
+    if(work){
+      work.classList.remove('page-fade-out');
+      work.classList.add('page-fade-in');
+      // 让浏览器应用 .page-fade-in,再清掉
+      requestAnimationFrame(() => {
+        work.classList.remove('page-fade-in');
+      });
+    }
+    if(top){ top.classList.remove('top-fade'); }
+  });
+
+  await new Promise(r => setTimeout(r, 280));
+  _rendering = false;
+
+  if(_deferredRender){ _deferredRender = false; _transitionRender(); }
+}
+
+function _doRender(){
+  // 停止旧的 hero 轮播
+  if(heroSlideTimer){ clearInterval(heroSlideTimer); heroSlideTimer = null; }
+
+  if(S.screen === 'home'){
+    document.body.classList.add('home-mode');
+    renderTop();
+    $('topbar').classList.add('home-top');
+    $('railLeft').innerHTML = '';
+    if($('railRight')) $('railRight').innerHTML = '';
+    if($('demoDock')) $('demoDock').innerHTML = '';
+    $('work').innerHTML = viewHome();
+    // 滚动揭示 + Hero 轮播
+    requestAnimationFrame(() => {
+      setupScrollReveal();
+      startHeroSlides();
+      bindHomeScrollNav();
+    });
+    _currentScreen = 'home';
+    return;
+  }
+  document.body.classList.remove('home-mode');
+  $('topbar').classList.remove('home-top');
   renderTop(); renderLeft(); renderRight(); renderDock();
   const map = { s0:viewS0, s1:viewS1, s2:viewS2, s5:viewS5 };
   $('work').innerHTML = (map[S.screen] || viewS0)();
   if(S.screen === 's5' && memActive() && !S.diffPlayed) playDiff();
+  _currentScreen = S.screen;
+}
+
+/* ---------------- Hero 滑动控制器 ---------------- */
+let _heroState = { idx: 0, paused: false, timer: null };
+
+function startHeroSlides(){
+  const slides = document.querySelectorAll('#heroSlides .hs');
+  const dots = document.querySelectorAll('#heroDots .hc-dot');
+  if(!slides.length) return;
+  const total = slides.length;
+  _heroState = { idx: 0, paused: false, timer: null };
+
+  const go = (i) => {
+    const n = ((i % total) + total) % total;
+    if(n === _heroState.idx) return;
+    _heroState.idx = n;
+    slides.forEach((s,k) => {
+      s.classList.toggle('on', k === n);
+      s.style.zIndex = k === n ? 2 : 1;
+    });
+    dots.forEach((d,k) => d.classList.toggle('on', k === n));
+    const cur = document.querySelector('#heroLabel .hc-cur');
+    if(cur) cur.textContent = n + 1;
+  };
+
+  const next = () => go(_heroState.idx + 1);
+  const prev = () => go(_heroState.idx - 1);
+
+  // 自动播放
+  const autoPlay = () => {
+    if(_heroState.timer) clearInterval(_heroState.timer);
+    _heroState.timer = setInterval(() => {
+      if(!_heroState.paused) next();
+    }, 5000);
+  };
+  autoPlay();
+
+  // 悬停暂停
+  const hero = document.querySelector('#hero');
+  if(hero){
+    hero.addEventListener('mouseenter', () => { _heroState.paused = true; _updatePlayBtn(); });
+    hero.addEventListener('mouseleave', () => { _heroState.paused = false; _updatePlayBtn(); });
+  }
+
+  // 箭头点击
+  document.querySelectorAll('[data-act="hero-prev"]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); prev(); _restartAuto(); }));
+  document.querySelectorAll('[data-act="hero-next"]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); next(); _restartAuto(); }));
+
+  // 圆点点击
+  dots.forEach(d => d.addEventListener('click', e => {
+    e.stopPropagation();
+    go(+d.dataset.i);
+    _restartAuto();
+  }));
+
+  // 播放/暂停切换
+  document.querySelectorAll('[data-act="hero-toggle"]').forEach(b => b.addEventListener('click', e => {
+    e.stopPropagation();
+    _heroState.paused = !_heroState.paused;
+    _updatePlayBtn();
+    if(!_heroState.paused) _restartAuto();
+  }));
+
+  // 键盘:← → 切换
+  window.addEventListener('keydown', (e) => {
+    if(S.screen !== 'home') return;
+    if(e.key === 'ArrowRight'){ next(); _restartAuto(); }
+    else if(e.key === 'ArrowLeft'){ prev(); _restartAuto(); }
+  });
+
+  // 触摸滑动
+  let touchStartX = 0;
+  hero?.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  hero?.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if(Math.abs(dx) > 50){
+      dx < 0 ? next() : prev();
+      _restartAuto();
+    }
+  });
+
+  _heroGo = go;
+}
+
+function _updatePlayBtn(){
+  const btn = document.querySelector('#heroPlayBtn');
+  if(btn) btn.classList.toggle('paused', _heroState.paused);
+}
+function _restartAuto(){
+  if(_heroState.timer) clearInterval(_heroState.timer);
+  _heroState.timer = setInterval(() => {
+    if(!_heroState.paused) _heroGo(_heroState.idx + 1);
+  }, 5000);
+}
+let _heroGo = null;
+function bindHomeScrollNav(){
+  // 首页滚动时顶栏变不透明
+  const top = $('topbar');
+  const onScroll = () => {
+    if(S.screen !== 'home'){ window.removeEventListener('scroll', onScroll, true); return; }
+    if(window.scrollY > 60) top.classList.add('scrolled');
+    else top.classList.remove('scrolled');
+  };
+  window.addEventListener('scroll', onScroll, { passive:true });
 }
 
 /* ---------------- diff 高亮动画 ---------------- */
@@ -904,6 +1421,11 @@ document.addEventListener('click', e => {
   if(!t){ hidePop(); return; }
   const act = t.dataset.act;
   if(act !== 'pop') hidePop();
+
+  // Home 专属事件优先拦截
+  if(S.screen === 'home' || ['home','start','quick','dest','demo','scroll'].includes(act)){
+    if(bindHomeAct(t)) return;
+  }
 
   switch(act){
     case 'persona': {
