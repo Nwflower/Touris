@@ -1,20 +1,40 @@
 /* ==========================================================================
-   Touris 知途 · 追加样式（第二批）
-   品牌 LOGO 落位 · 景点照片层 · 模拟地图 · 区域候选推荐组
+   Touris 知途 · 追加样式（合并批）
+   品牌 LOGO · 左栏记忆区 · 景点缩略图 · 模拟地图 · 区域候选推荐组
    ========================================================================== */
 
 /* ============================ 品牌 LOGO ============================ */
-/* 顶栏只放「知途」二字标：英文名用实时文本，可选中、可被读屏识别，也不与图重复 */
+/* 顶栏只放「知途」二字标，英文名用实时文本，可选中、可被读屏识别，不与图重复 */
 .brand .logo{
   width:62px;height:30px;flex:none;border-radius:0;
   background:var(--logo-mark) center/contain no-repeat;
 }
-/* S0 首屏用完整中英组合，作为品牌入口 */
-.hero-logo{
-  display:block;width:152px;aspect-ratio:177/134;margin:0 auto;
-  background:var(--logo-lock) center/contain no-repeat;
+/* 首页 Hero 品牌位：原 LOGO 是纯黑，hero 是深色遮罩配白字，整体反白使用 */
+.hero-top .h-logo .logo{
+  width:58px;height:29px;flex:none;border-radius:0;
+  background:var(--logo-mark) center/contain no-repeat;
+  filter:brightness(0) invert(1);
 }
-.s0-hero .say{margin-top:18px}
+
+/* ============================ 左栏记忆区 ============================ */
+.rail-head{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.rail-cnt{
+  margin-left:auto;font-size:10px;font-weight:750;padding:1px 7px;border-radius:999px;
+  background:var(--indigo);color:#fff;
+}
+.rail-sub{margin:0 0 9px 2px;font-size:11px;color:var(--ink-3);line-height:1.5}
+.rail-mems{display:flex;flex-direction:column;gap:8px}
+/* 窄栏里记忆卡收一点内边距 */
+.mcard{padding:9px 10px}
+.mcard .mtxt{font-size:12.5px}
+.mcard .msrc{font-size:10.5px}
+.mcard .mfoot{gap:5px;margin-top:7px}
+.mcard .chip-xs{font-size:10px;padding:2px 6px}
+
+/* 流程导航：S 编号做前缀，完成态在右端打勾 */
+.nav-item .tail{margin-left:0;flex:none;font-weight:700;letter-spacing:.3px;color:var(--ink-3)}
+.nav-item.on .tail{color:var(--clay)}
+.nav-item .tick{margin-left:auto;font-size:11px;color:var(--green);font-weight:700}
 
 /* ============================ 景点缩略图 ============================ */
 .sthumb{
@@ -35,7 +55,7 @@
 .sthumb .rake,.sthumb .bridge{fill:none;stroke:var(--k-line);stroke-width:1.1}
 .sthumb .bridge{stroke:var(--k-accent);stroke-width:1.6}
 
-/* 真实照片盖在占位插画之上；加载失败时 JS 摘掉 img，占位图自然露出 */
+/* 真实照片盖在占位插画之上；加载失败时 JS 摘掉 img，露出占位图 */
 .sthumb img{
   position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
   opacity:0;transition:opacity .3s ease;
@@ -179,13 +199,9 @@
 .stay-card{flex-direction:column;gap:0;align-items:stretch}
 .sc-head{display:flex;gap:12px;align-items:flex-start}
 
-/* 时间轴条目多了缩略图，稍微加点呼吸 */
+/* 时间轴条目多了缩略图，加点呼吸 */
 .tl-item{padding:13px 0}
 
-/* ============================ 首页 Hero 品牌位 ============================ */
-/* 原 LOGO 是纯黑，hero 是深色遮罩配白字，这里整体反白使用 */
-.hero-top .h-logo .logo{
-  width:58px;height:29px;flex:none;border-radius:0;
-  background:var(--logo-mark) center/contain no-repeat;
-  filter:brightness(0) invert(1);
-}
+/* ============================ 右下角提示位 ============================ */
+/* 底栏已移除，toast 不再需要为它让位 */
+.toast-wrap{bottom:22px}
