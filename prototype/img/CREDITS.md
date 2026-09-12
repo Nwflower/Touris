@@ -51,6 +51,7 @@
 | `Pontocho_by_Wolfiewolf_in_Nabeyacho_Kyoto.jpg` | 先斗町 | https://commons.wikimedia.org/wiki/File:Pontocho_by_Wolfiewolf_in_Nabeyacho%2C_Kyoto.jpg |
 | `Pudong_CBD_viewed_from_the_North_Bund_in_Shanghai.jpg` | 虹口北外滩 | https://commons.wikimedia.org/wiki/File:Pudong_CBD_viewed_from_the_North_Bund_in_Shanghai.jpg |
 | `Pudong_Shanghai_November_2017_panorama.jpg` | 外滩、陆家嘴、上海中心 | https://commons.wikimedia.org/wiki/File:Pudong_Shanghai_November_2017_panorama.jpg |
+| `Qibao_Shanghai_-_panoramio.jpg` | 七宝老街 | https://commons.wikimedia.org/wiki/File:Qibao%2CShanghai_%E4%B8%83%E5%AE%9D%E8%80%81%E8%A1%97_-_panoramio.jpg |
 | `Rongcheng_Weihai_Shandong_China_-_panoramio_-_Roddy_Pfeiffer.jpg` | 海驴岛 | https://commons.wikimedia.org/wiki/File:Rongcheng%2C_Weihai%2C_Shandong%2C_China_-_panoramio_-_Roddy_Pfeiffer.jpg |
 | `Rongcheng_Weihai_Shandong_China_-_panoramio_1.jpg` | 那香海、鸡鸣岛 | https://commons.wikimedia.org/wiki/File:Rongcheng%2C_Weihai%2C_Shandong%2C_China_-_panoramio_(1).jpg |
 | `Rongcheng_Weihai_Shandong_China_-_panoramio_2.jpg` | 荣成海草房 | https://commons.wikimedia.org/wiki/File:Rongcheng%2C_Weihai%2C_Shandong%2C_China_-_panoramio_(2).jpg |
@@ -59,6 +60,7 @@
 | `Sannenzaka_street_Kyoto_3811257874.jpg` | 二年坂三年坂 | https://commons.wikimedia.org/wiki/File:Sannenzaka_street%2C_Kyoto_(3811257874).jpg |
 | `Shanghai_-_Longhua_Tempel_-_0009.jpg` | 龙华寺 | https://commons.wikimedia.org/wiki/File:Shanghai_-_Longhua_Tempel_-_0009.jpg |
 | `Shanghai_-_Yu_Garden_-_0035.jpg` | 豫园、城隍庙 | https://commons.wikimedia.org/wiki/File:Shanghai_-_Yu_Garden_-_0035.jpg |
+| `Shanghai_Chenshan_Garden_-20150517-RM-173827.jpg` | 辰山植物园 | https://commons.wikimedia.org/wiki/File:Shanghai_Chenshan_Garden_-20150517-RM-173827.jpg |
 | `Shanghai_Museum_exterior_1.jpg` | 上海博物馆 | https://commons.wikimedia.org/wiki/File:Shanghai_Museum_exterior_1.jpg |
 | `Shanghai_South_Railway_Station_metro_station_line_15_concourse.jpg` | 上海南站 | https://commons.wikimedia.org/wiki/File:Shanghai_South_Railway_Station_metro_station_line_15_concourse.jpg |
 | `Sinan_Mansions_Shanghai.jpg` | 思南公馆 | https://commons.wikimedia.org/wiki/File:Sinan_Mansions%2C_Shanghai.jpg |
@@ -76,6 +78,7 @@
 | `View_of_Weihai_Bay_from_Liugong_Island.jpg` | 定远舰景区 | https://commons.wikimedia.org/wiki/File:View_of_Weihai_Bay_from_Liugong_Island.jpg |
 | `Weihai_china.jpg` | 幸福门、华夏城、环翠楼公园、威海站 | https://commons.wikimedia.org/wiki/File:Weihai_china.jpg |
 | `Weihai.port_de_Liugong_dao.jpg` | 刘公岛、中国甲午战争博物院 | https://commons.wikimedia.org/wiki/File:Weihai.port_de_Liugong_dao.jpg |
+| `West_Bund_Museum_Shanghai_Jun_2020.jpg` | 西岸美术馆 | https://commons.wikimedia.org/wiki/File:West_Bund_Museum%2C_Shanghai%2C_Jun_2020.jpg |
 | `Wukang_Mansion_20250504-2.jpg` | 武康路 | https://commons.wikimedia.org/wiki/File:Wukang_Mansion_20250504-2.jpg |
 | `Xintiandi_Area_6042357841.jpg` | 新天地 | https://commons.wikimedia.org/wiki/File:Xintiandi_Area_(6042357841).jpg |
 | `Xuhui_Riverside_Shanghai.jpg` | 徐汇滨江 | https://commons.wikimedia.org/wiki/File:Xuhui_Riverside_Shanghai.jpg |
