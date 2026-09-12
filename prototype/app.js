@@ -311,6 +311,26 @@ function viewHome(){
         ${HOME_HERO_IMAGES.map((u,i)=>`<div class="hs ${i===0?'on':''}" style="background-image:url('${u}')"></div>`).join('')}
       </div>
 
+      <!-- Hero 滑动控制(手动切换) -->
+      <div class="hero-ctrl">
+        <button class="hc-arrow hc-prev" data-act="hero-prev" aria-label="上一张">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="hc-arrow hc-next" data-act="hero-next" aria-label="下一张">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <div class="hc-dots" id="heroDots">
+          ${HOME_HERO_IMAGES.map((_,i)=>`<button class="hc-dot ${i===0?'on':''}" data-i="${i}" aria-label="切换到第${i+1}张"></button>`).join('')}
+        </div>
+        <button class="hc-play" id="heroPlayBtn" data-act="hero-toggle" aria-label="暂停/播放">
+          <svg class="hc-icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg class="hc-icon-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
+        </button>
+        <div class="hc-label" id="heroLabel">
+          <span class="hc-cur">1</span> / <span class="hc-total">${HOME_HERO_IMAGES.length}</span>
+        </div>
+      </div>
+
       <div class="hero-content">
         <div class="hero-badge">
           <span class="dot"></span>
@@ -1191,15 +1211,99 @@ function _doRender(){
   _currentScreen = S.screen;
 }
 
+/* ---------------- Hero 滑动控制器 ---------------- */
+let _heroState = { idx: 0, paused: false, timer: null };
+
 function startHeroSlides(){
   const slides = document.querySelectorAll('#heroSlides .hs');
-  if(slides.length < 2) return;
-  let idx = 0;
-  heroSlideTimer = setInterval(() => {
-    idx = (idx + 1) % slides.length;
-    slides.forEach((s,i) => s.classList.toggle('on', i === idx));
+  const dots = document.querySelectorAll('#heroDots .hc-dot');
+  if(!slides.length) return;
+  const total = slides.length;
+  _heroState = { idx: 0, paused: false, timer: null };
+
+  const go = (i) => {
+    const n = ((i % total) + total) % total;
+    if(n === _heroState.idx) return;
+    _heroState.idx = n;
+    slides.forEach((s,k) => {
+      s.classList.toggle('on', k === n);
+      s.style.zIndex = k === n ? 2 : 1;
+    });
+    dots.forEach((d,k) => d.classList.toggle('on', k === n));
+    const cur = document.querySelector('#heroLabel .hc-cur');
+    if(cur) cur.textContent = n + 1;
+  };
+
+  const next = () => go(_heroState.idx + 1);
+  const prev = () => go(_heroState.idx - 1);
+
+  // 自动播放
+  const autoPlay = () => {
+    if(_heroState.timer) clearInterval(_heroState.timer);
+    _heroState.timer = setInterval(() => {
+      if(!_heroState.paused) next();
+    }, 5000);
+  };
+  autoPlay();
+
+  // 悬停暂停
+  const hero = document.querySelector('#hero');
+  if(hero){
+    hero.addEventListener('mouseenter', () => { _heroState.paused = true; _updatePlayBtn(); });
+    hero.addEventListener('mouseleave', () => { _heroState.paused = false; _updatePlayBtn(); });
+  }
+
+  // 箭头点击
+  document.querySelectorAll('[data-act="hero-prev"]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); prev(); _restartAuto(); }));
+  document.querySelectorAll('[data-act="hero-next"]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); next(); _restartAuto(); }));
+
+  // 圆点点击
+  dots.forEach(d => d.addEventListener('click', e => {
+    e.stopPropagation();
+    go(+d.dataset.i);
+    _restartAuto();
+  }));
+
+  // 播放/暂停切换
+  document.querySelectorAll('[data-act="hero-toggle"]').forEach(b => b.addEventListener('click', e => {
+    e.stopPropagation();
+    _heroState.paused = !_heroState.paused;
+    _updatePlayBtn();
+    if(!_heroState.paused) _restartAuto();
+  }));
+
+  // 键盘:← → 切换
+  window.addEventListener('keydown', (e) => {
+    if(S.screen !== 'home') return;
+    if(e.key === 'ArrowRight'){ next(); _restartAuto(); }
+    else if(e.key === 'ArrowLeft'){ prev(); _restartAuto(); }
+  });
+
+  // 触摸滑动
+  let touchStartX = 0;
+  hero?.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  hero?.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if(Math.abs(dx) > 50){
+      dx < 0 ? next() : prev();
+      _restartAuto();
+    }
+  });
+
+  _heroGo = go;
+}
+
+function _updatePlayBtn(){
+  const btn = document.querySelector('#heroPlayBtn');
+  if(btn) btn.classList.toggle('paused', _heroState.paused);
+}
+function _restartAuto(){
+  if(_heroState.timer) clearInterval(_heroState.timer);
+  _heroState.timer = setInterval(() => {
+    if(!_heroState.paused) _heroGo(_heroState.idx + 1);
   }, 5000);
 }
+let _heroGo = null;
 function bindHomeScrollNav(){
   // 首页滚动时顶栏变不透明
   const top = $('topbar');

@@ -5,8 +5,10 @@
 
 /* ---- body.home-mode:让首页脱离原型壳,成为完整网站 ---- */
 body.home-mode{
+  overflow-y:auto !important;
   overflow-x:hidden;
   background:#fff;
+  height:auto !important;
 }
 body.home-mode .rail-left,
 body.home-mode .rail-right,
@@ -25,9 +27,10 @@ body.home-mode .shell{
 body.home-mode #work{
   width:100%;max-width:none;
   padding:0;
-  overflow:visible;
+  overflow:visible !important;
   background:transparent;
   min-height:100vh;
+  height:auto !important;
 }
 body.home-mode .home{
   display:block;
@@ -84,14 +87,7 @@ body.home-mode .home{
   display:flex;align-items:center;justify-content:center;
   overflow:hidden;color:#fff;
 }
-.hero-slides{position:absolute;inset:0;z-index:0}
-.hero-slides .hs{
-  position:absolute;inset:0;
-  background-size:cover;background-position:center;
-  opacity:0;transform:scale(1.04);
-  transition:opacity 1.4s ease, transform 6s ease-out;
-}
-.hero-slides .hs.on{opacity:1;transform:scale(1)}
+/* 幻灯片样式在下方"Hero 幻灯片切换动画"区块统一定义 */
 .hero-overlay{
   position:absolute;inset:0;z-index:1;
   background:
@@ -259,6 +255,80 @@ body.home-mode .home{
 .hero-top .h-btn:hover{
   background:#fff;color:var(--clay);border-color:#fff;
   box-shadow:0 4px 16px rgba(0,0,0,.25);transform:translateY(-1px);
+}
+
+/* ============================================================
+   Hero 滑动控制(箭头/圆点/播放/计数器)
+   ============================================================ */
+.hero-ctrl{
+  position:absolute;bottom:72px;left:0;right:0;z-index:4;
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  padding:0 24px;
+}
+/* 箭头 */
+.hc-arrow{
+  width:40px;height:40px;border-radius:50%;
+  background:rgba(255,255,255,.14);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.28);
+  color:#fff;cursor:pointer;display:grid;place-items:center;
+  transition:background .2s, transform .15s, border-color .2s;
+}
+.hc-arrow:hover{
+  background:rgba(255,255,255,.28);border-color:rgba(255,255,255,.55);
+  transform:scale(1.08);
+}
+.hc-arrow:active{transform:scale(.95)}
+.hc-arrow svg{width:18px;height:18px}
+/* 圆点 */
+.hc-dots{display:flex;align-items:center;gap:8px}
+.hc-dot{
+  width:8px;height:8px;border-radius:999px;border:none;cursor:pointer;
+  background:rgba(255,255,255,.35);
+  transition:background .25s, width .3s cubic-bezier(.2,.8,.2,1);
+  padding:0;
+}
+.hc-dot.on{background:#fff;width:24px;border-radius:4px}
+/* 播放/暂停 */
+.hc-play{
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(255,255,255,.14);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.28);
+  color:#fff;cursor:pointer;display:grid;place-items:center;
+  transition:background .2s;position:relative;
+}
+.hc-play:hover{background:rgba(255,255,255,.28)}
+.hc-play svg{width:14px;height:14px;position:absolute;transition:opacity .2s, transform .2s}
+.hc-play .hc-icon-play{opacity:1;transform:scale(1)}
+.hc-play .hc-icon-pause{opacity:0;transform:scale(.5)}
+.hc-play.paused .hc-icon-play{opacity:0;transform:scale(.5)}
+.hc-play.paused .hc-icon-pause{opacity:1;transform:scale(1)}
+/* 计数器 */
+.hc-label{
+  font-size:12px;color:rgba(255,255,255,.7);font-weight:600;
+  letter-spacing:1px;padding:0 2px;
+}
+.hc-label .hc-cur{color:#fff;font-size:13px}
+
+/* ============================================================
+   Hero 幻灯片切换动画(核心!)
+   ============================================================ */
+.hero-slides{position:absolute;inset:0;z-index:0}
+.hero-slides .hs{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;
+  opacity:0;z-index:1;
+  transform:scale(1.04) translateX(0);
+  transition:opacity 1.2s ease, transform 8s ease-out;
+  will-change:opacity, transform;
+}
+.hero-slides .hs.on{
+  opacity:1;z-index:2;transform:scale(1.00);
+}
+/* 手动切换时给当前方向加位移 */
+.hero-slides .hs.enter-right{transform:scale(1.04) translateX(40px)}
+.hero-slides .hs.enter-left{transform:scale(1.04) translateX(-40px)}
+.hero-slides .hs.on.enter-right,.hero-slides .hs.on.enter-left{
+  transform:scale(1.00) translateX(0);
 }
 
 /* ============================================================
@@ -542,8 +612,8 @@ body.home-mode .home{
 /* 顶栏微过渡(原型模式下) */
 .topbar.top-fade{opacity:.3;transform:translateY(-4px);transition:opacity .18s, transform .18s}
 
-/* Hero 背景图淡入(home 刚出现时) */
-body.home-mode .hero-slides .hs.on{animation:heroSlideShow 1.2s ease both}
+/* Hero 背景图初始入场动画(home 首帧) */
+body.home-mode .hero-slides .hs:first-child.on{animation:heroSlideShow 1.2s ease both}
 @keyframes heroSlideShow{
   from{opacity:0;transform:scale(1.08)}
   to{opacity:1;transform:scale(1)}
