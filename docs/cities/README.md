@@ -30,6 +30,6 @@ Leaflet使用OpenStreetMap真实底图；只为可见地图请求瓦片，遵守
 
 ## 发布与验证
 
-仅编辑prototype/，运行根目录 `./sync-pages.sh` 生成发布副本，`./sync-pages.sh --check` 检查一致性。
+仅编辑prototype/。团队已改为由 `./sync-pages.sh` 镜像到 gh-pages 分支并推送，根目录不再保留发布副本。PR 阶段仅运行 `./sync-pages.sh --check` 检查待发布文件，合并后由维护者发布。
 
 `cd prototype && node _verify.js` 覆盖原三城回归、新两城全部36个行程组合、日期、方案重复度、无重复/空白日、记忆变化、地图数据与图片引用。真实底图、缩放拖动、照片视觉及断网提示另外做浏览器验证，不能靠DOM桩断言替代。

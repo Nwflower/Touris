@@ -56,29 +56,64 @@ body.home-mode .home{
 .topbar.home-top .brand{color:#fff}
 .topbar.home-top .brand small{color:rgba(255,255,255,.6)}
 .topbar.home-top .top-sep{background:rgba(255,255,255,.2)}
-.topbar.home-top .acct-btn{
-  color:rgba(255,255,255,.9);border-color:rgba(255,255,255,.35);
-  background:rgba(255,255,255,.08);
+.topbar.home-top .persona-sw .lbl{color:rgba(255,255,255,.7)}
+/* Hero 顶部:去掉透明毛玻璃边框背景,只留文字(开关滑块保留) */
+.topbar.home-top .persona-sw .seg{
+  background:transparent;border:none;padding:0;
 }
-.topbar.home-top .acct-btn b{color:#fff;border-color:rgba(255,255,255,.35)}
+.topbar.home-top .persona-sw .seg button{
+  background:transparent;border:none;color:#fff;box-shadow:none;
+}
+.topbar.home-top .persona-sw .seg button.on{
+  background:transparent;font-weight:700;box-shadow:none;
+}
+.topbar.home-top .persona-sw .seg button .cnt,
+.topbar.home-top .persona-sw .seg button.on .cnt{
+  background:transparent;color:rgba(255,255,255,.85);
+}
+.topbar.home-top .mem-switch{
+  background:transparent;border:none;padding:5px 4px 5px 0;
+}
+.topbar.home-top .acct-btn{
+  color:rgba(255,255,255,.9);border:none;background:transparent;
+}
+.topbar.home-top .acct-btn b{color:#fff}
 .topbar.home-top .acct-btn:hover{
-  color:#fff;border-color:rgba(255,255,255,.7);background:rgba(255,255,255,.16);
+  color:#fff;border:none;background:transparent;
 }
 .topbar.home-top .acct-btn .cnt{
-  background:rgba(255,255,255,.22);color:#fff;
+  background:transparent;color:rgba(255,255,255,.85);
 }
-.topbar.home-top .acct-btn.guest .cnt{background:rgba(255,255,255,.14);color:rgba(255,255,255,.75)}
+.topbar.home-top .acct-btn.guest .cnt{background:transparent;color:rgba(255,255,255,.7)}
 .topbar.home-top .mem-switch .txt{color:#fff}
 .topbar.home-top .mem-switch.off .txt{color:rgba(255,255,255,.6)}
 .topbar.home-top .ghost-btn{
-  color:#fff;border:1px solid rgba(255,255,255,.35);
-  background:rgba(255,255,255,.08);
+  color:#fff;border:none;background:transparent;
+}
+.topbar.home-top .ghost-btn:hover{
+  border:none;background:transparent;color:#fff;
 }
 .topbar.home-top.scrolled .brand{color:var(--ink)}
 .topbar.home-top.scrolled .brand small{color:var(--ink-3)}
 .topbar.home-top.scrolled .top-sep{background:var(--line-2)}
 .topbar.home-top.scrolled .acct-btn{
   color:var(--ink-2);border-color:var(--line-2);background:transparent;
+}
+.topbar.home-top.scrolled .persona-sw .seg{
+  background:var(--paper-2);border:1px solid var(--line);padding:3px;
+}
+.topbar.home-top.scrolled .persona-sw .seg button .cnt{
+  background:var(--indigo-soft);color:var(--indigo);
+}
+.topbar.home-top.scrolled .persona-sw .seg button.on .cnt{
+  background:var(--indigo);color:#fff;
+}
+.topbar.home-top.scrolled .mem-switch{
+  border:1px solid var(--indigo-line);background:var(--indigo-soft);
+  padding:5px 12px 5px 10px;
+}
+.topbar.home-top.scrolled .mem-switch.off{
+  border-color:var(--line-2);background:var(--paper-2);
 }
 .topbar.home-top.scrolled .acct-btn b{color:var(--ink)}
 .topbar.home-top.scrolled .acct-btn .cnt{
