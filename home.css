@@ -66,6 +66,15 @@ body.home-mode .home{
 .topbar.home-top .brand,
 .topbar.home-top .brand small{transition:color .35s}
 .topbar.home-top .brand .logo{transition:filter .35s}
+
+/* ---- 实验：首页隐掉整个顶栏 ----
+   首页自带 .hero-top（品牌位 + 首页 / 规划 / Demo / 开始规划），顶栏在首屏是重复的：
+   两者都在页面顶端（.hero 是首屏且 top:0），品牌位横向错开约 14px 叠在一起。
+   隐掉之后顶栏里的记忆开关 / 账号 / 全屏演示在首页就没有了——Demo 是从首页进 S1 再操作，
+   那些控件在后续屏上照常出现。
+   离开首页时 _doRender 会摘掉 .home-top，顶栏自动回来（见 app.js:1391）。
+   要恢复，把下面这条删掉即可。 */
+.topbar.home-top{display:none}
 .topbar.home-top .top-sep{background:rgba(255,255,255,.2)}
 .topbar.home-top .persona-sw .lbl{color:rgba(255,255,255,.7)}
 /* Hero 顶部:去掉透明毛玻璃边框背景,只留文字(开关滑块保留) */
