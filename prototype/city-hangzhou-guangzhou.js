@@ -1,17 +1,23 @@
-/* 杭州、广州静态两日游素材包。坐标为排版用示意坐标，非经纬度。
+/* 杭州、广州多日游素材包。WGS84 景点坐标及图片来源见 city-expansion.js。
  * 来源详见 docs/cities；行程是编辑建议，不含实时价格、评分或导航数据。
  */
 (function () {
   const source = (title, url, note) => ({title, url, note});
   const xhs = (id, title, author, date, note) => ({title, url:`https://www.xiaohongshu.com/explore/${id}`, note, author, date, platform:'小红书'});
   function make(c) {
-    c.staticDays = 2;
+    const extra=CITY_EXPANSION[c.slug];
+    c.durationRange=[2,3,4,5,6,7]; c.defaultDays=4;
+    c.geo=extra.geo; c.center=extra.center;
+    c.routes=extra.routes; c.sources=c.sources.concat(extra.sources);
+    c.entries=c.entries.concat(extra.entries);
     c.poi = {}; c.spots = {}; c.images = {};
     c.entries.forEach(([name, file, cat, x, y, intro, tags]) => {
       c.poi[name] = {x,y};
       c.spots[name] = {cat,intro,tags,src:'整理建议 · 见攻略来源'};
       c.images[name] = `assets/cities/${c.slug}/${file}.jpg`;
     });
+    Object.assign(c.images,extra.images);
+    Object.entries(extra.details).forEach(([name,detail])=>Object.assign(c.spots[name],detail));
     c.dining = {}; c.restPoi = {};
     const stay = {area:c.stayArea,theme:'住宿区域建议',note:'按实际到达车站、预算和预订条件选择；暂无酒店报价。',memoryIds:[],
       picks:[{style:'交通方便的酒店',room:'房型自选',price:'查询实时房价',src:'编辑建议',note:'预订前核对位置、取消政策与近期评价。'}]};
@@ -25,13 +31,15 @@
       })};
     }
     c.resolve = (req, selected, memories=[]) => {
+      const dayCount = req.days == null ? 4 : Number(req.days);
+      if(!c.durationRange.includes(dayCount)) throw new RangeError('杭州、广州支持 2—7 天行程');
       const slow = memories.filter(m=>/不喜欢一天塞太多|一天最多|喜欢一天\s*2-3/.test(m.text));
       const museum = memories.filter(m=>/我晕博物馆/.test(m.text));
       const rest = memories.filter(m=>/午后.*休息/.test(m.text));
       const changes = [];
-      const plansDefault = c.routes.map((r,i)=>({id:`${c.slug}-${i}`,style:r.style,tagline:r.note,pace:r.days.flat().length>4?3:2,
-        density:r.days.flat().length/2,stay:{area:stay.area,dist:stay.note},food:c.food,walk:[],walkNote:'出行前查询实际交通',
-        highlights:r.days.flat(),routeDays:r.days,memoryIds:[]}));
+      const plansDefault = c.routes.map((r,i)=>{ const days=r.days.slice(0,dayCount); return ({id:`${c.slug}-${i}`,style:r.style,tagline:`${dayCount} 天 · ${r.note}`,pace:days.some(d=>d.length>2)?3:2,
+        density:Math.round(days.flat().length/dayCount*10)/10,stay:{area:stay.area,dist:stay.note},food:c.food,walk:[],walkNote:'出行前查询实际交通',
+        highlights:days.flat().slice(0,6),routeDays:days,memoryIds:[]});});
       const plansMemory = plansDefault.map(p=>{
         const ids = new Set();
         const routeDays=p.routeDays.map((day,d)=>{
@@ -47,7 +55,7 @@
             if(p.id===(selected||plansDefault[0].id)) removed.forEach(name=>changes.push({id:`slow-${d}-${name}`,day:d+1,kind:'removed',target:name,text:`减少赶场：${name}留作备选`,memoryIds:slow.map(m=>m.id)}));
           } return names;
         });
-        return {...p,routeDays,highlights:routeDays.flat(),density:routeDays.flat().length/2,memoryIds:[...ids],memoryNote:'根据你已记录的节奏或展馆偏好调整'};
+        return {...p,routeDays,highlights:routeDays.flat().slice(0,6),density:Math.round(routeDays.flat().length/dayCount*10)/10,memoryIds:[...ids],memoryNote:'根据你已记录的节奏或展馆偏好调整'};
       });
       const index=Math.max(0,plansDefault.findIndex(p=>p.id===selected));
       const chosen=plansDefault[index], adapted=plansMemory[index];
@@ -66,7 +74,7 @@
       return {plansDefault,plansMemory,itinDefault,itinMemory,diffs:changes,
         diffSummary:changes.length?'按当前方案和已记录偏好调整，逐条变化见下方。':'当前偏好未触发这套路线的调整，保留原安排。'};
     };
-    Object.assign(c,c.resolve({date:'2026-10-02'},null,[]));
+    Object.assign(c,c.resolve({date:'2026-10-02',days:4},null,[]));
     delete c.entries;
     return c;
   }

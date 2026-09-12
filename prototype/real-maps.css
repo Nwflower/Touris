@@ -1,0 +1,15 @@
+.real-map{position:relative;border:1px solid var(--line,#ddd);border-radius:12px;overflow:hidden;background:#edf0eb;margin:8px 0;}
+.real-map-canvas{height:320px;width:100%;z-index:0;}
+.real-map.small .real-map-canvas{height:210px;}
+.real-map-status{font-size:12px;padding:8px 10px;background:#fff8de;line-height:1.5;}
+.real-map-status[hidden]{display:none;}
+.real-map-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 9px;font-size:11px;background:#faf9f6;}
+.real-map-foot a{color:#3e588b;}
+.real-map-foot button{border:0;background:none;text-decoration:underline;cursor:pointer;font-size:11px;}
+.touris-marker span{display:block;border:2px solid white;border-radius:14px;color:#fff;font-size:11px;font-weight:bold;text-align:center;line-height:24px;box-shadow:0 1px 5px #5558;}
+.real-map .leaflet-control-attribution{font-size:10px;max-width:100%;white-space:normal;}
+.real-map .leaflet-popup-content p{margin:6px 0;}
+.plan-highlights-note{font-size:12px;color:var(--ink-3);margin:8px 0;}
+
+.spot-source,.image-credit{font-size:11px;line-height:1.5;color:var(--ink-3);margin-top:5px;}
+.image-credit a,.spot-source{color:#52648c;}

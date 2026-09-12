@@ -1,0 +1,147 @@
+{
+  "license": "© OpenStreetMap contributors, ODbL",
+  "retrieved": "2026-09-12",
+  "elements": [
+    {
+      "type": "way",
+      "id": 1302798687,
+      "center": {
+        "lat": 30.2416029,
+        "lon": 120.1648148
+      },
+      "tags": {
+        "name": "清河坊历史文化特色街区",
+        "tourism": "theme_park"
+      }
+    },
+    {
+      "type": "way",
+      "id": 445291616,
+      "center": {
+        "lat": 30.2308928,
+        "lon": 120.144267
+      },
+      "tags": {
+        "landuse": "religious",
+        "name": "净慈寺",
+        "religion": "buddhist"
+      }
+    },
+    {
+      "type": "way",
+      "id": 161455677,
+      "center": {
+        "lat": 30.2346737,
+        "lon": 120.1155563
+      },
+      "tags": {
+        "addr:city": "杭州市",
+        "addr:district": "西湖区",
+        "addr:housenumber": "88",
+        "addr:province": "浙江省",
+        "addr:street": "龙井路",
+        "fee": "no",
+        "name": "中国茶叶博物馆（双峰馆区）",
+        "name:en": "China National Tea Museum (Shuangfeng)",
+        "name:fr": "Musée national du thé de Chine (Shuangfeng)",
+        "opening_hours": "Tu-Su 09:00-16:00; Mo off; PH 09:00-16:00",
+        "tourism": "museum",
+        "website": "https://www.teamuseum.cn/",
+        "wikidata": "Q1514687"
+      }
+    },
+    {
+      "type": "relation",
+      "id": 13794808,
+      "center": {
+        "lat": 30.2542757,
+        "lon": 120.1152767
+      },
+      "tags": {
+        "garden:type": "botanical",
+        "leisure": "garden",
+        "name": "杭州植物园",
+        "type": "multipolygon"
+      }
+    },
+    {
+      "type": "way",
+      "id": 240896441,
+      "center": {
+        "lat": 23.1188527,
+        "lon": 113.3205891
+      },
+      "tags": {
+        "addr:city": "广州市",
+        "addr:housenumber": "4号",
+        "addr:postcode": "510623",
+        "addr:street": "珠江东路 Zhujiang Road East",
+        "amenity": "library",
+        "building": "yes",
+        "building:levels": "7",
+        "internet_access": "wlan",
+        "level": "10",
+        "name": "广州图书馆",
+        "name:en": "Guangzhou Library",
+        "name:zh": "广州图书馆",
+        "opening_hours": "Th-Tu 09:00-21:00",
+        "phone": "+86 20 8383 6666",
+        "website": "http://www.gzlib.gov.cn/",
+        "wheelchair": "yes",
+        "wikidata": "Q5613736",
+        "wikimedia_commons": "Category:Guangzhou Library",
+        "wikipedia": "zh:广州图书馆"
+      }
+    },
+    {
+      "type": "way",
+      "id": 240896442,
+      "center": {
+        "lat": 23.1174149,
+        "lon": 113.3214228
+      },
+      "tags": {
+        "addr:city": "广州市",
+        "addr:district": "天河区",
+        "addr:housenumber": "2号",
+        "addr:street": "珠江东路",
+        "building": "yes",
+        "building:levels": "5",
+        "internet_access": "wlan",
+        "name": "广东省博物馆",
+        "name:en": "Guangdong Museum",
+        "name:zh-Hans": "广东省博物馆",
+        "name:zh-Hant": "廣東省博物館",
+        "opening_hours": "Tu-Su 09:00-17:00",
+        "operator": "Guangdong Museum",
+        "operator:type": "government",
+        "start_date": "2010-5-18",
+        "tourism": "museum",
+        "website": "http://www.gdmuseum.com/",
+        "wheelchair": "yes",
+        "wikidata": "Q5613644",
+        "wikimedia_commons": "Category:Guangdong Museum",
+        "wikipedia": "zh:广东省博物馆"
+      }
+    },
+    {
+      "type": "way",
+      "id": 847909993,
+      "center": {
+        "lat": 23.1037233,
+        "lon": 113.3207438
+      },
+      "tags": {
+        "building": "yes",
+        "fee": "no",
+        "name": "广州艺术博物院",
+        "name:en": "Guangzhou Museum of Art",
+        "name:ru": "Художественный музей Гуанчжоу",
+        "name:zh": "广州艺术博物院",
+        "opening_hours": "Tu-Su,PH 09:00-17:30",
+        "tourism": "gallery",
+        "wikidata": "Q25378279"
+      }
+    }
+  ]
+}
