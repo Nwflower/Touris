@@ -72,7 +72,14 @@ if [ -d "$WT/prototype" ]; then
 fi
 
 cd "$WT"
-if git diff --quiet && git diff --cached --quiet && [ -z "$(git status --porcelain)" ]; then
+
+# ★ 先 add 再判断，不要用 git status 判断有没有改动。
+#   镜像刚用 cp 覆盖过这些文件，mtime 是"现在"，git 会把这些文件报成已修改
+#   （racy timestamp）。据此判断会得出"有 6 项待发布"，而紧接着 git add -A
+#   刷新内容后发现无差异、commit 报 nothing to commit——配合 set -e，脚本就
+#   会在 worktree remove 之前中止，留下一个游离的 worktree。
+git add -A
+if git diff --cached --quiet; then
   echo "gh-pages 已是最新，无需发布。"
   cd ..
   git worktree remove --force "$WT"
@@ -80,8 +87,8 @@ if git diff --quiet && git diff --cached --quiet && [ -z "$(git status --porcela
 fi
 
 echo "=== 待发布变更 ==="
-git status --short | head -20
-git status --short | wc -l | xargs -I{} echo "  共 {} 项"
+git diff --cached --name-status | head -20
+git diff --cached --name-only | wc -l | xargs -I{} echo "  共 {} 项"
 
 if [ "$CHECK" = 1 ]; then
   echo "（--check 未写入、未推送）"
@@ -90,7 +97,6 @@ if [ "$CHECK" = 1 ]; then
   exit 0
 fi
 
-git add -A
 git commit -q -m "deploy: 同步 prototype/ 到 Pages ($(date '+%Y-%m-%d %H:%M'))"
 git push origin HEAD:"$BRANCH" 2>&1 | tail -2
 cd ..
