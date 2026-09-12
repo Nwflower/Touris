@@ -55,6 +55,17 @@ body.home-mode .home{
 }
 .topbar.home-top .brand{color:#fff}
 .topbar.home-top .brand small{color:rgba(255,255,255,.6)}
+/* 「知途」二字是位图（--logo-mark），不像旁边的文字那样能继承 color。
+   所以首页反白时得单独把它翻过来——否则黑标压在深色照片上，旁边文字却是白的。
+   滚过 hero 后顶栏变浅底深字，再翻回去。
+   复原用 brightness(1) invert(0) 而不是 none：过滤器列表和 none 之间没法插值，
+   写 none 会「啪」地跳变，和文字那边 .35s 的过渡对不上。 */
+.topbar.home-top .brand .logo{filter:brightness(0) invert(1)}
+.topbar.home-top.scrolled .brand .logo{filter:brightness(1) invert(0)}
+/* 位图走 filter、文字走 color，给同一个时长才叫同步变色 */
+.topbar.home-top .brand,
+.topbar.home-top .brand small{transition:color .35s}
+.topbar.home-top .brand .logo{transition:filter .35s}
 .topbar.home-top .top-sep{background:rgba(255,255,255,.2)}
 .topbar.home-top .persona-sw .lbl{color:rgba(255,255,255,.7)}
 /* Hero 顶部:去掉透明毛玻璃边框背景,只留文字(开关滑块保留) */
