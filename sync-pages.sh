@@ -34,7 +34,7 @@ CHECK=0
 git worktree prune
 [ -d "$WT" ] && rm -rf "$WT"
 
-git fetch origin "$BRANCH" --quiet
+git fetch origin "refs/heads/$BRANCH:refs/remotes/origin/$BRANCH" --quiet
 git worktree add --detach "$WT" "origin/$BRANCH" --quiet
 
 # 从源目录镜像到 worktree
