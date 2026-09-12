@@ -1,3 +1,4 @@
+:root {--d1:#b96843;--d2:#527b65;--d3:#586a99;--d4:#b59043;}
 /* ==========================================================================
    Touris 知途 · 追加样式（合并批）
    品牌 LOGO · 左栏记忆区 · 景点缩略图 · 模拟地图 · 区域候选推荐组
@@ -205,3 +206,11 @@
 /* ============================ 右下角提示位 ============================ */
 /* 底栏已移除，toast 不再需要为它让位 */
 .toast-wrap{bottom:22px}
+
+/* 静态城市攻略来源 */
+.city-guide {padding:18px 22px;margin:0 0 22px;line-height:1.65;}
+.city-guide p {color:var(--ink-3);font-size:13px;margin:6px 0;}
+.city-guide summary {cursor:pointer;color:var(--indigo);font-size:13px;}
+.city-guide ul {padding-left:20px;display:grid;gap:10px;}
+.city-guide a {color:var(--indigo);overflow-wrap:anywhere;}
+.city-guide small {display:block;color:var(--ink-3);}

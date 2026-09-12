@@ -54,3 +54,11 @@ python -m http.server 8000 --directory prototype
 ## 支持城市
 
 目的地输入框支持从 `京都`、`北京`、`上海` 中选择。每个城市都有独立的三套方案、默认/记忆版四日行程、景点资料、餐饮住宿候选和地图点位。
+
+### 杭州、广州 MVP 素材包
+
+新增杭州、广州，每城 3 套固定 **2 日**路线、6 个景点、当地照片和攻略参考（各含 3 篇小红书笔记）。可从首页快捷入口、目的地卡片或需求表单进入。选择的方案会对应到详情与记忆对照页。
+
+资料和维护说明见 [城市素材文档](docs/cities/README.md)。新增数据文件为 `prototype/city-hangzhou-guangzhou.js`，图片位于 `prototype/assets/cities/`。地图仍是路线示意，票价、预约和交通需出行前核对。
+
+回归验证：`cd prototype && node _verify.js`。
