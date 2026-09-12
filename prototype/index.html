@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="styles-extra.css">
 <link rel="stylesheet" href="home.css">
+<link rel="stylesheet" href="account.css">
 </head>
 <body>
 
@@ -25,11 +26,15 @@
 <!-- 记忆溯源悬浮卡 -->
 <div class="mem-pop" id="memPop" hidden></div>
 
+<!-- 登录 / 注册（静态声明 + hidden，与 #memPop 一致） -->
+<div id="authOverlay" hidden></div>
+
 <!-- toast -->
 <div class="toast-wrap" id="toastWrap"></div>
 
 <script src="images.js"></script>
 <script src="data.js"></script>
+<script src="account.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
