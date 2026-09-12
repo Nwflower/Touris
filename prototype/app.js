@@ -1123,76 +1123,35 @@ function itemView(it, day){
   </div>`;
 }
 
-/* ---------------- 离线地图挂载 ---------------- */
-/** 把当前城市 + 当前天的点位转成地图要的形式；没有查证坐标的点直接不画 */
-function mapPointsFor(day){
-  const city = S.req.dest;
-  const out = [];
-  day.items.forEach(it => {
-    const name = it.kind === 'food' ? restPoi()[it.name] : (it.kind === 'free' ? null : it.name);
-    if(!name) return;
-    const c = window.TourisMap && TourisMap.coord(city, name);
-    if(!c) return;
-    out.push({ name, lng: c.lng, lat: c.lat, kind: it.kind, label: `${it.time} ${name}` });
-  });
-  return out;
-}
-
-function mapDegrade(reason){
-  const msg = reason === 'file'
-    ? '离线地图需要 HTTP 服务：<code>node tools/tile-server.js 8080 tiles</code><br>然后访问 <code>http://127.0.0.1:8080/</code>（<code>file://</code> 下无 Range 与 worker，瓦片读不了）'
-    : reason === 'vendor'
-      ? '地图依赖未加载（vendor/ 下的 maplibre 与 pmtiles）'
-      : '地图初始化失败，已回退到示意图';
-  return `<div class="map-degrade"><span class="di">🗺</span><div>${msg}</div></div>`;
-}
-
-function mountMaps(){
-  const box = $('tourisMap');
-  if(!box) return;
-  const it = itin();
-  const day = it.days.find(d => d.day === S.s2day) || it.days[0];
-  const pts = mapPointsFor(day);
-
-  if(!window.TourisMap || !TourisMap.supported()){
-    box.innerHTML = mapDegrade(TourisMap && TourisMap.failedReason === 'file' ? 'file' : 'vendor');
-    return;
-  }
-  const city = S.req.dest;
-  if(!TourisMap.hasCity(city)){
-    box.innerHTML = mapDegrade('coord');
-    return;
-  }
-  TourisMap.init('tourisMap', city, pts, { fit: true }).then(ok => {
-    if(!ok){
-      const el = $('tourisMap');
-      if(el && !TourisMap.isReady) el.innerHTML = mapDegrade(TourisMap.failedReason);
-    }
-  });
-}
-
 function mapPanel(){
   const it = itin();
   const day = it.days.find(d => d.day === S.s2day) || it.days[0];
-  /* 骨架里留一个空容器，真正的瓦片由 mountMaps() 在渲染后挂上去 */
+  const routeDays = it.days.map(d => d.items
+    .map(i => i.kind === 'food' ? restPoi()[i.name] : (i.kind === 'free' ? null : i.name))
+    .filter(n => n && poi()[n]));
   return `
   <div class="map-col">
     <div class="card map-panel">
-      <h4>🗺 真实底图 · 离线瓦片<span class="mini-lbl">${esc(S.req.dest)} · 可缩放拖动</span></h4>
-      <div id="tourisMap" class="touris-map"></div>
-      <div class="map-legend">
-        <span><i style="background:var(--clay)"></i>景点</span>
-        <span><i style="background:var(--green)"></i>餐饮区域</span>
+      <h4>🗺 全程概览<span class="mini-lbl">${it.days.length} 天 · 按天配色 · 点击切换</span></h4>
+      ${overviewMap(routeDays, { highlightDay: S.s2day })}
+      <div class="day-switch">
+        ${routeDays.map((d,i)=>`<button class="${S.s2day===i+1?'on':''}" data-act="s2day" data-d="${i+1}"><i style="background:${DAY_C[i]}"></i>D${i+1}</button>`).join('')}
       </div>
     </div>
 
     <div class="card map-panel">
       <h4>📍 第 ${day.day} 天动线<span class="mini-lbl">${esc(day.theme)}</span></h4>
+      ${dayMap(day)}
+      <div class="map-legend">
+        <span><i style="background:var(--clay)"></i>景点</span>
+        <span><i style="background:var(--green)"></i>餐饮区域</span>
+        ${memActive()?'<span><i style="background:var(--indigo)"></i>记忆影响</span>':''}
+      </div>
       <div class="day-switch">
         ${it.days.map(d=>`<button class="${d.day===S.s2day?'on':''}" data-act="s2day" data-d="${d.day}">D${d.day}</button>`).join('')}
       </div>
-      <p class="map-disclaim">底图为 OpenStreetMap 数据的离线矢量瓦片（本地 PMTiles，不联网）。点位坐标见 coords.js，未查证的点不绘制。</p>
     </div>
+    <p class="map-disclaim">${city()?.geo ? '底图 © OpenStreetMap；点位为景点参考位置，非入口导航。虚线连接游览顺序，不代表实际道路。' : '示意图，非真实比例；点位为区域中心，不代表具体门店位置。'}</p>
   </div>`;
 }
 
@@ -1436,9 +1395,6 @@ function _doRender(){
   $('work').innerHTML = (map[S.screen] || viewS0)();
   if(globalThis.TourisMaps) TourisMaps.mount();
   if(S.screen === 's5' && memActive() && !S.diffPlayed) playDiff();
-  // 地图容器是渲染出来的空 div，挂载要等 DOM 就位
-  if(S.screen === 's2') requestAnimationFrame(mountMaps);
-  else if(window.TourisMap && TourisMap.isReady) TourisMap.destroy();
   _currentScreen = S.screen;
 }
 
