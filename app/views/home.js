@@ -86,6 +86,35 @@ const ViewHome = (() => {
     }).join('');
   }
 
+  /* ---------------- 点位卡片 ----------------
+     点位补到 20+ 之后，按数据顺序取前几个既看不到全貌、也看不出偏好。改成：
+     命中偏好多的排前面——这就是「会优先」在首页的体现——同分按评分。 */
+  const SPOT_CARDS = 12;
+
+  function spotCards(cons){
+    const c = city();
+    if(!c) return '';
+    const hits = nm => (c.spots[nm].prefer || []).filter(t => cons.prefer.includes(t)).length;
+    return Object.keys(c.spots).slice()
+      .sort((a, b) => hits(b) - hits(a) || (c.spots[b].score || 0) - (c.spots[a].score || 0))
+      .slice(0, SPOT_CARDS)
+      .map(name => {
+        const s = c.spots[name];
+        const liked = (s.prefer || []).find(t => cons.prefer.includes(t));
+        return `<div class="panel spotcard">
+          ${Thumb.html(name, 'sm')}
+          <div class="sc-body">
+            <div class="row wrap" style="gap:6px">
+              <b>${esc(name)}</b>
+              ${liked ? `<span class="badge badge-mem">🧠 ${esc(LIKE_TEXT(liked))}</span>` : ''}
+            </div>
+            <div class="tiny muted" style="margin-top:5px">${esc(s.intro || '')}</div>
+            <div class="tiny muted" style="margin-top:4px">${esc(s.score)} 分 · ${esc(s.count)} 条点评 · ${esc(s.src || '')}</div>
+          </div>
+        </div>`;
+      }).join('');
+  }
+
   /* ---------------- 首页正文 ---------------- */
 
   return function ViewHome(){
@@ -238,25 +267,9 @@ const ViewHome = (() => {
       <div class="sec-head" data-reveal>
         <span class="eyebrow">${esc(c ? c.label : '')}</span>
         <h2>这里的点位</h2>
-        <p>${n ? '带 🧠 的会参与排序。' : '还没有记忆参与，先看看有哪些地方。'}</p>
+        <p>共 ${Object.keys(c ? c.spots : {}).length} 个点位${n ? '，带 🧠 的会参与排序。' : '。还没有记忆参与，先看看有哪些地方。'}</p>
       </div>
-      <div class="spotgrid">
-        ${Object.keys(c ? c.spots : {}).slice(0, 8).map(name => {
-          const s = c.spots[name];
-          const liked = (s.prefer || []).find(t => cons.prefer.includes(t));
-          return `<div class="panel spotcard">
-            ${Thumb.html(name, 'sm')}
-            <div class="sc-body">
-              <div class="row wrap" style="gap:6px">
-                <b>${esc(name)}</b>
-                ${liked ? `<span class="badge badge-mem">🧠 ${esc(LIKE_TEXT(liked))}</span>` : ''}
-              </div>
-              <div class="tiny muted" style="margin-top:5px">${esc(s.intro || '')}</div>
-              <div class="tiny muted" style="margin-top:4px">${esc(s.score)} 分 · ${esc(s.count)} 条点评 · ${esc(s.src || '')}</div>
-            </div>
-          </div>`;
-        }).join('')}
-      </div>
+      <div class="spotgrid">${spotCards(cons)}</div>
     </div>
 
     <div class="wrap cta">

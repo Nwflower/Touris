@@ -304,6 +304,8 @@ const ViewPlan = (() => {
                 <div class="row wrap" style="gap:8px">
                   <span class="daynum">D${d.n}</span>
                   <b>${esc(d.theme || '')}</b>
+                  ${on && d.changed
+                    ? '<span class="tiny muted">（原计划主题）</span>' : ''}
                   ${dropped.length ? `<span class="badge badge-warn">记忆去掉了 ${dropped.length} 处</span>` : ''}
                   ${cut.length ? `<span class="badge badge-plain">节奏裁掉 ${cut.length} 处</span>` : ''}
                   ${filled ? `<span class="badge badge-ok">按偏好补进 ${filled} 处</span>` : ''}

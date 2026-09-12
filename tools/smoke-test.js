@@ -630,11 +630,12 @@ function ok(name, cond, extra){
          }));
      })()`));
 
-  ok('★补进来的点不编造槽位备注（它自己的简介另有显示，不重复）', g(`
+  ok('★补进来的点不沿用槽位的时长与备注（那是写给原点的）', g(`
      (() => {
-       const a = Derive.compose(CITY_DATA['京都'], Archive.constraints())
-         .days.flatMap(d => d.entries).filter(e => e.origin === 'added');
-       return a.length > 0 && a.every(e => e.note === '');
+       const a = ['京都','北京','上海']
+         .flatMap(k => Derive.compose(CITY_DATA[k], Archive.constraints()).days)
+         .flatMap(d => d.entries).filter(e => e.origin === 'added');
+       return a.length > 0 && a.every(e => e.note === '' && e.dur === '');
      })()`));
 
   ok('★裁剪：同一天里被裁掉的，偏好命中数不高于留下的', g(`
@@ -714,6 +715,55 @@ function ok(name, cond, extra){
     // 记忆调整过的天不该再拿它当这一天的说明。
     const changed = (planHTML.match(/记忆调整过/g) || []).length;
     return changed > 0;
+  })());
+  ok('改动过的天把主题标成「原计划主题」', /（原计划主题）/.test(planHTML));
+
+  /* ======================================================================
+     [N] 北京/上海的点位补齐（12 → 21/24）
+
+     补位效果受「库内非冲突景点数量」限制，而原来北京/上海各只有 12 个点位，
+     砍完就没东西可补——北京 D2、上海 D4 会直接空掉。这一节锁住补齐后的结果。
+     ====================================================================== */
+  console.log('\n[N] 北京 / 上海点位库');
+  for(const [k, least] of [['北京', 20], ['上海', 20]]){
+    const n = g(`Object.keys(CITY_DATA['${k}'].spots).length`);
+    ok(`  ${k} 点位 ≥ ${least}（原 12）`, n >= least, n + ' 个');
+    ok(`  ${k} 每个点都有坐标`, g(`
+       (() => { const c = CITY_DATA['${k}'];
+         return Object.keys(c.spots).every(n => c.poi[n]); })()`));
+    ok(`  ${k} 每个点都有配图条目`, g(`
+       (() => { const c = CITY_DATA['${k}'];
+         return Object.keys(c.spots).every(n => c.images[n]); })()`));
+  }
+
+  ok('★上海博物馆带 museum 回避（原来标成"偏好寺庙"且不回避博物馆）', g(`
+     (() => {
+       const s = CITY_DATA['上海'].spots['上海博物馆'];
+       return (s.avoid || []).includes('museum') && !(s.prefer || []).includes('temple');
+     })()`));
+
+  console.log('\n[N2] 点位补齐后补位能把空缺填满');
+  for(const k of ['北京', '上海']){
+    ok(`  ${k}：空天为 0（原来各空 1 天）`, g(`
+       (() => {
+         const p = Derive.compose(CITY_DATA['${k}'], Archive.constraints());
+         return p.emptyDays === 0;
+       })()`), g(`Derive.compose(CITY_DATA['${k}'], Archive.constraints()).emptyDays`) + ' 天空着');
+    ok(`  ${k}：补位数量 > 1（原来只有 1）`, g(`
+       Derive.compose(CITY_DATA['${k}'], Archive.constraints()).added.length`) > 1);
+  }
+
+  console.log('\n[N3] 首页点位卡');
+  go('#/');
+  g('UI.refresh()');
+  const homeHTML = sb.__nodes.view.innerHTML;
+  ok('点位卡展示 12 个（原来固定 8 个）',
+     (homeHTML.match(/class="panel spotcard"/g) || []).length === 12,
+     (homeHTML.match(/class="panel spotcard"/g) || []).length + ' 个');
+  ok('标了点位总数', /共 \d+ 个点位/.test(homeHTML));
+  ok('带 🧠 的排在最前面（偏好命中优先）', (() => {
+    const cards = homeHTML.split('class="panel spotcard"').slice(1);
+    return cards.length > 0 && /badge-mem/.test(cards[0]);
   })());
 
   console.log('\n' + (fail ? `✗ ${fail} 项失败 / ${pass + fail}` : `✓ 全部 ${pass} 项通过`));
