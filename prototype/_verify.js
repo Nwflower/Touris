@@ -34,7 +34,7 @@ const ctx = { document, window, console, setTimeout:()=>0, requestAnimationFrame
   IntersectionObserver: class { observe(){} unobserve(){} disconnect(){} }, Math, JSON, Set, Map,
   Array, Object, String, Number, RegExp };
 vm.createContext(ctx);
-for(const f of ['images.js','data.js','city-data.js','city-expansion.js','city-hangzhou-guangzhou.js','account.js','app.js']){
+for(const f of ['semantics.js','images.js','data.js','city-data.js','city-expansion.js','city-hangzhou-guangzhou.js','account.js','app.js']){
   vm.runInContext(fs.readFileSync(f,'utf8'), ctx, { filename:f });
 }
 const g = n => vm.runInContext(n, ctx);
