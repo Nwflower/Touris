@@ -181,7 +181,30 @@
       {day:3,date:'10-04',theme:'愚园路 + 苏州河',pace:2,paceNote:'09:00 出发 · 步行 7.5km',items:[{id:'d3-1',kind:'food',time:'09:00',name:'s-yuyuanrd',memoryIds:baseMem.market},{id:'d3-2',kind:'spot',time:'10:00',name:'愚园路',dur:'120 min',memoryIds:baseMem.market},{id:'d3-3',kind:'spot',time:'14:30',name:'静安寺',dur:'60 min'},{id:'d3-4',kind:'spot',time:'16:30',name:'苏州河',dur:'120 min',memoryIds:baseMem.river}]},
       {day:4,date:'10-05',theme:'龙华 + 滨江返程',pace:1,paceNote:'10:00 出发 · 步行 8.3km',memoryIds:['m01'],items:[{id:'d4-1',kind:'spot',time:'10:00',name:'龙华寺',dur:'90 min',memoryIds:baseMem.nature},{id:'d4-2',kind:'food',time:'12:00',name:'s-xuhui',memoryIds:baseMem.local},{id:'d4-3',kind:'spot',time:'14:00',name:'徐汇滨江',dur:'120 min',memoryIds:baseMem.river},{id:'d4-4',kind:'spot',time:'17:00',name:'上海南站',dur:'—',note:'返程'}]}
     ],
-    bigMuseum:'上海博物馆',queueFood:'s-lujiazui',marketArea:'老城厢一带',sunsetSpot:'外滩',localMarket:'愚园路',resortArea:'衡山路一带',cultureStyle:'海派街区型',cultureTagline:'沿梧桐街区与滨水空间慢慢走',images:{}
+    bigMuseum:'上海博物馆',queueFood:'s-lujiazui',marketArea:'老城厢一带',sunsetSpot:'外滩',localMarket:'愚园路',resortArea:'衡山路一带',cultureStyle:'海派街区型',cultureTagline:'沿梧桐街区与滨水空间慢慢走',
+    images:{
+      '外滩':'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Pudong_Shanghai_November_2017_panorama.jpg/960px-Pudong_Shanghai_November_2017_panorama.jpg',
+      '南京东路':'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/20090705_Shanghai_Nanjing_Road_0602.jpg/960px-20090705_Shanghai_Nanjing_Road_0602.jpg',
+      '豫园':'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Shanghai_-_Yu_Garden_-_0035.jpg/960px-Shanghai_-_Yu_Garden_-_0035.jpg',
+      '城隍庙':'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Shanghai_-_Yu_Garden_-_0035.jpg/960px-Shanghai_-_Yu_Garden_-_0035.jpg',
+      '陆家嘴':'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Pudong_Shanghai_November_2017_panorama.jpg/960px-Pudong_Shanghai_November_2017_panorama.jpg',
+      '上海博物馆':'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Shanghai_Museum_exterior_1.jpg/960px-Shanghai_Museum_exterior_1.jpg',
+      '上海中心':'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Pudong_Shanghai_November_2017_panorama.jpg/960px-Pudong_Shanghai_November_2017_panorama.jpg',
+      '武康路':'https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Wukang_Mansion_20250504-2.jpg/960px-Wukang_Mansion_20250504-2.jpg',
+      '安福路':'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/A_brunch_spot_at_Anfu_Rd.jpg/960px-A_brunch_spot_at_Anfu_Rd.jpg',
+      '思南公馆':'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Sinan_Mansions%2C_Shanghai.jpg/960px-Sinan_Mansions%2C_Shanghai.jpg',
+      '田子坊':'https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Tianzifang_im_Sommer_2025.jpg/960px-Tianzifang_im_Sommer_2025.jpg',
+      '新天地':'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Xintiandi_Area_%286042357841%29.jpg/960px-Xintiandi_Area_%286042357841%29.jpg',
+      '愚园路':'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/202001_608_Lane_of_Yuyuan_Road%2C_Shanghai.jpg/960px-202001_608_Lane_of_Yuyuan_Road%2C_Shanghai.jpg',
+      '静安寺':'https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/View_From_Jing-An-temple_Shanghai.JPG/960px-View_From_Jing-An-temple_Shanghai.JPG',
+      '苏州河':'https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Russian_Consulate_and_Suzhou_River_Shanghai.JPG/960px-Russian_Consulate_and_Suzhou_River_Shanghai.JPG',
+      '朱家角古镇':'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Canal_in_Zhujiajiao%2C_Qingpu%2C_Shanghai%2C_China.jpg/960px-Canal_in_Zhujiajiao%2C_Qingpu%2C_Shanghai%2C_China.jpg',
+      '中华艺术宫':'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/China_Art_Museum%2C_Shanghai.jpg/960px-China_Art_Museum%2C_Shanghai.jpg',
+      '徐汇滨江':'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Xuhui_Riverside_Shanghai.jpg/960px-Xuhui_Riverside_Shanghai.jpg',
+      '龙华寺':'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Shanghai_-_Longhua_Tempel_-_0009.jpg/960px-Shanghai_-_Longhua_Tempel_-_0009.jpg',
+      '上海南站':'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Shanghai_South_Railway_Station_metro_station_line_15_concourse.jpg/960px-Shanghai_South_Railway_Station_metro_station_line_15_concourse.jpg',
+      '虹口北外滩':'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Pudong_CBD_viewed_from_the_North_Bund_in_Shanghai.jpg/960px-Pudong_CBD_viewed_from_the_North_Bund_in_Shanghai.jpg'
+    }
   });
 
   globalThis.CITY_DATA = {北京:beijing,上海:shanghai};

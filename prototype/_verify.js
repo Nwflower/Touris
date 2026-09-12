@@ -30,7 +30,8 @@ const document = {
 };
 const window = { addEventListener:()=>{}, innerWidth:1600, innerHeight:900 };
 
-const ctx = { document, window, console, setTimeout:()=>0, Math, JSON, Set, Map,
+const ctx = { document, window, console, setTimeout:()=>0, requestAnimationFrame:fn=>fn(),
+  IntersectionObserver: class { observe(){} unobserve(){} disconnect(){} }, Math, JSON, Set, Map,
   Array, Object, String, Number, RegExp };
 vm.createContext(ctx);
 for(const f of ['images.js','data.js','city-data.js','app.js']){
@@ -137,7 +138,8 @@ const blob = JSON.stringify({ DINING, STAY_DEFAULT, STAY_MEMORY });
 /* ---------- 桩 DOM 实跑 ---------- */
 console.log('--- 渲染 16 种组合 ---');
 let fails = 0;
-const render = g('render'), S = g('S'), usedMemoryIds = g('usedMemoryIds');
+/* 直接调用同步渲染核心，避免页面切换动画的计时器干扰桩 DOM 断言。 */
+const render = g('_doRender'), S = g('S'), usedMemoryIds = g('usedMemoryIds');
 for(const p of ['blank','veteran']){
   for(const on of [true,false]){
     for(const sc of ['s0','s1','s2','s5']){
@@ -206,8 +208,8 @@ Object.entries(CITY_DATA).forEach(([name,c]) => {
     if(d.picks.length < 2) cityBad.push('餐饮候选不足 '+id);
     if(!/一带/.test(d.area)) cityBad.push('餐饮区域口径错误 '+id);
   });
-  if(name === '北京') Object.keys(c.spots).forEach(n => {
-    if(!c.images[n]) cityBad.push('北京景点缺少图片 '+n);
+  if(['北京','上海'].includes(name)) Object.keys(c.spots).forEach(n => {
+    if(!c.images[n]) cityBad.push(name+'景点缺少图片 '+n);
   });
   for(const persona of ['blank','veteran']) for(const on of [false,true]) for(const screen of ['s0','s1','s2','s5']){
     S.req.dest=name; S.persona=persona; S.memoryOn=on; S.screen=screen; S.diffPlayed=true;
