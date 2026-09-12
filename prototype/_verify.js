@@ -187,7 +187,7 @@ const imgCount = Object.values(SPOT_IMG||{}).filter(Boolean).length;
 console.log(`--- 配图 ${imgCount} / ${Object.keys(SPOTS).length} 个景点（缺图回退占位插画）---`);
 
 /* ---------- 新增城市：全数据引用 + 各屏渲染 ---------- */
-console.log('--- 北京 / 上海城市数据 ---');
+console.log('--- 北京 / 上海 / 杭州 / 威海城市数据 ---');
 Object.entries(CITY_DATA).forEach(([name,c]) => {
   const ids = new Set(MEMORIES.map(m=>m.id));
   const cityBad = [];
@@ -208,7 +208,7 @@ Object.entries(CITY_DATA).forEach(([name,c]) => {
     if(d.picks.length < 2) cityBad.push('餐饮候选不足 '+id);
     if(!/一带/.test(d.area)) cityBad.push('餐饮区域口径错误 '+id);
   });
-  if(['北京','上海'].includes(name)) Object.keys(c.spots).forEach(n => {
+  if(['北京','上海','杭州','威海'].includes(name)) Object.keys(c.spots).forEach(n => {
     if(!c.images[n]) cityBad.push(name+'景点缺少图片 '+n);
   });
   for(const persona of ['blank','veteran']) for(const on of [false,true]) for(const screen of ['s0','s1','s2','s5']){

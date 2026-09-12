@@ -392,7 +392,7 @@ function viewHome(){
 
         <div class="hero-quick">
           <span>🔥 热门:</span>
-          ${['京都','奈良','箱根','大阪'].map(d=>`<button class="chip" data-act="quick" data-d="${d}">${d}</button>`).join('')}
+          ${['京都','北京','上海','杭州','威海'].map(d=>`<button class="chip" data-act="quick" data-d="${d}">${d}</button>`).join('')}
         </div>
       </div>
 
@@ -730,7 +730,7 @@ function viewS0(){
     <div class="card s0-form">
       <div class="f-grid">
         <div class="field"><label>目的地</label><input id="f-dest" list="city-list" value="${esc(S.req.dest)}">
-          <datalist id="city-list"><option value="京都"><option value="北京"><option value="上海"></datalist></div>
+          <datalist id="city-list"><option value="京都"><option value="北京"><option value="上海"><option value="杭州"><option value="威海"></datalist></div>
         <div class="field"><label>出发日期</label><input id="f-date" type="date" value="${esc(S.req.date)}"></div>
         <div class="field"><label>游玩天数</label>
           <select id="f-days">${[3,4,5,6].map(d=>`<option ${d===S.req.days?'selected':''}>${d}</option>`).join('')}</select>
@@ -1462,8 +1462,8 @@ document.addEventListener('click', e => {
       const d = $('f-dest'), dt = $('f-date'), dy = $('f-days'), pp = $('f-people');
       if(d){
         const dest = d.value.trim() || '京都';
-        S.req.dest = ['京都','北京','上海'].includes(dest) ? dest : '京都';
-        if(dest !== S.req.dest) toast('当前演示已支持京都、北京、上海，先为你显示京都。');
+        S.req.dest = ['京都','北京','上海','杭州','威海'].includes(dest) ? dest : '京都';
+        if(dest !== S.req.dest) toast('当前演示已支持京都、北京、上海、杭州、威海，先为你显示京都。');
       }
       if(dt) S.req.date = dt.value || S.req.date;
       if(dy) S.req.days = +dy.value;
