@@ -67,9 +67,11 @@
 .m-river{stroke:#BCD2E0;stroke-width:2.6;fill:none;opacity:.95}
 .m-green circle{fill:#CBD8BF;opacity:.85}
 .m-lab text{fill:#A79C8B;font-size:3.4px;font-weight:700;letter-spacing:.3px}
-.m-route{fill:none;stroke-width:1.5;stroke-dasharray:3 2.4;stroke-linecap:round;opacity:.92}
+.m-route{fill:none;stroke-width:1.5;stroke-dasharray:3 2.4;stroke-linecap:round;opacity:.92;transition:opacity .25s}
 .m-route.day{stroke:var(--clay);stroke-width:1.7}
-.m-dot{stroke:#fff;stroke-width:.9}
+.m-dot{stroke:#fff;stroke-width:.9;transition:opacity .25s}
+.m-route.dim{opacity:.18;stroke-width:1}
+.m-dot.dim{opacity:.22}
 
 .map-scale{
   position:absolute;left:9px;bottom:8px;display:flex;align-items:center;gap:5px;
