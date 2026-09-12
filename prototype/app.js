@@ -81,7 +81,7 @@ function usedMemoryIds(){
     d.items.forEach(i => (i.memoryIds||[]).forEach(id => set.add(id)));
   });
   diffs().forEach(x => x.memoryIds.forEach(id => set.add(id)));
-  if(!city()?.staticDays) S.learned.forEach(m => set.add(m.id));
+  if(!city()?.durationRange) S.learned.forEach(m => set.add(m.id));
   return [...set].filter(id => memById(id));
 }
 
@@ -196,7 +196,7 @@ function planShots(p){
 /* ==========================================================================
    模拟地图（两张：全程概览 + 当日动线）
    ========================================================================== */
-const DAY_C = ['var(--d1)','var(--d2)','var(--d3)','var(--d4)'];
+const DAY_C = ['#b96843','#527b65','#586a99','#b59043','#946197','#367d8a','#a45564'];
 
 function mapBase(labels){
   const cityLabels = city() && city().mapLabels;
@@ -224,7 +224,18 @@ function mapBase(labels){
 /** 概览图：整趟 4 天全部点位，按天配色
  *  opt.highlightDay: 1-based，高亮指定天的路线，淡化其他
  */
+function realMapHTML(routeDays,opt={}){
+  const c=city();
+  const data=routeDays.map((names,i)=>names.filter(n=>c.geo[n]).map(n=>({name:n,lat:c.geo[n].lat,lng:c.geo[n].lng,day:(opt.startDay||1)+i})));
+  const p=data.flat()[0]||{lat:c.center[0],lng:c.center[1]};
+  return `<div class="real-map ${opt.small?'small':''}" data-routes="${esc(JSON.stringify(data))}" data-center="${esc(JSON.stringify(c.center))}">
+    <div class="real-map-canvas" role="region" aria-label="${esc(c.name)}真实地图"></div>
+    <div class="real-map-status" role="status">正在加载真实底图…</div>
+    <div class="real-map-foot"><span>虚线：游览顺序</span><button type="button" data-map-retry>重试</button><a href="https://www.openstreetmap.org/#map=12/${p.lat}/${p.lng}" target="_blank" rel="noopener noreferrer">打开地图 ↗</a></div>
+  </div>`;
+}
 function overviewMap(routeDays, opt){
+  if(city()?.geo) return realMapHTML(routeDays,opt);
   const small = opt && opt.small;
   const hl = opt && opt.highlightDay;
   const paths = routeDays.map((names, di) => {
@@ -244,12 +255,13 @@ function overviewMap(routeDays, opt){
   }).join('');
   return `<div class="sim-map ${small?'small':''}">
     <svg viewBox="0 0 100 100" preserveAspectRatio="none">${mapBase(!small)}${paths}${dots}</svg>
-    ${small ? '' : `<div class="map-scale"><i></i><span>${city()?.staticDays ? '行程示意' : '约 2km'}</span></div>`}
+    ${small ? '' : `<div class="map-scale"><i></i><span>${city()?.durationRange ? '行程示意' : '约 2km'}</span></div>`}
   </div>`;
 }
 
 /** 当日动线图：编号点位 + 悬停放大 */
 function dayMap(day){
+  if(city()?.geo) return realMapHTML([day.items.filter(i=>i.kind==='spot').map(i=>i.name)],{startDay:day.day});
   const pts = [];
   day.items.forEach(i => {
     const nm = i.kind === 'food' ? restPoi()[i.name] : (i.kind === 'free' ? null : i.name);
@@ -267,7 +279,7 @@ function dayMap(day){
         <div class="dot">${i+1}</div>
         ${S.hoverItem===p.nm ? `<span class="lbl">${esc(p.nm)}</span>` : ''}
       </div>`).join('')}
-    <div class="map-scale"><i></i><span>${city()?.staticDays ? '行程示意' : '约 2km'}</span></div>
+    <div class="map-scale"><i></i><span>${city()?.durationRange ? '行程示意' : '约 2km'}</span></div>
   </div>`;
 }
 
@@ -291,9 +303,9 @@ const HOME_HERO_IMAGES = [
    挂着「奈良」的标题显示京都的景点，且没人发现。
    下面这个列表要和 CITY_DATA 的键保持一致；加城市时同步加卡。 */
 const DEST_CARDS = [
-  { name:'杭州', en:'Hangzhou', tagline:'西湖古寺 · 湿地与老城', days:'2 天', price:'两日游素材版',
+  { name:'杭州', en:'Hangzhou', tagline:'西湖古寺 · 湿地与老城', days:'2—7 天', price:'多日游攻略',
     img:'assets/cities/hangzhou/west-lake-panorama.jpg', tags:['湖景','古寺','文博'] },
-  { name:'广州', en:'Guangzhou', tagline:'西关人文 · 珠江天际线', days:'2 天', price:'两日游素材版',
+  { name:'广州', en:'Guangzhou', tagline:'西关人文 · 珠江天际线', days:'2—7 天', price:'多日游攻略',
     img:'assets/cities/guangzhou/canton-tower.jpg', tags:['老城','展馆','夜景'] },
   { name:'京都', en:'Kyoto', tagline:'千年古都 · 竹林与佛寺', days:'4 天', price:'3 套方案',
     img:'img/Kiyomizu.jpg', tags:['佛寺','竹林','美食'] },
@@ -557,7 +569,7 @@ function bindHomeAct(t){
     const dest = (t.dataset.d || ($('home-dest')?.value || '京都')).trim();
     const date = $('home-date')?.value || '2026-10-02';
     let days = +(($('home-days')?.value || '4 天').match(/\d+/)?.[0] || 4);
-    if(CITY_DATA[dest]?.staticDays) days = CITY_DATA[dest].staticDays;
+
     S.req = { dest, date, days, people: 2 };
     resetRouteSelection();
     S.submitted = true; S.screen = 's1'; render();
@@ -568,7 +580,7 @@ function bindHomeAct(t){
     // 目的地卡片点击:预设好日程直接进 S1。
     // 注意不要在这里偷换档案——游客就该以 0 记忆跑完，否则对照演示不成立。
     const dest = t.dataset.dest;
-    S.req = { dest, date:'2026-10-02', days:CITY_DATA[dest]?.staticDays || 4, people:2 };
+    S.req = { dest, date:'2026-10-02', days:4, people:2 };
     resetRouteSelection();
     S.memoryOn = true;
     S.screen = 's1'; render();
@@ -769,7 +781,7 @@ function renderLeft(){
         <span class="big">🫥</span>
         ${memCount()===0
           ? '第一次使用，没有历史。<br>去详情页对景点、餐饮、节奏点几个 👍👎，<br>记忆会当场长出来。'
-          : '开关已关闭。<br>把顶栏「默认推荐」拨回「使用记忆」，<br>这里会列出每条起作用的记忆。'}
+          : (S.memoryOn ? '记忆已开启。<br>当前记录尚未触发路线调整，<br>匹配的偏好会显示在这里。' : '开关已关闭。<br>开启「使用记忆」后，<br>这里会列出起作用的记忆。')}
       </div>`;
   }else{
     memBody = list.map(m => {
@@ -857,14 +869,14 @@ function viewS0(){
           <datalist id="city-list"><option value="京都"><option value="北京"><option value="上海"><option value="杭州"><option value="威海"><option value="广州"></datalist></div>
         <div class="field"><label>出发日期</label><input id="f-date" type="date" value="${esc(S.req.date)}"></div>
         <div class="field"><label>游玩天数</label>
-          <select id="f-days">${[2,3,4,5,6].map(d=>`<option ${d===S.req.days?'selected':''}>${d}</option>`).join('')}</select>
+          <select id="f-days">${[2,3,4,5,6,7].map(d=>`<option ${d===S.req.days?'selected':''}>${d}</option>`).join('')}</select>
         </div>
         <div class="field"><label>人数</label>
           <select id="f-people">${[1,2,3,4].map(d=>`<option ${d===S.req.people?'selected':''}>${d}</option>`).join('')}</select>
         </div>
       </div>
 
-      <p class="muted">杭州、广州目前提供固定 2 日路线；选择其他天数时会按 2 日素材版生成。</p>
+      <p class="muted">杭州、广州支持 2—7 天，按所选天数安排不同主题路线。</p>
       <div class="s0-badge ${n===0?'empty':''}">
         <span class="ic">${n===0?'🌱':'🧠'}</span>
         <div>
@@ -876,7 +888,7 @@ function viewS0(){
       </div>
 
       <div class="s0-actions">
-        <button class="btn lg" data-act="submit">生成 ${S.req.days} 天行程方案 →</button>
+        <button class="btn lg" data-act="submit">生成行程方案 →</button>
         <span class="muted" style="font-size:12.5px">生成 3 套不同风格，供你对比</span>
       </div>
 
@@ -974,13 +986,14 @@ function cityGuide(){
   const c=city();
   if(!c?.sources) return '';
   return `<aside class="card city-guide">
-    <strong>${esc(c.name)} · 两日游素材版</strong>
-    <p>路线为整理建议，地图为行程示意。出行前请核对开放、预约和交通；可按体力删减景点。</p>
+    <strong>${esc(c.name)} · ${S.req.days} 日游攻略 · ${Object.keys(c.spots).length} 个候选景点</strong>
+    <p>按片区安排游览；地图显示真实位置，虚线仅表示游览顺序。出行前请核对开放、预约和实际交通。</p>
     <details><summary>查看攻略参考 · 官方资料与小红书</summary>
       <p>小红书为个人经验参考，可能需要登录。日期沿用原帖显示，未推断年份。</p>
       <ul>${c.sources.map(x=>`<li><a href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.title)} ↗</a>
         ${x.author?`<small>${esc(x.author)} · ${esc(x.date)}</small>`:''}<p>${esc(x.note)}</p></li>`).join('')}</ul>
     </details>
+    <details><summary>图片来源与许可</summary><ul>${Object.entries(c.spots).filter(([,s])=>s.imageCredit).map(([name,s])=>`<li>${esc(name)}：<a href="${esc(s.imageCredit.url)}" target="_blank" rel="noopener noreferrer">${esc(s.imageCredit.author)} · ${esc(s.imageCredit.license)}</a></li>`).join('')}</ul></details>
   </aside>`;
 }
 function viewS1(){
@@ -991,7 +1004,7 @@ function viewS1(){
       <span class="eyebrow">S1 · 首次路线推荐</span>
       <h2>${esc(S.req.dest)} ${S.req.days} 天 · 三套风格方案</h2>
       <p>${on
-        ? (city()?.staticDays ? '已读取你的记忆；匹配到的偏好会调整路线，未匹配时保留原安排。当前档案：<b>' : '同一份需求，因为读了你的 <b>') + memCount() + (city()?.staticDays ? ' 条</b>。带 🧠 的安排可查看记忆来源。' : ' 条记忆</b>，方案排序和内容都变了。带 🧠 的地方都能点开看来源。')
+        ? (city()?.durationRange ? '已读取你的记忆；匹配到的偏好会调整路线，未匹配时保留原安排。当前档案：<b>' : '同一份需求，因为读了你的 <b>') + memCount() + (city()?.durationRange ? ' 条</b>。带 🧠 的安排可查看记忆来源。' : ' 条记忆</b>，方案排序和内容都变了。带 🧠 的地方都能点开看来源。')
         : '目前没有记忆参与——<b>这三套和任何通用工具给的没有区别</b>。去详情页表个态，第二次就不一样了。'}</p>
     </div>
     ${cityGuide()}
@@ -1093,6 +1106,8 @@ function itemView(it, day){
               <span class="sp-src">${esc(sp.src)}${Number.isFinite(sp.count) ? ` · ${sp.count} 条评价` : ''}</span>
             </div>
             <div class="sp-intro">${esc(sp.intro)}</div>
+            ${sp.sourceUrl?`<a class="spot-source" href="${esc(sp.sourceUrl)}" target="_blank" rel="noopener noreferrer">景点资料 ↗</a>`:''}
+            ${sp.imageCredit?`<div class="image-credit">图片：<a href="${esc(sp.imageCredit.url)}" target="_blank" rel="noopener noreferrer">${esc(sp.imageCredit.author)} · ${esc(sp.imageCredit.license)}</a></div>`:''}
             <div class="sp-tags">${sp.tags.map(t=>{
               const good = /安静|庭园|竹林|人少|免费|傍晚好|清晨好|雨天可|可久坐|自然|苔庭|世界遗产|国宝|本地/.test(t);
               const warn = /人多|费体力|体力活|游客向|动线长|闭园早|坡道|爬山/.test(t);
@@ -1136,7 +1151,7 @@ function mapPanel(){
         ${it.days.map(d=>`<button class="${d.day===S.s2day?'on':''}" data-act="s2day" data-d="${d.day}">D${d.day}</button>`).join('')}
       </div>
     </div>
-    <p class="map-disclaim">示意图，非真实比例；点位为区域中心，不代表具体门店位置。</p>
+    <p class="map-disclaim">${city()?.geo ? '底图 © OpenStreetMap；点位为景点参考位置，非入口导航。虚线连接游览顺序，不代表实际道路。' : '示意图，非真实比例；点位为区域中心，不代表具体门店位置。'}</p>
   </div>`;
 }
 
@@ -1354,6 +1369,7 @@ async function _transitionRender(){
 }
 
 function _doRender(){
+  if(globalThis.TourisMaps) TourisMaps.dispose();
   // 停止旧的 hero 轮播
   if(heroSlideTimer){ clearInterval(heroSlideTimer); heroSlideTimer = null; }
 
@@ -1377,6 +1393,7 @@ function _doRender(){
   renderTop(); renderLeft();
   const map = { s0:viewS0, s1:viewS1, s2:viewS2, s5:viewS5 };
   $('work').innerHTML = (map[S.screen] || viewS0)();
+  if(globalThis.TourisMaps) TourisMaps.mount();
   if(S.screen === 's5' && memActive() && !S.diffPlayed) playDiff();
   _currentScreen = S.screen;
 }
@@ -1661,7 +1678,7 @@ document.addEventListener('click', e => {
       if(dt) S.req.date = dt.value || S.req.date;
       if(dy) S.req.days = +dy.value;
       if(pp) S.req.people = +pp.value;
-      if(city()?.staticDays) S.req.days = city().staticDays;
+
       resetRouteSelection();
       S.submitted = true; S.screen = 's1'; S.demoStep = 2; render();
       toast(memActive()
@@ -1766,7 +1783,7 @@ document.addEventListener('mouseover', e => {
   if(nm !== S.hoverItem && S.screen === 's2'){
     S.hoverItem = nm;
     const col = document.querySelector('.map-col');
-    if(col) col.outerHTML = mapPanel();
+    if(col && !city()?.geo) col.outerHTML = mapPanel();
     document.querySelectorAll('.tl-item.hovered').forEach(el => el.classList.remove('hovered'));
     if(t) t.classList.add('hovered');
   }

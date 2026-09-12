@@ -34,7 +34,7 @@ const ctx = { document, window, console, setTimeout:()=>0, requestAnimationFrame
   IntersectionObserver: class { observe(){} unobserve(){} disconnect(){} }, Math, JSON, Set, Map,
   Array, Object, String, Number, RegExp };
 vm.createContext(ctx);
-for(const f of ['images.js','data.js','city-data.js','city-hangzhou-guangzhou.js','account.js','app.js']){
+for(const f of ['images.js','data.js','city-data.js','city-expansion.js','city-hangzhou-guangzhou.js','account.js','app.js']){
   vm.runInContext(fs.readFileSync(f,'utf8'), ctx, { filename:f });
 }
 const g = n => vm.runInContext(n, ctx);
@@ -192,7 +192,7 @@ Object.entries(CITY_DATA).forEach(([name,c]) => {
   const ids = new Set(MEMORIES.map(m=>m.id));
   const cityBad = [];
   [['默认',c.itinDefault],['记忆',c.itinMemory]].forEach(([mode,it]) => {
-    if(it.days.length !== (c.staticDays||4)) cityBad.push(mode+'行程天数与城市配置不符');
+    if(it.days.length !== 4) cityBad.push(mode+'行程天数与城市配置不符');
     it.days.forEach(d => d.items.forEach(i => {
       if(i.kind === 'spot' && (!c.poi[i.name] || !c.spots[i.name])) cityBad.push('景点引用缺失 '+i.name);
       if(i.kind === 'food' && (!c.dining[i.name] || !c.restPoi[i.name] || !c.poi[c.restPoi[i.name]])) cityBad.push('餐饮引用缺失 '+i.name);
@@ -200,7 +200,7 @@ Object.entries(CITY_DATA).forEach(([name,c]) => {
     }));
   });
   [...c.plansDefault,...c.plansMemory].forEach(p => {
-    if(p.routeDays.length !== (c.staticDays||4) || p.highlights.length < (c.staticDays?1:4)) cityBad.push('方案结构不完整 '+p.id);
+    if(p.routeDays.length !== 4 || p.highlights.length < (c.durationRange?1:4)) cityBad.push('方案结构不完整 '+p.id);
     p.routeDays.flat().forEach(n => { if(!c.poi[n]) cityBad.push('方案点位缺失 '+n); });
     p.highlights.forEach(n => { if(!c.spots[n]) cityBad.push('方案景点资料缺失 '+n); });
   });
@@ -213,7 +213,7 @@ Object.entries(CITY_DATA).forEach(([name,c]) => {
     if(!(c.images && c.images[n]) && !SPOT_IMG[n]) cityBad.push(name+'景点缺少图片 '+n);
   });
   for(const persona of ['blank','veteran']) for(const on of [false,true]) for(const screen of ['s0','s1','s2','s5']){
-    S.req.dest=name; S.session=persona === 'veteran' ? {mode:'user',id:'demo'} : {mode:'guest',id:null}; S.req.days=c.staticDays||4; S.memoryOn=on; S.screen=screen; S.diffPlayed=true;
+    S.req.dest=name; S.session=persona === 'veteran' ? {mode:'user',id:'demo'} : {mode:'guest',id:null}; S.req.days=4; S.memoryOn=on; S.screen=screen; S.diffPlayed=true;
     try{
       render(); const html=nodes.work.innerHTML;
       if(!html || html.includes('undefined') || html.includes('[object Object]')) throw new Error('输出内容异常');
