@@ -1,0 +1,172 @@
+/* ==========================================================================
+   旅行记忆规划 · 追加样式
+   景点照片（联网图 + SVG 占位）· 两张模拟地图 · 方案概览图 · 区域候选推荐组
+   ========================================================================== */
+
+:root{ --d1:#C4622D; --d2:#3A4C8F; --d3:#3E7A5E; --d4:#9A6B33 }
+
+/* ============================ 景点缩略图 ============================ */
+.sthumb{
+  flex:none;border-radius:10px;overflow:hidden;border:1px solid var(--line);
+  background:var(--paper-2);position:relative;
+  --k-sky:#EFEAE0; --k-mass:#C9BCA9; --k-mass2:#B0A18C; --k-accent:#C4622D;
+  --k-line:#CFC5B5; --k-nature:#8FA98C; --k-water:#AFC6D6;
+}
+.sthumb.sm{width:92px;height:69px}
+.sthumb svg{display:block;width:100%;height:100%}
+.sthumb .sky{fill:var(--k-sky)}
+.sthumb .hill,.sthumb .stalk,.sthumb .tree{fill:var(--k-nature)}
+.sthumb .s1,.sthumb .torii,.sthumb .awn,.sthumb .lant{fill:var(--k-accent)}
+.sthumb .s2,.sthumb .awn2{fill:var(--k-mass)}
+.sthumb .s3,.sthumb .col,.sthumb .road,.sthumb .sand{fill:var(--k-mass2)}
+.sthumb .win{fill:var(--k-sky)}
+.sthumb .water{fill:var(--k-water)}
+.sthumb .rake,.sthumb .bridge{fill:none;stroke:var(--k-line);stroke-width:1.1}
+.sthumb .bridge{stroke:var(--k-accent);stroke-width:1.6}
+
+/* 真实照片盖在占位插画之上；加载失败时 JS 摘掉 img，占位图自然露出 */
+.sthumb img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
+  opacity:0;transition:opacity .3s ease;
+}
+.sthumb img.ok{opacity:1}
+.sthumb .ph-mark{
+  position:absolute;right:4px;bottom:3px;z-index:2;
+  font-size:8.5px;font-weight:700;color:var(--ink-3);letter-spacing:.3px;
+  background:rgba(255,255,255,.74);padding:1px 4px;border-radius:4px;
+}
+.sthumb.has-photo .ph-mark{display:none}
+
+.sthumb.c-temple  { --k-accent:#B4552B; --k-nature:#93A98D }
+.sthumb.c-garden  { --k-accent:#7E8C6A; --k-mass:#A8B79A; --k-mass2:#E2DCCB; --k-line:#C6BEA8 }
+.sthumb.c-bamboo  { --k-sky:#E9EFE2; --k-nature:#7E9B72; --k-line:#B8CBAE }
+.sthumb.c-river   { --k-sky:#E7EEF3; --k-water:#A9C4D6; --k-nature:#93A98D; --k-accent:#B4552B }
+.sthumb.c-market  { --k-accent:#C4622D; --k-mass:#D8C7AE; --k-mass2:#BFA98A }
+.sthumb.c-street  { --k-sky:#EDE5DA; --k-mass:#BCA98F; --k-accent:#B4453C; --k-mass2:#D6C9B4 }
+.sthumb.c-museum  { --k-sky:#E9EAEF; --k-mass:#BFC2CE; --k-mass2:#A7ABBA; --k-accent:#7C8398 }
+.sthumb.c-shrine  { --k-accent:#B4453C; --k-nature:#93A98D; --k-sky:#EFEAE0 }
+.sthumb.c-castle  { --k-sky:#E9EAEF; --k-mass:#C6C3BA; --k-mass2:#ADA79A; --k-accent:#6E6A62 }
+.sthumb.c-path    { --k-sky:#E9EFE6; --k-nature:#88A47C; --k-water:#AFC6D6; --k-mass2:#D9D0BE }
+.sthumb.c-tower   { --k-sky:#E7EAF0; --k-mass:#BEBCB6; --k-mass2:#A9A59C; --k-accent:#B4552B }
+.sthumb.c-shopping{ --k-sky:#EDE9EF; --k-mass:#C3B9C4; --k-mass2:#AAA0AC; --k-accent:#8C6E93 }
+.sthumb.c-station { --k-sky:#E7EAEF; --k-mass:#B9BEC7; --k-mass2:#A2A8B3; --k-accent:#5B6577 }
+
+/* ============================ 模拟地图 ============================ */
+.sim-map{
+  position:relative;border-radius:var(--r-m);overflow:hidden;border:1px solid var(--line);
+  aspect-ratio:1/1;
+  background:
+    radial-gradient(circle at 28% 18%,#F3EFE6,transparent 62%),
+    linear-gradient(158deg,#F7F3EB,#EFE9DE);
+}
+.sim-map.small{aspect-ratio:16/9;border-radius:9px}
+.sim-map svg{position:absolute;inset:0;width:100%;height:100%}
+.m-block rect{fill:#E9E2D4;opacity:.75}
+.m-grid line{stroke:#E1D9CA;stroke-width:.35}
+.m-road path{stroke:#FFFFFF;stroke-width:1.9;fill:none;opacity:.95}
+.m-river{stroke:#BCD2E0;stroke-width:2.6;fill:none;opacity:.95}
+.m-green circle{fill:#CBD8BF;opacity:.85}
+.m-lab text{fill:#A79C8B;font-size:3.4px;font-weight:700;letter-spacing:.3px}
+.m-route{fill:none;stroke-width:1.5;stroke-dasharray:3 2.4;stroke-linecap:round;opacity:.92}
+.m-route.day{stroke:var(--clay);stroke-width:1.7}
+.m-dot{stroke:#fff;stroke-width:.9}
+
+.map-scale{
+  position:absolute;left:9px;bottom:8px;display:flex;align-items:center;gap:5px;
+  font-size:9.5px;color:var(--ink-3);font-weight:600;
+  background:rgba(255,255,255,.72);padding:2px 6px;border-radius:5px;
+}
+.map-scale i{display:block;width:22px;height:0;border-top:2px solid var(--ink-3)}
+
+.map-pt{position:absolute;transform:translate(-50%,-50%);z-index:3}
+.map-pt .dot{
+  width:16px;height:16px;border-radius:50%;background:var(--clay);color:#fff;
+  display:grid;place-items:center;font-size:9px;font-weight:800;border:2px solid #fff;
+  box-shadow:0 1px 4px rgba(0,0,0,.22);transition:.18s;
+}
+.map-pt.food .dot{background:var(--green)}
+.map-pt.mem .dot{background:var(--indigo)}
+.map-pt .lbl{
+  position:absolute;left:20px;top:0;white-space:nowrap;font-size:10px;font-weight:700;
+  color:var(--ink);background:rgba(255,255,255,.9);padding:2px 5px;border-radius:5px;
+  box-shadow:0 1px 4px rgba(0,0,0,.1);
+}
+.map-pt.big{z-index:5}
+.map-pt.big .dot{width:22px;height:22px;font-size:11px}
+
+.map-col{position:sticky;top:0;display:flex;flex-direction:column;gap:12px}
+.map-col .map-panel{position:static}
+.map-disclaim{margin:0 2px;font-size:10.5px;color:var(--ink-3);line-height:1.55}
+
+/* ============================ S1 方案概览 ============================ */
+.plan-map{padding:12px 15px 0}
+.plan-shots{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:8px}
+.plan-shots .sthumb{width:100%;height:52px;border-radius:7px}
+.plan-shots .sthumb .ph-mark{display:none}
+.plan-shots .sn{
+  position:absolute;left:0;right:0;bottom:0;z-index:2;
+  font-size:8.5px;font-weight:700;color:#fff;line-height:1.3;
+  padding:8px 4px 3px;text-align:center;
+  background:linear-gradient(180deg,transparent,rgba(20,16,12,.62));
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.pm-foot{display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap}
+.pm-days{display:flex;gap:7px;flex-wrap:wrap}
+.pm-d{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;color:var(--ink-3);font-weight:600}
+.pm-d i{width:7px;height:7px;border-radius:50%;display:inline-block}
+.pm-sum{margin-left:auto;font-size:10.5px;color:var(--ink-2);font-weight:650}
+
+.plan-hl .hl{display:inline-flex;align-items:center;gap:5px}
+.plan-hl .hl b{color:var(--clay);font-weight:750;font-size:10.5px}
+
+/* ============================ S2 景点信息 ============================ */
+.it-main{display:flex;gap:11px;align-items:flex-start}
+.it-txt{min-width:0;flex:1}
+.sp-meta{display:flex;align-items:center;gap:7px;margin-top:5px;flex-wrap:wrap}
+.sp-score{font-size:14.5px;font-weight:750;color:var(--clay);letter-spacing:-.3px;line-height:1}
+.sp-stars{font-size:10px;color:var(--clay);letter-spacing:1px}
+.sp-src{font-size:10.5px;color:var(--indigo);border-bottom:1px dotted var(--indigo-2);cursor:help;font-weight:600}
+.sp-intro{font-size:12.5px;color:var(--ink-2);margin-top:5px;line-height:1.6}
+.sp-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.tag.warn{background:var(--red-soft);color:var(--red)}
+
+/* ============================ 区域候选推荐组 ============================ */
+.rec-group{
+  margin-top:9px;border:1px solid var(--line);border-radius:var(--r-m);
+  background:#FDFCFA;overflow:hidden;
+}
+.rg-head{display:flex;gap:10px;align-items:flex-start;padding:11px 12px 10px;border-bottom:1px dashed var(--line)}
+.rg-ic{
+  width:28px;height:28px;border-radius:9px;background:var(--paper-2);display:grid;place-items:center;
+  font-size:14px;flex:none;
+}
+.rg-t{min-width:0;flex:1}
+.rg-area{font-size:13.5px;font-weight:680;line-height:1.45}
+.rg-sub{font-size:11.5px;color:var(--ink-3);margin-top:3px;line-height:1.5}
+.rg-note{
+  flex:none;font-size:10.5px;font-weight:700;color:var(--indigo);
+  background:var(--indigo-soft);border:1px solid var(--indigo-line);
+  padding:3px 8px;border-radius:999px;cursor:help;
+}
+.rg-picks{padding:10px 12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(176px,1fr));gap:8px}
+.pick{border:1px solid var(--line);border-radius:10px;padding:9px 10px;background:var(--card);transition:.15s}
+.pick:hover{border-color:var(--clay-line);box-shadow:0 2px 8px rgba(36,31,27,.06)}
+.pick .p1{display:flex;align-items:baseline;gap:7px}
+.pick .pstyle{font-size:12.5px;font-weight:680;line-height:1.4;min-width:0}
+.pick .pscore{margin-left:auto;flex:none;font-size:12.5px;font-weight:750;color:var(--clay);letter-spacing:-.2px}
+.pick .pscore i{display:block;font-style:normal;font-size:8.5px;letter-spacing:.8px;text-align:right}
+.pick .p2{display:flex;align-items:center;gap:6px;margin-top:6px;flex-wrap:wrap}
+.pick .price{font-size:11.5px;font-weight:700;color:var(--ink-2)}
+.pick .p3{font-size:11.5px;color:var(--ink-2);margin-top:6px;line-height:1.5}
+.pick .p4{font-size:10.5px;color:var(--ink-3);margin-top:6px}
+.rg-tip{
+  padding:8px 12px;font-size:11px;color:var(--ink-3);background:var(--paper-2);
+  border-top:1px dashed var(--line);
+}
+
+/* 住宿卡：头部 + 候选组竖排 */
+.stay-card{flex-direction:column;gap:0;align-items:stretch}
+.sc-head{display:flex;gap:12px;align-items:flex-start}
+
+/* 时间轴条目多了缩略图，稍微加点呼吸 */
+.tl-item{padding:13px 0}
