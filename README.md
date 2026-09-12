@@ -7,7 +7,26 @@
 | 路径 | 说明 |
 | --- | --- |
 | `旅行记忆规划-Web界面设计方案.md` | 界面与交互设计方案（信息架构、屏次、优先级） |
-| `prototype/` | 高保真可交互原型，纯静态前端 |
+| `prototype/` | **唯一开发目录**。高保真可交互原型，纯静态前端 |
+| 仓库根目录（`index.html` 等） | **发布产物，不要手改**。GitHub Pages 的入口，由 `sync-pages.sh` 从 `prototype/` 生成 |
+| `app/` | 模块化重构（独立工作流，不参与发布同步） |
+
+> 所有改动只改 `prototype/`。根目录那套是复制出来的发布副本，直接编辑会被下次同步覆盖。
+
+## 发布到 GitHub Pages
+
+改完 `prototype/` 后，一条命令同步到根目录：
+
+```bash
+./sync-pages.sh          # 同步
+./sync-pages.sh --check  # 只比对，不写入
+```
+
+然后提交推送，Pages 即更新：
+
+```bash
+git add -A && git commit -m "chore: 同步发布" && git push
+```
 
 ## 本地运行
 
@@ -24,12 +43,13 @@ python -m http.server 8000 --directory prototype
 
 ## 原型文件
 
-- `index.html` — 三栏骨架（左栏导航 / 主工作区 / 记忆侧栏）
+- `index.html` — 两栏骨架（左栏：需求摘要 + 记忆资产 + 本次用到的记忆 + 流程导航；右侧：主工作区）
 - `app.js` — 渲染与交互逻辑
 - `data.js` — 演示数据（记忆条目、行程、点评）
 - `city-data.js` — 北京、上海城市资料（方案、四日行程、景点、餐饮住宿与地图点位）
 - `images.js` — 图片资源映射
-- `styles.css` / `styles-extra.css` — 样式
+- `styles.css` / `styles-extra.css` / `home.css` / `logo.css` / `account.css` — 样式
+- `account.js` — 账号面板（纯本地 localStorage 演示，无后端）
 
 ## 支持城市
 
