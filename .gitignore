@@ -19,3 +19,9 @@ desktop.ini
 
 # Claude Code 本地配置（个人权限设置，不入库）
 .claude/settings.local.json
+
+# 截图工具的产物（tools/_shot.js 生成，随手拍随手删，不入库）
+tools/_shots/
+
+# 魔搭创空间的临时 worktree
+.ms-studio-worktree/
