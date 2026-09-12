@@ -42,14 +42,24 @@ sync_tree(){
   local dst="$1"
   if command -v rsync >/dev/null 2>&1; then
     rsync -a --delete \
-      --exclude='.git' --exclude='_verify.js' --exclude='node_modules/' --exclude='.DS_Store' \
+      --exclude='.git' --exclude='_*.js' --exclude='node_modules/' --exclude='.DS_Store' \
       "$SRC"/ "$dst"/
   else
-    # 没有 rsync 时退化为逐项复制
+    # 没有 rsync 时退化为逐项复制。
+    # ★ 目录必须先删再拷：`cp -rf src/x dst/x` 在 dst/x 已存在时是把 src/x
+    #   拷**进** dst/x，会变成 dst/x/x。gh-pages 上已经有 img/ 和 assets/ 了，
+    #   所以这里每次发布都会多套一层，而多出来的那层是空的——页面照常打开，
+    #   图片全 404，很难查。删掉再拷同时也还原了 rsync 的镜像语义。
     for p in "$SRC"/*; do
       b="$(basename "$p")"
-      case "$b" in _verify.js|node_modules) continue;; esac
-      if [ -d "$p" ]; then cp -rf "$p" "$dst/$b"; else cp -f "$p" "$dst/$b"; fi
+      case "$b" in _*.js|node_modules) continue;; esac
+      if [ -d "$p" ]; then rm -rf "$dst/$b"; cp -rf "$p" "$dst/$b"; else cp -f "$p" "$dst/$b"; fi
+    done
+    # 同上，对齐 rsync 的 --delete：源里被排除的文件也要从目标清掉。
+    # 否则早期发布过的 _verify.js / _imgcheck.js 会一直挂在 Pages 上——测试脚本
+    # 没必要公开，而且它们一旦落后于源码就开始骗人。
+    for stale in "$dst"/_*.js "$dst"/node_modules; do
+      if [ -e "$stale" ]; then echo "  清理  $(basename "$stale")"; rm -rf "$stale"; fi
     done
   fi
 }
