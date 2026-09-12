@@ -1,38 +1,59 @@
 /* ==========================================================================
-   景点配图映射：景点名 → 图片 URL
-   来源：Wikimedia Commons（CC BY / CC BY-SA / PD / CC0，署名见各文件的 Commons 页面）
+   Touris 知途 · 景点配图（由 tools/fetch-images.js 生成，请勿手改）
 
-   两点注意：
-   1) Wikimedia 只接受固定几档缩略图宽度（250/330/500/960/1280/1920/3840），
-      自定义宽度（如 800px-）会返回 HTTP 400，所以这里统一用 960px。
-   2) 缺图或加载失败时，卡片自动回退到内置 SVG 占位插画，离线不会开天窗。
+   全部图片已下载到 img/，运行时只读本地文件，不依赖任何外部服务。
+   原始 Commons 地址与署名见 tools/image-sources.json 与 img/CREDITS.md。
+   要重新下载：node tools/fetch-images.js
    ========================================================================== */
+
 const SPOT_IMG = {
-  '清水寺':        'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Kiyomizu.jpg/960px-Kiyomizu.jpg',
-  '金阁寺':        'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Golden_Pavilion_Kinkaku-ji_water_mirror_2024.jpg/960px-Golden_Pavilion_Kinkaku-ji_water_mirror_2024.jpg',
-  '龙安寺':        'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Kare-sansui_zen_garden%2C_Ry%C5%8Dan-ji%2C_Kyoto_20190416_1.jpg/960px-Kare-sansui_zen_garden%2C_Ry%C5%8Dan-ji%2C_Kyoto_20190416_1.jpg',
-  '岚山竹林':      'https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/2021_Sagano_Bamboo_forest_in_Arashiyama%2C_Kyoto%2C_Japan.jpg/960px-2021_Sagano_Bamboo_forest_in_Arashiyama%2C_Kyoto%2C_Japan.jpg',
-  '天龙寺':        'https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Tenryuji_Kyoto.jpg/960px-Tenryuji_Kyoto.jpg',
-  '渡月桥':        'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Togetsukyo_in_Kyoto_Arashiyama.jpg/960px-Togetsukyo_in_Kyoto_Arashiyama.jpg',
-  '锦市场':        'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Nishiki_Ichiba_by_matsuyuki.jpg/960px-Nishiki_Ichiba_by_matsuyuki.jpg',
-  '二条城':        'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/NinomaruPalace.jpg/960px-NinomaruPalace.jpg',
-  '银阁寺':        'https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Ginkakuji_Kyoto03-r.jpg/960px-Ginkakuji_Kyoto03-r.jpg',
-  '哲学之道':      'https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Japan_Kyoto_philosophers_walk_DSC00297.jpg/960px-Japan_Kyoto_philosophers_walk_DSC00297.jpg',
-  '京都国立博物馆':'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/260214_Kyoto_National_Museum_Kyoto_Japan04bs4.jpg/960px-260214_Kyoto_National_Museum_Kyoto_Japan04bs4.jpg',
-  '三十三间堂':    'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Sanjusangendo_2022.jpg/960px-Sanjusangendo_2022.jpg',
-  '平安神宫':      'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Heian-jing%C5%AB_daigokuden.jpg/960px-Heian-jing%C5%AB_daigokuden.jpg',
-  '先斗町':        'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Pontocho_by_Wolfiewolf_in_Nabeyacho%2C_Kyoto.jpg/960px-Pontocho_by_Wolfiewolf_in_Nabeyacho%2C_Kyoto.jpg',
-  '鸭川河畔':      'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Kamogawa_sakura.jpg/960px-Kamogawa_sakura.jpg',
-  '京都塔':        'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/%E4%BA%AC%E9%83%BD%E3%82%BF%E3%83%AF%E3%83%BC%E5%A4%9C%E6%99%AF.jpg/960px-%E4%BA%AC%E9%83%BD%E3%82%BF%E3%83%AF%E3%83%BC%E5%A4%9C%E6%99%AF.jpg',
-  '东寺':          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Toji_2015.JPG/960px-Toji_2015.JPG',
-  '南禅寺':        'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/251213_Nanzen-ji_Kyoto_Japan01s3.jpg/960px-251213_Nanzen-ji_Kyoto_Japan01s3.jpg',
-  '祇园花见小路':  'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/150124_Gion_Kyoto_Japan01s3.jpg/960px-150124_Gion_Kyoto_Japan01s3.jpg',
-  '二年坂三年坂':  'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Sannenzaka_street%2C_Kyoto_%283811257874%29.jpg/960px-Sannenzaka_street%2C_Kyoto_%283811257874%29.jpg',
-  '伏见稻荷大社':  'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Torii_path_with_lantern_at_Fushimi_Inari_Taisha_Shrine%2C_Kyoto%2C_Japan.jpg/960px-Torii_path_with_lantern_at_Fushimi_Inari_Taisha_Shrine%2C_Kyoto%2C_Japan.jpg',
-  '京都站':        'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Kyoto-STA_Central.jpg/960px-Kyoto-STA_Central.jpg',
-  '西阵':          'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Kyoto_Nishijin_Textile_show.jpg/960px-Kyoto_Nishijin_Textile_show.jpg',
-  '出町柳桝形商店街':'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Demachiyanagi_station_building_20221008.jpg/960px-Demachiyanagi_station_building_20221008.jpg',
-  '嵯峨野':        'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Arashiyama%2C_Part_II_-_Arashiyama7534.jpg/960px-Arashiyama%2C_Part_II_-_Arashiyama7534.jpg',
-  // 伊势丹就在京都站大楼内，Commons 无单独可用图，复用京都站外观
-  '京都站伊势丹':  'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Kyoto-STA_Central.jpg/960px-Kyoto-STA_Central.jpg'
+  "798艺术区":  'img/Beijing_798_Art_District.jpg',
+  "北海公园":      'img/Beijing_Beihai_park_Qionghua-Insel_Tor-20110104-RM-141208.jpg',
+  "城隍庙":        'img/Shanghai_-_Yu_Garden_-_0035.jpg',
+  "出町柳桝形商店街": 'img/Demachiyanagi_station_building_20221008.jpg',
+  "嵯峨野":        'img/Arashiyama_Part_II_-_Arashiyama7534.jpg',
+  "大栅栏":        'img/Beijing_Qianmen_Street_-_panoramio.jpg',
+  "东寺":          'img/Toji_2015.jpg',
+  "渡月桥":        'img/Togetsukyo_in_Kyoto_Arashiyama.jpg',
+  "二年坂三年坂":  'img/Sannenzaka_street_Kyoto_3811257874.jpg',
+  "二条城":        'img/NinomaruPalace.jpg',
+  "伏见稻荷大社":  'img/Torii_path_with_lantern_at_Fushimi_Inari_Taisha_Shrine_Kyoto_Japan.jpg',
+  "鼓楼":          'img/The_Drum_Tower_of_Beijing.jpg',
+  "故宫博物院":    'img/Sunset_of_the_Forbidden_City_2006.jpg',
+  "国家博物馆":    'img/National_Museum_of_China_building_wide.jpg',
+  "金阁寺":        'img/Golden_Pavilion_Kinkaku-ji_water_mirror_2024.jpg',
+  "锦市场":        'img/Nishiki_Ichiba_by_matsuyuki.jpg',
+  "京都国立博物馆": 'img/260214_Kyoto_National_Museum_Kyoto_Japan04bs4.jpg',
+  "京都塔":        'img/commons-2af180c0.jpg',
+  "京都站":        'img/Kyoto-STA_Central.jpg',
+  "京都站伊势丹":  'img/Kyoto-STA_Central.jpg',
+  "景山公园":      'img/Forbidden_City_from_Jingshan_Park_6349214639.jpg',
+  "岚山竹林":      'img/2021_Sagano_Bamboo_forest_in_Arashiyama_Kyoto_Japan.jpg',
+  "亮马河":        'img/Liangma_River_at_Xinyuan_St_20200808164518.jpg',
+  "龙安寺":        'img/Kare-sansui_zen_garden_Ryo_an-ji_Kyoto_20190416_1.jpg',
+  "陆家嘴":        'img/Pudong_Shanghai_November_2017_panorama.jpg',
+  "慕田峪长城":    'img/Great_Wall_of_China_July_2006.jpg',
+  "南禅寺":        'img/251213_Nanzen-ji_Kyoto_Japan01s3.jpg',
+  "南京东路":      'img/20090705_Shanghai_Nanjing_Road_0602.jpg',
+  "南锣鼓巷":      'img/Beijing_Nanluoguxiang_-_panoramio.jpg',
+  "平安神宫":      'img/Heian-jingu_daigokuden.jpg',
+  "祇园花见小路":  'img/150124_Gion_Kyoto_Japan01s3.jpg',
+  "前门大街":      'img/Beijing_Qianmen_Street_-_panoramio.jpg',
+  "清水寺":        'img/Kiyomizu.jpg',
+  "三里屯":        'img/SOHO.jpg',
+  "三十三间堂":    'img/Sanjusangendo_2022.jpg',
+  "上海博物馆":    'img/Shanghai_Museum_exterior_1.jpg',
+  "上海中心":      'img/Pudong_Shanghai_November_2017_panorama.jpg',
+  "天安门广场":    'img/Tiananmen_Square_5283031153.jpg',
+  "天龙寺":        'img/Tenryuji_Kyoto.jpg',
+  "外滩":          'img/Pudong_Shanghai_November_2017_panorama.jpg',
+  "西阵":          'img/Kyoto_Nishijin_Textile_show.jpg',
+  "先斗町":        'img/Pontocho_by_Wolfiewolf_in_Nabeyacho_Kyoto.jpg',
+  "鸭川河畔":      'img/Kamogawa_sakura.jpg',
+  "颐和园":        'img/Longevity_Hill_of_the_Summer_Palace.jpg',
+  "银阁寺":        'img/Ginkakuji_Kyoto03-r.jpg',
+  "雍和宫":        'img/Peking_Jonghe_Tempel_-20071022-RM-094926.jpg',
+  "豫园":          'img/Shanghai_-_Yu_Garden_-_0035.jpg',
+  "圆明园":        'img/commons-725bf73d.jpg',
+  "哲学之道":      'img/Japan_Kyoto_philosophers_walk_DSC00297.jpg',
 };
