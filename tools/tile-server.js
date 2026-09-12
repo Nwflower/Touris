@@ -12,6 +12,7 @@
    用法：
      node tools/tile-server.js [端口] [根目录]
      node tools/tile-server.js 8080 tiles
+     node tools/tile-server.js 8080      # 另：/tools/ 会映射到仓库的 tools/
    ========================================================================== */
 
 const http = require('http');
@@ -19,7 +20,8 @@ const fs = require('fs');
 const path = require('path');
 
 const PORT = Number(process.argv[2]) || 8080;
-const ROOT = path.resolve(__dirname, '..', process.argv[3] || 'tiles');
+const REPO = path.resolve(__dirname, '..');
+const ROOT = path.resolve(REPO, process.argv[3] || 'tiles');
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
@@ -62,6 +64,19 @@ function parseRange(header, size) {
   return { start, end: Math.min(end, size - 1) };
 }
 
+/* tiles/ 整个目录不入库（见 .gitignore），但 tools/style-patch.js 是手写源码、
+   必须随仓库走，而离线测试页要加载它。所以额外把 /tools/ 映射到仓库的 tools/。 */
+const TOOLS = path.join(REPO, 'tools');
+
+function resolveTarget(pathname) {
+  if (pathname.startsWith('/tools/')) {
+    const target = path.join(TOOLS, pathname.slice('/tools/'.length));
+    return target.startsWith(TOOLS + path.sep) ? target : null;
+  }
+  const target = path.join(ROOT, path.normalize(pathname));
+  return target.startsWith(ROOT) ? target : null;
+}
+
 const server = http.createServer((req, res) => {
   let pathname;
   try {
@@ -72,9 +87,9 @@ const server = http.createServer((req, res) => {
   }
   if (pathname.endsWith('/')) pathname += 'index.html';
 
-  const target = path.join(ROOT, path.normalize(pathname));
+  const target = resolveTarget(pathname);
   // 防目录穿越
-  if (!target.startsWith(ROOT)) {
+  if (!target) {
     res.writeHead(403).end('forbidden');
     return;
   }

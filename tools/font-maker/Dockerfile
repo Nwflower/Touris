@@ -7,10 +7,12 @@
 # 构建依赖来自 font-maker 的 CI 配方（.github/workflows/actions.yml）：
 #   clang + Boost>=1.73 + Freetype + 四个递归子模块
 #
-# 用法：
-#   docker build -t touris-font-maker -f tools/font-maker/Dockerfile .
-#   docker run --rm -v "%CD%\tiles\assets\fonts:/out" touris-font-maker \
-#     --name "Noto Sans SC" /out /font/NotoSansSC-Regular.otf
+# 用法（先构建镜像，再生成字形；generate.sh 自带产物校验）：
+#   docker build -t touris-font-maker tools/font-maker
+#   bash tools/font-maker/generate.sh
+#
+# 手工调用等价于 generate.sh 里的那一条：
+#   docker run --rm -v "$PWD/tiles/assets/fonts:/out" touris-font-maker --name "Noto Sans SC" /out /font/NotoSansSC-Regular.otf
 
 FROM debian:bookworm-slim
 

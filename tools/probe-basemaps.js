@@ -34,7 +34,7 @@ const plainCount = JSON.stringify(plain).split('zh-Hans').length - 1;
 console.log(`\nlang:"zh-Hans" 出现次数 —— 传 lang: ${zhCount} / 不传: ${plainCount}`);
 
 /* ---------------- CJK 字体栈补丁 ---------------- */
-const patchFontstack = require(path.resolve(__dirname, '..', 'tiles', 'assets', 'style-patch.js'));
+const patchFontstack = require(path.resolve(__dirname, 'style-patch.js'));
 
 const patched = basemaps.layers('protomaps', basemaps.namedFlavor('light'), { lang: 'zh-Hans' });
 const touched = patchFontstack({ layers: patched });
