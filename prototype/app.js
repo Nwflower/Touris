@@ -3,19 +3,14 @@
    单页状态机：S0 需求 → S1 三方案(含概览图) → S2 详情(元素级反馈) → S5 对照 diff
    ========================================================================== */
 
-/* ---------------- 餐饮区域 → 地图点位 ---------------- */
-const REST_POI = {
-  'r-nishiki':'锦市场', 'r-tsujiri':'祇园花见小路', 'r-pontocho':'先斗町',
-  'r-yudofu':'嵯峨野', 'r-demachi':'出町柳桝形商店街', 'r-ichiran':'河原町',
-  'r-kyotower':'京都塔', 'r-hotel':'京都站', 'r-kaiseki':'祇园花见小路'
-};
+
 
 /* ---------------- 状态 ---------------- */
 const S = {
   screen: 'home',
   session: { mode:'guest', id:null },   // 会话：游客（0 记忆）/ 已登录账号
   memoryOn: true,
-  req: { dest:'京都', date:'2026-10-02', days:4, people:2 },
+  req: { dest:'成都', date:'2026-10-02', days:4, people:2 },
   submitted: false,
   learned: [],            // 本次 Demo 现场积累的记忆
   planStance: {},         // planId -> 'chosen'|'skipped'|'disliked'
@@ -56,19 +51,23 @@ function city(){
   const key = String(S.req.dest || '').trim();
   return (typeof CITY_DATA !== 'undefined' && CITY_DATA[key]) || null;
 }
-function poi(){ return city() ? city().poi : POI; }
-function spots(){ return city() ? city().spots : SPOTS; }
-function dining(){ return city() ? city().dining : DINING; }
-function restPoi(){ return city() ? city().restPoi : REST_POI; }
+function poi(){ return (city() || {}).poi || {}; }
+function spots(){ return (city() || {}).spots || {}; }
+function dining(){ return (city() || {}).dining || {}; }
+function restPoi(){ return (city() || {}).restPoi || {}; }
 function spotImages(){
   const c = city();
   // 城市自带的图（杭州/广州走 assets/cities/）优先，其余从公共图库补
   return Object.assign({}, (typeof SPOT_IMG !== 'undefined') ? SPOT_IMG : {}, (c && c.images) || {});
 }
 function cityContent(){ const c=city(); return c && c.resolve ? c.resolve(S.req,S.chosenPlan,allMemories()) : c; }
-function plans(){ const c=cityContent(); return memActive() ? (c?c.plansMemory:PLANS_MEMORY) : (c?c.plansDefault:PLANS_DEFAULT); }
-function itin(){ const c=cityContent(); return memActive() ? (c?c.itinMemory:ITIN_MEMORY) : (c?c.itinDefault:ITIN_DEFAULT); }
-function diffs(){ const c=cityContent(); return c ? c.diffs : DIFFS; }
+/* ★ 这三行原先各带一个「城市不存在就回退到 data.js 的京都全局常量」的分支。
+   京都不在 CITY_DATA 里，city() 对它返回 null，八处访问器全靠那些回退兜着。
+   京都拆掉后常量已删，回退既没意义也会直接 ReferenceError。现在给空值，
+   视图自己会处理「没有可用的城市数据」。 */
+function plans(){ const c=cityContent(); return (memActive() ? (c||{}).plansMemory : (c||{}).plansDefault) || []; }
+function itin(){ const c=cityContent(); return (memActive() ? (c||{}).itinMemory : (c||{}).itinDefault) || null; }
+function diffs(){ return (cityContent() || {}).diffs || []; }
 
 function usedMemoryIds(){
   if(!memActive()) return [];
@@ -81,7 +80,13 @@ function usedMemoryIds(){
     d.items.forEach(i => (i.memoryIds||[]).forEach(id => set.add(id)));
   });
   diffs().forEach(x => x.memoryIds.forEach(id => set.add(id)));
-  if(!city()?.durationRange) S.learned.forEach(m => set.add(m.id));
+  /* 本次现场学到的记忆都算「用到了」。原先这行还带一个 city()?.durationRange 判断，
+       那是为了区分京都（无该字段）与新城市——京都没了，判断也就没意义了。 */
+  /* ★ 这里原先有一行把本次新学的记忆无条件算作「已用到」，还带一个
+     city()?.durationRange 判断来区分京都与新城市。两个都不对：
+     「用到了哪些记忆」应该由 plans / itin / diffs 反查——它们身上的 memoryIds
+     就是真正贡献了变化的那几条。无条件加进去，等于宣称一条没产生任何变化的
+     记忆也被用上了，_verify 的「未匹配偏好不伪造变化」正是盯这个的。 */
   return [...set].filter(id => memById(id));
 }
 
@@ -228,7 +233,7 @@ function realMapHTML(routeDays,opt={}){
   const c=city();
   const data=routeDays.map((names,i)=>names.filter(n=>c.geo[n]).map(n=>({name:n,lat:c.geo[n].lat,lng:c.geo[n].lng,day:(opt.startDay||1)+i})));
   const p=data.flat()[0]||{lat:c.center[0],lng:c.center[1]};
-  return `<div class="real-map ${opt.small?'small':''}" data-routes="${esc(JSON.stringify(data))}" data-center="${esc(JSON.stringify(c.center))}">
+  return `<div class="real-map ${opt.small?'small':''}" data-city="${esc(c.name)}" data-routes="${esc(JSON.stringify(data))}" data-center="${esc(JSON.stringify(c.center))}">
     <div class="real-map-canvas" role="region" aria-label="${esc(c.name)}真实地图"></div>
     <div class="real-map-status" role="status">正在加载真实底图…</div>
     <div class="real-map-foot"><span>虚线：游览顺序</span><button type="button" data-map-retry>重试</button><a href="https://www.openstreetmap.org/#map=12/${p.lat}/${p.lng}" target="_blank" rel="noopener noreferrer">打开地图 ↗</a></div>
@@ -286,15 +291,16 @@ function dayMap(day){
 /* ============================ 首页数据 ============================ */
 
 /* ★ 这里曾经接的是 Trae IDE 的私有生图接口（trae-api-cn.mchost.guru），
-   用 AI 生成「京都实景照片」。两个问题都致命：
+   用 AI 生成「实景照片」。两个问题都致命：
      1) 那是 IDE 的内部端点，无文档、无 SLA、随时可下线，而它撑的是首页第一屏；
      2) 产品的卖点是「可溯源、可核验」，拿生成的假照片当实景，等于自己拆自己的台。
    现在换成从 img/ 里取真实照片——同样是 Commons 的 CC 授权图，
    与景点卡片同源，署名统一记在 img/CREDITS.md。 */
+/* 首屏轮播。用高分辨率原图（本地存档，见 assets/hero/），
+   后续加图直接往这个数组里追加即可。 */
 const HOME_HERO_IMAGES = [
-  'img/Torii_path_with_lantern_at_Fushimi_Inari_Taisha_Shrine_Kyoto_Japan.jpg',
-  'img/2021_Sagano_Bamboo_forest_in_Arashiyama_Kyoto_Japan.jpg',
-  'img/Nishiki_Ichiba_by_matsuyuki.jpg'
+  'assets/hero/beijing.png',
+  'assets/hero/shanghai.jpg'
 ];
 
 /* ★ 卡片必须对上真实存在的城市
@@ -307,8 +313,8 @@ const DEST_CARDS = [
     img:'assets/cities/hangzhou/west-lake-panorama.jpg', tags:['湖景','古寺','文博'] },
   { name:'广州', en:'Guangzhou', tagline:'西关人文 · 珠江天际线', days:'2—7 天', price:'多日游攻略',
     img:'assets/cities/guangzhou/canton-tower.jpg', tags:['老城','展馆','夜景'] },
-  { name:'京都', en:'Kyoto', tagline:'千年古都 · 竹林与佛寺', days:'4 天', price:'3 套方案',
-    img:'img/Kiyomizu.jpg', tags:['佛寺','竹林','美食'] },
+  { name:'成都', en:'Chengdu', tagline:'公园茶馆 · 古蜀与熊猫', days:'4 天', price:'3 套方案',
+    img:'img/Narrow_Lane_of_Chengdu.jpg', tags:['老城','茶馆','熊猫'] },
   { name:'北京', en:'Beijing', tagline:'中轴线 · 古建与胡同', days:'4 天', price:'3 套方案',
     img:'img/Sunset_of_the_Forbidden_City_2006.jpg', tags:['古建','胡同','市集'] },
   { name:'上海', en:'Shanghai', tagline:'梧桐街区 · 滨水天际线', days:'4 天', price:'3 套方案',
@@ -356,23 +362,12 @@ function viewHome(){
         ${HOME_HERO_IMAGES.map((u,i)=>`<div class="hs ${i===0?'on':''}" style="background-image:url('${u}')"></div>`).join('')}
       </div>
 
-      <!-- Hero 滑动控制(手动切换) -->
+      <!-- 轮播控制台只有进度条，整块贴图片右下角（定位见 home.css 的 .hero-ctrl）。
+           上一张/下一张/播放键/计数器都去掉了，切换仍然可用：点圆点、
+           键盘 ← →、移动端左右滑动。 -->
       <div class="hero-ctrl">
-        <button class="hc-arrow hc-prev" data-act="hero-prev" aria-label="上一张">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <button class="hc-arrow hc-next" data-act="hero-next" aria-label="下一张">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-        </button>
         <div class="hc-dots" id="heroDots">
           ${HOME_HERO_IMAGES.map((_,i)=>`<button class="hc-dot ${i===0?'on':''}" data-i="${i}" aria-label="切换到第${i+1}张"></button>`).join('')}
-        </div>
-        <button class="hc-play" id="heroPlayBtn" data-act="hero-toggle" aria-label="暂停/播放">
-          <svg class="hc-icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-          <svg class="hc-icon-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
-        </button>
-        <div class="hc-label" id="heroLabel">
-          <span class="hc-cur">1</span> / <span class="hc-total">${HOME_HERO_IMAGES.length}</span>
         </div>
       </div>
 
@@ -393,7 +388,7 @@ function viewHome(){
         <div class="hero-search">
           <div class="hs-field">
             <span class="hs-ic">📍</span>
-            <input id="home-dest" value="京都" placeholder="去哪儿？">
+            <input id="home-dest" value="成都" placeholder="去哪儿？">
           </div>
           <div class="hs-field">
             <span class="hs-ic">📅</span>
@@ -412,7 +407,7 @@ function viewHome(){
 
         <div class="hero-quick">
           <span>🔥 热门:</span>
-          ${['京都','北京','上海','杭州','威海','广州'].map(d=>`<button class="chip" data-act="quick" data-d="${d}">${d}</button>`).join('')}
+          ${['成都','北京','上海','杭州','威海','广州'].map(d=>`<button class="chip" data-act="quick" data-d="${d}">${d}</button>`).join('')}
         </div>
       </div>
 
@@ -421,16 +416,15 @@ function viewHome(){
         <span>向下探索</span>
       </div>
 
-      <!-- 顶栏 logo 位置 -->
+      <!-- 首屏栏：左只放商标，右放账号入口。
+           原先左边还有「Touris 知途」文字、右边是四个跳转按钮，
+           现在文字和跳转都去掉了——跳转交给下面的 hero 搜索框和 CTA。 -->
       <div class="hero-top">
         <div class="h-logo">
-          <span class="logo" role="img" aria-label="知途"></span> Touris 知途
+          <span class="logo" role="img" aria-label="知途"></span>
         </div>
         <div class="h-nav">
-          <button class="h-link" data-act="home">首页</button>
-          <button class="h-link" data-act="go" data-screen="s0">规划</button>
-          <button class="h-link" data-act="demo">Demo</button>
-          <button class="h-btn" data-act="go" data-screen="s0">开始规划 →</button>
+          ${accountBtnHTML(memCount())}
         </div>
       </div>
     </section>
@@ -566,7 +560,7 @@ function bindHomeAct(t){
   if(act === 'home'){ S.screen = 'home'; render(); return true; }
   if(act === 'start' || act === 'quick'){
     // 从搜索框/快捷 chip 进入
-    const dest = (t.dataset.d || ($('home-dest')?.value || '京都')).trim();
+    const dest = (t.dataset.d || ($('home-dest')?.value || '成都')).trim();
     const date = $('home-date')?.value || '2026-10-02';
     let days = +(($('home-days')?.value || '4 天').match(/\d+/)?.[0] || 4);
 
@@ -866,7 +860,7 @@ function viewS0(){
     <div class="card s0-form">
       <div class="f-grid">
         <div class="field"><label>目的地</label><input id="f-dest" list="city-list" value="${esc(S.req.dest)}">
-          <datalist id="city-list"><option value="京都"><option value="北京"><option value="上海"><option value="杭州"><option value="威海"><option value="广州"></datalist></div>
+          <datalist id="city-list"><option value="成都"><option value="北京"><option value="上海"><option value="杭州"><option value="威海"><option value="广州"></datalist></div>
         <div class="field"><label>出发日期</label><input id="f-date" type="date" value="${esc(S.req.date)}"></div>
         <div class="field"><label>游玩天数</label>
           <select id="f-days">${[2,3,4,5,6,7].map(d=>`<option ${d===S.req.days?'selected':''}>${d}</option>`).join('')}</select>
@@ -1221,7 +1215,7 @@ function viewS2(){
 function itemKey(i){ return i.kind === 'free' ? 'free' : i.name; }
 function itemLabel(i){ return i.kind === 'food' ? dining()[i.name].area : i.name; }
 
-/** 逐日 diff 只认 DIFFS 里那几处；day:0 的两处是全局，走下面的清单 */
+/** 逐日 diff 按天对齐默认版与记忆版的逐日安排；day:0 的两处是全局，走下面的清单 */
 function dayDiffMap(day){
   const m = {};
   diffs().forEach(x => { if(x.day !== 0 && (!day || x.day === day)) m[x.target] = x; });
@@ -1230,7 +1224,7 @@ function dayDiffMap(day){
 
 function cmpDay(idx){
   const on = memActive();
-  const c=cityContent(), baseDef=c?c.itinDefault:ITIN_DEFAULT, baseMem=c?c.itinMemory:ITIN_MEMORY;
+  const c=cityContent(), baseDef=(c||{}).itinDefault, baseMem=(c||{}).itinMemory;
   const src = on ? baseMem.days[idx] : baseDef.days[idx];
   const def = baseDef.days[idx];
   const tg = dayDiffMap(idx+1);
@@ -1278,7 +1272,7 @@ function viewS5(){
     ${on ? `
       <div class="stats-bar">
         <span class="n">${diffs().length}</span>
-        <div class="tx">记忆改变了本次 <b>${diffs().length} 处</b>安排：${esc(cityContent() ? cityContent().diffSummary : '砍掉 1 个大型博物馆、午餐从排队连锁换到市集一带、住宿从京都站前换到西阵町屋、新增 1 个早市、每天补 1 段午后休息、清水寺挪到傍晚、日均步行 14.8→8.4km。')}</div>
+        <div class="tx">记忆改变了本次 <b>${diffs().length} 处</b>安排：${esc((cityContent() || {}).diffSummary || '见下方逐条变化。')}</div>
         <button class="replay" data-act="replay">重播动画</button>
       </div>` : `
       <div class="stats-bar plain">
@@ -1568,6 +1562,16 @@ function learn(reason, kind){
       quote: reason
     }
   };
+  /* ★ 规则里的语义标签必须一起带上。
+
+     判断依据是标签不是措辞（见 semantics.js）。新学的记忆要是不带标签，它
+     就是死的：照样显示在记忆页、照样让计数 +1、照样进「已积累 N 条记忆」，
+     却推不出任何约束——「表态 → 学到记忆 → 推荐改变」这条闭环会断在最后
+     一步，而且界面上完全看不出来。
+     _verify-cities.js 的「反馈减点不减天」就是盯这一条的。 */
+  if(rule.pace)   m.pace   = rule.pace;
+  if(rule.avoid)  m.avoid  = [].concat(rule.avoid);
+  if(rule.prefer) m.prefer = [].concat(rule.prefer);
   S.learned.push(m);
   return m;
 }
@@ -1671,9 +1675,9 @@ document.addEventListener('click', e => {
     case 'submit': {
       const d = $('f-dest'), dt = $('f-date'), dy = $('f-days'), pp = $('f-people');
       if(d){
-        const dest = d.value.trim() || '京都';
-        S.req.dest = ['京都',...Object.keys(CITY_DATA)].includes(dest) ? dest : '京都';
-        if(dest !== S.req.dest) toast('当前演示已支持京都、北京、上海、杭州、威海、广州，先为你显示京都。');
+        const dest = d.value.trim() || '成都';
+        S.req.dest = Object.keys(CITY_DATA).includes(dest) ? dest : '成都';
+        if(dest !== S.req.dest) toast(`当前演示已支持 ${Object.keys(CITY_DATA).join('、')}，先为你显示成都。`);
       }
       if(dt) S.req.date = dt.value || S.req.date;
       if(dy) S.req.days = +dy.value;

@@ -42,19 +42,36 @@ body.home-mode .home{
   padding:0;
 }
 
-/* ========== TOPBAR 在首页上的表现 ========== */
+/* ========== TOPBAR 在首页上的表现 ==========
+   首屏不显示顶栏——首页自带 .hero-top（商标 + 账号入口），再来一条就重复了，
+   两条都在页面顶端，品牌位还会横向错开十几像素叠在一起。
+   下拉超过 60px 时 app.js 的 bindHomeScrollNav 会加上 .scrolled，顶栏从上方滑出来。
+   用 opacity + transform 而不是 display：display 不可过渡，会硬生生弹出来。 */
 .topbar.home-top{
   position:fixed;top:0;left:0;right:0;z-index:100;
   background:transparent;border-bottom:none;
-  transition:background .35s, box-shadow .35s;
+  opacity:0;pointer-events:none;transform:translateY(-100%);
+  transition:opacity .28s ease, transform .28s ease, background .35s, box-shadow .35s;
 }
 .topbar.home-top.scrolled{
+  opacity:1;pointer-events:auto;transform:none;
   background:rgba(251,247,241,.92);
   backdrop-filter:blur(14px);
   box-shadow:0 1px 0 rgba(0,0,0,.05);
 }
 .topbar.home-top .brand{color:#fff}
 .topbar.home-top .brand small{color:rgba(255,255,255,.6)}
+/* 「知途」二字是位图（--logo-mark），不像旁边的文字那样能继承 color。
+   所以首页反白时得单独把它翻过来——否则黑标压在深色照片上，旁边文字却是白的。
+   滚过 hero 后顶栏变浅底深字，再翻回去。
+   复原用 brightness(1) invert(0) 而不是 none：过滤器列表和 none 之间没法插值，
+   写 none 会「啪」地跳变，和文字那边 .35s 的过渡对不上。 */
+.topbar.home-top .brand .logo{filter:brightness(0) invert(1)}
+.topbar.home-top.scrolled .brand .logo{filter:brightness(1) invert(0)}
+/* 位图走 filter、文字走 color，给同一个时长才叫同步变色 */
+.topbar.home-top .brand,
+.topbar.home-top .brand small{transition:color .35s}
+.topbar.home-top .brand .logo{transition:filter .35s}
 .topbar.home-top .top-sep{background:rgba(255,255,255,.2)}
 .topbar.home-top .persona-sw .lbl{color:rgba(255,255,255,.7)}
 /* Hero 顶部:去掉透明毛玻璃边框背景,只留文字(开关滑块保留) */
@@ -270,7 +287,7 @@ body.home-mode .home{
   0%{top:-18px}100%{top:36px}
 }
 
-/* Hero 内嵌导航(移动端/默认都可见) */
+/* 首屏栏：左边只有商标，右边是账号入口 */
 .hero-top{
   position:absolute;top:0;left:0;right:0;z-index:10;
   display:flex;align-items:center;justify-content:space-between;
@@ -278,30 +295,27 @@ body.home-mode .home{
 }
 .hero-top > *{pointer-events:auto}
 .hero-top .h-logo{
-  font-size:16px;font-weight:800;color:#fff;
-  display:flex;align-items:center;gap:8px;text-shadow:0 2px 8px rgba(0,0,0,.3);
+  display:flex;align-items:center;
+  /* 浅色字符旁边的深色照片上要压得住，但只有一枚商标了，描边不用太重 */
+  filter:drop-shadow(0 2px 8px rgba(0,0,0,.35));
 }
-.hero-top .h-logo span{font-size:22px}
-.hero-top .h-nav{display:flex;align-items:center;gap:20px}
-.hero-top .h-link{
-  background:none;border:none;color:rgba(255,255,255,.9);
-  font-size:14px;font-weight:500;cursor:pointer;padding:6px 0;
-  position:relative;transition:color .2s;
+.hero-top .h-nav{display:flex;align-items:center;gap:12px}
+
+/* 账号入口搬到首屏栏上。它原本在顶栏的浅色底上（account.css），
+   这里底色是深色照片，所以整体反白，跟旁边的商标一致。
+   点击事件是委托在 document 上的（app.js 的 data-act="account"），搬过来即生效。 */
+.hero-top .acct-btn{
+  color:rgba(255,255,255,.92);
+  border-color:rgba(255,255,255,.34);
+  background:rgba(255,255,255,.10);
+  backdrop-filter:blur(10px);
 }
-.hero-top .h-link::after{
-  content:'';position:absolute;bottom:0;left:50%;width:0;height:1.5px;
-  background:#fff;transition:all .25s;transform:translateX(-50%);
+.hero-top .acct-btn:hover{
+  color:#fff;border-color:rgba(255,255,255,.75);background:rgba(255,255,255,.18);
 }
-.hero-top .h-link:hover::after{width:100%}
-.hero-top .h-btn{
-  padding:9px 20px;border-radius:999px;border:1px solid rgba(255,255,255,.5);
-  background:rgba(255,255,255,.12);color:#fff;font-weight:600;font-size:13.5px;
-  backdrop-filter:blur(10px);cursor:pointer;transition:all .2s;
-}
-.hero-top .h-btn:hover{
-  background:#fff;color:var(--clay);border-color:#fff;
-  box-shadow:0 4px 16px rgba(0,0,0,.25);transform:translateY(-1px);
-}
+.hero-top .acct-btn b{color:#fff}
+.hero-top .acct-btn .cnt{background:rgba(255,255,255,.20);color:#fff}
+.hero-top .acct-btn.guest .cnt{background:rgba(255,255,255,.14);color:rgba(255,255,255,.8)}
 
 /* ============================================================
    Hero 滑动控制(箭头/圆点/播放/计数器)

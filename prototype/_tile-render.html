@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>瓦片烤制台（构建期工具，不属于应用）</title>
+<link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+<style>
+  html,body{margin:0;padding:0;background:#fff}
+  #map{width:100vw;height:100vh}
+</style>
+</head>
+<body>
+<div id="map"></div>
+
+<!-- 与 prototype/index.html 同一套依赖，保证烤出来的和跑起来的是同一种画法 -->
+<script src="vendor/leaflet/leaflet.js"></script>
+<script src="vendor/pmtiles.js"></script>
+<script src="vendor/basemaps.js"></script>
+<script src="vendor/protomaps-leaflet.js"></script>
+
+<script>
+/* ==========================================================================
+   把离线矢量瓦片烤成栅格 PNG 的工作台
+
+   为什么要有这个东西
+   PMTiles 是单文件归档，浏览器靠 HTTP Range 只读需要的段。魔搭创空间的
+   静态托管支不支持 Range 没人测过，而「评委打开是灰的」等于零分。
+   烤成一个个独立的 PNG 文件之后，Range 这个依赖就整个消失了——
+   也不需要任何后端。
+
+   怎么工作
+   protomaps-leaflet 的每块瓦片就是一个 <canvas>，而且它把 "z:x:y" 写在
+   元素上（createTile 里的 o.key = this._tileCoordsToKey(r)）。
+   所以不必截图再切图：直接遍历 DOM 里已加载的 canvas，逐个 toDataURL 即可。
+   坐标是元素自己报的，不依赖视野对齐，也不会错位。
+   ========================================================================== */
+
+(function(){
+  const map = L.map('map', { zoomControl:false, attributionControl:false, fadeAnimation:false });
+  let layer = null;
+
+  /* 输出格式。底图不是线条图——路网、标注、建筑轮廓的细节密度很高，
+     PNG 无损压不动（实测每张约 46KB），JPEG q=0.82 体积降到四分之一，
+     而这个尺寸下标签边缘的振铃肉眼看不出来。
+     可用 ?fmt=png 覆盖回无损，方便对比。 */
+  const q = new URLSearchParams(location.search);
+  const FMT = q.get('fmt') === 'png' ? 'image/png' : 'image/jpeg';
+  const QUALITY = Number(q.get('q') || 0.82);
+
+  function mount(slug){
+    if(layer) map.removeLayer(layer);
+    layer = protomapsL.leafletLayer({
+      url: 'tiles/' + slug + '.pmtiles',
+      flavor: 'light',
+      lang: 'zh-Hans',
+      maxZoom: 15
+    }).addTo(map);
+    return layer;
+  }
+
+  /** 把视野移到某个瓦片块的覆盖范围。留一圈余量，靠 key 过滤，不靠对齐。 */
+  function viewBlock(z, x0, y0, cols, rows){
+    const nw = map.unproject(L.point(x0 * 256, y0 * 256), z);
+    const se = map.unproject(L.point((x0 + cols) * 256, (y0 + rows) * 256), z);
+    map.fitBounds(L.latLngBounds(nw, se), { animate:false, maxZoom:z, minZoom:z });
+    return true;
+  }
+
+  /** 当前 DOM 里已加载完成的瓦片，按 key 取回。
+      ★ key 的顺序是 **x:y:z**（Leaflet 的 _tileCoordsToKey 如此），
+        不是 z:x:y。按 z,x,y 解构会让坐标整个错位——写出来一堆文件名对不上
+        任何真实瓦片的 PNG，而且不报错。 */
+  function grab(){
+    const out = [];
+    document.querySelectorAll('canvas.leaflet-tile').forEach(cv => {
+      if(!cv.key) return;                                     // 已卸载的瓦片 key 被置空
+      if(!cv.classList.contains('leaflet-tile-loaded')) return;
+      const [x, y, z] = cv.key.split(':').map(Number);
+      try{
+        out.push({ z, x, y, data: cv.toDataURL(FMT, QUALITY) });
+      }catch(e){ /* 同源本地归档绘制，不会污染画布；保险起见跳过 */ }
+    });
+    return out;
+  }
+
+  window.__tiles = { map, mount, viewBlock, grab, ready: () => !!layer };
+})();
+</script>
+</body>
+</html>

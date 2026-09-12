@@ -33,8 +33,12 @@ module.exports=({S,g,render,nodes,CITY_DATA,assert,fs})=>{
           if(screen!=='s5')assert(html.includes('real-map-canvas')&&!html.includes('class="sim-map'),name+' 显示真实地图容器');
         }
       }
-      S.chosenPlan=result.plansDefault[0].id;S.learned=[{id:'feedback',text:'不喜欢一天塞太多景点'}];
-      assert(g('itin()').days.length===days&&g('itin()').days.every(d=>d.items.filter(i=>i.kind==='spot').length<=2),name+' 反馈减点不减天');
+      /* 走真实的表态路径建这条记忆：learn() 会把规则里的语义标签一起带上。
+         以前这里手写一个只有 text 的对象就够——那时判断依据是正则匹配措辞。
+         现在判断依据是标签，手写对象必须自带 pace 才有可能生效，所以改成
+         调用真的 learn()，这样测的才是产品里实际发生的那条路径。 */
+      S.chosenPlan=result.plansDefault[0].id;S.learned=[];g("learn('太赶','pace')");
+      assert(g('itin()').days.length===days&&g('itin()').days.every(d=>d.items.filter(i=>i.kind==='spot').length<=3),name+' 反馈减点不减天（slow 时上限 PACE_CAP=3，与 app/memory/derive.js 同值）');
       S.memoryOn=false;assert(g('itin()').days[0].items.length===3,name+' 关闭记忆恢复选中路线');
       S.memoryOn=true;S.learned=[{id:'other',text:'喜欢吃甜食'}];
       assert(g('diffs()').length===0&&g('usedMemoryIds()').length===0,name+' 未匹配偏好不伪造变化');

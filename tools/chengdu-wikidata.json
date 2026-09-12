@@ -1,0 +1,208 @@
+{
+  "宽窄巷子": {
+    "qid": "Q10951691",
+    "label_zh": "宽窄巷子",
+    "label_en": "Kuanzhai Xiangzi",
+    "lat": 30.66734,
+    "lng": 104.04918,
+    "image": "Narrow Lane of Chengdu.jpg",
+    "site": null,
+    "desc": "street in Chengdu, China"
+  },
+  "锦里": {
+    "qid": "Q6202606",
+    "label_zh": "锦里古街",
+    "label_en": "Jinli",
+    "lat": 30.6484759,
+    "lng": 104.04738,
+    "image": "锦里古街 2011.jpg",
+    "site": "https://www.cdjinli.com",
+    "desc": "成都古商业街"
+  },
+  "成都武侯祠": {
+    "qid": "Q1069942",
+    "label_zh": "成都武侯祠",
+    "label_en": "Temple of Marquis Wu, Chengdu",
+    "lat": 30.64830556,
+    "lng": 104.04702778,
+    "image": "成都的武侯祠.jpg",
+    "site": "http://www.wuhouci.net.cn",
+    "desc": "成都祭祀诸葛亮、刘备等的祠庙"
+  },
+  "杜甫草堂": {
+    "qid": "Q4390891",
+    "label_zh": "杜甫草堂",
+    "label_en": "Du Fu Thatched Cottage",
+    "lat": 30.66217,
+    "lng": 104.02633,
+    "image": "Du Fu cao tang.jpg",
+    "site": "http://www.cddfct.com/index.php",
+    "desc": "park and museum in Chengdu"
+  },
+  "成都大熊猫繁育研究基地": {
+    "qid": "Q1067861",
+    "label_zh": "成都大熊猫繁育研究基地",
+    "label_en": "Chengdu Research Base of Giant Panda Breeding",
+    "lat": 30.73861111,
+    "lng": 104.14194444,
+    "image": "Chengdu Research Base Eingang.jpg",
+    "site": "https://www.panda.org.cn/",
+    "desc": "由成都市政府运营的保护和繁育大熊猫、小熊猫等中国特有濒危野生动物的动物园"
+  },
+  "青羊宫": {
+    "qid": "Q2121639",
+    "label_zh": "青羊宫",
+    "label_en": "Azure Ram Temple",
+    "lat": 30.66245,
+    "lng": 104.03863,
+    "image": "Qingyang Palace.jpg",
+    "site": null,
+    "desc": "中国成都市的道教庙宇"
+  },
+  "文殊院": {
+    "qid": "Q110963487",
+    "label_zh": "文殊院",
+    "label_en": "Wenshu Temple",
+    "lat": null,
+    "lng": null,
+    "image": null,
+    "site": null,
+    "desc": "水滸傳虛構佛寺，魯智深出家處，位於五臺山"
+  },
+  "春熙路": {
+    "qid": "Q5116461",
+    "label_zh": "春熙路",
+    "label_en": "Chunxi Road",
+    "lat": 30.6587,
+    "lng": 104.0786,
+    "image": "Chunxi Road seen from viaduct, Chengdu.jpg",
+    "site": null,
+    "desc": "四川成都的著名商业街"
+  },
+  "大慈寺": {
+    "qid": "Q9907170",
+    "label_zh": "大慈寺",
+    "label_en": "Daci Temple",
+    "lat": 30.657,
+    "lng": 104.08141,
+    "image": "Dacisi Temple in chengdu.jpg",
+    "site": null,
+    "desc": "building in Chengdu, China"
+  },
+  "成都人民公园": {
+    "error": "Wikidata 里搜不到"
+  },
+  "四川博物院": {
+    "qid": "Q10924774",
+    "label_zh": "四川博物院",
+    "label_en": "Sichuan Museum",
+    "lat": 30.66026688,
+    "lng": 104.03434753,
+    "image": "四川博物院.JPG",
+    "site": "https://www.scmuseum.cn",
+    "desc": "public museum in Chengdu, Sichuan, China"
+  },
+  "金沙遗址": {
+    "qid": "Q217618",
+    "label_zh": "金沙遺址",
+    "label_en": "Jinsha site",
+    "lat": 30.683436,
+    "lng": 104.010911,
+    "image": "金沙遗址 Jinsha Site 2018.jpg",
+    "site": "https://www.jinshasitemuseum.com",
+    "desc": "位於成都的青銅器時代遺址"
+  },
+  "成都博物馆": {
+    "qid": "Q55696247",
+    "label_zh": "成都博物馆",
+    "label_en": "Chengdu Museum",
+    "lat": 30.65973,
+    "lng": 104.0612,
+    "image": "成都博物馆正门.jpg",
+    "site": "https://www.cdmuseum.com/",
+    "desc": "1984年开放的一座博物馆"
+  },
+  "望江楼": {
+    "qid": "Q21017523",
+    "label_zh": "望江楼",
+    "label_en": "Wangjiang Tower",
+    "lat": 30.6327778,
+    "lng": 104.0911111,
+    "image": null,
+    "site": null,
+    "desc": null
+  },
+  "东郊记忆": {
+    "qid": "Q104815468",
+    "label_zh": "东郊记忆站",
+    "label_en": "Dongjiao Memory station",
+    "lat": 30.67042,
+    "lng": 104.12604,
+    "image": "Name Wall of Dongjiao Memory Station, Chengdu Metro Line 8.jpg",
+    "site": null,
+    "desc": "成都地铁8号线车站"
+  },
+  "天府广场": {
+    "qid": "Q10939558",
+    "label_zh": "天府广场",
+    "label_en": "Tianfu Square",
+    "lat": 30.65988,
+    "lng": 104.06333,
+    "image": "Tianfu-Square-1.JPG",
+    "site": null,
+    "desc": "成都市中心大型广场"
+  },
+  "九眼桥": {
+    "qid": "Q13715821",
+    "label_zh": "九眼桥社区",
+    "label_en": null,
+    "lat": null,
+    "lng": null,
+    "image": null,
+    "site": null,
+    "desc": null
+  },
+  "成都东站": {
+    "qid": "Q5091316",
+    "label_zh": "成都东站",
+    "label_en": "Chengdu East railway station",
+    "lat": 30.6311,
+    "lng": 104.139,
+    "image": "Chengdu East Railway Station 2011-05-08.jpg",
+    "site": null,
+    "desc": "四川省成都市成华区铁路车站"
+  },
+  "都江堰": {
+    "qid": "Q824157",
+    "label_zh": "都江堰",
+    "label_en": "Dujiangyan",
+    "lat": 31.00925,
+    "lng": 103.60441667,
+    "image": "Dujiang Weir.jpg",
+    "site": null,
+    "desc": "四川水利系统"
+  },
+  "青城山": {
+    "qid": "Q905536",
+    "label_zh": "青城山",
+    "label_en": "Mount Qingcheng",
+    "lat": 31.002,
+    "lng": 103.605,
+    "image": "青城山 Mount Qingcheng 2017.jpg",
+    "site": null,
+    "desc": "道教名山、世界遗产、蜀地文化"
+  },
+  "成都环球中心": {
+    "error": "Wikidata 里搜不到"
+  },
+  "太古里": {
+    "qid": "Q61756141",
+    "label_zh": "太古里",
+    "label_en": "Taikoo Li",
+    "lat": null,
+    "lng": null,
+    "image": null,
+    "site": null,
+    "desc": "维基媒体消歧义页"
+  }
+}

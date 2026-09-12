@@ -10,9 +10,12 @@
   width:62px;height:30px;flex:none;border-radius:0;
   background:var(--logo-mark) center/contain no-repeat;
 }
-/* 首页 Hero 品牌位：原 LOGO 是纯黑，hero 是深色遮罩配白字，整体反白使用 */
+/* 首页首屏的品牌位：只放商标，旁边不再有「Touris 知途」文字。
+   尺寸按墨迹包围盒的实际比例定——--logo-mark 画布 641x324，但墨迹只有 629x314，
+   宽高比 2.003。contain 只做等比缩放不会裁切，盒子给到 68x34（2.0）时几乎满幅。
+   原 LOGO 是纯黑，首屏是深色遮罩配白字，整体反白使用。 */
 .hero-top .h-logo .logo{
-  width:58px;height:29px;flex:none;border-radius:0;
+  width:68px;height:34px;flex:none;border-radius:0;
   background:var(--logo-mark) center/contain no-repeat;
   filter:brightness(0) invert(1);
 }

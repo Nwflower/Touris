@@ -1,10 +1,19 @@
 #!/usr/bin/env node
 /* 一次性脚本：给 prototype/data.js 的 MEMORIES 与 REASON_TO_MEMORY 补语义标签。
-   跑完即删。 */
+   已经跑过了，留着是为了记录当初每条记忆是怎么映射的。
+
+   ★ 别重复跑。下面那个正则匹配的是 `used:true,` 这种位置，再跑一遍会在已经
+     贴好的标签后面再接一遍，变成 pace:'slow', pace:'slow',。
+     所以这里先检查有没有贴过，贴过就直接退出。 */
 const fs = require('fs');
 const p = 'prototype/data.js';
 let s = fs.readFileSync(p, 'utf8');
 const before = s.length;
+
+if (/used:(?:true|false),\s*(?:pace:|avoid:|prefer:)/.test(s)){
+  console.log('data.js 里的记忆已经贴过语义标签了，跳过（重复跑会贴第二遍）。');
+  process.exit(0);
+}
 
 /* 记忆 id → 语义标签。空对象 = 这条记忆无法表达成可执行的约束（如实留空）。 */
 const MEM = {

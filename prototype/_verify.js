@@ -34,20 +34,28 @@ const ctx = { document, window, console, setTimeout:()=>0, requestAnimationFrame
   IntersectionObserver: class { observe(){} unobserve(){} disconnect(){} }, Math, JSON, Set, Map,
   Array, Object, String, Number, RegExp };
 vm.createContext(ctx);
-for(const f of ['semantics.js','images.js','data.js','city-data.js','city-expansion.js','city-hangzhou-guangzhou.js','account.js','app.js']){
+for(const f of ['semantics.js','images.js','data.js','city-data.js','city-expansion.js','city-hangzhou-guangzhou.js','city-chengdu.js','account.js','app.js']){
   vm.runInContext(fs.readFileSync(f,'utf8'), ctx, { filename:f });
 }
 const g = n => vm.runInContext(n, ctx);
 
 /* 注意：vm 里的 const 不会成为 context 的属性，只能通过 runInContext 求值取出 */
-const SPOTS = g('SPOTS'), POI = g('POI'), DINING = g('DINING'),
-      STAY_DEFAULT = g('STAY_DEFAULT'), STAY_MEMORY = g('STAY_MEMORY'),
-      MEMORIES = g('MEMORIES'), DIFFS = g('DIFFS'),
-      PLANS_DEFAULT = g('PLANS_DEFAULT'), PLANS_MEMORY = g('PLANS_MEMORY'),
-      ITIN_DEFAULT = g('ITIN_DEFAULT'), ITIN_MEMORY = g('ITIN_MEMORY'),
-      REASONS = g('REASONS'), REASON_TO_MEMORY = g('REASON_TO_MEMORY'),
-      SPOT_IMG = g('SPOT_IMG'), REST_POI = g('REST_POI');
+/* ★ 京都那批全局常量（SPOTS POI PLANS ITIN STAY DIFFS REST_POI）已随京都数据一起删除。
+   下面用「取不到就给空值」的方式兜住，好让本文件里那些京都时代的检查变成空转而不报错。
+   待办：把本文件里针对京都的那几段检查与渲染断言整段删掉，别让它们空占位置。 */
+const OPT = (n, d) => { try { const v = g('typeof ' + n + "!=='undefined' ? " + n + " : null"); return v === null ? d : v; } catch(e){ return d; } };
+const SPOTS = OPT('SPOTS', {}), POI = OPT('POI', {}), DINING = OPT('DINING', {}),
+      STAY_DEFAULT = OPT('STAY_DEFAULT', {}), STAY_MEMORY = OPT('STAY_MEMORY', {}),
+      DIFFS = OPT('DIFFS', []),
+      PLANS_DEFAULT = OPT('PLANS_DEFAULT', []), PLANS_MEMORY = OPT('PLANS_MEMORY', []),
+      ITIN_DEFAULT = OPT('ITIN_DEFAULT', {days:[],stay:{picks:[]}}),
+      ITIN_MEMORY = OPT('ITIN_MEMORY', {days:[],stay:{picks:[]}});
+const SPOT_IMG = OPT('SPOT_IMG', {});
+const MEMORIES = g('MEMORIES'), REASONS = g('REASONS'), REASON_TO_MEMORY = g('REASON_TO_MEMORY');
 const CITY_DATA = g('CITY_DATA');
+/* 语义层：标签词表与景点映射表（semantics.js） */
+const SEMANTICS = g('SEMANTICS'), ALL_TAGS = g('ALL_TAGS'),
+      SPOT_PREFER_MAP = g('SPOT_PREFER_MAP'), SPOT_AVOID_MAP = g('SPOT_AVOID_MAP');
 
 const bad = [];
 const allMem = new Set(MEMORIES.map(m => m.id));
@@ -128,6 +136,43 @@ DIFFS.forEach(x => {
 /* ---------- 反馈原因 → 记忆规则 ---------- */
 Object.entries(REASONS).forEach(([dir,byKind]) => Object.entries(byKind).forEach(([k,arr]) =>
   arr.forEach(r => { if(!REASON_TO_MEMORY[r]) bad.push('原因无生成规则 '+dir+'/'+k+'/'+r); })));
+
+/* ---------- 语义标签 ----------
+   标签是「记忆 → 推荐」的唯一判断依据（见 semantics.js）。贴错了或者忘了贴，
+   在界面上完全看不出来：记忆照样显示、计数照样 +1，就是不产生任何约束。
+   所以这里把三件事钉死。 */
+
+/* 有意留空的记忆：它表达的东西落不进当前词表，硬贴一个标签等于伪造出处。
+   写在这里是为了让它「被看见」，而不是悄悄混在数据里。 */
+const INERT_MEMORIES = {
+  m14: '关于「正式晚饭」的预算意愿——推不进行程过滤（餐饮不参与推导）',
+  m19: '「以步行为主」是交通偏好，词表里的 walk-heavy 意思正好相反，贴上会反向生效'
+};
+MEMORIES.forEach(m => {
+  const has = (m.avoid||[]).length || (m.prefer||[]).length || m.pace;
+  if(!has && !INERT_MEMORIES[m.id]) bad.push('记忆 '+m.id+'「'+m.text+'」没有任何语义标签，且不在有意留空清单里');
+});
+MEMORIES.forEach(m => {
+  ['avoid','prefer'].forEach(kind => (m[kind]||[]).forEach(t => {
+    if(!ALL_TAGS.has(t)) bad.push('记忆 '+m.id+' 的 '+kind+' 标签 "'+t+'" 不在 SEMANTICS 里');
+  }));
+  if(m.pace && !SEMANTICS.pace.includes(m.pace)) bad.push('记忆 '+m.id+' 的 pace "'+m.pace+'" 不合法');
+});
+
+/* 表态规则同样要带标签，否则「表态 → 学到记忆 → 推荐改变」断在最后一步 */
+Object.entries(REASON_TO_MEMORY).forEach(([r, rule]) => {
+  ['avoid','prefer'].forEach(kind => (rule[kind] ? [].concat(rule[kind]) : []).forEach(t => {
+    if(!ALL_TAGS.has(t)) bad.push('规则「'+r+'」的 '+kind+' 标签 "'+t+'" 不在 SEMANTICS 里');
+  }));
+  if(rule.pace && !SEMANTICS.pace.includes(rule.pace)) bad.push('规则「'+r+'」的 pace "'+rule.pace+'" 不合法');
+});
+
+/* 映射表只许指向登记过的标签，否则 semOf 会给出 derive 认不出的值 */
+[[SPOT_PREFER_MAP,'SPOT_PREFER_MAP'],[SPOT_AVOID_MAP,'SPOT_AVOID_MAP']].forEach(([map,name]) => {
+  Object.entries(map).forEach(([cn, sem]) => {
+    if(!ALL_TAGS.has(sem)) bad.push(name+' 把「'+cn+'」映到了未登记的标签 "'+sem+'"');
+  });
+});
 
 /* ---------- 商业化口径：不应出现门牌地址 ---------- */
 const blob = JSON.stringify({ DINING, STAY_DEFAULT, STAY_MEMORY });
@@ -224,6 +269,43 @@ Object.entries(CITY_DATA).forEach(([name,c]) => {
 });
 
 require('./_verify-cities.js')({S,g,render,nodes,CITY_DATA,assert,fs});
+
+/* ---------- 只报告，不算失败 ----------
+   「记住了但推不出约束」的东西。它们说的是餐饮、住宿或「这类景点」，
+   而当前 derive 只过滤景点。硬贴一个标签等于伪造出处（界面会说「因为你
+   记录了『太贵』所以避开某某」），所以留着，但必须看得见——
+   要不它会混在 34 条规则里，谁也发现不了。 */
+const inertRules = Object.entries(REASON_TO_MEMORY)
+  .filter(([, r]) => !r.pace && !(r.avoid||[]).length && !(r.prefer||[]).length)
+  .map(([k]) => k);
+if(inertRules.length){
+  console.log(`\n提示：${inertRules.length}/${Object.keys(REASON_TO_MEMORY).length} 条表态原因推不出约束` +
+    `（点了会记住、会显示，但不改变推荐）：\n  ${inertRules.join('、')}`);
+}
+const inertMemIds = Object.keys(INERT_MEMORIES);
+if(inertMemIds.length){
+  console.log(`提示：${inertMemIds.length}/${MEMORIES.length} 条预置记忆有意留空语义标签：` +
+    inertMemIds.map(id => id + '（' + INERT_MEMORIES[id] + '）').join('；'));
+}
+
+/* 覆盖度：20 条预置记忆里，有多少条真的改变了某个城市的推荐。
+   数字低不一定是 bug——可能是这座城市的景点没打上对应的中文标签（映射表
+   翻不出来），也可能是那些记忆本身落不进词表。但它是「记忆是不是真的在
+   起作用」唯一看得见的信号，所以每次跑都打出来。 */
+const covRows = [];
+Object.entries(CITY_DATA).forEach(([name, c]) => {
+  if(typeof c.resolve !== 'function'){
+    covRows.push(`${name} 手工写对照`);     // 北京/上海/威海：还没有推导引擎，对照是手写的
+    return;
+  }
+  try{
+    const r = c.resolve({ date:'2026-10-02', days:4 }, null, MEMORIES);
+    const hit = new Set();
+    (r.diffs || []).forEach(d => (d.memoryIds || []).forEach(id => hit.add(id)));
+    covRows.push(`${name} ${hit.size}/${MEMORIES.length}`);
+  }catch(e){ covRows.push(`${name} 推导抛错(${e.message})`); }
+});
+console.log(`\n记忆覆盖度（能实际改变推荐条数 / 预置记忆总数）：\n  ${covRows.join('  ')}`);
 
 console.log(bad.length ? '\n数据问题:\n - ' + bad.join('\n - ') : '\n数据交叉引用：全部通过');
 process.exit(fails || bad.length ? 1 : 0);

@@ -47,7 +47,7 @@ function check(label, ref){
 }
 
 /* ---- 1. 每个城市的每个景点 ---- */
-const cities = [{ name:'京都', spots:SPOTS, images:null }, ...Object.entries(CITY_DATA).map(([k, v]) => ({ name:k, ...v }))];
+const cities = Object.entries(CITY_DATA).map(([k, v]) => ({ name:k, ...v }));
 cities.forEach(c => {
   Object.keys(c.spots || {}).forEach(n => check(c.name + ' · ' + n, imageFor(c, n)));
 });

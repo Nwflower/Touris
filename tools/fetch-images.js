@@ -8,15 +8,19 @@
    所有图片请求都要过一个不受控的中转站。
 
    现在改为运行时不依赖任何外部服务：图片一次性下载进 prototype/img/，
-   页面只读本地文件。wsrv.nl 只在这里用（构建期）。
+   页面只读本地文件。
+
+   ★ 构建期也尽量不依赖第三方
+
+   路径由**文件名的 MD5** 推出（见下），直连 upload.wikimedia.org；
+   wsrv.nl 只在原站取不到时兜底。原先所有图都走代理，理由是「本机连不通
+   wikipedia.org」——现在实测直连是通的，而且快得多（3.5MB/2.2s）。
 
    ★ 为什么不直接存 URL
    仓库里原先那 63 条图片地址，有 19 条的路径段是错的——例如思南公馆写成
    /thumb/a/a8/Sinan_Mansions,_Shanghai.jpg/，而 Commons 的实际路径是 /thumb/8/83/。
    文件名对、哈希目录段是编的，所以这 19 张图从来没加载成功过，页面一直在显示
-   SVG 占位图，而没人发现。
-   所以这里只存** Commons 文件名 **，每次由 API 解析出真实地址。宁可多一次网络
-   往返，也不要再相信一个手写的 URL。
+   SVG 占位图，而没人发现。所以这里只存** Commons 文件名 **，地址一律现算。
 
    两个必须保留的东西
    1) tools/image-sources.json —— 景点名到 Commons 文件名的唯一依据，
@@ -28,7 +32,6 @@
      node tools/fetch-images.js            解析地址 + 下载缺失的图 + 重新生成 images.js
      node tools/fetch-images.js --check    只报告缺哪些，不下载
      node tools/fetch-images.js --force    重下已有的
-     node tools/fetch-images.js --re-resolve   忽略缓存的地址，重新问一遍 API
    ========================================================================== */
 
 const fs = require('fs');
@@ -116,61 +119,36 @@ function discover(sources){
   return added;
 }
 
-/* ---------------- 2. 用 Commons API 解析真实地址 ---------------- */
+/* ---------------- 2. 文件名 → 真实地址 ----------------
+   ★ 不再问 Commons API
 
-/** 文件名去重后按 50 个一批问 API，拿可下载的地址。
- *
- *  ★ 为什么要 thumburl 而不是原图直链
- *  有几张原图特别大（上海北外滩 16.5MB、龙华寺 9.3MB），wsrv.nl 取原图会直接 404；
- *  换成 Commons 自己生成的缩略图（thumb.wikimedia.org 上的小图）就都能取到。
- *  所以这里要 1600px 缩略图，优先用它，取不到才退回原图。 */
+   Wikimedia 的路径就是**文件名的 MD5**：取 MD5 的十六进制前两位里，
+   第 1 位做一级目录、前 2 位做二级目录。
+     锦里古街 2011.jpg → md5 前两位 "3c" → /thumb/3/3c/...
+   实测 6 个已知样本 6/6 命中，其中包括带逗号、带撇号、带中文的文件名。
+
+   为什么值得这么改：
+     · commons.wikimedia.org 本身会挂 DNS（今天就挂了一整轮），而图片实际托管在
+       upload.wikimedia.org 上是通的——绕开它，取图链路就少一个单点
+     · 没有速率限制，不用分批 + sleep，63 张图从两轮请求变成纯本地计算
+     · 结果确定：同一个文件名永远算出同一个地址，不用缓存
+
+   文件名本身仍然要**存**（tools/image-sources.json），因为 MD5 推不出名字。
+   名字在 Wikidata 是 P18、在维基百科是 pageimages，都是可核验的来源。 */
+
+function commonsPath(fileName){
+  const h = crypto.createHash('md5').update(fileName).digest('hex');
+  return h[0] + '/' + h.slice(0, 2);
+}
+
 function resolveURLs(fileNames){
-  const uniq = [...new Set(fileNames)];
   const out = {};
-  return new Promise(resolve => {
-    let i = 0, failed = [];
-    const next = () => {
-      if(i >= uniq.length){
-        if(failed.length) log(`  ⚠ ${failed.length} 个文件名 API 里查不到（可能已被改名或删除）：\n    ` + failed.join('\n    '));
-        return resolve(out);
-      }
-      const batch = uniq.slice(i, i + 50);
-      i += 50;
-      const u = 'https://commons.wikimedia.org/w/api.php?action=query&format=json' +
-                '&prop=imageinfo&iiprop=url&iiurlwidth=1600&titles=' +
-                batch.map(f => encodeURIComponent('File:' + f)).join('%7C');
-      const req = https.get(u, { headers: { 'User-Agent': 'Touris-image-fetcher/1.0' } }, r => {
-        let d = '';
-        r.on('data', c => d += c);
-        r.on('end', () => {
-          try{
-            const pages = JSON.parse(d).query.pages;
-            /* MediaWiki 会把标题里的下划线规范化成空格、首字母转大写再返回
-               （File:Foo_bar.jpg → File:Foo bar.jpg），直接拿 title 对不上号。
-               两边都压成「小写 + 下划线」再比。 */
-            const key = t => t.replace(/^File:/, '').replace(/ /g, '_').toLowerCase();
-            const got = new Map();
-            Object.values(pages).forEach(p => {
-              if(p.missing !== undefined) return;
-              const ii = (p.imageinfo || [])[0] || {};
-              const src = ii.thumburl || ii.url;
-              if(src) got.set(key(p.title), src.split('?')[0]);
-            });
-            batch.forEach(f => {
-              const hit = got.get(key(f));
-              if(hit) out[f] = hit; else failed.push(f);
-            });
-          }catch(e){
-            failed.push(...batch.map(f => f + '（解析响应失败: ' + e.message + '）'));
-          }
-          setTimeout(next, 200);   // 别把 API 打太急
-        });
-      });
-      req.on('error', e => { failed.push(...batch.map(f => f + '（网络: ' + e.message + '）')); next(); });
-      req.setTimeout(30000, () => req.destroy(new Error('超时')));
-    };
-    next();
+  [...new Set(fileNames)].forEach(f => {
+    const dir = commonsPath(f.replace(/ /g, '_'));
+    out[f] = 'https://upload.wikimedia.org/wikipedia/commons/' + dir + '/' +
+             encodeURIComponent(f.replace(/ /g, '_'));
   });
+  return Promise.resolve(out);
 }
 
 /* ---------------- 3. 文件名与并发 ---------------- */
@@ -197,20 +175,49 @@ function localName(file){
    （而且 wsrv 会把 404 也缓存下来，所以一旦错一次就一直错——先前那版就栽在这。）
    encodeURI 保留已有的 %XX 不动，只转义真正不安全的部分；再把会截断 query 的三个
    字符补上，就既能取到图，也不会把 &url= 的取值截断。 */
+/* 一张图的候选取法，按顺序试，取到第一个能用的为止。
+
+   ★ 直连优先，wsrv 只兜底
+   原先所有图片都经 wsrv.nl 中转，理由是「本机连不通 wikipedia.org」。
+   现在实测 upload.wikimedia.org 直连是通的，而且快得多（3.5MB/2.2s ≈ 1.6MB/s，
+   经代理时 220KB 要 3 秒）。所以直连放首选，代理降级为「原站不通时」的兜底——
+   构建期也就不再依赖那个第三方了。
+
+   为什么先取缩略图而不是原图：
+     · 原图动辄 3–16MB，一个城市就能上百 MB；缩略图只有 130–260KB
+     · 但文件本身窄于请求宽度时 Commons 不生成缩略图（不放大），所以要退回原图
+   路径只靠文件名推：hash 目录 + `/thumb/<h>/<hh>/<file>/<w>px-<file>` */
+function candidateSources(raw, w){
+  const m = raw.match(/^(https?:\/\/[^/]+)\/wikipedia\/commons\/([0-9a-f])\/([0-9a-f]{2})\/(.+)$/i);
+  if(!m) return [raw];
+  const [, host, h1, h2, file] = m;
+  const orig  = `${host}/wikipedia/commons/${h1}/${h2}/${file}`;
+  const thumb = `${host}/wikipedia/commons/thumb/${h1}/${h2}/${file}/${w}px-${file}`;
+  return [thumb, orig, proxyURL(thumb, w), proxyURL(orig, w)];
+}
+
 function proxyURL(raw, w){
   const v = encodeURI(raw.replace(/^https?:\/\//, ''))
     .replace(/&/g, '%26').replace(/\?/g, '%3F').replace(/#/g, '%23');
   return 'https://wsrv.nl/?url=' + v + '&w=' + w + '&output=jpg';
 }
 
-function fetchTo(url, dest, depth){
+function fetchTo(url, dest, depth, retry){
   depth = depth || 0;
+  retry = retry || 0;
   return new Promise((resolve, reject) => {
     if(depth > 4) return reject(new Error('重定向过多'));
     const req = https.get(url, { headers: { 'User-Agent': 'Touris-image-fetcher/1.0' } }, res => {
       if(res.statusCode >= 300 && res.statusCode < 400 && res.headers.location){
         res.resume();
-        return resolve(fetchTo(res.headers.location, dest, depth + 1));
+        return resolve(fetchTo(res.headers.location, dest, depth + 1, retry));
+      }
+      /* 429/5xx 是**暂时**失败：这一批图要几十个请求，原作者站会限流。
+         不能当成硬失败——否则一张图会连着试完 4 个候选、全军覆没，
+         而其实等两秒再来一次就好（先前那 10 张就是这么丢的）。 */
+      if((res.statusCode === 429 || res.statusCode >= 500) && retry < 3){
+        res.resume();
+        return setTimeout(() => resolve(fetchTo(url, dest, depth, retry + 1)), 2500 * (retry + 1));
       }
       if(res.statusCode !== 200){ res.resume(); return reject(new Error('HTTP ' + res.statusCode)); }
       const tmp = dest + '.part';
@@ -261,12 +268,11 @@ async function pool(items, limit, worker){
   if(fresh.length) log(`发现 ${fresh.length} 个新景点的配图：${fresh.join('、')}`);
 
   /* ---- 解析真实地址 ---- */
-  const need = [...new Set(Object.values(sources))].filter(f => RE_RESOLVE || !urlCache[f]);
-  if(need.length){
-    log(`向 Commons 解析 ${need.length} 个文件的真实地址…`);
-    const got = await resolveURLs(need);
-    Object.assign(urlCache, got);
-  }
+  /* 地址现在是纯本地算出来的（文件名 MD5），没有网络成本，所以每次都重算，
+     不留缓存——缓存里存的还是老版本问 API 拿到的缩略图地址，留着只会两套混用。 */
+  const need = [...new Set(Object.values(sources))];
+  const got = await resolveURLs(need);
+  Object.assign(urlCache, got);
 
   const unresolved = [...new Set(Object.values(sources))].filter(f => !urlCache[f]);
 
@@ -306,11 +312,18 @@ async function pool(items, limit, worker){
   /* ---- 下载 ---- */
   let failed = [];
   if(todo.length){
-    await pool(todo, 5, async (e, idx) => {
+    await pool(todo, 3, async (e, idx) => {
       const w = e.names.some(n => WIDE.includes(n)) ? W_WIDE : W_DEFAULT;
       const dest = path.join(IMG_DIR, e.local);
       try{
-        const size = await fetchTo(proxyURL(e.url, w), dest);
+        let size = null, lastErr = null;
+        for(const src of candidateSources(e.url, w)){
+          /* 候选里已经排好了「直连 → 代理」，这里**不能再套一层 proxyURL**，
+             否则直连也被包进 wsrv，直连优先就白设计了。 */
+          try{ size = await fetchTo(src, dest); break; }
+          catch(err){ lastErr = err; }
+        }
+        if(size == null) throw lastErr || new Error('没有可用的取法');
         process.stdout.write(`  [${idx + 1}/${todo.length}] ${e.local} ${(size / 1024).toFixed(0)}KB\n`);
       }catch(err){
         failed.push({ local: e.local, err: err.message, names: e.names });
