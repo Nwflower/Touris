@@ -91,25 +91,10 @@ const SPOTS = {
     intro:'大屋顶车站本身就是地标，也是返程集散点。', tags:['交通枢纽','购物','集散'] }
 };
 
-/* ---------- 人设（Demo 用记忆档案切换器） ---------- */
-const PERSONAS = [
-  {
-    id: 'blank',
-    name: '空记忆用户',
-    avatar: '🫥',
-    desc: '第一次使用 · 0 条记忆',
-    hasMemory: false
-  },
-  {
-    id: 'veteran',
-    name: '林小满',
-    avatar: '🧳',
-    desc: '用了 3 趟 · 已积累 20 条记忆',
-    hasMemory: true
-  }
-];
-
-/* ---------- 预置记忆库（人设 veteran 的 20 条） ---------- */
+/* ---------- 预置记忆库（预置演示账号 demo 的 20 条） ----------
+   账号体系见 account.js：这份 MEMORIES 由 _seedDemo() 播种进演示账号，
+   原样引用不复制不删改。游客模式则完全不读它——游客 = 0 记忆模式。
+   想改演示账号的口令 / 名字，去 account.js 顶部的 DEMO_ACCOUNT。 */
 const MEMORIES = [
   { id:'m01', text:'不喜欢早起赶路', type:'节奏', scope:'long', cited:3, used:true,
     source:{ trip:'2026-03 大阪 4 天', date:'2026-03-14', action:'你对第 2 天节奏点了不喜欢', quote:'太早出门' } },
@@ -529,12 +514,14 @@ const REASON_TO_MEMORY = {
   '需要这个空档':{ text:'习惯午后留 2 小时自由休息', type:'节奏' }
 };
 
-/* ---------- Demo 动线提词 ---------- */
+/* ---------- Demo 动线提词 ----------
+   seeded: false = 以游客（0 记忆）身份跑；true = 登录预置演示账号看 20 条记忆的档案。
+   演示动线会自己切换档案，不沿用用户当前的登录状态。 */
 const DEMO_STEPS = [
-  { n:1, title:'空记忆开场',      hint:'人设选「空记忆用户」，输入京都 4 天',           screen:'s0', persona:'blank' },
-  { n:2, title:'三套通用方案',    hint:'注意：没有一个 🧠 标签，和通用工具没区别',      screen:'s1', persona:'blank' },
-  { n:3, title:'元素级表态',      hint:'点开详情，对博物馆点踩、抹茶店点赞 3-4 次',     screen:'s2', persona:'blank' },
-  { n:4, title:'切到有记忆人设',  hint:'顶栏切「林小满」，同样输入京都 4 天',           screen:'s1', persona:'veteran' },
-  { n:5, title:'对照开关一拨',    hint:'S5 切换记忆开关，7 处 diff 逐个亮起',           screen:'s5', persona:'veteran' },
-  { n:6, title:'收尾',            hint:'“这些记忆换个 App 带不走。”按 F 进全屏演示',    screen:'s5', persona:'veteran' }
+  { n:1, title:'空记忆开场',      hint:'停在游客模式（0 记忆），输入京都 4 天',        screen:'s0', seeded:false },
+  { n:2, title:'三套通用方案',    hint:'注意：没有一个 🧠 标签，和通用工具没区别',      screen:'s1', seeded:false },
+  { n:3, title:'元素级表态',      hint:'点开详情，对博物馆点踩、抹茶店点赞 3-4 次',     screen:'s2', seeded:false },
+  { n:4, title:'换到有记忆的账号', hint:'登录演示账号 demo，同样输入京都 4 天',          screen:'s1', seeded:true  },
+  { n:5, title:'对照开关一拨',    hint:'S5 切换记忆开关，7 处 diff 逐个亮起',           screen:'s5', seeded:true  },
+  { n:6, title:'收尾',            hint:'“这些记忆换个 App 带不走。”按 F 进全屏演示',    screen:'s5', seeded:true  }
 ];

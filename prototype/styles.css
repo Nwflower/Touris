@@ -74,23 +74,7 @@ h1,h2,h3,h4{margin:0;font-weight:650;letter-spacing:.2px}
 .top-sep{width:1px;height:24px;background:var(--line-2)}
 .top-right{margin-left:auto;display:flex;align-items:center;gap:12px}
 
-/* 人设切换器 */
-.persona-sw{display:flex;align-items:center;gap:6px}
-.persona-sw .lbl{font-size:11px;color:var(--ink-3);letter-spacing:.5px}
-.seg{display:flex;background:var(--paper-2);border:1px solid var(--line);border-radius:999px;padding:3px}
-.seg button{
-  display:flex;align-items:center;gap:6px;
-  padding:5px 12px;border-radius:999px;font-size:12.5px;color:var(--ink-2);
-  transition:.16s;
-}
-.seg button .em{font-size:14px}
-.seg button:hover{color:var(--ink)}
-.seg button.on{background:var(--card);color:var(--ink);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.08)}
-.seg button .cnt{
-  font-size:10.5px;padding:1px 6px;border-radius:999px;
-  background:var(--indigo-soft);color:var(--indigo);font-weight:700;
-}
-.seg button.on .cnt{background:var(--indigo);color:#fff}
+/* 账号入口见 account.css（.acct-btn）——原「人设切换器」已由账号体系取代 */
 
 /* 记忆开关 */
 .mem-switch{display:flex;align-items:center;gap:9px;padding:5px 12px 5px 10px;border-radius:999px;
@@ -119,8 +103,7 @@ h1,h2,h3,h4{margin:0;font-weight:650;letter-spacing:.2px}
 
 /* 全屏演示模式 */
 body.present .shell{grid-template-columns:minmax(0,1fr)}
-body.present .rail-left,body.present .rail-right,body.present .demo-dock{display:none}
-body.present{--dock-h:0px}
+body.present .rail-left{display:none}
 body.present .work{padding:18px 34px 34px}
 
 /* ============================ 左栏 ============================ */
@@ -620,7 +603,7 @@ body.present .work{padding:18px 34px 34px}
 .closing .s{font-size:13px;color:var(--ink-2);margin-top:8px}
 .closing .row{margin-top:14px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 
-/* ============================ Demo 提词器 ============================ */
+/* ===== Demo 提词器已移除（UI 优化：底栏删除，动线改走左栏导航）===== */
 .demo-dock{
   height:var(--dock-h);border-top:1px solid var(--line);background:#F3EDE3;
   display:flex;align-items:center;gap:10px;padding:0 14px;overflow-x:auto;
@@ -642,7 +625,7 @@ body.present .work{padding:18px 34px 34px}
   color:var(--ink-3);font-weight:700}
 
 /* ============================ toast ============================ */
-.toast-wrap{position:fixed;right:20px;bottom:calc(var(--dock-h) + 18px);z-index:300;display:flex;flex-direction:column;gap:9px;align-items:flex-end}
+.toast-wrap{position:fixed;right:20px;bottom:20px;z-index:300;display:flex;flex-direction:column;gap:9px;align-items:flex-end}
 .toast{
   background:var(--ink);color:#fff;border-radius:11px;padding:11px 14px;font-size:12.5px;
   box-shadow:0 10px 30px rgba(0,0,0,.24);max-width:330px;display:flex;gap:9px;align-items:flex-start;
@@ -663,7 +646,7 @@ body.present .work{padding:18px 34px 34px}
 }
 @media (max-width:1080px){
   .shell{grid-template-columns:minmax(0,1fr)}
-  .rail-left,.rail-right{display:none}
+  .rail-left{display:none}
   .cmp-grid{grid-template-columns:repeat(2,1fr)}
   .diff-list{grid-template-columns:1fr}
   .s2-grid{grid-template-columns:minmax(0,1fr)}
