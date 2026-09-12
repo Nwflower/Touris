@@ -64,8 +64,8 @@ function parseRange(header, size) {
   return { start, end: Math.min(end, size - 1) };
 }
 
-/* tiles/ 整个目录不入库（见 .gitignore），但 tools/style-patch.js 是手写源码、
-   必须随仓库走，而离线测试页要加载它。所以额外把 /tools/ 映射到仓库的 tools/。 */
+/* 离线测试页还需加载仓库中的 tools/style-patch.js，
+   因此除地图目录外，额外把 /tools/ 映射到仓库的 tools/。 */
 const TOOLS = path.join(REPO, 'tools');
 
 function resolveTarget(pathname) {
