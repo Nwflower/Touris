@@ -115,13 +115,21 @@ npm start         # 方式二：带 LLM 后端（零依赖，Node 18+）
 
 | 变量 | 说明 |
 | --- | --- |
-| `DASHSCOPE_API_KEY` | 百炼 API Key，各地域不通用 |
-| `DASHSCOPE_BASE_URL` | 形如 `https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/compatible-mode/v1` |
-| `DASHSCOPE_MODEL` | 可选，默认 `qwen-plus` |
+| `LLM_API_KEY` | 模型服务的 Key（接魔搭 API-Inference 时就是访问令牌） |
+| `LLM_BASE_URL` | `https://api-inference.modelscope.cn/v1` |
+| `LLM_MODEL` | 魔搭 Model-Id，默认 `Qwen/Qwen3-235B-A22B` |
 | `LLM_TIMEOUT_MS` | 可选，默认 8000 |
+| `PORT` | 可选，默认 7860 |
+| `OAUTH_*` `STUDIO_*` | 由魔搭创空间注入，见 `server.js` 的「身份」一节 |
 
-**没配 Key 一切照常**：候选提名退回本地评分、攻略退回本地模板，生成流水线第 2 步会如实
-标注「未接入大模型服务」—— 路演当天服务挂了不开天窗。
+> `DASHSCOPE_*` 仍兼容，但名字已不准确 —— 现在接的是**魔搭自己的 API-Inference**，
+> 不是百炼；继续用这个名字，下一个人会拿百炼的 Key 去配，然后对着 401 想不通。
+> 另：`/v1/models` 列出的模型不是都真在服务（有的返回 `choices:null`，有的报
+> `no provider supported`），换模型前先打一发 `npm run llm:ping`。
+
+**没配 Key 一切照常**：`GET /api/llm/health` 会如实回 `{ok:true, llm:false}`，
+候选提名退回本地评分、攻略退回本地模板，生成流水线第 2 步标注「未接入大模型服务」
+—— 路演当天服务挂了不开天窗。
 
 ```bash
 npm run llm:ping  # 真打一次接口，失败时打印 HTTP 状态与排查方向
