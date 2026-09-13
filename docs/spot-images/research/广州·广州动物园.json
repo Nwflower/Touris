@@ -1,0 +1,27 @@
+{
+  "city": "广州",
+  "name": "广州动物园",
+  "query": "File:Gzzoo.jpg",
+  "review": "pending",
+  "existingFile": "assets/cities/guangzhou/zoo.jpg",
+  "candidates": [
+    {
+      "title": "File:Gzzoo.jpg",
+      "pageId": 4498582,
+      "source": "https://commons.wikimedia.org/wiki/File:Gzzoo.jpg",
+      "download": "https://upload.wikimedia.org/wikipedia/commons/3/35/Gzzoo.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/3/35/Gzzoo.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 800,
+      "height": 600,
+      "mime": "image/jpeg",
+      "description": "​广州动物园",
+      "author": "Mengyeyue",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "categories": "GFDL|Taken with BenQ E605|CC-BY-SA-3.0,2.5,2.0,1.0|Guangzhou Zoo|License migration redundant|Self-published work|Zoo entrances",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

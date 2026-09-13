@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "serve": "node -e \"const h=require('http'),f=require('fs'),p=require('path');const root=p.join(__dirname,'prototype');const T={'.html':'text/html;charset=utf-8','.js':'text/javascript;charset=utf-8','.css':'text/css;charset=utf-8','.json':'application/json','.png':'image/png','.jpg':'image/jpeg'};h.createServer((q,s)=>{let u=decodeURIComponent(q.url.split('?')[0]);if(u==='/')u='/index.html';const fp=p.join(root,u);f.readFile(fp,(e,d)=>{if(e){s.writeHead(404);return s.end('404');}s.writeHead(200,{'Content-Type':T[p.extname(fp)]||'application/octet-stream','Cache-Control':'no-store'});s.end(d);});}).listen(8000,()=>console.log('http://localhost:8000'))\"",
-    "verify": "cd prototype && node _verify.js",
+    "verify": "cd prototype && node _verify.js && node _verify-schedule-weather.js",
     "imgcheck": "cd prototype && node _imgcheck.js",
     "llm:ping": "node tools/llm-ping.js",
     "images": "node tools/fetch-images.js --check"

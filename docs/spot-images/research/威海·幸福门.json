@@ -1,0 +1,45 @@
+{
+  "city": "威海",
+  "name": "幸福门",
+  "query": "File:Weihai_china.jpg",
+  "review": "pending",
+  "existingFile": "img/Weihai_china.jpg",
+  "candidates": [
+    {
+      "title": "File:Weihai china.jpg",
+      "pageId": 7354800,
+      "source": "https://commons.wikimedia.org/wiki/File:Weihai_china.jpg",
+      "download": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Weihai_china.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Weihai_china.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 637,
+      "height": 439,
+      "mime": "image/jpeg",
+      "description": "View of Happiness Gate from sea Weihai, Shandong, China",
+      "author": "Weihai",
+      "license": "Public domain",
+      "licenseUrl": "",
+      "categories": "Self-published work|PD-self|Happiness Gate|Cityscapes in Weihai",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    },
+    {
+      "title": "File:Gate of happiness 山东 威海 - panoramio.jpg",
+      "pageId": 59699820,
+      "source": "https://commons.wikimedia.org/wiki/File:Gate_of_happiness_%E5%B1%B1%E4%B8%9C_%E5%A8%81%E6%B5%B7_-_panoramio.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/Gate_of_happiness_%E5%B1%B1%E4%B8%9C_%E5%A8%81%E6%B5%B7_-_panoramio.jpg/960px-Gate_of_happiness_%E5%B1%B1%E4%B8%9C_%E5%A8%81%E6%B5%B7_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/4/44/Gate_of_happiness_%E5%B1%B1%E4%B8%9C_%E5%A8%81%E6%B5%B7_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 4244,
+      "height": 2386,
+      "mime": "image/jpeg",
+      "description": "山东 威海 幸福门",
+      "author": "Nyx Ning",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "categories": "China photographs taken on 2015-04-21|Huancui District|Panoramio files uploaded by Panoramio upload bot|Panoramio images reviewed by trusted users|Photos from Panoramio|Files with coordinates missing SDC location of creation|Happiness Gate|Photos from Panoramio ID 5727486",
+      "attribution": "Nyx Ning",
+      "restrictions": "",
+      "credit": "https://web.archive.org/web/20161101050026/http://www.panoramio.com/photo/119035233"
+    }
+  ]
+}

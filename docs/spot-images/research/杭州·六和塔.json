@@ -1,0 +1,27 @@
+{
+  "city": "杭州",
+  "name": "六和塔",
+  "query": "File:20240128_Liuhe_Pagoda_01.jpg",
+  "review": "pending",
+  "existingFile": "assets/cities/hangzhou/liuhe-pagoda.jpg",
+  "candidates": [
+    {
+      "title": "File:20240128 Liuhe Pagoda 01.jpg",
+      "pageId": 144683557,
+      "source": "https://commons.wikimedia.org/wiki/File:20240128_Liuhe_Pagoda_01.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dc/20240128_Liuhe_Pagoda_01.jpg/960px-20240128_Liuhe_Pagoda_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/d/dc/20240128_Liuhe_Pagoda_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 1200,
+      "height": 1800,
+      "mime": "image/jpeg",
+      "description": "Liuhe Pagoda, view from the opposite side of the Qiantang River",
+      "author": "Windmemories",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Liuhe Pagoda|Self-published work|January 2024 in Hangzhou|Zhejiang photographs taken on 2024-01-28",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

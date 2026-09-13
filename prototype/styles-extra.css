@@ -379,3 +379,31 @@
   background:none;-webkit-background-clip:initial;background-clip:initial;
   -webkit-text-fill-color:#fff;color:#fff;
 }
+/* Compact attribution stays available in both plan cards and itinerary rows. */
+.sthumb .photo-credit {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  z-index: 4;
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(0, 0, 0, .55);
+  font-size: 14px;
+  line-height: 1;
+  text-decoration: none;
+}
+.sthumb .photo-credit:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+/* Travel forecast shares one date-scoped source across comparison and details. */
+.weather-panel { margin: 0 0 24px; padding: 22px; }
+.weather-heading { display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+.weather-heading a { font-size:12px; }
+.weather-days { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px; margin:12px 0; }
+.weather-day { background:var(--bg, #faf7f1); border:1px solid #e8ded0; border-radius:12px; padding:14px; }
+.weather-day p { margin:8px 0 0; font-size:13px; line-height:1.6; }
+.weather-day small, .weather-panel > small { color:#766e62; }
+.weather-seasonal { padding:12px; background:#f6f0e4; border-radius:10px; line-height:1.7; }

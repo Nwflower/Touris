@@ -1,0 +1,27 @@
+{
+  "city": "上海",
+  "name": "徐汇滨江",
+  "query": "File:Xuhui_Riverside_Shanghai.jpg",
+  "review": "pending",
+  "existingFile": "img/Xuhui_Riverside_Shanghai.jpg",
+  "candidates": [
+    {
+      "title": "File:Xuhui Riverside Shanghai.jpg",
+      "pageId": 31192481,
+      "source": "https://commons.wikimedia.org/wiki/File:Xuhui_Riverside_Shanghai.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/62/Xuhui_Riverside_Shanghai.jpg/960px-Xuhui_Riverside_Shanghai.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/6/62/Xuhui_Riverside_Shanghai.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3264,
+      "height": 2448,
+      "mime": "image/jpeg",
+      "description": "​上海徐汇滨江",
+      "author": "Livelikerw",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "categories": "China photographs taken on 2014-02-09|Xuhui Waterfront Area|Self-published work|February 2014 in Shanghai|2014 photographs of Shanghai",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

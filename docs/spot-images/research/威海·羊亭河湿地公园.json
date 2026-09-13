@@ -1,0 +1,26 @@
+{
+  "city": "威海",
+  "name": "羊亭河湿地公园",
+  "query": "羊亭河湿地公园 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "WeihaiGovMap:214",
+      "source": "https://www.weihai.gov.cn/szdt/web/mapIndex/3?area=&mapClassificationId=&mapClassificationPid=21&name=",
+      "download": "https://zhbypass.weihai.cn/minio/travel-wh/ac48130b02984811adad6dec52c2a45e1717566733087.jpg",
+      "original": "https://zhbypass.weihai.cn/minio/travel-wh/ac48130b02984811adad6dec52c2a45e1717566733087.jpg",
+      "mime": "image/jpeg",
+      "author": "发布方：威海市人民政府数字便民地图；摄影作者未单列",
+      "description": "威海市政府数字便民地图点位 214（威海环翠区羊亭河湿地公园（3A）），地址：威海市环翠区羊亭镇。使用该点位条目所配实景照片。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "威海市人民政府数字便民地图",
+      "modification": "Publisher photograph; no local visual edits.",
+      "placeId": "214",
+      "placeName": "威海环翠区羊亭河湿地公园（3A）",
+      "latitude": "37.42124",
+      "longitude": "122.021985"
+    }
+  ]
+}

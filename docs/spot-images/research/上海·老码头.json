@@ -1,0 +1,29 @@
+{
+  "city": "上海",
+  "name": "老码头",
+  "query": "上海 老码头 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:The Cool Docks.jpg",
+      "pageId": 68804115,
+      "source": "https://commons.wikimedia.org/wiki/File:The_Cool_Docks.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/07/The_Cool_Docks.jpg/960px-The_Cool_Docks.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/0/07/The_Cool_Docks.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 4032,
+      "height": 3024,
+      "mime": "image/jpeg",
+      "description": "​HP-029 东至外马路、南至新码头街、西至中山南路、北至白渡路 老码头",
+      "author": "Fayhoo",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "categories": "Self-published work|May 2018 in Shanghai|Shanghai Old Pier",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ],
+  "supplementalQueries": [
+    "Cool Docks Shanghai filetype:bitmap -metro -station -地图"
+  ]
+}

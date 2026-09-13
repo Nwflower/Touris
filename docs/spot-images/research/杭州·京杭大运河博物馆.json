@@ -1,0 +1,43 @@
+{
+  "city": "杭州",
+  "name": "京杭大运河博物馆",
+  "query": "京杭大运河博物馆 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:戴村坝博物馆.jpg",
+      "pageId": 63273005,
+      "source": "https://commons.wikimedia.org/wiki/File:%E6%88%B4%E6%9D%91%E5%9D%9D%E5%8D%9A%E7%89%A9%E9%A6%86.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/00/%E6%88%B4%E6%9D%91%E5%9D%9D%E5%8D%9A%E7%89%A9%E9%A6%86.jpg/960px-%E6%88%B4%E6%9D%91%E5%9D%9D%E5%8D%9A%E7%89%A9%E9%A6%86.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/0/00/%E6%88%B4%E6%9D%91%E5%9D%9D%E5%8D%9A%E7%89%A9%E9%A6%86.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3264,
+      "height": 2448,
+      "mime": "image/jpeg",
+      "description": "​戴村坝博物馆。京杭大运河——戴村坝国保碑",
+      "author": "Huanokinhejo",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "China photographs taken on 2017-03-16|Daicun Dam|Self-published work",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    },
+    {
+      "title": "Ctrip:CanalMuseum0104k12000ifnkbbrAC4E",
+      "source": "https://gs.ctrip.com/html5/you/sight/hangzhou14/143993.html",
+      "download": "https://dimg04.c-ctrip.com/images/0104k12000ifnkbbrAC4E.jpg",
+      "original": "https://dimg04.c-ctrip.com/images/0104k12000ifnkbbrAC4E.jpg",
+      "mime": "image/jpeg",
+      "author": "携程景点图库；摄影作者未单列",
+      "description": "杭州金华路34号中国京杭大运河博物馆入口，馆名字样可核对。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "携程景点图库；摄影作者未单列",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ],
+  "supplementalQueries": [
+    "\"Grand Canal Museum\" Hangzhou filetype:bitmap -metro -station -地图"
+  ]
+}

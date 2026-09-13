@@ -1,0 +1,27 @@
+{
+  "city": "杭州",
+  "name": "中国丝绸博物馆",
+  "query": "File:China_Silk_Museum,_2017-11-12_01.jpg",
+  "review": "pending",
+  "existingFile": "assets/cities/hangzhou/silk-museum.jpg",
+  "candidates": [
+    {
+      "title": "File:China Silk Museum, 2017-11-12 01.jpg",
+      "pageId": 64022607,
+      "source": "https://commons.wikimedia.org/wiki/File:China_Silk_Museum,_2017-11-12_01.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d9/China_Silk_Museum%2C_2017-11-12_01.jpg/960px-China_Silk_Museum%2C_2017-11-12_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/d/d9/China_Silk_Museum%2C_2017-11-12_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 4893,
+      "height": 3262,
+      "mime": "image/jpeg",
+      "description": "​中国丝绸博物馆",
+      "author": "Siyuwj",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "China Silk Museum|Self-published work|2017 in Hangzhou",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

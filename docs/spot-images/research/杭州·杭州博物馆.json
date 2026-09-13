@@ -1,0 +1,27 @@
+{
+  "city": "杭州",
+  "name": "杭州博物馆",
+  "query": "File:Hangzhou_Museum_01_2018-07.jpg",
+  "review": "pending",
+  "existingFile": "assets/cities/hangzhou/hangzhou-museum.jpg",
+  "candidates": [
+    {
+      "title": "File:Hangzhou Museum 01 2018-07.jpg",
+      "pageId": 88714316,
+      "source": "https://commons.wikimedia.org/wiki/File:Hangzhou_Museum_01_2018-07.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/df/Hangzhou_Museum_01_2018-07.jpg/960px-Hangzhou_Museum_01_2018-07.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/d/df/Hangzhou_Museum_01_2018-07.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 4912,
+      "height": 3264,
+      "mime": "image/jpeg",
+      "description": "​杭州博物馆（原杭州历史博物馆），南馆西面。",
+      "author": "猫猫的日记本",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Hangzhou Museum|Self-published work",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

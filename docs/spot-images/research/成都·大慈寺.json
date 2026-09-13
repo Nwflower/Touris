@@ -1,0 +1,27 @@
+{
+  "city": "成都",
+  "name": "大慈寺",
+  "query": "File:Dacisi Temple in chengdu.jpg",
+  "review": "pending",
+  "existingFile": "img/Dacisi_Temple_in_chengdu.jpg",
+  "candidates": [
+    {
+      "title": "File:Dacisi Temple in chengdu.jpg",
+      "pageId": 74487843,
+      "source": "https://commons.wikimedia.org/wiki/File:Dacisi_Temple_in_chengdu.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/92/Dacisi_Temple_in_chengdu.jpg/960px-Dacisi_Temple_in_chengdu.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/9/92/Dacisi_Temple_in_chengdu.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2048,
+      "height": 1536,
+      "mime": "image/jpeg",
+      "description": "​成都古圣大慈寺太古里一侧大门",
+      "author": "来斤小仓鼠吧",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "China photographs taken on 2018-11-05|Daci Temple|Self-published work|Files with coordinates missing SDC location of creation",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

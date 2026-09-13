@@ -1,0 +1,44 @@
+{
+  "city": "北京",
+  "name": "龙潭中湖公园",
+  "query": "龙潭中湖公园 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:Longtan Park, Beijing - satellite image (1967-09-20).jpg",
+      "pageId": 42026768,
+      "source": "https://commons.wikimedia.org/wiki/File:Longtan_Park,_Beijing_-_satellite_image_(1967-09-20).jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e1/Longtan_Park%2C_Beijing_-_satellite_image_%281967-09-20%29.jpg/960px-Longtan_Park%2C_Beijing_-_satellite_image_%281967-09-20%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Longtan_Park%2C_Beijing_-_satellite_image_%281967-09-20%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 1111,
+      "height": 743,
+      "mime": "image/jpeg",
+      "description": "Longtan Park, Beijing. Spatial tentatively corrected.",
+      "author": "CIA/NRO/USGS",
+      "license": "Public domain",
+      "licenseUrl": "",
+      "categories": "PD CIA|1967 in Beijing|Images with annotations|Longtan Park, Beijing|Longtan Middle Lake Park|Photos by CORONA satellites (DS1101-1069DA103)",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "http://earthexplorer.usgs.gov/metadata/1051/DS1101-1069DA103/"
+    },
+    {
+      "title": "File:龙潭中湖公园.jpg",
+      "pageId": 178661450,
+      "source": "https://commons.wikimedia.org/wiki/File:%E9%BE%99%E6%BD%AD%E4%B8%AD%E6%B9%96%E5%85%AC%E5%9B%AD.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f3/%E9%BE%99%E6%BD%AD%E4%B8%AD%E6%B9%96%E5%85%AC%E5%9B%AD.jpg/960px-%E9%BE%99%E6%BD%AD%E4%B8%AD%E6%B9%96%E5%85%AC%E5%9B%AD.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/f/f3/%E9%BE%99%E6%BD%AD%E4%B8%AD%E6%B9%96%E5%85%AC%E5%9B%AD.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2464,
+      "height": 3280,
+      "mime": "image/jpeg",
+      "description": "​龙潭中湖公园",
+      "author": "Luoniya",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Self-published work|All media needing categories as of 2025|Media needing categories as of 18 November 2025",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

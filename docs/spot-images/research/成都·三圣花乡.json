@@ -1,0 +1,40 @@
+{
+  "city": "成都",
+  "name": "三圣花乡",
+  "query": "成都 三圣花乡 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:三圣乡 - panoramio.jpg",
+      "pageId": 54552740,
+      "source": "https://commons.wikimedia.org/wiki/File:%E4%B8%89%E5%9C%A3%E4%B9%A1_-_panoramio.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/16/%E4%B8%89%E5%9C%A3%E4%B9%A1_-_panoramio.jpg/960px-%E4%B8%89%E5%9C%A3%E4%B9%A1_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/1/16/%E4%B8%89%E5%9C%A3%E4%B9%A1_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2592,
+      "height": 1944,
+      "mime": "image/jpeg",
+      "description": "三圣乡",
+      "author": "Xiaohui",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "categories": "Water parks in China|China photographs taken on 2012-04-04|Parks in Chengdu|Panoramio files uploaded by Panoramio upload bot|Panoramio images reviewed by trusted users|Photos from Panoramio|Files with coordinates missing SDC location of creation|Taken with Meizu M9",
+      "attribution": "Xiaohui",
+      "restrictions": "",
+      "credit": "https://web.archive.org/web/20161025001828/http://www.panoramio.com/photo/70327232",
+      "coordinates": [
+        {
+          "lat": 30.585833,
+          "lon": 104.151111,
+          "primary": "",
+          "globe": "earth"
+        }
+      ]
+    }
+  ],
+  "supplementalQueries": [
+    "Sansheng Chengdu filetype:bitmap -metro -station -地图",
+    {
+      "titles": "File:三圣乡 - panoramio.jpg"
+    }
+  ]
+}

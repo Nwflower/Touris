@@ -1,0 +1,26 @@
+{
+  "city": "杭州",
+  "name": "茅家埠",
+  "query": "杭州 茅家埠 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:茅家埠.JPG",
+      "pageId": 46419567,
+      "source": "https://commons.wikimedia.org/wiki/File:%E8%8C%85%E5%AE%B6%E5%9F%A0.JPG",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a6/%E8%8C%85%E5%AE%B6%E5%9F%A0.JPG/960px-%E8%8C%85%E5%AE%B6%E5%9F%A0.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/a/a6/%E8%8C%85%E5%AE%B6%E5%9F%A0.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 6016,
+      "height": 4000,
+      "mime": "image/jpeg",
+      "description": "​杭州西湖茅家埠景区一景",
+      "author": "HorsefaCe",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "categories": "GFDL|License migration redundant|Maojiabu, Hangzhou|Self-published work|2015 in Hangzhou",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

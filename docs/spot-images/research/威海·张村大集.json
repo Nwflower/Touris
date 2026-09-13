@@ -1,0 +1,50 @@
+{
+  "city": "威海",
+  "name": "张村大集",
+  "query": "威海 张村大集 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "WHNews:Zhangcun7378354",
+      "source": "https://www.whnews.cn/news/node/2026-02/05/content_7378354.htm",
+      "download": "https://www.whnews.cn/news/data/attachement/jpg/site2/20260205/9c5c8ebf618d2aee398e0e.jpg",
+      "original": "https://www.whnews.cn/news/data/attachement/jpg/site2/20260205/9c5c8ebf618d2aee398e0e.jpg",
+      "mime": "image/jpeg",
+      "author": "王彦博 / 威海新闻网",
+      "description": "2026-02-05报道张村大集段紧邻的首张正文照片；第二张属于葛家大集，不使用。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "王彦博 / 威海新闻网",
+      "modification": "Publisher photograph; no local visual edits."
+    },
+    {
+      "title": "WeihaiCDC:Zhangcun20260326",
+      "source": "https://www.weihaicdc.cn/art/2026/3/26/art_63268_6233166.html",
+      "download": "https://www.weihaicdc.cn/picture/0/051149d967e2443b9af7df347bfe3b9e.png",
+      "original": "https://www.weihaicdc.cn/picture/0/051149d967e2443b9af7df347bfe3b9e.png",
+      "mime": "image/png",
+      "author": "威海市疾病预防控制中心；摄影作者未单列",
+      "description": "官方在张村大集开展活动的现场照片，检查是否能辨识市场环境。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "威海市疾病预防控制中心；摄影作者未单列",
+      "modification": "Publisher photograph; no local visual edits."
+    },
+    {
+      "title": "WHNews:Zhangcun7260045",
+      "source": "https://www.whnews.cn/news/node/2023-01/16/content_7260045.htm",
+      "download": "https://www.whnews.cn/news/data/attachement/jpg/site2/20230116/e454e89cef10252ef20431.jpg",
+      "original": "https://www.whnews.cn/news/data/attachement/jpg/site2/20230116/e454e89cef10252ef20431.jpg",
+      "mime": "image/jpeg",
+      "author": "孙大伟、王彦博 / 威海新闻网",
+      "description": "2023-01-16威海新闻网张村大集实地报道，该图片位于明确标注张村大集的章节。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "威海新闻网",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ]
+}

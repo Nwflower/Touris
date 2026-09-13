@@ -1,0 +1,27 @@
+{
+  "city": "广州",
+  "name": "白云山",
+  "query": "File:Guangzhou_Baiyun_Mountain_20230515.150422.jpg",
+  "review": "pending",
+  "existingFile": "assets/cities/guangzhou/baiyun-mountain.jpg",
+  "candidates": [
+    {
+      "title": "File:Guangzhou Baiyun Mountain 20230515.150422.jpg",
+      "pageId": 131971582,
+      "source": "https://commons.wikimedia.org/wiki/File:Guangzhou_Baiyun_Mountain_20230515.150422.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Guangzhou_Baiyun_Mountain_20230515.150422.jpg/960px-Guangzhou_Baiyun_Mountain_20230515.150422.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/6/63/Guangzhou_Baiyun_Mountain_20230515.150422.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 5184,
+      "height": 3888,
+      "mime": "image/jpeg",
+      "description": "​广州白云山南门现况",
+      "author": "古海岸遗址",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Self-published work|Guangzhou photographs taken on 2023-05-15|Gates for Baiyun Mountain in Guangzhou",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

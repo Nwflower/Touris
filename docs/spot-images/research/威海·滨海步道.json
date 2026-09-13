@@ -1,0 +1,25 @@
+{
+  "city": "威海",
+  "name": "滨海步道",
+  "query": "威海 滨海步道 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "ShanghaiXuriDongsheng:WeihaiPromenade20200806",
+      "source": "https://k.sina.cn/article_1707448882_65c59a3200100utcd.html?from=travel",
+      "download": "https://k.sinaimg.cn/n/sinakd20200805ac/350/w690h460/20200805/5f48-ixkvvuc2576048.jpg/w700d1q75cms.jpg",
+      "original": "https://k.sinaimg.cn/n/sinakd20200805ac/350/w690h460/20200805/5f48-ixkvvuc2576048.jpg/w700d1q75cms.jpg",
+      "mime": "image/jpeg",
+      "description": "幸福公园沿海步行路，远处可见幸福门；属于项目幸福门至悦海公园段。",
+      "author": "发布作者：上海旭日东升；摄影未单独署名",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "新浪旅游作者文章",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ],
+  "supplementalQueries": [
+    "\"Weihai\" \"promenade\" filetype:bitmap -metro -station -地图"
+  ]
+}

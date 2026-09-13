@@ -1,0 +1,27 @@
+{
+  "city": "成都",
+  "name": "成都武侯祠",
+  "query": "File:成都的武侯祠.jpg",
+  "review": "pending",
+  "existingFile": "img/commons-298eaf7f.jpg",
+  "candidates": [
+    {
+      "title": "File:成都的武侯祠.jpg",
+      "pageId": 63740204,
+      "source": "https://commons.wikimedia.org/wiki/File:%E6%88%90%E9%83%BD%E7%9A%84%E6%AD%A6%E4%BE%AF%E7%A5%A0.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f7/%E6%88%90%E9%83%BD%E7%9A%84%E6%AD%A6%E4%BE%AF%E7%A5%A0.jpg/960px-%E6%88%90%E9%83%BD%E7%9A%84%E6%AD%A6%E4%BE%AF%E7%A5%A0.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/f/f7/%E6%88%90%E9%83%BD%E7%9A%84%E6%AD%A6%E4%BE%AF%E7%A5%A0.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3648,
+      "height": 2736,
+      "mime": "image/jpeg",
+      "description": "​成都武侯祠",
+      "author": "螺钉",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Temple of Marquis Wu, Chengdu|Self-published work|钉钉",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

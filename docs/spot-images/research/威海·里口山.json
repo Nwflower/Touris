@@ -1,0 +1,26 @@
+{
+  "city": "威海",
+  "name": "里口山",
+  "query": "威海 里口山 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "WeihaiGovMap:195",
+      "source": "https://www.weihai.gov.cn/szdt/web/mapIndex/3?area=&mapClassificationId=&mapClassificationPid=21&name=",
+      "download": "https://zhbypass.weihai.cn/minio/travel-wh/1055c38373694d668c01fc52fa576c501717566731443.jpg",
+      "original": "https://zhbypass.weihai.cn/minio/travel-wh/1055c38373694d668c01fc52fa576c501717566731443.jpg",
+      "mime": "image/jpeg",
+      "author": "发布方：威海市人民政府数字便民地图；摄影作者未单列",
+      "description": "威海市政府数字便民地图点位 195（威海里口山风景名胜区（4A）），地址：威海市环翠区张村镇。使用该点位条目所配实景照片。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "威海市人民政府数字便民地图",
+      "modification": "Publisher photograph; no local visual edits.",
+      "placeId": "195",
+      "placeName": "威海里口山风景名胜区（4A）",
+      "latitude": "37.471474",
+      "longitude": "122.081098"
+    }
+  ]
+}

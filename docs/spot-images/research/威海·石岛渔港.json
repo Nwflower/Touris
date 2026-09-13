@@ -1,0 +1,22 @@
+{
+  "city": "威海",
+  "name": "石岛渔港",
+  "query": "威海 石岛渔港 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "Sina:Shidao20180908",
+      "source": "https://k.sina.cn/article_2621678411_p9c43a34b0270099js.html",
+      "download": "https://k.sinaimg.cn/n/sinacn17/799/w1440h959/20180908/9dd9-hivtsyk0824042.jpg/w700d1q75cms.jpg",
+      "original": "https://k.sinaimg.cn/n/sinacn17/799/w1440h959/20180908/9dd9-hivtsyk0824042.jpg/w700d1q75cms.jpg",
+      "mime": "image/jpeg",
+      "author": "发布账号：钢小侠；摄影作者未单列",
+      "description": "图集题名明确为石岛港，使用泊港渔船实景。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "新浪图集：钢小侠",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "city": "成都",
+  "name": "九眼桥",
+  "query": "成都 九眼桥 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:成都九眼桥.jpg",
+      "pageId": 63740219,
+      "source": "https://commons.wikimedia.org/wiki/File:%E6%88%90%E9%83%BD%E4%B9%9D%E7%9C%BC%E6%A1%A5.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/%E6%88%90%E9%83%BD%E4%B9%9D%E7%9C%BC%E6%A1%A5.jpg/960px-%E6%88%90%E9%83%BD%E4%B9%9D%E7%9C%BC%E6%A1%A5.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/3/32/%E6%88%90%E9%83%BD%E4%B9%9D%E7%9C%BC%E6%A1%A5.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3648,
+      "height": 2736,
+      "mime": "image/jpeg",
+      "description": "​成都九眼桥",
+      "author": "螺钉",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Buildings in Chengdu|Self-published work|钉钉",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    },
+    {
+      "title": "File:成都九眼桥附近风景.jpg",
+      "pageId": 63740223,
+      "source": "https://commons.wikimedia.org/wiki/File:%E6%88%90%E9%83%BD%E4%B9%9D%E7%9C%BC%E6%A1%A5%E9%99%84%E8%BF%91%E9%A3%8E%E6%99%AF.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/14/%E6%88%90%E9%83%BD%E4%B9%9D%E7%9C%BC%E6%A1%A5%E9%99%84%E8%BF%91%E9%A3%8E%E6%99%AF.jpg/960px-%E6%88%90%E9%83%BD%E4%B9%9D%E7%9C%BC%E6%A1%A5%E9%99%84%E8%BF%91%E9%A3%8E%E6%99%AF.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/1/14/%E6%88%90%E9%83%BD%E4%B9%9D%E7%9C%BC%E6%A1%A5%E9%99%84%E8%BF%91%E9%A3%8E%E6%99%AF.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3648,
+      "height": 2736,
+      "mime": "image/jpeg",
+      "description": "​成都九眼桥附近风景",
+      "author": "螺钉",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Buildings in Chengdu|Self-published work|钉钉",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

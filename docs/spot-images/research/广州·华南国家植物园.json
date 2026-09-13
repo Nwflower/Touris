@@ -1,0 +1,27 @@
+{
+  "city": "广州",
+  "name": "华南国家植物园",
+  "query": "File:South_China_National_Botanical_Garden_Entrance.jpg",
+  "review": "pending",
+  "existingFile": "assets/cities/guangzhou/south-china-botanical.jpg",
+  "candidates": [
+    {
+      "title": "File:South China National Botanical Garden Entrance.jpg",
+      "pageId": 120356916,
+      "source": "https://commons.wikimedia.org/wiki/File:South_China_National_Botanical_Garden_Entrance.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f7/South_China_National_Botanical_Garden_Entrance.jpg/960px-South_China_National_Botanical_Garden_Entrance.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/f/f7/South_China_National_Botanical_Garden_Entrance.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3936,
+      "height": 2952,
+      "mime": "image/jpeg",
+      "description": "South China National Botanical Garden Entrance",
+      "author": "Nrya",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "South China National Botanical Garden, Chinese Academy of Sciences|Self-published work",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

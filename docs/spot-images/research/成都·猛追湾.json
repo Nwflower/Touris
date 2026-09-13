@@ -1,0 +1,43 @@
+{
+  "city": "成都",
+  "name": "猛追湾",
+  "query": "成都 猛追湾 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:Chengdu skyline June 2017.jpg",
+      "pageId": 148903655,
+      "source": "https://commons.wikimedia.org/wiki/File:Chengdu_skyline_June_2017.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Chengdu_skyline_June_2017.jpg/960px-Chengdu_skyline_June_2017.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/2/20/Chengdu_skyline_June_2017.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3632,
+      "height": 2469,
+      "mime": "image/jpeg",
+      "description": "Chengdu skyline through a window in June 2017",
+      "author": "George N",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "categories": "Chenghua District|Flickr images reviewed by trusted users|Skylines in Chengdu",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "https://www.flickr.com/photos/takoyaki_king/34387178973/"
+    },
+    {
+      "title": "CNR:Mengzhuiwan20231204",
+      "source": "https://sc.cnr.cn/scpd/jdt/20231204/t20231204_526507396.shtml",
+      "download": "https://mediabluk.cnr.cn/img/cnr/CNRCDP/2023/1204/c1c024d0ff2f6170167460221179795711.jpg?auth=97ea2092f58d475aee7e959cf1ec620d",
+      "original": "https://mediabluk.cnr.cn/img/cnr/CNRCDP/2023/1204/c1c024d0ff2f6170167460221179795711.jpg?auth=97ea2092f58d475aee7e959cf1ec620d",
+      "mime": "image/jpeg",
+      "author": "昌思荣 / 央广网",
+      "description": "央广网猛追湾街道望平坊实地报道所配临街茶座，明确为该片区。",
+      "license": "版权所有，转载需授权",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "昌思荣 / 央广网",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ],
+  "supplementalQueries": [
+    "Mengzhuiwan Chengdu filetype:bitmap -metro -station -地图"
+  ]
+}

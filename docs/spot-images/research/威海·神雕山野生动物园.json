@@ -1,0 +1,26 @@
+{
+  "city": "威海",
+  "name": "神雕山野生动物园",
+  "query": "神雕山野生动物园 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "WeihaiGovMap:254",
+      "source": "https://www.weihai.gov.cn/szdt/web/mapIndex/3?area=&mapClassificationId=&mapClassificationPid=21&name=",
+      "download": "https://zhbypass.weihai.cn/minio/sciencetechnologymuseum/e2677158d8424cb99abc079385aab37a1717665718460.jpg",
+      "original": "https://zhbypass.weihai.cn/minio/sciencetechnologymuseum/e2677158d8424cb99abc079385aab37a1717665718460.jpg",
+      "mime": "image/jpeg",
+      "author": "发布方：威海市人民政府数字便民地图；摄影作者未单列",
+      "description": "威海市政府数字便民地图点位 254（西霞口神雕山动物世界），地址：山东省威海市荣成市成山镇西霞口村东北处。使用该点位条目所配实景照片。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "威海市人民政府数字便民地图",
+      "modification": "Publisher photograph; no local visual edits.",
+      "placeId": "254",
+      "placeName": "西霞口神雕山动物世界",
+      "latitude": "37.412721",
+      "longitude": "122.627187"
+    }
+  ]
+}

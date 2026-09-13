@@ -1,0 +1,134 @@
+#!/usr/bin/env python3
+"""Download explicitly reviewed candidates and build city-scoped runtime data.
+
+No image is selected by search rank. approvals.json records an exact file title
+and the evidence identifying the place. Failed downloads never enter runtime data.
+"""
+import hashlib
+import html
+import importlib
+import json
+import pathlib
+import subprocess
+import sys
+import time
+import urllib.request
+
+research = importlib.import_module('spot-photo-research')
+ROOT = research.ROOT
+PROTO = ROOT / 'prototype'
+OUT = ROOT / 'docs/spot-images'
+
+def dimensions(file):
+    result = subprocess.run(['sips', '-g', 'pixelWidth', '-g', 'pixelHeight', str(file)],
+                            capture_output=True, text=True, check=True).stdout
+    values = {}
+    for line in result.splitlines():
+        if ':' in line:
+            k, v = line.strip().split(':', 1)
+            if k in ['pixelWidth', 'pixelHeight'] and v.strip().isdigit():
+                values[k] = int(v.strip())
+    if min(values.get('pixelWidth', 0), values.get('pixelHeight', 0)) < 160:
+        raise ValueError('Image decoding failed or image is too small: ' + str(file))
+    return values
+
+def main():
+    approvals = json.loads((OUT / 'approvals.json').read_text())
+    manifest, failures = [], []
+    for key, approval in approvals.items():
+        row = json.loads((research.OUT / (key + '.json')).read_text())
+        candidates = [c for c in row['candidates'] if c['title'] == approval['title']]
+        if len(candidates) != 1:
+            raise ValueError('Reviewed candidate missing: ' + key)
+        c = candidates[0]
+        if not c['author'] or not c['license'] or not c['source'] or not approval['evidence']:
+            raise ValueError('Attribution or matching evidence missing: ' + key)
+        if c['mime'] not in ['image/jpeg', 'image/png', 'image/webp']:
+            raise ValueError('Not a photo bitmap: ' + key)
+        ext = {'image/jpeg': '.jpg', 'image/png': '.png', 'image/webp': '.webp'}[c['mime']]
+        rel = 'img/spots/' + hashlib.sha256(c['title'].encode()).hexdigest()[:16] + ext
+        if approval.get('reuseExistingFile'):
+            rel = approval['reuseExistingFile']
+            if rel != row.get('existingFile') or not (PROTO / rel).resolve().is_relative_to(PROTO.resolve()):
+                raise ValueError('Existing file does not match audited source: ' + key)
+            if not (PROTO / rel).is_file():
+                raise ValueError('Audited existing file missing: ' + key)
+        target = PROTO / rel
+        target.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            if not target.exists():
+                request = urllib.request.Request(c['download'], headers={'User-Agent': research.UA})
+                with urllib.request.urlopen(request, timeout=45) as response:
+                    data = response.read()
+                temp = target.with_suffix('.part' + ext)
+                temp.write_bytes(data)
+                dimensions(temp)
+                temp.replace(target)
+                time.sleep(1)
+            size = dimensions(target)
+            record = {'city': row['city'], 'name': row['name'], 'file': rel,
+                      **c, **size, 'matchEvidence': approval['evidence'],
+                      'fit': approval.get('fit', 'cover'),
+                      'visualReview': approval.get('visualReview', 'pending'),
+                      'sha256': hashlib.sha256(target.read_bytes()).hexdigest(),
+                      'modification': ('Existing repository thumbnail; source metadata and local subject reviewed. CSS crops in cards.'
+                                       if approval.get('reuseExistingFile') else
+                                       c.get('modification', 'Wikimedia thumbnail; no local visual edits. CSS crops in cards.'))}
+            manifest.append(record)
+            print(key + ' OK', flush=True)
+        except Exception as error:
+            failures.append({'spot': key, 'error': str(error)})
+            print(key + ' FAILED ' + str(error), flush=True)
+    (OUT / 'manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
+    (OUT / 'download-failures.json').write_text(json.dumps(failures, ensure_ascii=False, indent=2) + '\n')
+    permission_pending = [{'city': r['city'], 'name': r['name'], 'source': r['source'],
+                           'author': r['author'], 'license': r['license']}
+                          for r in manifest if r.get('licenseStatus') == 'permission-not-stated']
+    (OUT / 'permission-pending.json').write_text(json.dumps(permission_pending, ensure_ascii=False, indent=2) + '\n')
+    runtime = {}
+    for r in manifest:
+        runtime.setdefault(r['city'], {})[r['name']] = {
+            'src': r['file'], 'author': r['author'], 'license': r['license'],
+            'licenseUrl': r['licenseUrl'], 'source': r['source'], 'fit': r['fit']}
+    (PROTO / 'spot-photos.js').write_text(
+        '// Generated by tools/build-spot-photos.py; city + exact spot name prevents collisions.\n'
+        + 'const SPOT_PHOTOS = ' + json.dumps(runtime, ensure_ascii=False, indent=2) + ';\n')
+    credits = ['# 景点照片来源与许可', '', '下列照片按城市和景点逐项核对。显示时使用 CSS 裁切，本地文件未作视觉修改。', '',
+               '| 城市 · 景点 | 作者 | 许可 | 来源 | 对应依据 |', '|---|---|---|---|---|']
+    for r in manifest:
+        clean = lambda s: s.replace('|', '\\|').replace('\n', ' ')
+        credits.append('| ' + ' | '.join([clean(r['city'] + ' · ' + r['name']), clean(r['author']),
+            '[' + clean(r['license']) + '](' + (r['licenseUrl'] or r['source']) + ')',
+            '[原始文件](' + r['source'] + ')', clean(r['matchEvidence'])]) + ' |')
+    (PROTO / 'img/SPOT-CREDITS.md').write_text('\n'.join(credits) + '\n')
+    # A local, reproducible contact sheet for reviewing the exact shipped files.
+    cards = []
+    for r in manifest:
+        e = html.escape
+        cards.append('<article data-city="' + e(r['city']) + '"><img style="object-fit:' + e(r['fit']) + '" src="' + e(r['file'])
+            + '" alt="' + e(r['city'] + ' · ' + r['name']) + '"><h2>'
+            + e(r['city'] + ' · ' + r['name']) + '</h2><p>'
+            + e(r['author'] + ' / ' + r['license']) + '</p><a href="' + e(r['source'])
+            + '" target="_blank" rel="noopener">来源与许可</a></article>')
+    review = '''<!doctype html><html lang="zh-CN"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>景点照片核对</title>
+<style>body{font:15px system-ui;margin:24px;background:#f8f5ef;color:#292722}
+main{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
+article{background:white;padding:12px;border-radius:12px}img{width:100%;height:180px;object-fit:cover}
+h2{font-size:16px}p,a{font-size:12px}select{padding:8px;margin-bottom:20px}article[hidden]{display:none}</style>
+<h1>景点照片核对</h1><p>这里展示已核对并接入的本地照片。全部点位是否完成，以完整覆盖检查报告为准。</p>
+<label>城市 <select id="city"><option value="">全部城市</option>'''
+    review = review.replace('这里展示已核对并接入的本地照片。全部点位是否完成，以完整覆盖检查报告为准。',
+        f'已接入 {len(manifest)} 个点位的本地照片。是否全部完成，以完整覆盖检查报告为准。'
+        + (f'其中 {len(permission_pending)} 张来源未声明开放许可，需在发布前确认；具体状态见每张照片的许可记录。' if permission_pending else ''))
+    review += ''.join('<option>' + html.escape(c) + '</option>' for c in runtime)
+    review += '</select></label><main>' + ''.join(cards) + '''</main><script>
+document.getElementById('city').addEventListener('change',e=>{
+ document.querySelectorAll('article').forEach(a=>a.hidden=!!e.target.value&&a.dataset.city!==e.target.value);
+});</script></html>'''
+    (PROTO / '_photo-review.html').write_text(review)
+    print(f'Built {len(manifest)} spot photos; {len(failures)} failures.')
+    return bool(failures)
+
+if __name__ == '__main__':
+    sys.exit(main())

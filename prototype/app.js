@@ -59,8 +59,10 @@ function dining(){ return (city() || {}).dining || {}; }
 function restPoi(){ return (city() || {}).restPoi || {}; }
 function spotImages(){
   const c = city();
-  // 城市自带的图（杭州/广州走 assets/cities/）优先，其余从公共图库补
-  return Object.assign({}, (typeof SPOT_IMG !== 'undefined') ? SPOT_IMG : {}, (c && c.images) || {});
+  const reviewed = (typeof SPOT_PHOTOS !== 'undefined' && SPOT_PHOTOS[String(S.req.dest || '').trim()]) || {};
+  // 已核对的城市 + 景点映射优先，避免同名点位和旧城市泛图覆盖真实照片。
+  return Object.assign({}, (typeof SPOT_IMG !== 'undefined') ? SPOT_IMG : {}, (c && c.images) || {},
+    Object.fromEntries(Object.entries(reviewed).map(([name, photo]) => [name, photo.src])));
 }
 
 /* ==========================================================================
@@ -328,9 +330,11 @@ function spotThumb(name, cls, extra){
   const s = spots()[name];
   const cat = (s && s.cat) || 'temple';
   const url = spotImages()[name] || null;
-  return `<div class="sthumb ${cls||''} c-${cat}">
+  const photo = (typeof SPOT_PHOTOS !== 'undefined' && SPOT_PHOTOS[String(S.req.dest || '').trim()] || {})[name];
+  return `<div class="sthumb ${cls||''} c-${cat}" data-spot="${esc(name)}">
     <svg viewBox="0 0 80 60" preserveAspectRatio="none">${THUMB[cat]||THUMB.temple}</svg>
-    ${url ? `<img src="${esc(url)}" alt="${esc(name)}" loading="lazy">` : ''}
+    ${url ? `<img src="${esc(url)}" alt="${esc(String(S.req.dest || '').trim() + ' · ' + name)}" loading="lazy" decoding="async"${photo && photo.fit === 'contain' ? ' style="object-fit:contain"' : ''}>` : ''}
+    ${photo ? `<a class="photo-credit" data-act="photo-source" href="${esc(photo.source)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(name)}照片来源与许可" title="${esc(photo.author + ' · ' + photo.license)}">ⓘ</a>` : ''}
     <span class="ph-mark">示意</span>
     ${extra || ''}
   </div>`;
@@ -715,7 +719,8 @@ function bindHomeAct(t){
     const date = $('home-date')?.value || '2026-10-02';
     let days = +(($('home-days')?.value || '4 天').match(/\d+/)?.[0] || 4);
 
-    S.req = { dest: Object.keys(CITY_DATA).includes(dest) ? dest : '成都',
+    if (!Object.keys(CITY_DATA).includes(dest)) { toast('当前支持北京、上海、威海、杭州、广州、成都，请选择已支持的目的地。', 'warn'); return true; }
+    S.req = { dest,
               date, days, people: 2, interest: S.req.interest || 'mixed', intensity: S.req.intensity || 'mid' };
     startPipeline();
     return true;
@@ -986,7 +991,7 @@ function viewS0(){
         </div>
       </div>
 
-      <p class="muted">候选池每城 50+ 景点 · 生成时按「检索相似攻略 → 大模型提名 → 算法排线」三步走，出发季节会自动换算成天气与时段建议。</p>
+      <p class="muted">候选池每城 50+ 景点 · 生成时按「检索相似攻略 → 大模型提名 → 算法排线」三步走，出行日期用于获取天气预报；超出预报范围时显示季节准备参考。</p>
       <div class="s0-badge ${n===0?'empty':''}">
         <span class="ic">${n===0?'🌱':'🧠'}</span>
         <div>
@@ -1092,6 +1097,42 @@ function resetRouteSelection(){
   S.chosenPlan=null; S.planStance={}; S.stance={}; S.openReason=null;
   S.openFree={}; S.s2day=1; S.hoverItem=null; S.diffPlayed=false;
 }
+const _WEATHER = { key: null, result: null, request: 0 };
+function weatherKey(){ return [S.req.dest, S.req.date, S.req.days, TourisWeather.today()].join('|'); }
+function ensureWeather(force = false){
+  if (!['s1', 's2', 'guide'].includes(S.screen)) return;
+  const key = weatherKey();
+  const stale = _WEATHER.result?.fetchedAt && Date.now() - _WEATHER.result.fetchedAt > 10 * 60000;
+  if (!force && _WEATHER.key === key && !stale) return;
+  const request = ++_WEATHER.request;
+  _WEATHER.key = key; _WEATHER.result = { status: 'loading', rows: [] };
+  const refresh = () => { const node = $('trip-weather'); if (node) node.innerHTML = weatherContent(); };
+  refresh();
+  TourisWeather.load({ center: city()?.center, date: S.req.date, days: S.req.days }, { refresh: force }).then(result => {
+    if (_WEATHER.request !== request || _WEATHER.key !== key || weatherKey() !== key) return;
+    _WEATHER.result = result; refresh();
+  });
+}
+function weatherContent(){
+  const result = _WEATHER.key === weatherKey() ? _WEATHER.result : null;
+  const seasonal = TourisWeather.seasonal(S.req.dest, S.req.date);
+  const states = { past: '已过去的日期，本页不提供历史天气', 'out-of-range': '超出未来 16 天预报范围', missing: '该日预报暂缺', error: '天气获取失败' };
+  const rows = result?.rows || [];
+  return `<div class="weather-heading"><strong>${esc(S.req.dest)} · 出行天气与准备</strong>
+    <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">天气来源：Open-Meteo ↗</a></div>
+    <p class="muted">${esc(S.req.date)} 出发 · ${S.req.days} 天 · 目的地当地日期（北京时间）</p>
+    ${!result || result.status === 'loading' ? '<p role="status">正在获取天气预报…</p>' : ''}
+    ${result?.message ? `<p role="status">${esc(result.message)}</p>` : ''}
+    <div class="weather-days">${rows.map(r => `<article class="weather-day"><strong>${esc(r.date.slice(5))}</strong>
+      ${r.status === 'forecast' ? `<div>${esc(TourisWeather.description(r.code))} · ${Math.round(r.min)}—${Math.round(r.max)}℃</div>
+      <small>降雨概率 ${r.probability === null ? '暂缺' : Math.round(r.probability) + '%'}</small>
+      <p>${r.tips.map(esc).join('；')}。</p>` : `<p>${esc(states[r.status] || '暂无预报')}</p>`}</article>`).join('')}</div>
+    ${!rows.length || rows.some(r => r.status !== 'forecast') ? `<p class="weather-seasonal"><b>季节准备参考（不是当天预报）：</b>${esc(seasonal)}</p>` : ''}
+    <small>预报会变化，出发前请再检查。${result?.fetchedAt ? '更新于 ' + esc(new Date(result.fetchedAt).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })) + ' · ' : ''}温度与概率已四舍五入；衣物建议由本站按气温、体感温度与早晚温差生成。</small>
+    ${result && !['loading', 'unavailable', 'invalid'].includes(result.status) ? `<button class="mini-link" data-act="weather-retry">${result.status === 'error' ? '重试天气' : '更新天气'}</button>` : ''}`;
+}
+function weatherPanel(){ return `<aside class="card weather-panel" id="trip-weather" aria-label="出行天气与准备">${weatherContent()}</aside>`; }
+
 function cityGuide(){
   const c=city();
   if(!c?.sources) return '';
@@ -1127,6 +1168,7 @@ function viewS1(){
         <button class="mini-link" data-act="go" data-screen="guide">📖 看相似攻略</button>
       </span>
     </div>
+    ${weatherPanel()}
     ${cityGuide()}
     <div class="plan-grid">${plans().map(planCard).join('')}</div>
     <div class="semantic-note">
@@ -1200,9 +1242,10 @@ function itemView(it, day){
   const key = `d${day}-${it.id}`;
   const isFood = it.kind === 'food';
   const isFree = it.kind === 'free';
-  const g = isFood ? dining()[it.name] : null;
+  const meal = it.meal || (it.time < '11:00' ? 'breakfast' : it.time < '17:00' ? 'lunch' : 'dinner');
+  const g = isFood ? TourisTime.diningForMeal(dining()[it.name], meal) : null;
   const sp = (!isFood && !isFree) ? spots()[it.name] : null;
-  const nm = isFood ? g.area : it.name;
+  const nm = isFood ? (g || dining()[it.name]).area : it.name;
   const kindLbl = isFood ? '餐饮' : isFree ? '空档' : '景点';
   const hoverName = isFood ? (restPoi()[it.name]||'') : (isFree ? '' : it.name);
 
@@ -1233,6 +1276,7 @@ function itemView(it, day){
               const warn = /人多|费体力|体力活|游客向|动线长|闭园早|坡道|爬山/.test(t);
               return `<span class="tag ${good?'good':''}${warn?' warn':''}">${esc(t)}</span>`;
             }).join('')}</div>` : ''}
+          ${it.timeNote ? `<div class="it-note">${esc(it.timeNote)}</div>` : ''}
           ${it.note ? `<div class="it-note">${esc(it.note)}</div>` : ''}
           ${memTag(it.memoryIds, null, { block:true })}
         </div>
@@ -1288,6 +1332,7 @@ function viewS2(){
         ? '每个带 🧠 的安排都能点开看它是哪条记忆推出来的。餐饮住宿只给区域和候选类型，具体挑哪家你决定。'
         : '对下面任意<b>景点 / 某天节奏 / 餐饮</b>点 👍👎 并选个原因，右栏会当场长出记忆。'}</p>
     </div>
+    ${weatherPanel()}
     ${cityGuide()}
     <div class="s2-grid">
       <div>
@@ -1374,7 +1419,7 @@ function ragConstraintChips(){
   const chips = [
     `📍 ${esc(rag.city)}`,
     `📅 ${esc(rag.date)} · ${esc(rag.season.label || '')}`,
-    `🌤 ${esc(rag.season.weather || '天气以出行前预报为准')}`,
+    `季节参考（非预报）：${esc(rag.season.weather || '以临行预报为准')}`,
     `⏱ ${rag.days} 天`,
     `🎯 ${rag.interest === 'culture' ? '人文历史' : rag.interest === 'nature' ? '自然风光' : '两者兼顾'}`,
     `⚡ ${rag.intensity === 'fast' ? '特种兵' : rag.intensity === 'slow' ? '闲庭漫步' : '适中'}`
@@ -1399,6 +1444,7 @@ function viewGuide(){
       <h2>和这次出行最像的 ${matches.length} 篇攻略</h2>
       <p>先按<b>目的地、季节、天数</b>三道硬约束过滤语料，再按你的<b>偏好与强度</b>排序。${rag.relaxed.length ? `<span class="warn-chip">「${esc(rag.relaxed.join('、'))}」约束已放宽补齐</span>` : ''}</p>
       ${ragConstraintChips()}
+      ${weatherPanel()}
       <span class="head-actions">
         <button class="mini-link" data-act="go" data-screen="s0">← 修改需求</button>
         <button class="mini-link" data-act="go" data-screen="s1">下一步：看方案 →</button>
@@ -1558,6 +1604,7 @@ let _currentScreen = null;   // 上次的 screen,用来检测 screen 是否真�
 let _rendering = false;      // 防重入:过渡中不再次触发
 
 function render(){
+  ensureWeather();
   if(_rendering){ _deferredRender = true; return; }
 
   const newScreen = S.screen;
@@ -1822,6 +1869,7 @@ document.addEventListener('click', e => {
   }
 
   switch(act){
+    case 'weather-retry': ensureWeather(true); break;
     case 'acctmenu':
       toggleAcctMenu();
       break;
@@ -1871,8 +1919,8 @@ document.addEventListener('click', e => {
       const fi = $('f-interest'), fx = $('f-intensity');
       if(d){
         const dest = d.value.trim() || '成都';
-        S.req.dest = Object.keys(CITY_DATA).includes(dest) ? dest : '成都';
-        if(dest !== S.req.dest) toast(`当前演示已支持 ${Object.keys(CITY_DATA).join('、')}，先为你显示成都。`);
+        if (!Object.keys(CITY_DATA).includes(dest)) { toast(`当前支持 ${Object.keys(CITY_DATA).join('、')}，请先选择已支持的目的地。`); break; }
+        S.req.dest = dest;
       }
       if(dt) S.req.date = dt.value || S.req.date;
       if(dy) S.req.days = +dy.value;

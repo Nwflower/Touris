@@ -1,0 +1,25 @@
+{
+  "city": "成都",
+  "name": "白鹭湾湿地",
+  "query": "白鹭湾湿地 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "Zol:RongchengCainiaoBailuwan20241215",
+      "source": "https://m.zol.com.cn/dcbbs/d34050_18495.html",
+      "download": "https://newbbs-fd.zol-img.com.cn/t_s800x2000/g7/M00/06/0E/ChMkLGd19hyIQ8nkAAdYMYxgyO8AAnbZQLXN7kAB1hJ050.jpg",
+      "original": "https://newbbs-fd.zol-img.com.cn/t_s800x2000/g7/M00/06/0E/ChMkLGd19hyIQ8nkAAdYMYxgyO8AAnbZQLXN7kAB1hJ050.jpg",
+      "mime": "image/jpeg",
+      "description": "作者白鹭湾湿地摄影组图，入口指示牌可辨；摄影日期2024-12-15。",
+      "author": "蓉城菜鸟（中关村在线摄影论坛）",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "中关村在线摄影论坛",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ],
+  "supplementalQueries": [
+    "Bailuwan wetland Chengdu filetype:bitmap -metro -station -地图"
+  ]
+}

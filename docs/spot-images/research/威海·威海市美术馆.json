@@ -1,0 +1,26 @@
+{
+  "city": "威海",
+  "name": "威海市美术馆",
+  "query": "威海市美术馆 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "WeihaiGovMap:974",
+      "source": "https://www.weihai.gov.cn/szdt/web/mapIndex/3?area=&mapClassificationId=&mapClassificationPid=33&name=",
+      "download": "https://www.weihai.gov.cn/szdt/uploadFile/20260727/5615c536-2ae3-44b7-9b40-6a64414871ed.jpeg",
+      "original": "https://www.weihai.gov.cn/szdt/uploadFile/20260727/5615c536-2ae3-44b7-9b40-6a64414871ed.jpeg",
+      "mime": "image/jpeg",
+      "author": "发布方：威海市人民政府数字便民地图；摄影作者未单列",
+      "description": "威海市政府数字便民地图点位 974（威海市美术馆），地址：即墨路2A号市文化艺术中心4楼威海美术馆。使用该点位条目所配实景照片。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "威海市人民政府数字便民地图",
+      "modification": "Publisher photograph; no local visual edits.",
+      "placeId": "974",
+      "placeName": "威海市美术馆",
+      "latitude": "37.466711",
+      "longitude": "122.1351"
+    }
+  ]
+}

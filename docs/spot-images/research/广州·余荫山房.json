@@ -1,0 +1,29 @@
+{
+  "city": "广州",
+  "name": "余荫山房",
+  "query": "广州 余荫山房 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:余荫山房.jpg",
+      "pageId": 62125014,
+      "source": "https://commons.wikimedia.org/wiki/File:%E4%BD%99%E8%8D%AB%E5%B1%B1%E6%88%BF.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/55/%E4%BD%99%E8%8D%AB%E5%B1%B1%E6%88%BF.jpg/960px-%E4%BD%99%E8%8D%AB%E5%B1%B1%E6%88%BF.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/5/55/%E4%BD%99%E8%8D%AB%E5%B1%B1%E6%88%BF.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2272,
+      "height": 1704,
+      "mime": "image/jpeg",
+      "description": "Yuyin Garden, Guangzhou City, Guangdong Province, China.",
+      "author": "Zhou Guanhuai",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Cultural heritage monuments in China with known IDs|Yuyin Shanfang|Images from Wiki Loves Monuments 2017 in China|Self-published work|Images from Wiki Loves Monuments 2017|Uploaded via Campaign:wlm-cn|Images from Wiki Loves Monuments missing SDC depicts|Images from Wiki Loves Monuments missing SDC location of creation|WLM 2017 China unreviewed",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ],
+  "supplementalQueries": [
+    "\"Yuyin\" garden filetype:bitmap -metro -station -地图"
+  ]
+}

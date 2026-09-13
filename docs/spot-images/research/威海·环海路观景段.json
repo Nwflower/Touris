@@ -1,0 +1,26 @@
+{
+  "city": "威海",
+  "name": "环海路观景段",
+  "query": "环海路观景段 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "WeihaiGovMap:258",
+      "source": "https://www.weihai.gov.cn/szdt/web/mapIndex/3?area=&mapClassificationId=&mapClassificationPid=21&name=",
+      "download": "https://zhbypass.weihai.cn/minio/sciencetechnologymuseum/86d1f1dccf9c46efa353ddeb915c2f161717851515328.jpg",
+      "original": "https://zhbypass.weihai.cn/minio/sciencetechnologymuseum/86d1f1dccf9c46efa353ddeb915c2f161717851515328.jpg",
+      "mime": "image/jpeg",
+      "author": "发布方：威海市人民政府数字便民地图；摄影作者未单列",
+      "description": "威海市政府数字便民地图点位 258（猫头山），地址：威海市环翠区孙家疃镇环海路。使用该点位条目所配实景照片。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "威海市人民政府数字便民地图",
+      "modification": "Publisher photograph; no local visual edits.",
+      "placeId": "258",
+      "placeName": "猫头山",
+      "latitude": "37.554521",
+      "longitude": "122.143127"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "city": "成都",
+  "name": "金沙遗址",
+  "query": "File:金沙遗址 Jinsha Site 2018.jpg",
+  "review": "pending",
+  "existingFile": "img/Jinsha_Site_2018.jpg",
+  "candidates": [
+    {
+      "title": "File:金沙遗址 Jinsha Site 2018.jpg",
+      "pageId": 116787745,
+      "source": "https://commons.wikimedia.org/wiki/File:%E9%87%91%E6%B2%99%E9%81%97%E5%9D%80_Jinsha_Site_2018.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8e/%E9%87%91%E6%B2%99%E9%81%97%E5%9D%80_Jinsha_Site_2018.jpg/960px-%E9%87%91%E6%B2%99%E9%81%97%E5%9D%80_Jinsha_Site_2018.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/8/8e/%E9%87%91%E6%B2%99%E9%81%97%E5%9D%80_Jinsha_Site_2018.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3000,
+      "height": 2000,
+      "mime": "image/jpeg",
+      "description": "Jinsha Site, Sichuan, China",
+      "author": "xiquinhosilva",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "categories": "Files with coordinates missing SDC location of creation|Flickr images reviewed by FlickreviewR 2|Relics Hall of Jinsha Site|Photographs by Xiquinho Silva|Flickr images missing SDC published in",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "https://www.flickr.com/photos/7138083@N04/49068406692/"
+    }
+  ]
+}

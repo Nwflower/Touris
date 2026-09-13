@@ -1,0 +1,45 @@
+{
+  "city": "威海",
+  "name": "那香海",
+  "query": "File:Rongcheng,_Weihai,_Shandong,_China_-_panoramio_(1).jpg",
+  "review": "pending",
+  "existingFile": "img/Rongcheng_Weihai_Shandong_China_-_panoramio_1.jpg",
+  "candidates": [
+    {
+      "title": "File:Rongcheng, Weihai, Shandong, China - panoramio (1).jpg",
+      "pageId": 59509617,
+      "source": "https://commons.wikimedia.org/wiki/File:Rongcheng,_Weihai,_Shandong,_China_-_panoramio_(1).jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Rongcheng%2C_Weihai%2C_Shandong%2C_China_-_panoramio_%281%29.jpg/960px-Rongcheng%2C_Weihai%2C_Shandong%2C_China_-_panoramio_%281%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/7/74/Rongcheng%2C_Weihai%2C_Shandong%2C_China_-_panoramio_%281%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 4608,
+      "height": 3456,
+      "mime": "image/jpeg",
+      "description": "Rongcheng, Weihai, Shandong, China",
+      "author": "ma luyao",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "categories": "China photographs taken on 2015-07-25|Rongcheng, Shandong|Panoramio files uploaded by Panoramio upload bot|Panoramio images reviewed by trusted users|Photos from Panoramio|Files with coordinates missing SDC location of creation|Photos from Panoramio ID 4467530",
+      "attribution": "ma luyao",
+      "restrictions": "",
+      "credit": "https://web.archive.org/web/20161102033243/http://www.panoramio.com/photo/122260799"
+    },
+    {
+      "title": "File:Naxianghai in Weihai 20180711.jpg",
+      "pageId": 80074126,
+      "source": "https://commons.wikimedia.org/wiki/File:Naxianghai_in_Weihai_20180711.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d5/Naxianghai_in_Weihai_20180711.jpg/960px-Naxianghai_in_Weihai_20180711.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/d/d5/Naxianghai_in_Weihai_20180711.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 4608,
+      "height": 2592,
+      "mime": "image/jpeg",
+      "description": "​威海那香海",
+      "author": "Sunyiming",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Weihai|Self-published work|Images with extracted images|Files with coordinates missing SDC location of creation|Images from Wiki Loves China 2019",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

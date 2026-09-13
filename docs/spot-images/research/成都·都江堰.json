@@ -1,0 +1,27 @@
+{
+  "city": "成都",
+  "name": "都江堰",
+  "query": "File:Dujiang Weir.jpg",
+  "review": "pending",
+  "existingFile": "img/Dujiang_Weir.jpg",
+  "candidates": [
+    {
+      "title": "File:Dujiang Weir.jpg",
+      "pageId": 2132521,
+      "source": "https://commons.wikimedia.org/wiki/File:Dujiang_Weir.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/Dujiang_Weir.jpg/960px-Dujiang_Weir.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/a/a7/Dujiang_Weir.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 9288,
+      "height": 3914,
+      "mime": "image/jpeg",
+      "description": "Dujiangyan Irrigation System, Chengdu, Sichuan, China",
+      "author": "星星",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Images with annotations|Self-published work|Images with extracted images|Files with coordinates missing SDC location of creation|Dujiangyan irrigation system",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

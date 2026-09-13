@@ -1,0 +1,27 @@
+{
+  "city": "北京",
+  "name": "北京南站",
+  "query": "File:Beijing South Station (cropped).jpg",
+  "review": "pending",
+  "existingFile": "img/Beijing_South_Station_cropped.jpg",
+  "candidates": [
+    {
+      "title": "File:Beijing South Station (cropped).jpg",
+      "pageId": 45835809,
+      "source": "https://commons.wikimedia.org/wiki/File:Beijing_South_Station_(cropped).jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/00/Beijing_South_Station_%28cropped%29.jpg/960px-Beijing_South_Station_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/0/00/Beijing_South_Station_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 1363,
+      "height": 711,
+      "mime": "image/jpeg",
+      "description": "Beijing South Railway Station",
+      "author": "Max Farrell",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "categories": "Beijing South Railway Station|GFDL|Terry Farrell (architect)|License migration redundant|Self-published work|Extracted images",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

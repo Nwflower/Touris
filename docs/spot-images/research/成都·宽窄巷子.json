@@ -1,0 +1,27 @@
+{
+  "city": "成都",
+  "name": "宽窄巷子",
+  "query": "File:Narrow Lane of Chengdu.jpg",
+  "review": "pending",
+  "existingFile": "img/Narrow_Lane_of_Chengdu.jpg",
+  "candidates": [
+    {
+      "title": "File:Narrow Lane of Chengdu.jpg",
+      "pageId": 20222178,
+      "source": "https://commons.wikimedia.org/wiki/File:Narrow_Lane_of_Chengdu.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bc/Narrow_Lane_of_Chengdu.jpg/960px-Narrow_Lane_of_Chengdu.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/b/bc/Narrow_Lane_of_Chengdu.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3888,
+      "height": 2592,
+      "mime": "image/jpeg",
+      "description": "A picture of Narrow Lane of Chengdu in the evening. The area of the Narrow Lane, the Wide Lane and the Jing Lane presents Chengdu's old history and culture.",
+      "author": "AlexHe34",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "categories": "GFDL|Taken with Canon EOS 400D|License migration redundant|Wide and Narrow Alleys|Self-published work",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

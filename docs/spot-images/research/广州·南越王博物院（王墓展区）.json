@@ -1,0 +1,27 @@
+{
+  "city": "广州",
+  "name": "南越王博物院（王墓展区）",
+  "query": "File:Site_of_King’s_Tomb,_Nanyue_King_Museum_2025.06-01.jpg",
+  "review": "pending",
+  "existingFile": "assets/cities/guangzhou/nanyue-museum.jpg",
+  "candidates": [
+    {
+      "title": "File:Site of King’s Tomb, Nanyue King Museum 2025.06-01.jpg",
+      "pageId": 168928943,
+      "source": "https://commons.wikimedia.org/wiki/File:Site_of_King%E2%80%99s_Tomb,_Nanyue_King_Museum_2025.06-01.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/da/Site_of_King%E2%80%99s_Tomb%2C_Nanyue_King_Museum_2025.06-01.jpg/960px-Site_of_King%E2%80%99s_Tomb%2C_Nanyue_King_Museum_2025.06-01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/d/da/Site_of_King%E2%80%99s_Tomb%2C_Nanyue_King_Museum_2025.06-01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2400,
+      "height": 1512,
+      "mime": "image/jpeg",
+      "description": "Exterior of the Site of King’s Tomb of Nanyue King Museum, Guangzhou, China",
+      "author": "Shujianyang",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Self-published work|Site of King's Tomb, Nanyue King Museum|Guangzhou photographs taken on 2025-06-04",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

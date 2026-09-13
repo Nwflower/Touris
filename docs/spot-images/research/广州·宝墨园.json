@@ -1,0 +1,27 @@
+{
+  "city": "广州",
+  "name": "宝墨园",
+  "query": "File:Southern_Door_FOR_BouMak_Garden.jpg",
+  "review": "pending",
+  "existingFile": "assets/cities/guangzhou/baomo-garden.jpg",
+  "candidates": [
+    {
+      "title": "File:Southern Door FOR BouMak Garden.jpg",
+      "pageId": 43942061,
+      "source": "https://commons.wikimedia.org/wiki/File:Southern_Door_FOR_BouMak_Garden.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ac/Southern_Door_FOR_BouMak_Garden.jpg/960px-Southern_Door_FOR_BouMak_Garden.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/a/ac/Southern_Door_FOR_BouMak_Garden.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3264,
+      "height": 1836,
+      "mime": "image/jpeg",
+      "description": "寶墨園嘅南門牌坊",
+      "author": "WKDx417",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Baomo Garden|Self-published work",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

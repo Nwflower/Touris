@@ -1,0 +1,27 @@
+{
+  "city": "广州",
+  "name": "广州大剧院",
+  "query": "File:Guangzhou_Opera_House(Near).JPG",
+  "review": "pending",
+  "existingFile": "assets/cities/guangzhou/opera-house.jpg",
+  "candidates": [
+    {
+      "title": "File:Guangzhou Opera House(Near).JPG",
+      "pageId": 20338813,
+      "source": "https://commons.wikimedia.org/wiki/File:Guangzhou_Opera_House(Near).JPG",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2f/Guangzhou_Opera_House%28Near%29.JPG/960px-Guangzhou_Opera_House%28Near%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Guangzhou_Opera_House%28Near%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 4224,
+      "height": 2376,
+      "mime": "image/jpeg",
+      "description": "A near and front view of Guangzhou Opera House. Author of the underlying work: Architect Zaha Hadid (d. 2016).",
+      "author": "Mr a",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "categories": "Taken with Sony DSC-W300|Guangzhou Opera House|Guangzhou Credit Cooperative Building|Self-published work|FoP-China|2011 in Guangzhou Opera House|November 2011 in Zhujiang New Town",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "city": "威海",
+  "name": "五渚河公园",
+  "query": "五渚河公园 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "Sina:Wuzhu20200702",
+      "source": "https://k.sina.cn/article_7021846974_p1a288e1be00100t1bj.html",
+      "download": "https://n.sinaimg.cn/sinakd10105/150/w2000h1350/20200702/a113-ivrxcey2213832.jpg",
+      "original": "https://n.sinaimg.cn/sinakd10105/150/w2000h1350/20200702/a113-ivrxcey2213832.jpg",
+      "mime": "image/jpeg",
+      "author": "发布账号：断桥残梦芷蕾；摄影作者未单列",
+      "description": "五渚河省级湿地公园图集，公园入口石刻名称明确。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "发布账号：断桥残梦芷蕾；摄影作者未单列",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "city": "北京",
+  "name": "牛街",
+  "query": "File:Niujie_Mosque_-_CIMG3716.JPG",
+  "review": "pending",
+  "existingFile": "img/Niujie_Mosque_-_CIMG3716.jpg",
+  "candidates": [
+    {
+      "title": "File:Niujie Mosque - CIMG3716.JPG",
+      "pageId": 19619369,
+      "source": "https://commons.wikimedia.org/wiki/File:Niujie_Mosque_-_CIMG3716.JPG",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5a/Niujie_Mosque_-_CIMG3716.JPG/960px-Niujie_Mosque_-_CIMG3716.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/5/5a/Niujie_Mosque_-_CIMG3716.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2560,
+      "height": 1920,
+      "mime": "image/jpeg",
+      "description": "Niujie Mosque, Beijing",
+      "author": "User:Vmenkov",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "categories": "GFDL|Taken with Casio Exilim EX-Z50|CC-BY-SA-3.0,2.5,2.0,1.0|Niujie Mosque|License migration redundant|Self-published work",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

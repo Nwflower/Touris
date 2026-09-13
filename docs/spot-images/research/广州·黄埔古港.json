@@ -1,0 +1,44 @@
+{
+  "city": "广州",
+  "name": "黄埔古港",
+  "query": "广州 黄埔古港 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:黄埔古港遗址.jpg",
+      "pageId": 50461163,
+      "source": "https://commons.wikimedia.org/wiki/File:%E9%BB%84%E5%9F%94%E5%8F%A4%E6%B8%AF%E9%81%97%E5%9D%80.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/%E9%BB%84%E5%9F%94%E5%8F%A4%E6%B8%AF%E9%81%97%E5%9D%80.jpg/960px-%E9%BB%84%E5%9F%94%E5%8F%A4%E6%B8%AF%E9%81%97%E5%9D%80.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/a/a3/%E9%BB%84%E5%9F%94%E5%8F%A4%E6%B8%AF%E9%81%97%E5%9D%80.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3872,
+      "height": 2592,
+      "mime": "image/jpeg",
+      "description": "​位于黄埔村。是广州市文物保护单位“黄埔古港遗迹和黄埔村早期建筑”的组成部分。",
+      "author": "古海岸遗址",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Poly Plaza and InterContinental Guangzhou Exhibition Center|Self-published work|Canton Fair Building (The Westin Pazhou)|Whampoa Anchorage|International Commerce Place|Guangzhou International Sourcing Centre",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    },
+    {
+      "title": "File:黄埔村冯氏祖墓.jpg",
+      "pageId": 50413991,
+      "source": "https://commons.wikimedia.org/wiki/File:%E9%BB%84%E5%9F%94%E6%9D%91%E5%86%AF%E6%B0%8F%E7%A5%96%E5%A2%93.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/59/%E9%BB%84%E5%9F%94%E6%9D%91%E5%86%AF%E6%B0%8F%E7%A5%96%E5%A2%93.jpg/960px-%E9%BB%84%E5%9F%94%E6%9D%91%E5%86%AF%E6%B0%8F%E7%A5%96%E5%A2%93.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/5/59/%E9%BB%84%E5%9F%94%E6%9D%91%E5%86%AF%E6%B0%8F%E7%A5%96%E5%A2%93.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3872,
+      "height": 2592,
+      "mime": "image/jpeg",
+      "description": "位于广州市海珠区黄埔村黄埔村经济发展公司院内，是广州市文物保护单位“黄埔古港遗迹和黄埔村早期建筑”的组成部分。",
+      "author": "古海岸遗址",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "categories": "Whampoa Village|Self-published work|Uploaded with Mobile/iOS|Photographs taken on 2016-07-30",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

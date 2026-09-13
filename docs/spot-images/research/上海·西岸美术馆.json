@@ -1,0 +1,27 @@
+{
+  "city": "上海",
+  "name": "西岸美术馆",
+  "query": "File:West Bund Museum, Shanghai, Jun 2020.jpg",
+  "review": "pending",
+  "existingFile": "img/West_Bund_Museum_Shanghai_Jun_2020.jpg",
+  "candidates": [
+    {
+      "title": "File:West Bund Museum, Shanghai, Jun 2020.jpg",
+      "pageId": 91685163,
+      "source": "https://commons.wikimedia.org/wiki/File:West_Bund_Museum,_Shanghai,_Jun_2020.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/West_Bund_Museum%2C_Shanghai%2C_Jun_2020.jpg/960px-West_Bund_Museum%2C_Shanghai%2C_Jun_2020.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/f/f9/West_Bund_Museum%2C_Shanghai%2C_Jun_2020.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 4032,
+      "height": 3024,
+      "mime": "image/jpeg",
+      "description": "​上海西岸美术馆正门",
+      "author": "Lcsun",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "GFDL|West Bund Museum|License migration redundant|Self-published work|June 2020 in Shanghai",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

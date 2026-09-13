@@ -1,0 +1,29 @@
+{
+  "city": "杭州",
+  "name": "大兜路历史街区",
+  "query": "大兜路历史街区 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:20250211 Dadou Lu (095108).jpg",
+      "pageId": 194703752,
+      "source": "https://commons.wikimedia.org/wiki/File:20250211_Dadou_Lu_(095108).jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/20250211_Dadou_Lu_%28095108%29.jpg/960px-20250211_Dadou_Lu_%28095108%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/8/8c/20250211_Dadou_Lu_%28095108%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 4096,
+      "height": 3072,
+      "mime": "image/jpeg",
+      "description": "Dadou Lu",
+      "author": "Yumeto",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Gongshu District|Self-published work|Files with coordinates missing SDC location of creation|February 2025 in Hangzhou|Zhejiang photographs taken on 2025-02-11|User:Yumeto|Taken with Huawei Nova 11",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ],
+  "directSources": [
+    "File:20250211 Dadou Lu (095108).jpg"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "city": "威海",
+  "name": "海上公园",
+  "query": "威海 海上公园 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "WeihaiGovMap:637",
+      "source": "https://www.weihai.gov.cn/szdt/web/mapIndex/3?area=&mapClassificationId=&mapClassificationPid=42&name=",
+      "download": "https://zhbypass.weihai.cn/minio/sciencetechnologymuseum/c9f3ebcad7294e99bea68819fb8cd9be1717593906246.jpeg",
+      "original": "https://zhbypass.weihai.cn/minio/sciencetechnologymuseum/c9f3ebcad7294e99bea68819fb8cd9be1717593906246.jpeg",
+      "mime": "image/jpeg",
+      "author": "发布方：威海市人民政府数字便民地图；摄影作者未单列",
+      "description": "威海市政府数字便民地图点位 637（海上公园），地址：西临皇冠小区，东临大海，北临明珠花园，南临昆嵛花园。使用该点位条目所配实景照片。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "威海市人民政府数字便民地图",
+      "modification": "Publisher photograph; no local visual edits.",
+      "placeId": "637",
+      "placeName": "海上公园",
+      "latitude": "37.436658",
+      "longitude": "122.156341"
+    }
+  ]
+}

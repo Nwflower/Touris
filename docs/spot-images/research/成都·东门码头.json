@@ -1,0 +1,25 @@
+{
+  "city": "成都",
+  "name": "东门码头",
+  "query": "成都 东门码头 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "RedStarNews:DongmenWharf20260121",
+      "source": "https://www.sohu.com/a/978597262_116237",
+      "download": "https://q8.itc.cn/q_70/images03/20260121/697ae2226e5f440fa27bd1e3e3333d71.jpeg",
+      "original": "https://q8.itc.cn/q_70/images03/20260121/697ae2226e5f440fa27bd1e3e3333d71.jpeg",
+      "mime": "image/jpeg",
+      "description": "新闻正文明确配图说明“东门码头 摄影：林漫”。",
+      "author": "林漫（红星新闻）",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "publisher",
+      "modification": "Publisher image; no local visual edits. CSS crops in cards."
+    }
+  ],
+  "supplementalQueries": [
+    "Dongmen Wharf Chengdu filetype:bitmap -metro -station -地图"
+  ]
+}

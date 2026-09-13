@@ -1,0 +1,22 @@
+{
+  "city": "威海",
+  "name": "合庆码头",
+  "query": "威海 合庆码头 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "WHNews:Heqing7178540",
+      "source": "https://www.whnews.cn/news/node/2021-06/10/content_7178540.htm",
+      "download": "https://www.whnews.cn/news/data/attachement/jpg/site2/20210610/e454e89cef10222bbde82b.jpg",
+      "original": "https://www.whnews.cn/news/data/attachement/jpg/site2/20210610/e454e89cef10222bbde82b.jpg",
+      "mime": "image/jpeg",
+      "author": "威海新闻网；摄影作者未单列",
+      "description": "威海新闻网海源公园报道中合庆码头渔船停靠段的照片。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "威海新闻网；摄影作者未单列",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ]
+}

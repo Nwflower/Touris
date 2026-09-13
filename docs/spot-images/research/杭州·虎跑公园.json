@@ -1,0 +1,29 @@
+{
+  "city": "杭州",
+  "name": "虎跑公园",
+  "query": "杭州 虎跑公园 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:Hupao.jpg",
+      "pageId": 5396511,
+      "source": "https://commons.wikimedia.org/wiki/File:Hupao.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d4/Hupao.jpg/960px-Hupao.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Hupao.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3008,
+      "height": 2000,
+      "mime": "image/jpeg",
+      "description": "Hupao (\"Dreaming of the Tiger\") Spring (Hupaomengquan) in Hangzhou, China",
+      "author": "Sh1019",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "categories": "Sculptures in China|Featured pictures of China|GFDL|Taken with Nikon D50|License migration redundant|Self-published work|Featured pictures on Wikipedia, Vietnamese|Hupao Spring",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ],
+  "directSources": [
+    "File:Hupao.jpg"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "city": "威海",
+  "name": "金海滩浴场",
+  "query": "金海滩浴场 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "WeihaiGovMap:273",
+      "source": "https://www.weihai.gov.cn/szdt/web/mapIndex/3?area=&mapClassificationId=&mapClassificationPid=21&name=",
+      "download": "https://zhbypass.weihai.cn/minio/sciencetechnologymuseum/c217ed8ff45b453c9d7616d171c4b9961717591076534.jpg",
+      "original": "https://zhbypass.weihai.cn/minio/sciencetechnologymuseum/c217ed8ff45b453c9d7616d171c4b9961717591076534.jpg",
+      "mime": "image/jpeg",
+      "author": "发布方：威海市人民政府数字便民地图；摄影作者未单列",
+      "description": "威海市政府数字便民地图点位 273（金海滩），地址：。使用该点位条目所配实景照片。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "威海市人民政府数字便民地图",
+      "modification": "Publisher photograph; no local visual edits.",
+      "placeId": "273",
+      "placeName": "金海滩",
+      "latitude": "37.533741",
+      "longitude": "122.068647"
+    }
+  ]
+}

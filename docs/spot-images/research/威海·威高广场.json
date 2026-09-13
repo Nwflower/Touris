@@ -1,0 +1,24 @@
+{
+  "city": "威海",
+  "name": "威高广场",
+  "query": "威海 威高广场 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "WeihaiGovMap:571",
+      "source": "https://www.weihai.gov.cn/szdt/web/mapIndex/3?area=&mapClassificationId=&mapClassificationPid=44&name=",
+      "download": "https://zhbypass.weihai.cn/minio/sciencetechnologymuseum/201273185e2b43a4a6fda9a2a5ee01321717641829500.jpg",
+      "original": "https://zhbypass.weihai.cn/minio/sciencetechnologymuseum/201273185e2b43a4a6fda9a2a5ee01321717641829500.jpg",
+      "mime": "image/jpeg",
+      "author": "发布方：威海市人民政府数字便民地图；摄影作者未单列",
+      "description": "威海市政府数字便民地图 571 威高购物广场，地址：威海市环翠区新威路17号。该条目所配照片，需视觉核对。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "威海市人民政府数字便民地图",
+      "modification": "Publisher photograph; no local visual edits.",
+      "latitude": "37.503586",
+      "longitude": "122.118273"
+    }
+  ]
+}

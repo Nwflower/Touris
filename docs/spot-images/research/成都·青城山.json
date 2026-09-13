@@ -1,0 +1,27 @@
+{
+  "city": "成都",
+  "name": "青城山",
+  "query": "File:四川青城山 - panoramio.jpg",
+  "review": "pending",
+  "existingFile": "img/panoramio-2.jpg",
+  "candidates": [
+    {
+      "title": "File:四川青城山 - panoramio.jpg",
+      "pageId": 52971842,
+      "source": "https://commons.wikimedia.org/wiki/File:%E5%9B%9B%E5%B7%9D%E9%9D%92%E5%9F%8E%E5%B1%B1_-_panoramio.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/%E5%9B%9B%E5%B7%9D%E9%9D%92%E5%9F%8E%E5%B1%B1_-_panoramio.jpg/960px-%E5%9B%9B%E5%B7%9D%E9%9D%92%E5%9F%8E%E5%B1%B1_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/b/be/%E5%9B%9B%E5%B7%9D%E9%9D%92%E5%9F%8E%E5%B1%B1_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 1072,
+      "height": 712,
+      "mime": "image/jpeg",
+      "description": "四川青城山",
+      "author": "中国郑开亮",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "categories": "Panoramio files uploaded by Panoramio upload bot|Panoramio images reviewed by trusted users|Photos from Panoramio|Files with coordinates missing SDC location of creation|Front Gate of Mount Qingcheng",
+      "attribution": "中国郑开亮",
+      "restrictions": "",
+      "credit": "https://web.archive.org/web/20161014185410/http://www.panoramio.com/photo/34921642"
+    }
+  ]
+}

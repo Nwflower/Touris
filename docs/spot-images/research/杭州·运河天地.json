@@ -1,0 +1,22 @@
+{
+  "city": "杭州",
+  "name": "运河天地",
+  "query": "杭州 运河天地 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "Ctrip:CanalTiandi0104q12000a1w08ql4F74",
+      "source": "https://you.ctrip.com/sight/hangzhou14/144172.html",
+      "download": "https://dimg04.c-ctrip.com/images/0104q12000a1w08ql4F74_W_640_10000.jpg?proc=autoorient",
+      "original": "https://dimg04.c-ctrip.com/images/0104q12000a1w08ql4F74_W_640_10000.jpg?proc=autoorient",
+      "mime": "image/jpeg",
+      "author": "携程景点图库；摄影作者未单列",
+      "description": "携程杭州运河天地条目，地址小河路488号，临运河建筑具有运河天地招牌。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "携程景点图库；摄影作者未单列",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ]
+}

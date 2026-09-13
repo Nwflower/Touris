@@ -1,0 +1,25 @@
+{
+  "city": "上海",
+  "name": "苏州河华政段",
+  "query": "苏州河华政段 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "ThePaper:Huazheng20210923",
+      "source": "https://www.thepaper.cn/newsDetail_forward_14621848",
+      "download": "https://imagecloud.thepaper.cn/thepaper/image/155/165/70.jpg",
+      "original": "https://imagecloud.thepaper.cn/thepaper/image/155/165/70.jpg",
+      "mime": "image/jpeg",
+      "author": "澎湃新闻；报道记者邹桥，未单列摄影署名",
+      "description": "华政段滨河步道开放报道配图，大学红砖建筑旁的苏州河步道。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "景点或新闻专页",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ],
+  "supplementalQueries": [
+    "East China University Political Science Law Suzhou Creek filetype:bitmap -metro -station -地图"
+  ]
+}

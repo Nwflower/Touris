@@ -1,0 +1,25 @@
+{
+  "city": "上海",
+  "name": "世博文化公园",
+  "query": "世博文化公园 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "ThePaper:ExpoPark20211221",
+      "source": "https://www.thepaper.cn/newsDetail_forward_15937667",
+      "download": "https://imagepphcloud.thepaper.cn/pph/image/170/300/684.jpg",
+      "original": "https://imagepphcloud.thepaper.cn/pph/image/170/300/684.jpg",
+      "mime": "image/jpeg",
+      "author": "澎湃政务号；摄影作者未明确署名",
+      "description": "世博文化公园北区开园报道实拍，临水公园名称标识可辨。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "新闻或政务来源",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ],
+  "supplementalQueries": [
+    "Shanghai Expo Culture Park filetype:bitmap -metro -station -地图"
+  ]
+}

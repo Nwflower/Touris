@@ -1,0 +1,26 @@
+{
+  "city": "威海",
+  "name": "东城路夜市",
+  "query": "威海 海鲜夜市 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "WeihaiGov:Dongcheng20240506",
+      "source": "https://www.weihai.gov.cn/art/2024/5/6/art_58817_4538046.html",
+      "download": "https://www.weihai.gov.cn/picture/-1/240506093421796684.jpg",
+      "original": "https://www.weihai.gov.cn/picture/-1/240506093421796684.jpg",
+      "mime": "image/jpeg",
+      "author": "宫举卫、丛源璐、牟怡洁 / 威海新闻网",
+      "description": "本地原型明确选用东城路夜市作为海鲜夜市具体点位；政府报道与数字地图635核对，原泛称坐标同步纠正。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "宫举卫、丛源璐、牟怡洁 / 威海新闻网",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ],
+  "supplementalQueries": [
+    "\"Weihai\" \"night market\" filetype:bitmap -metro -station -地图"
+  ],
+  "previousName": "海鲜夜市"
+}

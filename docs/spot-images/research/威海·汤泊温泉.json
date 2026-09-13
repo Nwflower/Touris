@@ -1,0 +1,26 @@
+{
+  "city": "威海",
+  "name": "汤泊温泉",
+  "query": "威海 汤泊温泉 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "WeihaiGovMap:189",
+      "source": "https://www.weihai.gov.cn/szdt/web/mapIndex/3?area=&mapClassificationId=&mapClassificationPid=21&name=",
+      "download": "https://zhbypass.weihai.cn/minio/travel-wh/f635d73d79dd4c688c2d71c500fb56961717566731070.jpg",
+      "original": "https://zhbypass.weihai.cn/minio/travel-wh/f635d73d79dd4c688c2d71c500fb56961717566731070.jpg",
+      "mime": "image/jpeg",
+      "author": "发布方：威海市人民政府数字便民地图；摄影作者未单列",
+      "description": "威海市政府数字便民地图点位 189（汤泊温泉度假村（4A）），地址：文登开发区大连路2号。使用该点位条目所配实景照片。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "威海市人民政府数字便民地图",
+      "modification": "Publisher photograph; no local visual edits.",
+      "placeId": "189",
+      "placeName": "汤泊温泉度假村（4A）",
+      "latitude": "37.258057",
+      "longitude": "122.097957"
+    }
+  ]
+}

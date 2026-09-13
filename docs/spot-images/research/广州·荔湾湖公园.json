@@ -1,0 +1,27 @@
+{
+  "city": "广州",
+  "name": "荔湾湖公园",
+  "query": "File:North_gate_of_Liwanhu_Park_20080314.jpg",
+  "review": "pending",
+  "existingFile": "assets/cities/guangzhou/liwan-lake.jpg",
+  "candidates": [
+    {
+      "title": "File:North gate of Liwanhu Park 20080314.jpg",
+      "pageId": 7257607,
+      "source": "https://commons.wikimedia.org/wiki/File:North_gate_of_Liwanhu_Park_20080314.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/North_gate_of_Liwanhu_Park_20080314.jpg/960px-North_gate_of_Liwanhu_Park_20080314.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/f/f9/North_gate_of_Liwanhu_Park_20080314.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2592,
+      "height": 1944,
+      "mime": "image/jpeg",
+      "description": "​廣州市荔灣湖公園北門。",
+      "author": "The original uploader was Df112001 at Chinese Wikipedia.",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "categories": "GFDL|Taken with Fujifilm FinePix F460|License migration completed|Liwanhu Park|2008 in Guangzhou",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Transferred from zh.wikipedia to Commons by Shizhao using CommonsHelper."
+    }
+  ]
+}

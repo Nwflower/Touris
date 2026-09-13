@@ -1,0 +1,27 @@
+{
+  "city": "北京",
+  "name": "颐和园",
+  "query": "File:Longevity_Hill_of_the_Summer_Palace.jpg",
+  "review": "pending",
+  "existingFile": "img/Longevity_Hill_of_the_Summer_Palace.jpg",
+  "candidates": [
+    {
+      "title": "File:Longevity Hill of the Summer Palace.jpg",
+      "pageId": 163853975,
+      "source": "https://commons.wikimedia.org/wiki/File:Longevity_Hill_of_the_Summer_Palace.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/db/Longevity_Hill_of_the_Summer_Palace.jpg/960px-Longevity_Hill_of_the_Summer_Palace.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/d/db/Longevity_Hill_of_the_Summer_Palace.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2560,
+      "height": 1702,
+      "mime": "image/jpeg",
+      "description": "Longevity Hill of the Summer Palace in Beijing, China",
+      "author": "xiquinhosilva",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "categories": "Views of the Longevity Hill from Kunming Lake|Featured pictures on Wikipedia, Hebrew|Files with coordinates missing SDC location of creation|Flickr images reviewed by FlickreviewR 2|Files with Assessments template missing SDC Commons no value quality assessment|Photographs by Xiquinho Silva|Flickr images missing SDC published in",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "https://www.flickr.com/photos/xiquinho/54440250623/"
+    }
+  ]
+}

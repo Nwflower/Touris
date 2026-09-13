@@ -1,0 +1,44 @@
+{
+  "city": "广州",
+  "name": "基督教东山堂",
+  "query": "基督教东山堂 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:Sunday Evening in Dongshan Church.jpg",
+      "pageId": 28714846,
+      "source": "https://commons.wikimedia.org/wiki/File:Sunday_Evening_in_Dongshan_Church.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/Sunday_Evening_in_Dongshan_Church.jpg/960px-Sunday_Evening_in_Dongshan_Church.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/9/9c/Sunday_Evening_in_Dongshan_Church.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3240,
+      "height": 4320,
+      "mime": "image/jpeg",
+      "description": "This is a photo of a (or part of a) Major National Historical and Cultural Site in China identified by the ID CNGD-020-051",
+      "author": "魏杲",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "categories": "Cultural heritage monuments in China with known IDs|Taken with Sony DSC-W350|Christ Church Dongshan|Images from Wiki Loves Monuments 2013 in China|Self-published work|Images from Wiki Loves Monuments 2013|Uploaded via Campaign:wlm-cn|Images from Wiki Loves Monuments missing SDC depicts|Images from Wiki Loves Monuments missing SDC location of creation",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    },
+    {
+      "title": "File:DungSaanTong.jpg",
+      "pageId": 47279389,
+      "source": "https://commons.wikimedia.org/wiki/File:DungSaanTong.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/DungSaanTong.jpg/960px-DungSaanTong.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/5/5d/DungSaanTong.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3264,
+      "height": 1836,
+      "mime": "image/jpeg",
+      "description": "基督教東山堂",
+      "author": "WKDx417",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Christ Church Dongshan|Self-published work",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

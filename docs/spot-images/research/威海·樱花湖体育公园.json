@@ -1,0 +1,26 @@
+{
+  "city": "威海",
+  "name": "樱花湖体育公园",
+  "query": "樱花湖体育公园 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "WeihaiGovMap:211",
+      "source": "https://www.weihai.gov.cn/szdt/web/mapIndex/3?area=&mapClassificationId=&mapClassificationPid=42&name=",
+      "download": "https://zhbypass.weihai.cn/minio/travel-wh/0adda1a3f175445097e274c80dcf4abe1717566732611.jpg",
+      "original": "https://zhbypass.weihai.cn/minio/travel-wh/0adda1a3f175445097e274c80dcf4abe1717566732611.jpg",
+      "mime": "image/jpeg",
+      "author": "发布方：威海市人民政府数字便民地图；摄影作者未单列",
+      "description": "威海市政府数字便民地图点位 211（荣成市樱花湖体育公园（3A）），地址：荣成市悦湖中路83号。使用该点位条目所配实景照片。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "威海市人民政府数字便民地图",
+      "modification": "Publisher photograph; no local visual edits.",
+      "placeId": "211",
+      "placeName": "荣成市樱花湖体育公园（3A）",
+      "latitude": "37.147522",
+      "longitude": "122.462207"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "city": "成都",
+  "name": "琴台路",
+  "query": "成都 琴台路 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:成都琴台路.jpg",
+      "pageId": 63740209,
+      "source": "https://commons.wikimedia.org/wiki/File:%E6%88%90%E9%83%BD%E7%90%B4%E5%8F%B0%E8%B7%AF.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/%E6%88%90%E9%83%BD%E7%90%B4%E5%8F%B0%E8%B7%AF.jpg/960px-%E6%88%90%E9%83%BD%E7%90%B4%E5%8F%B0%E8%B7%AF.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/b/b4/%E6%88%90%E9%83%BD%E7%90%B4%E5%8F%B0%E8%B7%AF.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3648,
+      "height": 2736,
+      "mime": "image/jpeg",
+      "description": "​成都琴台路",
+      "author": "螺钉",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Self-published work|钉钉|Qintai Road",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

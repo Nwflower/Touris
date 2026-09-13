@@ -1,0 +1,26 @@
+{
+  "city": "北京",
+  "name": "三里河公园",
+  "query": "三里河公园 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "Ctrip:Sanlihe1mh1n12000ayazsysC5F8",
+      "source": "https://you.ctrip.com/sight/beijing1/2501692.html",
+      "download": "https://dimg04.c-ctrip.com/images/1mh1n12000ayazsysC5F8_W_640_10000.jpg?proc=autoorient",
+      "original": "https://dimg04.c-ctrip.com/images/1mh1n12000ayazsysC5F8_W_640_10000.jpg?proc=autoorient",
+      "mime": "image/jpeg",
+      "author": "发布平台：携程；摄影作者未明确署名",
+      "description": "前门东侧三里河公园景点专页，地址及水系街园与项目描述一致。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "携程",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ],
+  "supplementalQueries": [
+    "Sanlihe Qianmen filetype:bitmap -metro -station -地图",
+    "Sanlihe Park filetype:bitmap -metro -station -地图"
+  ]
+}

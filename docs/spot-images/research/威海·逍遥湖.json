@@ -1,0 +1,22 @@
+{
+  "city": "威海",
+  "name": "逍遥湖",
+  "query": "威海 逍遥湖 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "Sohu:Xiaoyao20241013",
+      "source": "https://www.sohu.com/a/816227695_121106991",
+      "download": "https://q1.itc.cn/q_70/images03/20241013/87c452938825437ebd72761bfbed9509.png",
+      "original": "https://q1.itc.cn/q_70/images03/20241013/87c452938825437ebd72761bfbed9509.png",
+      "mime": "image/png",
+      "author": "发布账号：中部城市生活指南；摄影作者未单列",
+      "description": "报道明确为中国威海逍遥湖游钓基地比赛，所配湖面实景。原项目坐标仍需纠正，不应据此声称已核实原坐标。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "发布账号：中部城市生活指南；摄影作者未单列",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ]
+}

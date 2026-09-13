@@ -1,0 +1,47 @@
+{
+  "city": "北京",
+  "name": "正乙祠",
+  "query": "北京 正乙祠 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:梅兰芳华，北京正乙祠.jpg",
+      "pageId": 129399296,
+      "source": "https://commons.wikimedia.org/wiki/File:%E6%A2%85%E5%85%B0%E8%8A%B3%E5%8D%8E%EF%BC%8C%E5%8C%97%E4%BA%AC%E6%AD%A3%E4%B9%99%E7%A5%A0.jpg",
+      "download": "https://upload.wikimedia.org/wikipedia/commons/6/60/%E6%A2%85%E5%85%B0%E8%8A%B3%E5%8D%8E%EF%BC%8C%E5%8C%97%E4%BA%AC%E6%AD%A3%E4%B9%99%E7%A5%A0.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/6/60/%E6%A2%85%E5%85%B0%E8%8A%B3%E5%8D%8E%EF%BC%8C%E5%8C%97%E4%BA%AC%E6%AD%A3%E4%B9%99%E7%A5%A0.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 960,
+      "height": 639,
+      "mime": "image/jpeg",
+      "description": "​梅兰芳华，北京正乙祠",
+      "author": "小船看世界",
+      "license": "CC BY 2.5",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
+      "categories": "Mu Guiying|Yang Zongbao|Generals of the Yang Family in Beijing Opera",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "http://helichuan.lofter.com/post/1ccdbb7e_53f7a16"
+    },
+    {
+      "title": "File:Faded Chinese theatre sign.JPG",
+      "pageId": 427371,
+      "source": "https://commons.wikimedia.org/wiki/File:Faded_Chinese_theatre_sign.JPG",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9b/Faded_Chinese_theatre_sign.JPG/960px-Faded_Chinese_theatre_sign.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/9/9b/Faded_Chinese_theatre_sign.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 1280,
+      "height": 960,
+      "mime": "image/jpeg",
+      "description": "A faded sign advertising w:Chinese theatre, in one of the many hutongs (alleys) in Beijing, China.",
+      "author": "me (w:User:pfctdayelise)",
+      "license": "CC BY-SA 2.5",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
+      "categories": "Bilingual Chinese-English signs in China|Taken with Casio QV-R41|Peking Opera|Hutong in Beijing|Theaters in Beijing|Pictures by pfctdayelise|Theatre signs",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Image taken by me using Casio QV-R41"
+    }
+  ],
+  "supplementalQueries": [
+    "Zhengyici Theatre filetype:bitmap -metro -station -地图"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "city": "上海",
+  "name": "绍兴路",
+  "query": "上海 绍兴路 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "Shobserver:Shaoxing20240314",
+      "source": "https://m.jfdaily.com/sgh/detail?id=1275281",
+      "download": "https://sghimages.shobserver.com/img/catch/2024/03/14/1732cfa8-a15e-4c67-9d26-0ca8804bcf6f.jpg",
+      "original": "https://sghimages.shobserver.com/img/catch/2024/03/14/1732cfa8-a15e-4c67-9d26-0ca8804bcf6f.jpg",
+      "mime": "image/jpeg",
+      "author": "发布方：上观新闻；摄影作者未明确署名",
+      "description": "上观新闻绍兴路专题中的沿街建筑实拍，展示街区梧桐与历史建筑。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "新闻或政务来源",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ],
+  "supplementalQueries": [
+    "Shaoxing Road Shanghai filetype:bitmap -metro -station -地图"
+  ]
+}

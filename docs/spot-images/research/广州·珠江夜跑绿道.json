@@ -1,0 +1,26 @@
+{
+  "city": "广州",
+  "name": "珠江夜跑绿道",
+  "query": "珠江夜跑绿道 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:Guangzhou Er Sha Island.jpg",
+      "pageId": 114935187,
+      "source": "https://commons.wikimedia.org/wiki/File:Guangzhou_Er_Sha_Island.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b3/Guangzhou_Er_Sha_Island.jpg/960px-Guangzhou_Er_Sha_Island.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Guangzhou_Er_Sha_Island.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 4000,
+      "height": 3000,
+      "mime": "image/jpeg",
+      "description": "Er Sha Island",
+      "author": "钉钉",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Ersha Island|Self-published work",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

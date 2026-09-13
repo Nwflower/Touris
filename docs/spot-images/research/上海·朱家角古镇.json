@@ -1,0 +1,27 @@
+{
+  "city": "上海",
+  "name": "朱家角古镇",
+  "query": "File:Canal_in_Zhujiajiao,_Qingpu,_Shanghai,_China.jpg",
+  "review": "pending",
+  "existingFile": "img/Canal_in_Zhujiajiao_Qingpu_Shanghai_China.jpg",
+  "candidates": [
+    {
+      "title": "File:Canal in Zhujiajiao, Qingpu, Shanghai, China.jpg",
+      "pageId": 23303179,
+      "source": "https://commons.wikimedia.org/wiki/File:Canal_in_Zhujiajiao,_Qingpu,_Shanghai,_China.jpg",
+      "download": "https://upload.wikimedia.org/wikipedia/commons/1/18/Canal_in_Zhujiajiao%2C_Qingpu%2C_Shanghai%2C_China.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/1/18/Canal_in_Zhujiajiao%2C_Qingpu%2C_Shanghai%2C_China.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 400,
+      "height": 600,
+      "mime": "image/jpeg",
+      "description": "Canal in Zhujiajiao, Qingpu, Shanghai, China. Photographer: Me (Hugi Asgeirsson) Taken September 24th, 2009.",
+      "author": "User: (WT-shared) Aerugo at  wts wikivoyage",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Taken with Canon EOS 450D|CC-BY-SA-4.0,3.0,2.5,2.0,1.0|Files from Wikivoyage wts|Canals in Zhujiajiao|Files by Wikivoyage user (not yet sorted)",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

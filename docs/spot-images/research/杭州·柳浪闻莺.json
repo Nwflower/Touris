@@ -1,0 +1,62 @@
+{
+  "city": "杭州",
+  "name": "柳浪闻莺",
+  "query": "杭州 柳浪闻莺 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:Billowing Willow.jpg",
+      "pageId": 63032835,
+      "source": "https://commons.wikimedia.org/wiki/File:Billowing_Willow.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e8/Billowing_Willow.jpg/960px-Billowing_Willow.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/e/e8/Billowing_Willow.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 4608,
+      "height": 3456,
+      "mime": "image/jpeg",
+      "description": "Billowing willow in West Lake, Hangzhou, Zhejiang Province, China.",
+      "author": "Wingchi Poon",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "categories": "Salix|October 2015 China photographs|Taken with Canon PowerShot SX530 HS|Self-published work|Photos by Wingchi Poon|Trees in Zhejiang|Orioles Singing in the Willows",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    },
+    {
+      "title": "File:Listining Orioles Singing in the Willows-chinese.jpg",
+      "pageId": 386945,
+      "source": "https://commons.wikimedia.org/wiki/File:Listining_Orioles_Singing_in_the_Willows-chinese.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/75/Listining_Orioles_Singing_in_the_Willows-chinese.jpg/960px-Listining_Orioles_Singing_in_the_Willows-chinese.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/7/75/Listining_Orioles_Singing_in_the_Willows-chinese.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2112,
+      "height": 2816,
+      "mime": "image/jpeg",
+      "description": "​杭州西湖柳浪闻莺石碑",
+      "author": "Shizhao",
+      "license": "Public domain",
+      "licenseUrl": "",
+      "categories": "Self-published work|PD-self|Orioles Singing in the Willows|Steles in Hangzhou",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    },
+    {
+      "title": "File:Qian king Temple.JPG",
+      "pageId": 386965,
+      "source": "https://commons.wikimedia.org/wiki/File:Qian_king_Temple.JPG",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/61/Qian_king_Temple.JPG/960px-Qian_king_Temple.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/6/61/Qian_king_Temple.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2816,
+      "height": 2112,
+      "mime": "image/jpeg",
+      "description": "​钱王祠正门，位于杭州西湖柳浪闻莺处。",
+      "author": "Shizhao",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "categories": "GFDL|License migration completed|Files tagged CC-by-sa-old|Temple of the Qian Kings",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

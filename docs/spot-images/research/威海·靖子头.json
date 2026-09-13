@@ -1,0 +1,36 @@
+{
+  "city": "威海",
+  "name": "靖子头",
+  "query": "威海 靖子头 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "WHNews:Jingzitou7245277",
+      "source": "https://www.whnews.cn/news/node/2022-10/02/content_7245277.htm",
+      "download": "https://www.whnews.cn/news/data/attachement/jpg/site2/20221002/845cf3500f5a24a3598a04.jpg",
+      "original": "https://www.whnews.cn/news/data/attachement/jpg/site2/20221002/845cf3500f5a24a3598a04.jpg",
+      "mime": "image/jpeg",
+      "author": "孙大伟 / 威海新闻网",
+      "description": "威海新闻网靖子头灯塔报道所配外观实景，对应民政局记载的白色圆形灯塔。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "孙大伟 / 威海新闻网",
+      "modification": "Publisher photograph; no local visual edits."
+    },
+    {
+      "title": "WHNews:Jingzitou7245277Tower",
+      "source": "https://www.whnews.cn/news/node/2022-10/02/content_7245277.htm",
+      "download": "https://www.whnews.cn/news/data/attachement/jpg/site2/20221002/845cf3500f5a24a3599205.jpg",
+      "original": "https://www.whnews.cn/news/data/attachement/jpg/site2/20221002/845cf3500f5a24a3599205.jpg",
+      "mime": "image/jpeg",
+      "author": "孙大伟 / 威海新闻网",
+      "description": "威海新闻网靖子头灯塔报道所配外观实景，对应民政局记载的白色圆形灯塔。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "孙大伟 / 威海新闻网",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ]
+}

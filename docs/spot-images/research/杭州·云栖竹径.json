@@ -1,0 +1,65 @@
+{
+  "city": "杭州",
+  "name": "云栖竹径",
+  "query": "杭州 云栖竹径 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:云栖竹径入口的牌坊.jpg",
+      "pageId": 65365406,
+      "source": "https://commons.wikimedia.org/wiki/File:%E4%BA%91%E6%A0%96%E7%AB%B9%E5%BE%84%E5%85%A5%E5%8F%A3%E7%9A%84%E7%89%8C%E5%9D%8A.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/%E4%BA%91%E6%A0%96%E7%AB%B9%E5%BE%84%E5%85%A5%E5%8F%A3%E7%9A%84%E7%89%8C%E5%9D%8A.jpg/960px-%E4%BA%91%E6%A0%96%E7%AB%B9%E5%BE%84%E5%85%A5%E5%8F%A3%E7%9A%84%E7%89%8C%E5%9D%8A.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/2/23/%E4%BA%91%E6%A0%96%E7%AB%B9%E5%BE%84%E5%85%A5%E5%8F%A3%E7%9A%84%E7%89%8C%E5%9D%8A.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2448,
+      "height": 3264,
+      "mime": "image/jpeg",
+      "description": "​云栖竹径景区入口的牌坊，上书“云栖”二字",
+      "author": "Simon Wade",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Self-published work|Files with coordinates missing SDC location of creation|Bamboo Path at Yunqi",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    },
+    {
+      "title": "File:云栖竹径入口的神兽雕像.jpg",
+      "pageId": 65365404,
+      "source": "https://commons.wikimedia.org/wiki/File:%E4%BA%91%E6%A0%96%E7%AB%B9%E5%BE%84%E5%85%A5%E5%8F%A3%E7%9A%84%E7%A5%9E%E5%85%BD%E9%9B%95%E5%83%8F.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/%E4%BA%91%E6%A0%96%E7%AB%B9%E5%BE%84%E5%85%A5%E5%8F%A3%E7%9A%84%E7%A5%9E%E5%85%BD%E9%9B%95%E5%83%8F.jpg/960px-%E4%BA%91%E6%A0%96%E7%AB%B9%E5%BE%84%E5%85%A5%E5%8F%A3%E7%9A%84%E7%A5%9E%E5%85%BD%E9%9B%95%E5%83%8F.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/4/4a/%E4%BA%91%E6%A0%96%E7%AB%B9%E5%BE%84%E5%85%A5%E5%8F%A3%E7%9A%84%E7%A5%9E%E5%85%BD%E9%9B%95%E5%83%8F.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2448,
+      "height": 3264,
+      "mime": "image/jpeg",
+      "description": "​云栖竹径景区入口处的神兽雕像",
+      "author": "Simon Wade",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Self-published work|Files with coordinates missing SDC location of creation|Bamboo Path at Yunqi",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    },
+    {
+      "title": "File:洗心亭.jpg",
+      "pageId": 65365405,
+      "source": "https://commons.wikimedia.org/wiki/File:%E6%B4%97%E5%BF%83%E4%BA%AD.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b6/%E6%B4%97%E5%BF%83%E4%BA%AD.jpg/960px-%E6%B4%97%E5%BF%83%E4%BA%AD.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/b/b6/%E6%B4%97%E5%BF%83%E4%BA%AD.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2448,
+      "height": 3264,
+      "mime": "image/jpeg",
+      "description": "​云栖竹径景区中的洗心亭",
+      "author": "Simon Wade",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Self-published work|Files with coordinates missing SDC location of creation|Bamboo Path at Yunqi",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ],
+  "directSources": [
+    "Category:Bamboo Path at Yunqi"
+  ]
+}

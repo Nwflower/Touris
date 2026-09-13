@@ -1,0 +1,27 @@
+{
+  "city": "北京",
+  "name": "天安门广场",
+  "query": "File:Tiananmen_Square_天安门广场_(5283031153).jpg",
+  "review": "pending",
+  "existingFile": "img/Tiananmen_Square_5283031153.jpg",
+  "candidates": [
+    {
+      "title": "File:Tiananmen Square 天安门广场 (5283031153).jpg",
+      "pageId": 24271443,
+      "source": "https://commons.wikimedia.org/wiki/File:Tiananmen_Square_%E5%A4%A9%E5%AE%89%E9%97%A8%E5%B9%BF%E5%9C%BA_(5283031153).jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/56/Tiananmen_Square_%E5%A4%A9%E5%AE%89%E9%97%A8%E5%B9%BF%E5%9C%BA_%285283031153%29.jpg/960px-Tiananmen_Square_%E5%A4%A9%E5%AE%89%E9%97%A8%E5%B9%BF%E5%9C%BA_%285283031153%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/5/56/Tiananmen_Square_%E5%A4%A9%E5%AE%89%E9%97%A8%E5%B9%BF%E5%9C%BA_%285283031153%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 1400,
+      "height": 473,
+      "mime": "image/jpeg",
+      "description": "I have arrived in Beijing! As soon as I cleared immigration and customs at Capital Airport, my tour bus immediately brought me to Tiananmen Square for some photo ops.\nWith National Day (October 1st) only days away, colorful flower sculptures, depicting landmarks from throughout China, are set up all over the square. This is quite cheerful.\n\nThe building in the distance would be the National Museum, but my tour guide informed me that most shelves are empty. The reason: at the end of the Civil War, as the Nationalists retreated to Taiwan, they took most of China's treasures with them.",
+      "author": "InSapphoWeTrust from Los Angeles, California, USA",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "categories": "Tiananmen Square|National Museum of China|2002 in Beijing|Flickr images reviewed by File Upload Bot (Magnus Manske)|Files from InSapphoWeTrust Flickr stream|Files with coordinates missing SDC location of creation",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Tiananmen Square 天安门广场"
+    }
+  ]
+}

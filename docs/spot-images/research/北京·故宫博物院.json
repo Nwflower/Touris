@@ -1,0 +1,27 @@
+{
+  "city": "北京",
+  "name": "故宫博物院",
+  "query": "File:Sunset_of_the_Forbidden_City_2006.JPG",
+  "review": "pending",
+  "existingFile": "img/Sunset_of_the_Forbidden_City_2006.jpg",
+  "candidates": [
+    {
+      "title": "File:Sunset of the Forbidden City 2006.JPG",
+      "pageId": 890912,
+      "source": "https://commons.wikimedia.org/wiki/File:Sunset_of_the_Forbidden_City_2006.JPG",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/00/Sunset_of_the_Forbidden_City_2006.JPG/960px-Sunset_of_the_Forbidden_City_2006.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/0/00/Sunset_of_the_Forbidden_City_2006.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2304,
+      "height": 1728,
+      "mime": "image/jpeg",
+      "description": "Sunset of the northwest corner of the Forbidden City.",
+      "author": "User:kallgan",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "categories": "China photographs taken on 2006-06-09|GFDL|Taken with Kodak EasyShare DX6490|License migration redundant|Self-published work|Clouds in Beijing|June 2006 in Beijing|Files with coordinates missing SDC location of creation|North-western corner tower of the Forbidden City",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

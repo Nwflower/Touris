@@ -1,0 +1,26 @@
+{
+  "city": "成都",
+  "name": "安顺廊桥",
+  "query": "成都 安顺廊桥 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:Jingjiang.JPEG",
+      "pageId": 242042,
+      "source": "https://commons.wikimedia.org/wiki/File:Jingjiang.JPEG",
+      "download": "https://upload.wikimedia.org/wikipedia/commons/1/11/Jingjiang.JPEG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/1/11/Jingjiang.JPEG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 750,
+      "height": 498,
+      "mime": "image/jpeg",
+      "description": "Jingjiang River and Anshun Bridge in Chengdu, China.",
+      "author": "BenBen",
+      "license": "CC BY 1.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/1.0",
+      "categories": "July 2004 in China|Anshun Bridge|Files with derivative versions|2004 in Sichuan|July 2004 photographs",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Self-photographed"
+    }
+  ]
+}

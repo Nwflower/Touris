@@ -1,0 +1,26 @@
+{
+  "city": "威海",
+  "name": "天鹅湖",
+  "query": "威海 天鹅湖 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "WeihaiGovMap:281",
+      "source": "https://www.weihai.gov.cn/szdt/web/mapIndex/3?area=&mapClassificationId=&mapClassificationPid=21&name=",
+      "download": "https://zhbypass.weihai.cn/minio/sciencetechnologymuseum/e646491d6f424e0d8e03d352ccaa06701717591597640.jpeg",
+      "original": "https://zhbypass.weihai.cn/minio/sciencetechnologymuseum/e646491d6f424e0d8e03d352ccaa06701717591597640.jpeg",
+      "mime": "image/jpeg",
+      "author": "发布方：威海市人民政府数字便民地图；摄影作者未单列",
+      "description": "威海市政府数字便民地图点位 281（天鹅湖公园），地址：。使用该点位条目所配实景照片。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "威海市人民政府数字便民地图",
+      "modification": "Publisher photograph; no local visual edits.",
+      "placeId": "281",
+      "placeName": "天鹅湖公园",
+      "latitude": "37.36112",
+      "longitude": "122.579972"
+    }
+  ]
+}

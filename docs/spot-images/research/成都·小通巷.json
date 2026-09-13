@@ -1,0 +1,25 @@
+{
+  "city": "成都",
+  "name": "小通巷",
+  "query": "成都 小通巷 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "Qunar:Xiaotong17695917e04d7321e2ca152eac9465c9",
+      "source": "https://touch.travel.qunar.com/poi/7523958",
+      "download": "https://tr-osdcp.qunarzz.com/tr-osd-tr-space/img/17695917e04d7321e2ca152eac9465c9.jpg_600x600x70_f8e4ed2a.jpg",
+      "original": "https://tr-osdcp.qunarzz.com/tr-osd-tr-space/img/17695917e04d7321e2ca152eac9465c9.jpg_600x600x70_f8e4ed2a.jpg",
+      "mime": "image/jpeg",
+      "description": "去哪儿小通巷景点页的街巷实拍；绿树、红灯笼、沿街店面。",
+      "author": "发布平台：去哪儿；摄影作者未明确署名",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "去哪儿",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ],
+  "supplementalQueries": [
+    "Xiaotong Alley Chengdu filetype:bitmap -metro -station -地图"
+  ]
+}

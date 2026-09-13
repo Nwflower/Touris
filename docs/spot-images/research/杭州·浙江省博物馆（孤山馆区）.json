@@ -1,0 +1,27 @@
+{
+  "city": "杭州",
+  "name": "浙江省博物馆（孤山馆区）",
+  "query": "File:Main_Hall_of_Zhejiang_Museum_Gushan_Branch_2012.JPG",
+  "review": "pending",
+  "existingFile": "assets/cities/hangzhou/zhejiang-museum-gushan.jpg",
+  "candidates": [
+    {
+      "title": "File:Main Hall of Zhejiang Museum Gushan Branch 2012.JPG",
+      "pageId": 29565685,
+      "source": "https://commons.wikimedia.org/wiki/File:Main_Hall_of_Zhejiang_Museum_Gushan_Branch_2012.JPG",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/Main_Hall_of_Zhejiang_Museum_Gushan_Branch_2012.JPG/960px-Main_Hall_of_Zhejiang_Museum_Gushan_Branch_2012.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/7/7d/Main_Hall_of_Zhejiang_Museum_Gushan_Branch_2012.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 1600,
+      "height": 1200,
+      "mime": "image/jpeg",
+      "description": "Located at Hangzhou, China.",
+      "author": "LukeLOU",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "categories": "Self-published work|Gushan branch, Zhejiang Provincial Museum",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

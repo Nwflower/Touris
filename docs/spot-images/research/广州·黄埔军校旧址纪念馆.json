@@ -1,0 +1,27 @@
+{
+  "city": "广州",
+  "name": "黄埔军校旧址纪念馆",
+  "query": "File:Site_of_Whampoa_Military_Academy.jpg",
+  "review": "pending",
+  "existingFile": "assets/cities/guangzhou/whampoa-academy.jpg",
+  "candidates": [
+    {
+      "title": "File:Site of Whampoa Military Academy.jpg",
+      "pageId": 117638214,
+      "source": "https://commons.wikimedia.org/wiki/File:Site_of_Whampoa_Military_Academy.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Site_of_Whampoa_Military_Academy.jpg/960px-Site_of_Whampoa_Military_Academy.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Site_of_Whampoa_Military_Academy.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 4032,
+      "height": 3024,
+      "mime": "image/jpeg",
+      "description": "​黄埔军校旧址",
+      "author": "慕尼黑啤酒",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "GFDL|Whampoa Military Academy, Guangzhou|License migration redundant|CC-BY-SA-4.0,3.0,2.5,2.0,1.0|Self-published work|Files with coordinates missing SDC location of creation|Calligraphy by Tan Yankai",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

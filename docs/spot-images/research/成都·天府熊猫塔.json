@@ -1,0 +1,26 @@
+{
+  "city": "成都",
+  "name": "天府熊猫塔",
+  "query": "File:West Pearl Tower.JPG",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:West Pearl Tower.JPG",
+      "pageId": 40821780,
+      "source": "https://commons.wikimedia.org/wiki/File:West_Pearl_Tower.JPG",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/39/West_Pearl_Tower.JPG/960px-West_Pearl_Tower.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/3/39/West_Pearl_Tower.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 4000,
+      "height": 6000,
+      "mime": "image/jpeg",
+      "description": "​四川广播电视塔",
+      "author": "EricDiao",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "West Pearl Tower Chengdu|Self-published work",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

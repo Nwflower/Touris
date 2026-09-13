@@ -1,0 +1,45 @@
+{
+  "city": "威海",
+  "name": "华夏城",
+  "query": "File:Weihai_china.jpg",
+  "review": "pending",
+  "existingFile": "img/Weihai_china.jpg",
+  "candidates": [
+    {
+      "title": "File:Weihai china.jpg",
+      "pageId": 7354800,
+      "source": "https://commons.wikimedia.org/wiki/File:Weihai_china.jpg",
+      "download": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Weihai_china.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Weihai_china.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 637,
+      "height": 439,
+      "mime": "image/jpeg",
+      "description": "View of Happiness Gate from sea Weihai, Shandong, China",
+      "author": "Weihai",
+      "license": "Public domain",
+      "licenseUrl": "",
+      "categories": "Self-published work|PD-self|Happiness Gate|Cityscapes in Weihai",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    },
+    {
+      "title": "File:Weihai Huaxia City scenic spot.jpg",
+      "pageId": 124998952,
+      "source": "https://commons.wikimedia.org/wiki/File:Weihai_Huaxia_City_scenic_spot.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/df/Weihai_Huaxia_City_scenic_spot.jpg/960px-Weihai_Huaxia_City_scenic_spot.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/d/df/Weihai_Huaxia_City_scenic_spot.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 1170,
+      "height": 936,
+      "mime": "image/jpeg",
+      "description": "Weihai Huaxia City scenic spot",
+      "author": "Han77720",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Weihai|Self-published work",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

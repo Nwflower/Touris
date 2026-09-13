@@ -1,0 +1,27 @@
+{
+  "city": "成都",
+  "name": "锦里",
+  "query": "File:锦里古街 2011.jpg",
+  "review": "pending",
+  "existingFile": "img/2011.jpg",
+  "candidates": [
+    {
+      "title": "File:锦里古街 2011.jpg",
+      "pageId": 28351673,
+      "source": "https://commons.wikimedia.org/wiki/File:%E9%94%A6%E9%87%8C%E5%8F%A4%E8%A1%97_2011.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/94/%E9%94%A6%E9%87%8C%E5%8F%A4%E8%A1%97_2011.jpg/960px-%E9%94%A6%E9%87%8C%E5%8F%A4%E8%A1%97_2011.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/9/94/%E9%94%A6%E9%87%8C%E5%8F%A4%E8%A1%97_2011.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3872,
+      "height": 2592,
+      "mime": "image/jpeg",
+      "description": "​成都锦里古街",
+      "author": "Shizhao",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "categories": "Cultural heritage monuments in China with known IDs|Taken with Nikon D80|Jinli|Images from Wiki Loves Monuments 2013 in China|Self-published work|Images from Wiki Loves Monuments 2013|Uploaded via Campaign:wlm-cn|Images from Wiki Loves Monuments missing SDC depicts|Images from Wiki Loves Monuments missing SDC location of creation",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

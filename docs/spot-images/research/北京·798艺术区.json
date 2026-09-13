@@ -1,0 +1,27 @@
+{
+  "city": "北京",
+  "name": "798艺术区",
+  "query": "File:Beijing_798_Art_District.jpg",
+  "review": "pending",
+  "existingFile": "img/Beijing_798_Art_District.jpg",
+  "candidates": [
+    {
+      "title": "File:Beijing 798 Art District.jpg",
+      "pageId": 109494531,
+      "source": "https://commons.wikimedia.org/wiki/File:Beijing_798_Art_District.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f3/Beijing_798_Art_District.jpg/960px-Beijing_798_Art_District.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/f/f3/Beijing_798_Art_District.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3648,
+      "height": 2736,
+      "mime": "image/jpeg",
+      "description": "798 Art Zone (Chinese: 798艺术区; pinyin: 798 Yìshùqū), or Dashanzi Art District in Beijing, China.",
+      "author": "Cory M. Grenier",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "categories": "798 Art Zone|Flickr images reviewed by FlickreviewR 2",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "https://www.flickr.com/photos/26087974@N05/11386754544/"
+    }
+  ]
+}
