@@ -38,7 +38,7 @@ const ctx = { document, window, history, console, setTimeout:()=>0, clearTimeout
   fetch: () => Promise.reject(new Error('no-backend')) };
 ctx.globalThis = ctx;
 vm.createContext(ctx);
-for(const f of ['semantics.js','images.js','data.js','city-data.js','city-expansion.js','city-hangzhou-guangzhou.js','city-chengdu.js','spots-expansion.js','coords.js','planner.js','guides-data.js','rag.js','llm.js','account.js','app.js']){
+for(const f of ['semantics.js','images.js','data.js','city-data.js','city-expansion.js','city-hangzhou-guangzhou.js','city-chengdu.js','spots-expansion.js','coords.js','budget-data.js','planner.js','guides-data.js','rag.js','llm.js','account.js','app.js']){
   vm.runInContext(fs.readFileSync(f,'utf8'), ctx, { filename:f });
 }
 const g = n => vm.runInContext(n, ctx);

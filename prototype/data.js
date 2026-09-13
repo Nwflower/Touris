@@ -116,7 +116,7 @@ const MEMORIES_EVE = [
 /* ---------- 反馈原因标签 ---------- */
 const REASONS = {
   down: {
-    spot: ['太赶', '太远', '我晕博物馆', '人太多', '不感兴趣', '不想早起'],
+    spot: ['太赶', '太远', '我晕博物馆', '人太多', '不感兴趣', '不想早起', '太贵'],
     food: ['要排队', '太贵', '游客向', '不合口味', '离得远'],
     pace: ['太赶', '太早出门', '换乘太多', '太松了'],
     stay: ['太远', '周边没吃的', '太吵', '不喜欢商圈'],
@@ -143,7 +143,10 @@ const REASON_TO_MEMORY = {
   '换乘太多':    { text:'不喜欢一天里换两次交通枢纽', type:'交通', avoid:["walk-heavy"] },
   '太松了':      { text:'希望行程再紧凑一点', type:'节奏', pace:'fast' },
   '要排队':      { text:'不喜欢需要排队超过 30 分钟的店', type:'餐饮', avoid:["queue"] },
-  '太贵':        { text:'不接受高价游客向餐厅', type:'餐饮' },
+  /* 「太贵」在景点与餐饮两处都能点，产出同一条**预算**记忆——
+     它本来就说的不是"这家餐厅不好"，而是"这一趟别花那么多"。
+     budget 与 pace 同级，都是单值维度（见 semantics.js 的 constraintsOf）。 */
+  '太贵':        { text:'预算有限，优先考虑便宜甚至免费的点', type:'预算', budget:'low' },
   '游客向':      { text:'不喜欢游客向餐厅，偏好本地小馆', type:'餐饮', avoid:["crowd"], prefer:["local-food"] },
   '不合口味':    { text:'不喜欢这类菜式', type:'餐饮' },
   '离得远':      { text:'希望吃饭地点在行程动线上', type:'餐饮' },
@@ -214,34 +217,38 @@ const TAG_PHRASE = {
 };
 
 /* cat 是受控字段（全库 13 个取值），这里给它中文名和对应的语义标签。
-   station 是交通节点，语义词表里没有对应项，留空——它也就永远不出理由。 */
+   中文名逐个对过实际命中的景点：
+     · temple 用「寺庙」而不是「古建」——26 处命中里大部分同时挂着「古建筑」标签，
+       叫「古建」会和「喜欢古建筑」并排出现，看着像重复。
+     · indoor 用「室内场馆」——命中的是徐家汇书院、上海图书馆，「展馆」不对。
+     · castle 整条删掉：命中的是慕田峪长城、卢沟桥、良渚古城遗址公园，
+       「喜欢城堡」三个都不对。语义标签能对上不等于中文说得通。
+     · station（车站）语义词表里没有对应项，本来就不该有理由。
+     · shopping 这条暂时不会生效：闸门要求本点标签落在 mall 上，而
+       SPOT_AVOID_MAP 里目前没有任何中文标签翻成 mall。留着等那张表补上。 */
 const CAT_REASON = {
-  garden:  ['园林',  'prefer', 'garden'],
-  bamboo:  ['竹林',  'prefer', 'bamboo'],
-  river:   ['水岸',  'prefer', 'river'],
-  market:  ['市集',  'prefer', 'market'],
-  temple:  ['古建',  'prefer', 'temple'],
-  indoor:  ['展馆',  'prefer', 'indoor'],
-  tower:   ['地标',  'prefer', 'view'],
-  street:  ['街巷',  'prefer', 'old-town'],
-  path:    ['步道',  'prefer', 'river'],
-  castle:  ['城堡',  'prefer', 'temple'],
-  museum:  ['博物馆','avoid',  'museum'],
-  shopping:['商圈',  'avoid',  'mall']
+  garden:  ['园林',    'prefer', 'garden'],
+  bamboo:  ['竹林',    'prefer', 'bamboo'],
+  river:   ['水岸',    'prefer', 'river'],
+  market:  ['市集',    'prefer', 'market'],
+  temple:  ['寺庙',    'prefer', 'temple'],
+  indoor:  ['室内场馆','prefer', 'indoor'],
+  tower:   ['地标',    'prefer', 'view'],
+  street:  ['街巷',    'prefer', 'old-town'],
+  path:    ['步道',    'prefer', 'river'],
+  museum:  ['博物馆',  'avoid',  'museum'],
+  shopping:['商圈',    'avoid',  'mall']
 };
-
-/* 理由文案 → 记忆规则。预置词条在 REASON_TO_MEMORY 里，景点推出来的登记在这里。
-   文案 = 固定前缀 + 标签，同一处景点每次渲染得到的映射都一样，所以这张表是幂等的。
-   它只用于给点击事件反查规则，不参与任何展示。 */
-const SPOT_REASON_RULE = {};
-function reasonRule(r){
-  return REASON_TO_MEMORY[r] || SPOT_REASON_RULE[r] || null;
-}
 
 /**
  * 由景点自身推出理由。只在推导内部按语义标签去重（见文件头）。
+ * @param name 景点名。「去过了」这条要按名字精确记住是哪一处，光有 spot 对象不够。
+ *
+ * 每条理由把自己的记忆规则一起带出来（{ r, rule }），由渲染层写进 chip 的
+ * data-mem 上。早先试过用一张全局表按理由文案反查规则，但「去过了」在所有景点上
+ * 文案都一样、规则却各指各的景点，那张表按文案做键就必然串味。
  */
-function spotReasons(dir, spot){
+function spotReasons(dir, spot, name){
   const out = [];
   if(!spot) return out;
   const up  = dir !== 'down';
@@ -252,9 +259,16 @@ function spotReasons(dir, spot){
   const put = (r, rule) => {
     if(used.has(rule[key][0])) return;
     used.add(rule[key][0]);
-    SPOT_REASON_RULE[r] = rule;
     out.push({ r, rule });
   };
+
+  /* 「去过了」排在不喜欢的第一条。对着一处已经排进行程的地方点踩，最常说的
+     就是这句；而且它和标签不是一回事——不该让「所有博物馆」出局，只该让这一处
+     出局。所以规则里带的是景点名（avoidSpots），不是语义标签，不参与上面那个
+     标签去重，也不占 4 条推导理由的额度。 */
+  if(!up && name){
+    out.push({ r:'去过了', rule: { text: name + ' 去过了', type:'景点', avoidSpots:[name] } });
+  }
 
   (spot.tags || []).forEach(t => {
     if(out.length >= 4) return;              // 一屏最多四条，再多就是噪音
@@ -274,19 +288,17 @@ function spotReasons(dir, spot){
      (spot.tags || []).some(t => map[t] === cr[2])){
     const rule = { text: (up ? '喜欢' : '') + cr[0], type:'景点' };
     rule[key] = [cr[2]];
-    const r = (up ? '喜欢' : '') + cr[0];
-    SPOT_REASON_RULE[r] = rule;      // 不过 put 的标签闸：品类理由就是要和
-    out.push({ r, rule });           //「喜欢植物」并存，那是两句话指向同一个偏好
-  }
-  return out.slice(0, 4);
+    out.push({ r: (up ? '喜欢' : '') + cr[0], rule });   // 不过 put 的标签闸：
+  }                                                      // 品类理由就是要和「喜欢植物」
+  return out.slice(0, up ? 4 : 5);                       // 并存，那是两句话指向同一个偏好
 }
 
 /**
  * 最终展示的理由池：景点自身推出来的排前面，预置词条补后面，上限 6 枚
  * ——再多，这块面板比行程本身还长。
  */
-function reasonPool(dir, kind, spot){
-  const own = (kind === 'spot') ? spotReasons(dir, spot) : [];
+function reasonPool(dir, kind, spot, name){
+  const own = (kind === 'spot') ? spotReasons(dir, spot, name) : [];
   const preset = ((REASONS[dir] || {})[kind] || [])
     .map(r => ({ r, rule: REASON_TO_MEMORY[r] || null }));
   const out = [];

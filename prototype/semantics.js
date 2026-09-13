@@ -131,9 +131,16 @@ function memTagsOf(m, kind){
  * pace 取最慢的那条：一条「不要赶」就足以否决所有快节奏。
  */
 function constraintsOf(memories){
-  const out = { avoid: [], prefer: [], pace: null, budget: null, hits: {} };
+  const out = { avoid: [], prefer: [], pace: null, budget: null, avoidSpots: [], hits: {}, spotHits: {} };
   const seen = { avoid: new Set(), prefer: new Set() };
   (memories || []).forEach(m => {
+    /* 「去过了」：挂着具体景点名的一条记忆。
+       它和 avoid 标签是两回事——avoid 说的是「我不喜欢博物馆这一类」，
+       这条说的是「这一处我去过了」。所以不并进 avoid，单独收一列。 */
+    (m.avoidSpots || []).forEach(n => {
+      if(out.avoidSpots.indexOf(n) < 0) out.avoidSpots.push(n);
+      (out.spotHits[n] = out.spotHits[n] || []).push(m.id);
+    });
     ['avoid', 'prefer'].forEach(kind => {
       memTagsOf(m, kind).forEach(t => {
         if(!seen[kind].has(t)){ seen[kind].add(t); out[kind].push(t); }
@@ -155,4 +162,9 @@ function constraintsOf(memories){
 /** 哪些记忆贡献了某个标签——对照条目据此反查出处，不再手写 memoryIds */
 function whoContributes(memories, kind, tag){
   return (memories || []).filter(m => memTagsOf(m, kind).includes(tag)).map(m => m.id);
+}
+
+/** 哪些记忆点名了这一处景点（「去过了」）。与 whoContributes 同职责，只是键是景点名。 */
+function whoSpotted(memories, name){
+  return (memories || []).filter(m => (m.avoidSpots || []).includes(name)).map(m => m.id);
 }

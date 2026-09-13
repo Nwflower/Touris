@@ -32,10 +32,10 @@
 (function(){
 
   const TIER = {
-    free: { id:'free', label:'免费',    lo:0,   hi:0,   mid:0  },
-    low:  { id:'low',  label:'≤50',     lo:20,  hi:50,  mid:35 },
-    mid:  { id:'mid',  label:'50–100',  lo:50,  hi:100, mid:75 },
-    high: { id:'high', label:'100+',    lo:100, hi:220, mid:150 }
+    free: { id:'free', label:'免费',     lo:0,   hi:0,   mid:0  },
+    low:  { id:'low',  label:'≤¥50',     lo:20,  hi:50,  mid:35 },
+    mid:  { id:'mid',  label:'¥50–100',  lo:50,  hi:100, mid:75 },
+    high: { id:'high', label:'¥100+',    lo:100, hi:220, mid:150 }
   };
 
   /* 景点门票档位。键是 CITY_DATA 里的景点名，必须逐字一致。 */

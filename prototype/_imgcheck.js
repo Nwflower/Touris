@@ -64,7 +64,7 @@ cities.forEach(c => {
 
 /* ---- 2. 源码里出现的所有本地资源路径 ---- */
 /* 只扫 JS/HTML/CSS 的字符串字面量，避免把注释里的示例当成真引用 */
-['app.js', 'index.html', ...fs.readdirSync(HERE).filter(f => f.endsWith('.css'))].forEach(f => {
+['app.js', 'account.js', 'index.html', ...fs.readdirSync(HERE).filter(f => f.endsWith('.css'))].forEach(f => {
   const p = path.join(HERE, f);
   if(!fs.existsSync(p)) return;
   const src = fs.readFileSync(p, 'utf8');

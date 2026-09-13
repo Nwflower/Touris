@@ -307,12 +307,14 @@ body.home-mode .home{
   /* 浅色字符旁边的深色照片上要压得住，但只有一枚商标了，描边不用太重 */
   filter:drop-shadow(0 2px 8px rgba(0,0,0,.35));
 }
-/* 账号入口 + 它正下方的路牌：竖排、右对齐，路牌正好落在账号控件下面 */
-.hero-top .h-nav{display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.hero-top .h-nav{display:flex;align-items:center;gap:12px}
 
-/* 「我在中客松很想你」路牌：首屏右上角。原图 747×200（带 Alpha），
-   按高度 60px 缩放（宽约 224px）。底色是深色照片，跟旁边的商标一样加投影压住。 */
+/* 「我在中客松很想你」路牌：首屏右下角。原图 747×200（带 Alpha），按高度 60px
+   缩放（宽约 224px）。那里已经被轮播控件占了（.hero-ctrl 贴 bottom:24 / right:24），
+   所以路牌叠在它**上方**、右边界与它对齐，两个元素不打架。
+   底色是深色照片，跟旁边的商标一样加投影压住。 */
 .hero-sign{
+  position:absolute;right:24px;bottom:72px;z-index:4;
   height:60px;width:auto;display:block;pointer-events:none;
   filter:drop-shadow(0 2px 8px rgba(0,0,0,.35));
 }

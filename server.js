@@ -346,6 +346,81 @@ function currentUser(req) {
   return verifySession(parseCookies(req)[SESSION_COOKIE]);
 }
 
+/* ---------------- 出网自检 ----------------
+   ★ 这条不是锦上添花，是踩出来的。
+
+   实测（2026-09-13）：魔搭免费 CPU 规格的 Docker 创空间**没有外网出口**。
+   诊断结果——裸 IP 223.5.5.5:443、1.1.1.1:443 一律超时；`api-inference.modelscope.cn`
+   与 `www.modelscope.cn` 解析到同一个地址且每次部署还会变，是沙箱 DNS 的通配应答
+   （`.invalid` 则正确 ENOTFOUND）；没有任何 *_PROXY 变量。也就是说：
+     · /api/llm/* 的模型调用出不去
+     · OAuth 的换令牌与 userinfo 也出不去（授权码流程做不完）
+
+   出不去的时候，最糟的处理是装作能出去：前端点「用魔搭账号登录」会打开一个 502 页，
+   生成攻略会白等 7 秒 LLM 超时再降级。所以启动后就探一次，把结果如实报给前端，
+   让它该隐藏的隐藏、该直接降级的降级。
+
+   探测结果：null = 还没探完（按「能出去」对待，别误伤）/ true / false。
+   ★ 判否**不是终审**：容器刚起来时上游可能还没就绪，平台也可能中途放开出口。
+     所以结论带时间戳，判否之后再隔一阵重探一次。 */
+let _EGRESS = null, _EGRESS_AT = 0, _EGRESS_BUSY = false;
+
+const EGRESS_RETRY_MS = 30000;
+
+function probeEgress() {
+  if (_EGRESS_BUSY) return;
+  const net = require('net');
+  /* 优先探模型服务（真正天天要用的那条），没配再探 IdP */
+  let target = null;
+  for (const u of [BASE_URL, OAUTH_ISSUER]) {
+    if (!u) continue;
+    try { target = new URL(u); break; } catch (e) { /* 下一个 */ }
+  }
+  /* 既没配模型也没配登录 → 本来就不需要出网，别去探，省一次 4 秒的连接 */
+  if (!target) { _EGRESS = true; _EGRESS_AT = Date.now(); return; }
+
+  const port = Number(target.port) || (target.protocol === 'https:' ? 443 : 80);
+  const where = `${target.hostname}:${port}`;
+  const before = _EGRESS;
+  _EGRESS_BUSY = true;
+  const sock = net.connect({ host: target.hostname, port, timeout: 4000 });
+  let settled = false;
+  const done = ok => {
+    if (settled) return;
+    settled = true;
+    clearTimeout(hard);
+    sock.destroy();
+    _EGRESS_BUSY = false;
+    _EGRESS = ok;
+    _EGRESS_AT = Date.now();
+    if (before === ok) return;                   // 结论没变就别刷日志（重探会反复走到这）
+    console.log(ok ? `[net] 出网正常（${where}）`
+                  : `[net] ★ 出不去外网（${where} 连不上）。` +
+                    '模型调用会直接降级，魔搭登录也用不了——见本文件「出网自检」一节的说明。');
+  };
+  /* net 自己的 timeout 是「有活动才计时」的语义，个别系统上对不可路由的地址干脆
+     不触发（本机实测：连 10.255.255.1 时 'timeout' 一直不来）。所以再加一道硬定时，
+     保证这个探测一定会落地——它是给用户看的结论，不能悬着。 */
+  const hard = setTimeout(() => done(false), 4500);
+  sock.on('connect', () => done(true));
+  sock.on('timeout', () => done(false));
+  sock.on('error', () => done(false));
+}
+
+/** 已知出不去就报 false；还没探完（null）按能出去算，避免启动瞬间误报。
+    判否超过 EGRESS_RETRY_MS 就顺手重探一次（结果这次请求仍按 false 走，安全）。 */
+function egressOK() {
+  if (_EGRESS !== false) return true;
+  if (Date.now() - _EGRESS_AT > EGRESS_RETRY_MS) probeEgress();
+  return false;
+}
+
+/* ★ 在模块加载时就开始探，而不是等 listen 的回调里。
+   放在 listen 回调里意味着「端口起来了但 egress 还是 null」有一段窗口，第一波请求
+   正好撞在窗口里，就会看到一个注定失败的登录按钮。这个探测有界（最长 4.5 秒）、
+   不阻塞、不写任何东西，放在这里是安全的。 */
+probeEgress();
+
 /* ---------------- OIDC discovery ---------------- */
 let _oidc = null, _oidcAt = 0;
 
@@ -421,6 +496,11 @@ function htmlPage(res, status, title, body) {
 /* ---------------- 登录 / 回调 / 登出 ---------------- */
 async function authLogin(req, res) {
   if (!OAUTH_ON) return htmlPage(res, 503, '未开启魔搭登录', '这个部署没有配置 OAuth 环境变量。');
+  /* 已知出不去网就别把人往沟里带：授权页能打开，但回调时换令牌必然失败。
+     与其让人登录完卡在一个报错页，不如现在就说明白。 */
+  if (!egressOK()) return htmlPage(res, 503, '这个部署连不上魔搭',
+    '容器没有外网出口，登录所需的令牌交换做不完。这是免费 CPU 规格创空间的网络限制，' +
+    '与本页面的代码无关；换成有外网出口的规格即可。现在仍可使用预设身份（记忆只在本机）。');
   const cfg = await oidcConfig();
   const state = crypto.randomBytes(16).toString('hex');
   const u = new URL(cfg.authorization_endpoint);
@@ -639,7 +719,53 @@ async function handleAPI(req, res) {
   const urlPath = (req.url || '').split('?')[0];
 
   if (urlPath === '/api/llm/health') {
-    return json(res, { ok: true, llm: !!(API_KEY && BASE_URL), model: MODEL });
+    return json(res, {
+      ok: true,
+      /* 配了 key 且确实出得去，才算「能调模型」。出不去时如实说 false，
+         前端就不会白等 7 秒超时再降级。egress 单列，便于排查。 */
+      llm: !!(API_KEY && BASE_URL) && egressOK(),
+      configured: !!(API_KEY && BASE_URL),
+      egress: _EGRESS,
+      model: MODEL
+    });
+  }
+
+  /* 诊断：容器到底能不能出网。默认关（要 TOURIS_DIAG=1 才开）——它会把节点的
+     网络拓扑和 Node 版本摊给任何访问者，长期开着没必要。排查时临时打开即可。 */
+  if (urlPath === '/api/diag' && process.env.TOURIS_DIAG === '1') {
+    const dns = require('dns');
+    const net = require('net');
+    const hosts = ['www.modelscope.cn', 'api-inference.modelscope.cn', 'no-such-host-touris-probe.invalid'];
+    const probe = (host, port) => new Promise(resolve => {
+      const t0 = Date.now();
+      const sock = net.connect({ host, port, timeout: 4000 });
+      const done = ok => { sock.destroy(); resolve({ host, port, ok, ms: Date.now() - t0 }); };
+      sock.on('connect', () => done(true));
+      sock.on('timeout', () => done(false));
+      sock.on('error', () => done(false));
+    });
+    const lookup = host => new Promise(resolve =>
+      dns.lookup(host, (e, addr) => resolve({ host, ok: !e, addr: e ? null : addr, err: e ? e.code : null })));
+    /* 直接连公网 IP：跳过 DNS，用来区分「DNS 被劫持」和「出口被封」 */
+    const probeIP = (ip, port) => new Promise(resolve => {
+      const t0 = Date.now();
+      const sock = net.connect({ host: ip, port, timeout: 4000 });
+      const done = ok => { sock.destroy(); resolve({ ip, port, ok, ms: Date.now() - t0 }); };
+      sock.on('connect', () => done(true));
+      sock.on('timeout', () => done(false));
+      sock.on('error', () => done(false));
+    });
+    const dnsRes = await Promise.all(hosts.map(lookup));
+    return json(res, {
+      ok: true,
+      proxyEnvNames: Object.keys(process.env).filter(k => /proxy|PROXY/.test(k)).sort(),
+      node: process.version,
+      dns: dnsRes,
+      dnsIsWildcard: dnsRes.filter(r => r.ok).map(r => r.addr).length > 0 &&
+        new Set(dnsRes.filter(r => r.ok).map(r => r.addr)).size === 1,
+      tcpByName: await Promise.all(hosts.slice(0, 2).flatMap(h => [probe(h, 443), probe(h, 80)])),
+      tcpByIP: await Promise.all([probeIP('223.5.5.5', 443), probeIP('223.5.5.5', 80), probeIP('1.1.1.1', 443)])
+    });
   }
 
   /* 前端启动时问一次：这个部署开没开魔搭登录 / 我是谁 */
@@ -647,7 +773,12 @@ async function handleAPI(req, res) {
     const u = currentUser(req);
     return json(res, {
       ok: true,
-      oauth: OAUTH_ON,
+      /* oauth 是「现在真能用」；oauthConfigured 是「配置齐了」。
+         两者分开，前端才能把「没开这个功能」和「开了但容器出不去网」
+         说成两句不同的话——后者在这台机器上是常态，见「出网自检」。 */
+      oauth: OAUTH_ON && egressOK(),
+      oauthConfigured: OAUTH_ON,
+      egress: _EGRESS,
       user: u ? { sub: u.sub, name: u.name || '', avatar: u.avatar || '' } : null
     });
   }
@@ -766,7 +897,7 @@ if (require.main === module) {
   server.listen(PORT, '0.0.0.0', () => {
     console.log(`Touris 知途 · listening on 0.0.0.0:${PORT}`);
     console.log(`  LLM: ${(API_KEY && BASE_URL) ? '已接入（' + MODEL + '）' : '未配置 LLM_API_KEY / LLM_BASE_URL —— 前端自动降级为本地算法'}`);
-    console.log(`  登录: ${OAUTH_ON ? '魔搭 OAuth 已开启' : '未配置 OAUTH_* —— 前端只显示预设身份'}`);
+    console.log(`  登录: ${OAUTH_ON ? '魔搭 OAuth 已配置' : '未配置 OAUTH_* —— 前端只显示预设身份'}`);
     console.log(`  记忆: ${DATA_DIR}`);
   });
 }

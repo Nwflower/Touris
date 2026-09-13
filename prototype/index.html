@@ -41,6 +41,9 @@
 <script src="city-chengdu.js"></script>
 <script src="spots-expansion.js"></script>
 <script src="coords.js"></script>
+<!-- 预算数据：景点门票档位 + 住宿价位区间。必须在 city-data 之后载入——
+     它要读 CITY_DATA 才能把城市名补到城市对象上。 -->
+<script src="budget-data.js"></script>
 <!-- 引擎：算法排线 → RAG 攻略 → LLM 客户端 → 身份 → 地图 → 界面 -->
 <script src="planner.js"></script>
 <script src="guides-data.js"></script>

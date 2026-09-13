@@ -18,6 +18,7 @@
 
   const TIMEOUT_MS = 7000;
   let _available = null;          // null=未知 true/false
+  let _availAt = 0;               // 上次探测的时刻
   const _cache = new Map();       // key → 结果
 
   function baseUrl() {
@@ -42,19 +43,31 @@
     }
   }
 
-  /** 探测后端是否可用（幂等，失败即永久降级到本会话结束） */
+  /** 探测后端是否可用。
+   *
+   *  ★ 结论只认 30 秒
+   *  服务端启动后会在后台探一次「容器能不能出外网」（见 server.js 的「出网自检」），
+   *  而页面往往比它先加载完——那一刻 egress 还是 null，health 会报 llm:true。
+   *  要是把这一瞬的结论当成永久结论，往后每次生成都要白等 7 秒 LLM 超时才降级。
+   *  所以给结论加个保鲜期，过期重问一次。
+   *
+   *  ★ 已知出不去就不再试
+   *  服务端明说 egress:false 时直接判为不可用——那不是「这次不通」，是「这条路不存在」。
+   *  （免费 CPU 规格的魔搭创空间就是这个状态。） */
   async function available() {
-    if (_available !== null) return _available;
+    if (_available !== null && Date.now() - _availAt < 30000) return _available;
     try {
       const ctrl = new AbortController();
       const timer = setTimeout(() => ctrl.abort(), 2500);
       const res = await fetch(baseUrl() + '/api/llm/health', { signal: ctrl.signal });
       clearTimeout(timer);
       const j = await res.json();
-      _available = !!(j && j.ok && j.llm);
+      _available = !!(j && j.ok && j.llm && j.egress !== false);
+      if (j && j.egress === false) _cache.clear();   // 路由都不通了，之前缓存的失败结论不用留
     } catch (e) {
       _available = false;
     }
+    _availAt = Date.now();
     return _available;
   }
 

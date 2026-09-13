@@ -73,6 +73,32 @@
   }
 
   /* ---------------- 候选池 + 评分 ---------------- */
+
+  /* 预算偏好加分。**不是闸门**——贵的点不会被踢出去，只是同等条件下排在后面。
+     量级刻意压到一条 prefer 标签（0.5）的水平：mixed 兴趣下绝大多数点同分 3.0，
+     加分一旦超过这个量级就会**主导**排序，把兴趣和记忆全压过去——
+     实测 +1.2 时北京连故宫都进不了前十，那不是「偏好」，那是指令。 */
+  const BUDGET_BONUS = { free: 0.25, low: 0.12, mid: 0, high: -0.12 };
+  function budgetBonus(cityName, name, budget){
+    if (!budget || typeof TOURIS_BUDGET === 'undefined') return 0;
+    /* 预算档位越紧，价差越要拉开；high（不设限）时不加不减 */
+    const k = budget === 'low' ? 1 : budget === 'mid' ? 0.6 : 0;
+    return (BUDGET_BONUS[TOURIS_BUDGET.tierOf(cityName, name)] || 0) * k;
+  }
+
+  /* ★ 排序起点是数据里的口碑分（spot.score，各城 4.3–4.8），不是一刀切的 3.0。
+
+     早先这里写死 3.0，于是「0 记忆 + mixed 兴趣 + 无预算」这条默认路上，
+     全部候选同分，排序实际退化成了 sort 的兜底项——按景点名的 UTF-16 码点。
+     实测北京：故宫博物院排第 29 位，而每轮只取 top 16（4 天 × mid 每日上限 4），
+     三套默认方案里一次都没出现，天坛 / 颐和园 / 雍和宫 / 慕田峪长城同样落选，
+     选出来的是军事博物馆、卢沟桥、世贸天阶——纯属名字码点靠前。
+     而界面在 S2 是把这个 score 当口碑分展示的（★★★★☆ 4.8），两边对不上。
+
+     没有 score 的（杭州 / 广州 / 成都三城目前整城没有，其余城的扩充点也没有）
+     给 UNRATED：整体排在有点评分的那批之后，但仍能靠兴趣 / 记忆 / LLM 加分爬上来。 */
+  const UNRATED = 4.0;
+
   function buildPool(city, opts) {
     const memories = opts.memories || [];
     const cons = typeof constraintsOf === 'function' ? constraintsOf(memories) : { avoid: [], prefer: [], pace: null };
@@ -85,11 +111,15 @@
       if (!city.geo[name]) return;                        // 没坐标不能排线
       const avoid = semOfSafe(name).avoid.filter(t => cons.avoid.includes(t));
       if (avoid.length) return;                           // 记忆回避：整体出局
+      /* 「去过了」不是语义偏好，是针对这一处的记忆，所以单独一层闸：
+         它不该让「所有博物馆」出局，只该让这一处出局。 */
+      if ((cons.avoidSpots || []).includes(name)) return;
       const prefer = semOfSafe(name).prefer.filter(t => cons.prefer.includes(t));
-      let score = 3.0;
+      let score = Number.isFinite(s.score) ? s.score : UNRATED;
       score += interestBonus(s, opts.interest || 'mixed');
       score += prefer.length * 0.5;
       if (llmRank.has(name)) score += 1.2 - llmRank.get(name) * 0.02;   // LLM 提名加分
+      score += budgetBonus(city.name, name, cons.budget);                // 预算偏好加分
       pool.push({ name, spot: s, geo: city.geo[name], score: Math.round(score * 100) / 100, prefer });
     });
     pool.sort((a, b) => b.score - a.score || (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
@@ -339,6 +369,7 @@
     const flatSpots = routeDays.flat();
     const plan = {
       id: styleMeta.id, style: styleMeta.style,
+      paceKey,                                   // 超预算要按同一档重排，得记住自己是哪档
       tagline: styleMeta.tagline(days, flatSpots.length),
       pace: { fast: 5, mid: 3, slow: 2 }[paceKey],
       density: Math.round(flatSpots.length / days * 10) / 10,
@@ -347,7 +378,9 @@
       walk: walkArr,
       walkNote: `步行约 ${Math.min(...walkArr)}—${Math.max(...walkArr)} km/天 · 通勤按点位实距计算`,
       highlights: flatSpots.slice(0, 5),
-      routeDays, memoryIds: [], itinerary: null
+      routeDays, memoryIds: [], itinerary: null,
+      /* 门票人均合计（按档位中值估）。没有预算数据时是 0，不影响既有行为 */
+      ticketTotal: typeof TOURIS_BUDGET !== 'undefined' ? TOURIS_BUDGET.ticketTotal(city.name, routeDays) : 0
     };
     plan.itinerary = { planId: plan.id, stay: opts.stay, days: itinDays };
     plan.meta = { drops: dayResults.reduce((a, dr) => a + dr.drops.length, 0), transitPerDay: dayResults.map(dr => dr.transitSum) };
@@ -360,7 +393,10 @@
     const cons = constraintsOf(memories || []);
     const avoidIds = n => {
       const sem = semOf(n, city.spots);
-      return [...new Set(sem.avoid.flatMap(t => whoContributes(memories || [], 'avoid', t)))];
+      return [...new Set([
+        ...sem.avoid.flatMap(t => whoContributes(memories || [], 'avoid', t)),
+        ...whoSpotted(memories || [], n)     // 「去过了」也是避开这处的理由，一样要上账
+      ])];
     };
     const preferIds = n => {
       const sem = semOf(n, city.spots);
@@ -468,7 +504,11 @@
       return [...new Set(sem.prefer.flatMap(t => whoContributes(memories, 'prefer', t)))];
     };
     const paces = [effPace, ...['fast', 'mid', 'slow'].filter(p => p !== effPace)];
+    /* 预算已经作为**加分项**进了 buildPool 的评分（见 budgetBonus），这里不再做任何过滤：
+       三档节奏跑的还是同一个池子，只是贵的点在预算紧时排得靠后。
+       于是「预算有限」会让方案整体变便宜，而不会退化成「只去免费景点」。 */
     const plans = paces.map(pk => planOne(city, pool, pk, days, { date: opts.date, stay, memIdsOf }, styleMeta[pk]));
+
     plans.forEach(p => {
       p.memoryIds = [...new Set(p.itinerary.days.flatMap(d => d.items.flatMap(i => i.memoryIds)))];
       if (memories.length) p.memoryNote = '选点与排序按你的记忆偏好与节奏计算';

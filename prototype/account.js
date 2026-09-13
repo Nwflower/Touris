@@ -27,12 +27,14 @@ const STORE_KEY = 'zt.v2';     // v2：预设身份制，与旧版(密码制)数
    profile 直接引用 data.js 的三份档案常量（account.js 在 data.js 之后加载，
    词法全局可直接引用；不要用 globalThis['MEMORIES'] —— 顶层 const 不挂到
    global 上，浏览器与 vm 里都取不到）。 */
+/* 头像是仓库内的照片（背影 / 剪影，不指向可识别的人），来源与许可见
+   img/CREDITS-avatars.md。换图只要改这里的路径——渲染两侧都吃图片。 */
 const PRESET_IDENTITIES = [
-  { id: 'demo',  name: '林小满', avatar: '🧳', tag: '慢节奏 · 安静自然',
+  { id: 'demo',  name: '林小满', avatar: 'img/persona-demo.jpg', tag: '慢节奏 · 安静自然',
     profile: (typeof MEMORIES !== 'undefined') ? MEMORIES : [] },
-  { id: 'iron',  name: '陈铁腿', avatar: '⚡', tag: '特种兵 · 博物馆控',
+  { id: 'iron',  name: '陈铁腿', avatar: 'img/persona-iron.jpg', tag: '特种兵 · 博物馆控',
     profile: (typeof MEMORIES_IRON !== 'undefined') ? MEMORIES_IRON : [] },
-  { id: 'eve',   name: '周晚晚', avatar: '🌙', tag: '自然风光 · 傍晚散步',
+  { id: 'eve',   name: '周晚晚', avatar: 'img/persona-eve.jpg', tag: '自然风光 · 傍晚散步',
     profile: (typeof MEMORIES_EVE !== 'undefined') ? MEMORIES_EVE : [] }
 ];
 const GUEST_IDENTITY = { id: null, name: '游客', avatar: '🫥', tag: '0 记忆 · 不落盘' };
@@ -80,7 +82,13 @@ function _writeStore() {
 function _seedPresets() {
   const st = _readStore();
   PRESET_IDENTITIES.forEach(ident => {
-    if (st.accounts[ident.id]) return;
+    if (st.accounts[ident.id]) {
+      /* 已播种的档案：只同步头像，记忆一律不动。预设头像换过一次
+         （emoji → 图片），不同步老 localStorage 里就还是旧值。 */
+      const acc = st.accounts[ident.id];
+      if (acc.seeded && acc.avatar !== ident.avatar) acc.avatar = ident.avatar;
+      return;
+    }
     st.accounts[ident.id] = {
       id: ident.id,
       name: ident.name,
@@ -125,12 +133,12 @@ function currentIdentity(session) {
   return GUEST_IDENTITY;
 }
 
-/** 头像位。预设身份是 emoji，魔搭账号给的是网址，两种都要能画。
+/** 头像位。预设身份是仓库内的图片，魔搭账号给的是外部网址，两种都要能画。
     ★ 外面来的网址一律 no-referrer，且加载失败时自动退回 emoji——
     头像是装饰，不该因为它挂了就让整块界面空掉。 */
 function avatarHTML(a) {
   const s = String(a == null ? '' : a);
-  if (/^https?:\/\//.test(s)) {
+  if (/^(https?:\/\/|img\/|assets\/)/.test(s)) {
     return `<img class="em av-img" src="${esc(s)}" alt="" referrerpolicy="no-referrer"` +
       ` onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'em',textContent:'🪪'}))">`;
   }
@@ -209,7 +217,7 @@ function resetAll() {
 const MS_TOKEN_KEY = 'zt.ms.token';    // 服务端签发的会话令牌（签名，非凭证）
 const MS_USER_KEY = 'zt.ms.user';      // 上次登录的身份快照，用于刷新后先渲染
 
-let MS = { ready: false, oauth: false, user: null, memories: [] };
+let MS = { ready: false, oauth: false, configured: false, egress: null, user: null, memories: [] };
 let MS_POLL = null, MS_PUSH_TIMER = null, MS_PUSH_QUEUE = [], MS_PUSH_PROMISE = Promise.resolve();
 
 function _lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
@@ -247,7 +255,12 @@ async function msRefresh() {
   try {
     const me = await msApi('/api/auth/me');
     MS.ready = true;
+    /* oauth = 现在真能用；configured = 服务端配置齐了。
+       两者分开是有用的：免费规格的创空间容器没有外网出口，配置是齐的、
+       但登录做不完（见 server.js 的「出网自检」），这时要说清是哪一种。 */
     MS.oauth = !!(me && me.oauth);
+    MS.configured = !!(me && me.oauthConfigured);
+    MS.egress = me ? me.egress : null;
     if (!me || !me.user) { msClearLocal(); return false; }
     MS.user = me.user;
     _lsSet(MS_USER_KEY, JSON.stringify(me.user));
@@ -262,6 +275,8 @@ async function msRefresh() {
   } catch (e) {
     MS.ready = true;
     MS.oauth = false;
+    MS.configured = false;
+    MS.egress = null;
     return false;
   }
 }

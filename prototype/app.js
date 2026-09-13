@@ -74,7 +74,7 @@ const _RUN = { key: null, res: null };
 function runKey(){
   return [S.req.dest, S.req.days, S.req.date, S.req.interest, S.req.intensity,
           S.memoryOn ? 'mem' : 'def', memCount(),
-          JSON.stringify(allMemories().map(m => [m.id, m.pace, m.avoid, m.prefer])),
+          JSON.stringify(allMemories().map(m => [m.id, m.pace, m.avoid, m.prefer, m.budget])),
           (S.gen && S.gen.candidates ? 'L' + S.gen.candidates.length : '')].join('|');
 }
 
@@ -495,6 +495,10 @@ function viewHome(){
         </div>
       </div>
 
+      <!-- 「我在中客松很想你」路牌：首屏右下角，叠在轮播控件正上方（定位见 home.css 的
+           .hero-sign，与 .hero-ctrl 同一右边界）。原图 747×200，按高度 60px 显示。 -->
+      <img class="hero-sign" src="assets/brand/zhongkesong-sign.png" alt="我在中客松很想你">
+
       <!-- Hero 文案改左对齐（v2）：原先整块居中，标题正好压在轮播图的视觉
            主体上，切到哪张图都挡哪张。左对齐后文字落在左侧安全区，
            轮播图主体（右侧 60%）完整露出，排版也更像正式产品。 -->
@@ -555,9 +559,6 @@ function viewHome(){
         </div>
         <div class="h-nav">
           ${accountBtnHTML(memCount())}
-          <!-- 「我在中客松很想你」路牌：首屏右上角、账号控件正下方（.h-nav 竖排右对齐）。
-               原图 747×200，这里按高度 60px 显示。 -->
-          <img class="hero-sign" src="assets/brand/zhongkesong-sign.png" alt="我在中客松很想你">
         </div>
       </div>
     </section>
@@ -760,7 +761,10 @@ function msMenuHTML(){
     <button class="am-mini" data-act="mslogout">退出魔搭账号</button>`;
   }
   if(!MS.ready) return `<div class="am-note">正在检查登录状态…</div>`;
-  if(!MS.oauth) return `<div class="am-note">这个部署未开启魔搭登录，只能选下面的预设身份。</div>`;
+  /* 三种「不能登录」要说成三句不同的话，别一律推给用户：
+     没配 / 配了但容器出不去网 / 探测失败。第二种在免费规格的创空间上是常态。 */
+  if(!MS.configured) return `<div class="am-note">这个部署未开启魔搭登录，只能选下面的预设身份。</div>`;
+  if(!MS.oauth) return `<div class="am-note">服务端已配好魔搭登录，但这个容器访问不了外网（免费 CPU 规格的限制），登录做不完。先用下面的预设身份吧。</div>`;
   return `<button class="am-item ms" data-act="mslogin">
       <span class="em">🪪</span>
       <span class="tt"><b>用魔搭账号登录</b><small>记忆存在云端，换设备也在 · 只取昵称与头像</small></span>
@@ -995,8 +999,11 @@ function viewS0(){
 
     <div class="card s0-form">
       <div class="f-grid">
-        <div class="field"><label>目的地</label><input id="f-dest" list="city-list" value="${esc(S.req.dest)}">
-          <datalist id="city-list">${Object.keys(CITY_DATA).map(c=>`<option value="${c}">`).join('')}</datalist></div>
+        <div class="field"><label>目的地</label>
+          <!-- 用 select 而不是 input+datalist：datalist 是浏览器原生的「边打字边过滤」，
+               没有开关能关掉它，打了半个字就只剩一两个候选。城市是固定的六座，
+               这里要的是「点开就是六个都在」，和相邻的天数栏（f-days）同一种控件。 -->
+          <select id="f-dest">${Object.keys(CITY_DATA).map(c=>`<option ${c===S.req.dest?'selected':''}>${c}</option>`).join('')}</select></div>
         <div class="field"><label>出发日期</label><input id="f-date" type="date" value="${esc(S.req.date)}"></div>
         <div class="field"><label>游玩天数</label>
           <select id="f-days">${[2,3,4,5,6,7].map(d=>`<option ${d===S.req.days?'selected':''}>${d}</option>`).join('')}</select>
@@ -1082,6 +1089,8 @@ function planCard(p){
       <div class="rrow"><span class="rlab">景点密度</span><div class="rval">
         <div class="density"><b>${p.density}</b><span>个/天</span>
           <span class="bar"><i style="width:${Math.round(p.density/4*100)}%"></i></span></div></div></div>
+      <div class="rrow"><span class="rlab">门票合计</span><div class="rval">
+        <div class="density"><b>¥${p.ticketTotal||0}</b><span>/人 · 按档位估</span></div></div></div>
       <div class="rrow"><span class="rlab">${p.walkNote ? '交通耗时' : '每日步数'}</span><div class="rval">${p.walkNote ? esc(p.walkNote) : walkBars(p.walk)}</div></div>
       <div class="rrow" style="margin-top:6px"><span class="rlab">住宿范围</span><div class="rval stay-val">
         <div class="a">${esc(p.stay.area)}</div><div class="d">${esc(p.stay.dist)}</div></div></div>
@@ -1180,14 +1189,15 @@ function freeBoxHTML(key, st){
   </div>`;
 }
 
-function stanceCtl(key, kind, spot){
+function stanceCtl(key, kind, spot, name){
   const st = S.stance[key] || {};
   const open = S.openReason === key;
   const dir = st.v;
   /* 理由池：景点自身标签推出来的 + 预置词条（见 data.js 的 reasonPool）。
-     没有 dir（还没表态）时不必算，但算也不算错——它顺带把推导理由的
-     记忆规则登记进 SPOT_REASON_RULE，下面查 st.reason 的规则要用。 */
-  const pool = dir ? reasonPool(dir, kind, spot) : [];
+     每条理由连自己的记忆规则一起带出来，写进 chip 的 data-mem——
+     规则不能按理由文案去全局表里反查：「去过了」在每个景点上文案都一样，
+     规则却各指各的景点，按文案做键必然串味。 */
+  const pool = dir ? reasonPool(dir, kind, spot, name) : [];
   let html = `<div class="stance">
     <button class="thumb up ${dir==='up'?'on':''}" data-act="thumb" data-key="${key}" data-kind="${kind}" data-v="up">👍 喜欢</button>
     <button class="thumb down ${dir==='down'?'on':''}" data-act="thumb" data-key="${key}" data-kind="${kind}" data-v="down">👎 不喜欢</button>
@@ -1200,7 +1210,7 @@ function stanceCtl(key, kind, spot){
     html += `<div class="reasons">
       <div class="rq">${dir==='down'?'哪里不合适？（点一个，立刻变成记忆）':'哪里对了？（点一个，立刻变成记忆）'}</div>
       <div class="reason-chips">
-        ${pool.map(x=>`<button class="rchip ${st.reason===x.r?'on':''}" data-act="reason" data-key="${key}" data-kind="${kind}" data-r="${esc(x.r)}">${esc(x.r)}</button>`).join('')}
+        ${pool.map(x=>`<button class="rchip ${st.reason===x.r?'on':''}" data-act="reason" data-key="${key}" data-kind="${kind}" data-r="${esc(x.r)}" data-mem="${esc(JSON.stringify(x.rule))}">${esc(x.r)}</button>`).join('')}
       </div>
       ${freeToggle}
       ${S.openFree[key] ? freeBoxHTML(key, st) : ''}
@@ -1212,7 +1222,8 @@ function stanceCtl(key, kind, spot){
     html += `<div class="free-standalone">${freeToggle}${S.openFree[key] ? freeBoxHTML(key, st) : ''}</div>`;
   }
   if(st.reason){
-    const mm = reasonRule(st.reason);
+    const cur = pool.find(x => x.r === st.reason);
+    const mm = (cur && cur.rule) || REASON_TO_MEMORY[st.reason] || null;
     if(mm) html += `<div class="learned-hint">🧠 已记入记忆：${esc(mm.text)} · 作用域「长期」（可在记忆中心改）</div>`;
   }
   return html;
@@ -1248,6 +1259,17 @@ function recGroup(g, ic, kindLbl){
   </div>`;
 }
 
+/** 门票档位标记。挂在地点标题行，和「景点」标签并排。
+    档位来自 budget-data.js——没登记的按免费处理（公园、街区占多数）。
+    显示的是**档位**不是票价：价格随时在变，写死一个数字到了出行当天反而会骗人。 */
+function ticketTag(name){
+  if (typeof TOURIS_BUDGET === 'undefined') return '';
+  const c = city(); if (!c) return '';
+  const t = TOURIS_BUDGET.tierOf(c.name, name);
+  const cls = t === 'free' ? 'free' : t === 'high' ? 'high' : t === 'mid' ? 'mid' : 'low';
+  return `<span class="tk ${cls}" title="门票参考档位，以官方当日票价为准">${TOURIS_BUDGET.TIER[t].label}</span>`;
+}
+
 function itemView(it, day){
   const key = `d${day}-${it.id}`;
   const isFood = it.kind === 'food';
@@ -1270,6 +1292,7 @@ function itemView(it, day){
           <div class="it-title">
             <span class="nm">${esc(nm)}</span>
             <span class="kind ${it.kind}">${kindLbl}</span>
+            ${(!isFood && !isFree) ? ticketTag(it.name) : ''}
             ${it.dur ? `<span class="dur">${esc(it.dur)}</span>` : ''}
           </div>
           ${sp ? `
@@ -1290,7 +1313,7 @@ function itemView(it, day){
         </div>
       </div>
       ${g ? recGroup(g, '🍜', '餐饮区域') : ''}
-      ${stanceCtl(key, isFood ? 'food' : isFree ? 'free' : 'spot', sp)}
+      ${stanceCtl(key, isFood ? 'food' : isFree ? 'free' : 'spot', sp, it.name)}
     </div>
   </div>`;
 }
@@ -1321,6 +1344,33 @@ function mapPanel(){
   </div>`;
 }
 
+/** 按预算推荐的住宿区域。
+    记忆里有预算档位时，同档位的行点亮、其余压暗——**不删掉**：
+    用户想临时升一档住得舒服点，得能看见选项在哪。 */
+function stayBudgetBlock(){
+  if (typeof TOURIS_BUDGET === 'undefined') return '';
+  const c = city(); if (!c) return '';
+  const picks = TOURIS_BUDGET.STAY[c.name] || [];
+  if (!picks.length) return '';
+  const cons = constraintsOf(memActive() ? allMemories() : []);
+  const cur = cons.budget || null;
+  const TIER_LBL = { low: '经济', mid: '舒适', high: '高端' };
+  return `
+  <div class="stay-budget">
+    <div class="sb-head">按预算挑区域<span class="sb-hint">${cur
+      ? `记忆里是「${cur === 'low' ? '预算有限' : cur === 'mid' ? '中档' : '不设限'}」——${cur === 'high' ? '各档位都列出来' : '同档位的排前面'}`
+      : '还没有预算记忆，各档位都列出来'}</span></div>
+    ${picks.map(s => `
+      <div class="sb-row${cur && s.tier !== cur ? ' dim' : ''}">
+        <span class="sb-tier ${s.tier}">${TIER_LBL[s.tier] || s.tier}</span>
+        <span class="sb-area">${esc(s.area)}</span>
+        <span class="sb-range">${esc(s.range)}</span>
+        <span class="sb-note">${esc(s.note)}</span>
+      </div>`).join('')}
+    <div class="sb-foot">价位为该区域标间/晚的常见区间，非实时报价</div>
+  </div>`;
+}
+
 function viewS2(){
   const it = itin();
   const on = memActive();
@@ -1347,6 +1397,7 @@ function viewS2(){
             </div>
           </div>
           ${recGroup(it.stay, '🛏', '住宿区域')}
+          ${stayBudgetBlock()}
           ${stanceCtl('stay', 'stay')}
         </div>
 
@@ -1850,6 +1901,9 @@ function learn(reason, rule, kind){
   if(rule.pace)   m.pace   = rule.pace;
   if(rule.avoid)  m.avoid  = [].concat(rule.avoid);
   if(rule.prefer) m.prefer = [].concat(rule.prefer);
+  /* 「去过了」：挂景点名而不是标签——只避开这一处，不是避开这一类 */
+  if(rule.avoidSpots) m.avoidSpots = [].concat(rule.avoidSpots);
+  if(rule.budget) m.budget = rule.budget;      // 预算：与 pace 同级的单值维度
   S.learned.push(m);
   /* 魔搭账号：立刻回写服务端，不等切换身份——用户随时可能直接关掉页面，
      而「持久化」这三个字就是这么兑现的。（推送是攒 400ms 发的，不是每条一发） */
@@ -1986,9 +2040,12 @@ document.addEventListener('click', e => {
     case 'reason': {
       const key = t.dataset.key, kind = t.dataset.kind, r = t.dataset.r;
       const st = S.stance[key] || (S.stance[key] = { v:'down' });
+      /* 规则随 chip 一起来（data-mem）。取不到就退回预置表——
+         预置词条的规则本来就在 REASON_TO_MEMORY 里。 */
+      const rule = JSON.parse(t.dataset.mem || 'null') || REASON_TO_MEMORY[r] || null;
       st.reason = st.reason === r ? null : r;
       let m = null;
-      if(st.reason) m = learn(r, reasonRule(r), kind);
+      if(st.reason) m = learn(r, rule, kind);
       S.openReason = null;
       render();
       if(m) toast(`这次表态已记入你的旅行偏好：<b>${esc(m.text)}</b>（可在记忆中心改）`, 'mem');
