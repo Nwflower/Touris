@@ -9,7 +9,8 @@
     "verify": "cd prototype && node _verify.js",
     "imgcheck": "cd prototype && node _imgcheck.js",
     "llm:ping": "node tools/llm-ping.js",
-    "images": "node tools/fetch-images.js --check"
+    "images": "node tools/fetch-images.js --check",
+    "check:oauth": "node tools/check-oauth-server.js && node tools/check-oauth-front.js && node tools/check-oauth-offline.js"
   },
   "engines": {
     "node": ">=18"

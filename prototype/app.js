@@ -1876,7 +1876,8 @@ function hidePop(){
 /* ---------------- 把反馈变成记忆 ----------------
    reason = 用户点的那枚理由，原样写进 source.quote（可溯源）
    rule   = 这条理由对应的记忆规则。预置词条在 REASON_TO_MEMORY；
-            景点自身标签推出来的理由由 reasonRule() 一并兜住（见 data.js）。 */
+            景点自身标签推出来的、「去过了」这类挂具体景点名的，
+            都在 data.js 的 reasonPool() 里现算，随 chip 的 data-mem 一起来。 */
 function learn(reason, rule, kind){
   if(!rule) return null;
   const exist = S.learned.find(m => m.text === rule.text);

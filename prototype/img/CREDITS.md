@@ -59,6 +59,7 @@
 | `commons-5edb7030.jpg` | 曲院风荷 | https://commons.wikimedia.org/wiki/File:%E6%9B%B2%E9%99%A2%E9%A3%8E%E8%8D%B7%E5%9B%BD%E4%BF%9D%E7%A2%91.JPG |
 | `commons-725bf73d.jpg` | 圆明园 | https://commons.wikimedia.org/wiki/File:%E5%9C%86%E6%98%8E%E5%9B%AD%E8%A7%82%E6%B0%B4%E6%B3%95%E9%81%97%E5%9D%80%E5%9B%BE.jpg |
 | `commons-8a2fbfe7.jpg` | 文殊院 | https://commons.wikimedia.org/wiki/File:%E6%96%87%E6%AE%8A%E9%99%A2%E5%A4%A7%E9%9B%84%E5%AE%9D%E6%AE%BF.jpg |
+| `commons-9bd0b85b.jpg` | 铁像寺水街 | https://commons.wikimedia.org/wiki/File:%E9%90%B5%E5%83%8F%E5%AF%BA%E5%B1%B1%E9%96%80.jpg |
 | `commons-9cf9d386.jpg` | 黄埔古港 | https://commons.wikimedia.org/wiki/File:%E9%BB%84%E5%9F%94%E5%8F%A4%E6%B8%AF%E9%81%97%E5%9D%80.jpg |
 | `commons-b8c1b2f6.jpg` | 茅家埠 | https://commons.wikimedia.org/wiki/File:%E8%8C%85%E5%AE%B6%E5%9F%A0.JPG |
 | `commons-c1d21ffb.jpg` | 桥西历史街区、运河天地 | https://commons.wikimedia.org/wiki/File:%E6%8B%B1%E5%AE%B8%E6%A9%8B%C2%B7%E6%B5%99%E6%B1%9F%E6%9D%AD%E5%B7%9E%C2%B7%EF%BC%88%E8%88%AA%E6%8B%8D%E8%87%AA%E6%9D%B1%E5%8D%97%E5%BE%80%E8%A5%BF%E5%8C%97%EF%BC%89.jpg |
@@ -152,7 +153,10 @@
 | `Shanghaishibohuibowuguan.jpg` | 世博会博物馆 | https://commons.wikimedia.org/wiki/File:Shanghaishibohuibowuguan.jpg |
 | `SHK2.jpg` | 上下九步行街 | https://commons.wikimedia.org/wiki/File:SHK2.jpg |
 | `Sinan_Mansions_Shanghai.jpg` | 思南公馆 | https://commons.wikimedia.org/wiki/File:Sinan_Mansions%2C_Shanghai.jpg |
+| `Sino-Ocean_Taikoo_Li_Chengdu.jpg` | 太古里 | https://commons.wikimedia.org/wiki/File:Sino-Ocean_Taikoo_Li_Chengdu.jpg |
 | `SOHO.jpg` | 三里屯 | https://commons.wikimedia.org/wiki/File:%E4%B8%89%E9%87%8C%E5%B1%AFSOHO.jpg |
+| `SOLANA_from_the_southwest_20240821154646.jpg` | 蓝色港湾 | https://commons.wikimedia.org/wiki/File:SOLANA_from_the_southwest_(20240821154646).jpg |
+| `South_gate_of_Chaoyang_Park_20240818154413.jpg` | 朝阳公园 | https://commons.wikimedia.org/wiki/File:South_gate_of_Chaoyang_Park_20240818154413.jpg |
 | `Southern_Song_Imperial_Street.jpg` | 南宋御街 | https://commons.wikimedia.org/wiki/File:Southern_Song_Imperial_Street.jpg |
 | `Street_View_of_Hengshan_Rd.jpg` | 衡山路 | https://commons.wikimedia.org/wiki/File:Street_View_of_Hengshan_Rd..JPG |
 | `Sunday_Evening_in_Dongshan_Church.jpg` | 基督教东山堂 | https://commons.wikimedia.org/wiki/File:Sunday_Evening_in_Dongshan_Church.jpg |
@@ -194,3 +198,4 @@
 | `Xishan_Qingxue_monument_at_Fragrant_Hills.jpg` | 香山公园 | https://commons.wikimedia.org/wiki/File:Xishan_Qingxue_monument_at_Fragrant_Hills.jpg |
 | `Xuhui_Riverside_Shanghai.jpg` | 徐汇滨江 | https://commons.wikimedia.org/wiki/File:Xuhui_Riverside_Shanghai.jpg |
 | `Yangpu_Bridge2.jpg` | 杨浦滨江 | https://commons.wikimedia.org/wiki/File:Yangpu_Bridge2.JPG |
+| `Yuyuantan_Park_2010.jpg` | 玉渊潭公园 | https://commons.wikimedia.org/wiki/File:Yuyuantan_Park_2010.jpg |
