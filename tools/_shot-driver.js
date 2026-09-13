@@ -38,6 +38,9 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
   await sleep(1200);
 
   for (const s of SHOTS) {
+    /* click：按选择器先点一下再拍。首页之外（S0/攻略/方案页）的顶栏状态只能这么进去，
+       否则拍来拍去都只有首页。 */
+    if (s.click) { await page.click(s.click); await sleep(s.afterClick || 700); }
     /* home 模式下滚的是 window，不是 #work（#work 只在工作台模式下滚） */
     if (s.scroll) await page.evaluate(y => window.scrollTo(0, y), s.scroll);
     if (s.wait) await sleep(s.wait);

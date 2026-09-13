@@ -19,8 +19,7 @@ const S = {
   stance: {},             // 元素 key -> {v:'up'|'down', reason, note}
   openReason: null,
   openFree: {},
-  s2day: 1,
-  hoverItem: null,
+  s2day: null,            // 当前高亮的天；null = 全部点亮（鼠标没落在任何景点上）
   diffPlayed: false,
   memHit: [],
   demoStep: 1,
@@ -36,8 +35,10 @@ const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c =>
 /* 当前身份的记忆档案。
    游客 = 0 记忆模式，不读任何持久化数据（S.learned 仍在内存里积累，
    只是刷新即散，这正是游客模式该有的行为）。
-   预置身份 = 该档案持久化的记忆（播种自 data.js 的三份 profile）。 */
+   预置身份 = 该档案持久化的记忆（播种自 data.js 的三份 profile）。
+   魔搭账号 = 服务端持久卷上的那份（换设备也在），由 account.js 的 msRefresh 拉取。 */
 function currentArchive(){
+  if(S.session.mode === 'ms') return (MS.memories || []).slice();
   if(S.session.mode !== 'user') return [];
   const acc = getAccount(S.session.id);
   return (acc && acc.memories) || [];
@@ -380,7 +381,7 @@ function realMapHTML(routeDays,opt={}){
   const c=city();
   const data=routeDays.map((names,i)=>names.filter(n=>c.geo[n]).map(n=>({name:n,lat:c.geo[n].lat,lng:c.geo[n].lng,day:i+1})));
   const p=data.flat()[0]||{lat:c.center[0],lng:c.center[1]};
-  return `<div class="real-map ${opt.small?'small':''}" data-city="${esc(c.name)}" data-routes="${esc(JSON.stringify(data))}" data-center="${esc(JSON.stringify(c.center))}" data-map-mode="${opt.mode||'overview'}" data-highlight="${opt.highlightDay||1}">
+  return `<div class="real-map ${opt.small?'small':''}" data-city="${esc(c.name)}" data-routes="${esc(JSON.stringify(data))}" data-center="${esc(JSON.stringify(c.center))}" data-map-mode="${opt.mode||'overview'}" data-highlight="${opt.highlightDay||''}">
     <div class="real-map-canvas" role="region" aria-label="${esc(c.name)}真实地图"></div>
     <div class="real-map-status" role="status">正在加载真实底图…</div>
     <div class="real-map-foot"><span>虚线：游览顺序</span><button type="button" data-map-retry>重试</button><a href="https://www.openstreetmap.org/#map=12/${p.lat}/${p.lng}" target="_blank" rel="noopener noreferrer">打开地图 ↗</a></div>
@@ -408,32 +409,6 @@ function overviewMap(routeDays, opt){
   return `<div class="sim-map ${small?'small':''}">
     <svg viewBox="0 0 100 100" preserveAspectRatio="none">${mapBase(!small)}${paths}${dots}</svg>
     ${small ? '' : `<div class="map-scale"><i></i><span>${city()?.durationRange ? '行程示意' : '约 2km'}</span></div>`}
-  </div>`;
-}
-
-/** 当日动线图：编号点位 + 悬停放大 */
-function dayMap(day, routeDays){
-  /* 传全量天数、由 mode 决定只显示当天——这样切天时可以用 setDay() 就地切换，
-     不必重建这张图。 */
-  if(city()?.geo) return realMapHTML(routeDays,{mode:'day',highlightDay:day.day});
-  const pts = [];
-  day.items.forEach(i => {
-    const nm = i.kind === 'food' ? restPoi()[i.name] : (i.kind === 'free' ? null : i.name);
-    const p = nm && poi()[nm];
-    if(p) pts.push({ nm, x:p.x, y:p.y, kind:i.kind, mem:!!(i.memoryIds&&i.memoryIds.length&&memActive()) });
-  });
-  const path = pts.map((p,i)=>`${i?'L':'M'}${p.x} ${p.y}`).join(' ');
-  return `<div class="sim-map">
-    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-      ${mapBase(true)}
-      <path class="m-route day" d="${path}"/>
-    </svg>
-    ${pts.map((p,i)=>`
-      <div class="map-pt ${p.kind} ${p.mem?'mem':''} ${S.hoverItem===p.nm?'big':''}" style="left:${p.x}%;top:${p.y}%">
-        <div class="dot">${i+1}</div>
-        ${S.hoverItem===p.nm ? `<span class="lbl">${esc(p.nm)}</span>` : ''}
-      </div>`).join('')}
-    <div class="map-scale"><i></i><span>${city()?.durationRange ? '行程示意' : '约 2km'}</span></div>
   </div>`;
 }
 
@@ -580,6 +555,9 @@ function viewHome(){
         </div>
         <div class="h-nav">
           ${accountBtnHTML(memCount())}
+          <!-- 「我在中客松很想你」路牌：首屏右上角、账号控件正下方（.h-nav 竖排右对齐）。
+               原图 747×200，这里按高度 60px 显示。 -->
+          <img class="hero-sign" src="assets/brand/zhongkesong-sign.png" alt="我在中客松很想你">
         </div>
       </div>
     </section>
@@ -759,29 +737,54 @@ let ACCT_OPEN = false;      // 下拉开合状态
 /** 顶栏身份入口：游客显示「游客 · 0 记忆」；档案身份显示名字 + 记忆数 */
 function accountBtnHTML(n){
   const ident = currentIdentity(S.session);
+  const guest = S.session.mode === 'guest';
   return `<span class="acct-wrap">
-    <button class="acct-btn ${S.session.mode==='user'?'':'guest'}" data-act="acctmenu" title="切换身份 / 记忆档案" aria-expanded="${ACCT_OPEN}">
-      <span class="em">${ident.avatar}</span>
-      ${S.session.mode==='user' ? `<b>${esc(ident.name)}</b>` : '<span>游客</span>'}
+    <button class="acct-btn ${guest?'guest':''} ${S.session.mode==='ms'?'ms':''}" data-act="acctmenu" title="切换身份 / 记忆档案" aria-expanded="${ACCT_OPEN}">
+      ${avatarHTML(ident.avatar)}
+      ${guest ? '<span>游客</span>' : `<b>${esc(ident.name)}</b>`}
       <span class="cnt">${n}</span>
     </button>${ACCT_OPEN ? acctMenuHTML() : ''}
   </span>`;
 }
 
+/** 魔搭账号那一区。没开登录时给一行灰字说明，别让人以为按钮坏了。 */
+function msMenuHTML(){
+  const on = S.session.mode === 'ms';
+  if(MS.user){
+    const u = MS.user;
+    return `<button class="am-item ms ${on?'on':''}" data-act="acctpick" data-id="ms">
+      ${avatarHTML(u.avatar || '🪪')}
+      <span class="tt"><b>${esc(u.name || '魔搭用户')}</b><small>魔搭账号 · 记忆存在云端，换设备也在</small></span>
+      <span class="cnt">${(MS.memories||[]).length} 条记忆</span>
+    </button>
+    <button class="am-mini" data-act="mslogout">退出魔搭账号</button>`;
+  }
+  if(!MS.ready) return `<div class="am-note">正在检查登录状态…</div>`;
+  if(!MS.oauth) return `<div class="am-note">这个部署未开启魔搭登录，只能选下面的预设身份。</div>`;
+  return `<button class="am-item ms" data-act="mslogin">
+      <span class="em">🪪</span>
+      <span class="tt"><b>用魔搭账号登录</b><small>记忆存在云端，换设备也在 · 只取昵称与头像</small></span>
+      <span class="cnt">登录</span>
+    </button>`;
+}
+
 function acctMenuHTML(){
-  const cur = S.session.mode === 'user' ? S.session.id : null;
+  const cur = S.session.mode === 'user' ? S.session.id : (S.session.mode === 'ms' ? 'ms' : null);
   const rows = PRESET_IDENTITIES.map(p => {
     const acc = getAccount(p.id) || { memories: [] };
     const n = ((acc.memories) || []).length;
     const on = cur === p.id;
     return `<button class="am-item ${on?'on':''}" data-act="acctpick" data-id="${p.id}">
-      <span class="em">${p.avatar}</span>
+      ${avatarHTML(p.avatar)}
       <span class="tt"><b>${esc(p.name)}</b><small>${esc(p.tag)}</small></span>
       <span class="cnt">${n} 条记忆</span>
     </button>`;
   }).join('');
+  const msLoggedOut = S.session.mode !== 'ms' && !MS.user;
   return `<span class="acct-menu" role="menu" aria-label="切换身份">
     <div class="am-head">选择身份 · 记忆跟着档案走</div>
+    ${msMenuHTML()}
+    <div class="am-head am-head-2">演示档案 · 记忆只在本机</div>
     <button class="am-item ${cur===null?'on':''}" data-act="acctpick" data-id="">
       <span class="em">🫥</span>
       <span class="tt"><b>游客</b><small>0 记忆 · 不落盘，刷新即散</small></span>
@@ -789,8 +792,8 @@ function acctMenuHTML(){
     </button>
     ${rows}
     <div class="am-foot">
-      <span>记忆只存在本机 localStorage</span>
-      <button class="am-reset" data-act="reset">清空数据</button>
+      <span>${msLoggedOut ? '预设身份的记忆只存在本机 localStorage' : '当前身份'}</span>
+      <button class="am-reset" data-act="reset">清空本机数据</button>
     </div>
   </span>`;
 }
@@ -798,16 +801,21 @@ function acctMenuHTML(){
 function toggleAcctMenu(force){
   ACCT_OPEN = force === undefined ? !ACCT_OPEN : !!force;
   renderTop();
-  if(S.screen === 'home') {
-    // 首页顶栏与 hero 各有一份入口，同步刷新 hero 上的那份
-    const heroAcct = document.querySelector('.hero-top .acct-wrap');
-    if(heroAcct) heroAcct.outerHTML = accountBtnHTML(memCount());
-  }
+  syncAcctBtn();
+}
+
+/** 首页顶栏（hero）上还有一份身份入口，改动顶栏时一并刷新。
+    ★ 不能用 renderTop() 顺带——hero 是 home 屏自己的模板，两处各画各的。 */
+function syncAcctBtn(){
+  if(S.screen !== 'home') return;
+  const heroAcct = document.querySelector('.hero-top .acct-wrap');
+  if(heroAcct) heroAcct.outerHTML = accountBtnHTML(memCount());
 }
 
 /** 切换身份：先回写当前身份的现场记忆，再换档案重渲染 */
 function switchAccount(id){
-  if(S.session.mode === 'user' && S.learned.length) saveLearned(S.session.id, S.learned);
+  persistLearned(S.session, S.learned);
+  if(id === 'ms'){ switchToMs(); return; }
   if(id && identityById(id)){
     S.session = { mode:'user', id };
     persistSession(S.session);
@@ -828,6 +836,23 @@ function switchAccount(id){
     render();
     toast('已切换到游客模式 · 0 条记忆');
   }
+}
+
+/** 切到魔搭账号。档案在服务端，所以：先把手头这几条推上去，再拉权威副本。
+    ★ 顺序不能反——先拉后推的话，刚学到的记忆会被服务端的旧副本盖掉一瞬。 */
+function switchToMs(){
+  if(!MS.user){ msLogin(); return; }        // 还没登录 → 点一下直接发起登录
+  S.session = { mode:'ms', id: MS.user.sub };
+  persistSession(S.session);
+  S.learned = [];
+  S.diffPlayed = false; S.memHit = [];
+  ACCT_OPEN = false;
+  invalidateRun();
+  renderTop(); renderLeft(); render();
+  toast(`已切换到 <b>${esc(MS.user.name || '魔搭账号')}</b> · 记忆存在云端，换设备也在`, 'mem');
+  msPushFlushNow()
+    .then(() => msRefresh())
+    .then(() => { if(S.session.mode === 'ms'){ renderTop(); renderLeft(); render(); } });
 }
 
 /* ---------------- 顶栏 ----------------
@@ -1091,7 +1116,7 @@ function planCard(p){
 }
 function resetRouteSelection(){
   S.chosenPlan=null; S.planStance={}; S.stance={}; S.openReason=null;
-  S.openFree={}; S.s2day=1; S.hoverItem=null; S.diffPlayed=false;
+  S.openFree={}; S.s2day=null; S.diffPlayed=false;
 }
 function cityGuide(){
   const c=city();
@@ -1155,10 +1180,14 @@ function freeBoxHTML(key, st){
   </div>`;
 }
 
-function stanceCtl(key, kind){
+function stanceCtl(key, kind, spot){
   const st = S.stance[key] || {};
   const open = S.openReason === key;
   const dir = st.v;
+  /* 理由池：景点自身标签推出来的 + 预置词条（见 data.js 的 reasonPool）。
+     没有 dir（还没表态）时不必算，但算也不算错——它顺带把推导理由的
+     记忆规则登记进 SPOT_REASON_RULE，下面查 st.reason 的规则要用。 */
+  const pool = dir ? reasonPool(dir, kind, spot) : [];
   let html = `<div class="stance">
     <button class="thumb up ${dir==='up'?'on':''}" data-act="thumb" data-key="${key}" data-kind="${kind}" data-v="up">👍 喜欢</button>
     <button class="thumb down ${dir==='down'?'on':''}" data-act="thumb" data-key="${key}" data-kind="${kind}" data-v="down">👎 不喜欢</button>
@@ -1168,11 +1197,10 @@ function stanceCtl(key, kind){
   const freeToggle = `<button class="free-toggle" data-act="freetoggle" data-key="${key}">${S.openFree[key]?'收起':'＋ 补充一句（可选）'}</button>`;
 
   if(open && dir){
-    const pool = (REASONS[dir]||{})[kind] || [];
     html += `<div class="reasons">
       <div class="rq">${dir==='down'?'哪里不合适？（点一个，立刻变成记忆）':'哪里对了？（点一个，立刻变成记忆）'}</div>
       <div class="reason-chips">
-        ${pool.map(r=>`<button class="rchip ${st.reason===r?'on':''}" data-act="reason" data-key="${key}" data-kind="${kind}" data-r="${esc(r)}">${esc(r)}</button>`).join('')}
+        ${pool.map(x=>`<button class="rchip ${st.reason===x.r?'on':''}" data-act="reason" data-key="${key}" data-kind="${kind}" data-r="${esc(x.r)}">${esc(x.r)}</button>`).join('')}
       </div>
       ${freeToggle}
       ${S.openFree[key] ? freeBoxHTML(key, st) : ''}
@@ -1184,7 +1212,7 @@ function stanceCtl(key, kind){
     html += `<div class="free-standalone">${freeToggle}${S.openFree[key] ? freeBoxHTML(key, st) : ''}</div>`;
   }
   if(st.reason){
-    const mm = REASON_TO_MEMORY[st.reason];
+    const mm = reasonRule(st.reason);
     if(mm) html += `<div class="learned-hint">🧠 已记入记忆：${esc(mm.text)} · 作用域「长期」（可在记忆中心改）</div>`;
   }
   return html;
@@ -1262,49 +1290,35 @@ function itemView(it, day){
         </div>
       </div>
       ${g ? recGroup(g, '🍜', '餐饮区域') : ''}
-      ${stanceCtl(key, isFood ? 'food' : isFree ? 'free' : 'spot')}
+      ${stanceCtl(key, isFood ? 'food' : isFree ? 'free' : 'spot', sp)}
     </div>
   </div>`;
 }
 
 function mapPanel(){
   const it = itin();
-  const day = it.days.find(d => d.day === S.s2day) || it.days[0];
-  /* 概览只画**景点**——与分日卡片、📍当日动线、S1 方案卡保持同一口径。
+  /* 概览只画**景点**——与分日卡片、S1 方案卡保持同一口径。
      早先这里把 items 里每种 kind 都映射一遍，于是每天的午餐 / 晚餐区域
      （kind==='food'）也被当成景点串进了游览动线：总览上每天凭空多一个点，
-     跟分日卡片对不上。dayMap() 早就只取 spot 了，这是漏改的一处。 */
+     跟分日卡片对不上。这里是漏改的一处。
+
+     这里原来还并排放着第二张「📍 第 N 天动线」，浏览器能分给它的高度太有限，
+     缩在角落看不清，已撤掉。单日的细节交给左侧每天的时间轴卡片，
+     地图只负责回答「整趟在哪、当前这天在哪」这一层。 */
   const routeDays = it.days.map(d => d.items.filter(i => i.kind === 'spot').map(i => i.name));
   return `
   <div class="map-col">
     <div class="card map-panel">
-      <h4>🗺 全程概览<span class="mini-lbl">${it.days.length} 天 · 按天配色 · 划过时间轴或图上点位切换</span></h4>
+      <h4>🗺 全程概览<span class="mini-lbl">${it.days.length} 天 · 按天配色 · 划过时间轴或图上点位高亮当天</span></h4>
       ${overviewMap(routeDays, { highlightDay: S.s2day })}
-    </div>
-
-    <div class="card map-panel">
-      <h4>📍 <span data-map-day-title>第 ${day.day} 天动线</span><span class="mini-lbl" data-map-day-theme>${esc(day.theme)}</span></h4>
-      ${dayMap(day, routeDays)}
-      <div class="map-legend">
+      ${city()?.geo ? '' : `<div class="map-legend">
         <span><i style="background:var(--clay)"></i>景点</span>
-        ${city()?.geo ? '' : '<span><i style="background:var(--green)"></i>餐饮区域</span>'}
+        <span><i style="background:var(--green)"></i>餐饮区域</span>
         ${memActive()?'<span><i style="background:var(--indigo)"></i>记忆影响</span>':''}
-      </div>
+      </div>`}
     </div>
     <p class="map-disclaim">${city()?.geo ? '底图 © OpenStreetMap；点位为景点参考位置，非入口导航。虚线连接游览顺序，不代表实际道路。' : '示意图，非真实比例；点位为区域中心，不代表具体门店位置。'}</p>
   </div>`;
-}
-
-/** 切天之后，只更新地图面板里那两处文字（标题和当天的主题）。
-    地图本身由 TourisMaps.setDay() 就地更新——不重绘：重绘会把 Leaflet
-    整个拆掉重挂，而切天是鼠标划过触发的，那样一划就闪。 */
-function syncDayChrome(){
-  const it = itin(); if(!it) return;
-  const day = it.days.find(d => d.day === S.s2day) || it.days[0];
-  const t = document.querySelector('[data-map-day-title]');
-  const th = document.querySelector('[data-map-day-theme]');
-  if(t) t.textContent = `第 ${day.day} 天动线`;
-  if(th) th.textContent = day.theme;
 }
 
 function viewS2(){
@@ -1808,9 +1822,11 @@ function hidePop(){
   if(S.memHit.length){ S.memHit = []; renderLeft(); }
 }
 
-/* ---------------- 把反馈变成记忆 ---------------- */
-function learn(reason, kind){
-  const rule = REASON_TO_MEMORY[reason];
+/* ---------------- 把反馈变成记忆 ----------------
+   reason = 用户点的那枚理由，原样写进 source.quote（可溯源）
+   rule   = 这条理由对应的记忆规则。预置词条在 REASON_TO_MEMORY；
+            景点自身标签推出来的理由由 reasonRule() 一并兜住（见 data.js）。 */
+function learn(reason, rule, kind){
   if(!rule) return null;
   const exist = S.learned.find(m => m.text === rule.text);
   if(exist){ exist.cited++; return exist; }
@@ -1835,6 +1851,9 @@ function learn(reason, kind){
   if(rule.avoid)  m.avoid  = [].concat(rule.avoid);
   if(rule.prefer) m.prefer = [].concat(rule.prefer);
   S.learned.push(m);
+  /* 魔搭账号：立刻回写服务端，不等切换身份——用户随时可能直接关掉页面，
+     而「持久化」这三个字就是这么兑现的。（推送是攒 400ms 发的，不是每条一发） */
+  if(S.session.mode === 'ms') msPush([m]);
   return m;
 }
 
@@ -1859,6 +1878,14 @@ document.addEventListener('click', e => {
       break;
     case 'acctpick':
       switchAccount(t.dataset.id || null);
+      break;
+    case 'mslogin':
+      toggleAcctMenu(false);
+      msLogin();
+      break;
+    case 'mslogout':
+      toggleAcctMenu(false);
+      msLogout();
       break;
     case 'back':
       goBack();
@@ -1961,7 +1988,7 @@ document.addEventListener('click', e => {
       const st = S.stance[key] || (S.stance[key] = { v:'down' });
       st.reason = st.reason === r ? null : r;
       let m = null;
-      if(st.reason) m = learn(r, kind);
+      if(st.reason) m = learn(r, reasonRule(r), kind);
       S.openReason = null;
       render();
       if(m) toast(`这次表态已记入你的旅行偏好：<b>${esc(m.text)}</b>（可在记忆中心改）`, 'mem');
@@ -1996,9 +2023,6 @@ document.addEventListener('click', e => {
       toast('已记入记忆：<b>' + esc(st.reason) + '</b> ·「' + esc(text) + '」', 'mem');
       break;
     }
-    case 's2day':
-      S.s2day = +t.dataset.d; render(); break;
-
     case 'pop':
       e.stopPropagation();
       showPop(t, t.dataset.ids);
@@ -2028,42 +2052,49 @@ document.addEventListener('input', e => {
   if(t){ const st = S.stance[t.dataset.key]; if(st) st.note = t.value; }
 });
 
-/* 时间轴 ↔ 地图联动：鼠标落在第几天的景点上，地图就切到第几天。
-   D1/D2/D3 那排按钮已经去掉，这里是切天的主入口；直接在地图上划过点位
-   也能切（见下面注册的 TourisMaps.onSpotHover）。 */
+/* 时间轴 ↔ 地图联动：鼠标落在第几天的景点上，概览图就平滑推到那一天。
+   直接在地图上划过点位也能推（见下面注册的 TourisMaps.onSpotHover）。
+   移开则推回全城——见后面的 mouseout。 */
 document.addEventListener('mouseover', e => {
   const t = e.target.closest('[data-act="hoverit"]');
-  const nm = t ? t.dataset.name : null;
-  const dayOfItem = t && t.dataset.day ? +t.dataset.day : null;
-  if(S.screen !== 's2') return;
+  if(!t || S.screen !== 's2') return;
+  const day = t.dataset.day ? +t.dataset.day : null;
 
-  /* 同一天里换景点不切天——否则划过一条时间轴会把地图来回切好几遍。 */
-  if(dayOfItem && dayOfItem !== S.s2day){
-    S.s2day = dayOfItem;
-    if(globalThis.TourisMaps) TourisMaps.setDay(dayOfItem);
-    syncDayChrome();
+  /* 同一天里换景点不重复推——否则划过一条时间轴会把地图来回推好几遍。 */
+  if(day && day !== S.s2day){
+    S.s2day = day;
+    if(globalThis.TourisMaps) TourisMaps.setDay(day);
   }
-
-  if(nm !== S.hoverItem){
-    S.hoverItem = nm;
-    /* 只有手绘示意图（没有经纬度的城市）要整块重绘；真实地图由 setDay() 就地更新。 */
-    const col = document.querySelector('.map-col');
-    if(col && !city()?.geo) col.outerHTML = mapPanel();
+  if(!t.classList.contains('hovered')){
     document.querySelectorAll('.tl-item.hovered').forEach(el => el.classList.remove('hovered'));
-    if(t) t.classList.add('hovered');
+    t.classList.add('hovered');
   }
 });
 
-/* 地图上的标记被划过 → 同样切到那一天。real-maps.js 用回调把事件交出来，
-   底图那层不该知道 S.s2day 的存在。划出时 day 为 null，保持当前天不动。 */
+/* 鼠标离开那一条 → 取消高亮，概览图推回全城视野。 */
+document.addEventListener('mouseout', e => {
+  const t = e.target.closest('[data-act="hoverit"]');
+  if(!t || S.screen !== 's2') return;
+  /* 在条目**内部**移动也会冒泡出 mouseout；relatedTarget 还在这一条里就忽略。 */
+  const to = e.relatedTarget;
+  if(to && t.contains(to)) return;
+  t.classList.remove('hovered');
+  if(S.s2day !== null){
+    S.s2day = null;
+    if(globalThis.TourisMaps) TourisMaps.setDay(null);
+  }
+});
+
+/* 地图上的标记被划过 → 同样推过去。real-maps.js 用回调把事件交出来，
+   底图那层不该知道 S.s2day 的存在。day 为 null 表示划出了点位，推回全城。 */
 if(globalThis.TourisMaps && TourisMaps.onSpotHover){
   TourisMaps.onSpotHover((day, name) => {
-    if(S.screen !== 's2' || !day) return;
-    if(day !== S.s2day){
-      S.s2day = day;
-      TourisMaps.setDay(day);
-      syncDayChrome();
+    if(S.screen !== 's2') return;
+    if(day === null){
+      if(S.s2day !== null){ S.s2day = null; TourisMaps.setDay(null); }
+      return;
     }
+    if(day !== S.s2day){ S.s2day = day; TourisMaps.setDay(day); }
   });
 }
 
@@ -2104,9 +2135,43 @@ document.addEventListener('error', e => {
 window.addEventListener('resize', hidePop);
 document.addEventListener('wheel', hidePop, { passive:true });
 
+/* ---------------- 魔搭登录的界面侧反应 ----------------
+   account.js 只管登录本身，切不切身份、弹什么提示由界面决定，所以走自定义事件。 */
+document.addEventListener('touris:ms-login', () => {
+  ACCT_OPEN = false;
+  switchToMs();
+});
+document.addEventListener('touris:ms-logout', () => {
+  if(S.session.mode === 'ms'){
+    switchAccount(null);
+    toast('已退出魔搭账号 · 云端记忆仍在，下次登录还能取回');
+  } else {
+    syncAcctBtn();
+    toast('已退出魔搭账号');
+  }
+});
+document.addEventListener('touris:ms-fail', () => toast('登录没有完成，请再试一次'));
+document.addEventListener('touris:ms-unavailable', () => toast('这个部署没有开启魔搭登录'));
+document.addEventListener('touris:ms-blocked', () => toast('浏览器拦住了登录窗口，请允许弹出窗口后重试'));
+
 /* 启动：从 localStorage 恢复上次的身份。
    没选过 / 存储不可用 → 保持在游客态（0 记忆），这正是默认行为。 */
 S.session = getStoredSession();
 try { history.replaceState({ screen: 'home' }, '', location.href); } catch(e) {}
 
 render();
+
+/* 再问一次服务端：魔搭登录还作不作数。
+   没有后端（纯静态托管 / file://）时这里静默失败，预设身份那套照旧可用。 */
+msRefresh().then(ok => {
+  if(S.session.mode === 'ms' && !ok){
+    // 令牌过期或已在别处登出 —— 落回游客，别让界面顶着一个假的登录态
+    S.session = { mode:'guest', id:null };
+    persistSession(S.session);
+    invalidateRun();
+    render();
+    return;
+  }
+  if(S.session.mode === 'ms'){ renderTop(); renderLeft(); render(); }
+  else syncAcctBtn();
+});

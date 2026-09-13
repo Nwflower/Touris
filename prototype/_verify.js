@@ -258,6 +258,21 @@ assert((h2.match(/class="rec-group/g)||[]).length >= 2, 'S2 餐饮/住宿是候�
 assert(/距上一站|从住处出发/.test(h2), 'S2 时间轴带通勤信息（km + 分钟）');
 assert(/:\d{2}/.test(h2), 'S2 时间轴为具体时刻');
 
+/* 概览地图必须与分日卡片同口径（都只含景点）。
+   曾经这里的总览把每天的餐饮区域也映射成点位串进了动线，图上每天凭空多一个点，
+   而分日卡片 / S1 方案卡都没多——三张图对不上，且没有任何断言盯着。 */
+const unesc = s => s.replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
+const s2maps = [...h2.matchAll(/data-routes="([^"]*)"/g)].map(m => JSON.parse(unesc(m[1])));
+const itinS2 = g('itin')();
+assert(s2maps.length === 1, 'S2 只剩全程概览一张地图（单日动线已撤）');
+assert(s2maps[0].every((day,i) => JSON.stringify(day.map(p=>p.name)) ===
+  JSON.stringify(itinS2.days[i].items.filter(x=>x.kind==='spot').map(x=>x.name))),
+  'S2 概览地图逐天等于分日卡片（不混入餐饮等非景点项）');
+assert(/data-map-mode="overview"/.test(h2), 'S2 地图标明模式（决定淡化还是隐藏）');
+assert(/data-highlight=""/.test(h2), '初始不淡化任何一天（data-highlight 为空 = 全部点亮）');
+assert(!/data-act="s2day"/.test(h2), 'S2 已无 D 切换按钮（改由划过高亮）');
+assert(/data-day="\d+"/.test(h2), 'S2 时间轴条目带 data-day（划过高亮的依据）');
+
 S.screen = 's5'; S.memoryOn = true; S.diffPlayed = true; g('invalidateRun')(); render();
 assert(/记忆改变了本次/.test(nodes.work.innerHTML), 'S5 记忆对照摘要存在');
 

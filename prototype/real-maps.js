@@ -230,17 +230,17 @@
     container.querySelector('[data-map-retry]').addEventListener('click',()=>{status.hidden=false;status.textContent='正在重新加载底图…';tiles.redraw();});
     map.on('click',()=>map.scrollWheelZoom.enable());
     map.on('mouseout',()=>map.scrollWheelZoom.disable());
-    const inst={map,dayMarkers,dayLines,dayPoints,mode};
+    const inst={map,dayMarkers,dayLines,dayPoints,mode,allPoints:points};
     instances.set(container,inst);
     applyTo(inst,Number(container.dataset.highlight)||null);
     requestAnimationFrame(()=>map.invalidateSize());
   }
 
-  /* ---------------- 切天 ----------------
+  /* ---------------- 高亮某一天 ----------------
      两类图对「当前是第几天」的反应不同：
-       mode='overview'  全部点位与连线都在，只把非当天的**淡化**——总览要能一眼看到全城；
-       mode='day'       只留当天的线，其余隐藏——它就是「第 N 天动线」。
-     视野只有 day 那张跟着走：总览图要是也跟着当天放大，就不叫总览了。 */
+       mode='overview'  全部点位与连线都在，只把非当天的**淡化**；
+       mode='day'       只留当天的线，其余隐藏。
+     视野**两者都跟着推**：n 是第几天就框住那天的点，n 为 null（鼠标移开）退回全城。 */
   function applyTo(inst,n){
     if(!inst) return;
     const only=inst.mode==='day';
@@ -256,8 +256,12 @@
       const on=!n||day===n;
       line.setStyle({opacity: only ? (on?1:0) : (on?1:0.12)});
     }
-    if(only&&n&&inst.dayPoints.get(n)){
-      inst.map.fitBounds(L.latLngBounds(inst.dayPoints.get(n)),{padding:[30,30],maxZoom:14});
+    /* fitBounds 自带缩放动画，正是这里要的过渡：从全城推到某一天时能看出推进感，
+       推的幅度由那天的点位跨度决定。当天留的边距大一些，免得点贴在边上。 */
+    const pts=n?inst.dayPoints.get(n):inst.allPoints;
+    if(pts&&pts.length){
+      inst.map.fitBounds(L.latLngBounds(pts),
+        n?{padding:[44,44],maxZoom:15}:{padding:[26,26],maxZoom:14});
     }
   }
 

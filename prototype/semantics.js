@@ -131,7 +131,7 @@ function memTagsOf(m, kind){
  * pace 取最慢的那条：一条「不要赶」就足以否决所有快节奏。
  */
 function constraintsOf(memories){
-  const out = { avoid: [], prefer: [], pace: null, hits: {} };
+  const out = { avoid: [], prefer: [], pace: null, budget: null, hits: {} };
   const seen = { avoid: new Set(), prefer: new Set() };
   (memories || []).forEach(m => {
     ['avoid', 'prefer'].forEach(kind => {
@@ -143,6 +143,11 @@ function constraintsOf(memories){
     });
     if(m.pace === 'slow') out.pace = 'slow';
     else if(m.pace === 'fast' && out.pace !== 'slow') out.pace = 'fast';
+    /* 预算取**最紧**的那条（low < mid < high）：一条「预算有限」不该因为
+       另有一条「偶尔想住好点」就放宽——事实压过意愿，与上面 pace 同理。 */
+    if(m.budget === 'low') out.budget = 'low';
+    else if(m.budget === 'mid' && out.budget !== 'low') out.budget = 'mid';
+    else if(m.budget === 'high' && !out.budget) out.budget = 'high';
   });
   return out;
 }

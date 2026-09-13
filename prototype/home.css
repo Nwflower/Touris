@@ -70,6 +70,7 @@ body.home-mode .home{
 /* 位图走 filter、文字走 color，给同一个时长才叫同步变色 */
 .topbar.home-top .brand{transition:color .35s}
 .topbar.home-top .brand .logo{transition:filter .35s}
+/* 路牌挪到首屏右上角（见 .hero-sign），顶栏不再放它 */
 .topbar.home-top .top-sep{background:rgba(255,255,255,.2)}
 .topbar.home-top .persona-sw .lbl{color:rgba(255,255,255,.7)}
 /* Hero 顶部:去掉透明毛玻璃边框背景,只留文字(开关滑块保留) */
@@ -306,7 +307,15 @@ body.home-mode .home{
   /* 浅色字符旁边的深色照片上要压得住，但只有一枚商标了，描边不用太重 */
   filter:drop-shadow(0 2px 8px rgba(0,0,0,.35));
 }
-.hero-top .h-nav{display:flex;align-items:center;gap:12px}
+/* 账号入口 + 它正下方的路牌：竖排、右对齐，路牌正好落在账号控件下面 */
+.hero-top .h-nav{display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+
+/* 「我在中客松很想你」路牌：首屏右上角。原图 747×200（带 Alpha），
+   按高度 60px 缩放（宽约 224px）。底色是深色照片，跟旁边的商标一样加投影压住。 */
+.hero-sign{
+  height:60px;width:auto;display:block;pointer-events:none;
+  filter:drop-shadow(0 2px 8px rgba(0,0,0,.35));
+}
 
 /* 账号入口搬到首屏栏上。它原本在顶栏的浅色底上（account.css），
    这里底色是深色照片，所以整体反白，跟旁边的商标一致。
@@ -631,6 +640,8 @@ body.home-mode .home{
   .hero-top{padding:16px}
   .hero-top .h-nav{gap:12px}
   .hero-top .h-link{display:none}
+  /* 路牌在小屏按比例收——224px 宽横在右上角会压到标题 */
+  .hero-sign{height:42px}
   .section{padding:60px 20px}
   .stats-bar{flex-wrap:wrap}
   .stats-bar .stat-item{flex:1 1 50%;border-right:none;border-bottom:1px solid var(--line)}
@@ -693,4 +704,5 @@ body:not(.home-mode) #work.page-fade-out{transition:opacity .14s ease}
   .stats-bar .stat-item:nth-child(2){border-right:none}
   .demo-steps{flex-wrap:wrap;gap:12px}
   .d-arrow{display:none}
+  .hero-sign{height:34px}
 }

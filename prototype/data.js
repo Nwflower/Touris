@@ -169,6 +169,133 @@ const REASON_TO_MEMORY = {
   '需要这个空档':{ text:'习惯午后留 2 小时自由休息', type:'节奏', pace:'slow' }
 };
 
+/* ---------- 理由池：预置词条 + 由景点自身推出 ----------
+
+   ★ 为什么要有「由景点推出」这一半
+
+   REASONS 是按 kind 分的通用词条（喜欢：想多待会儿 / 正是我想要的 / 安静 / 风景好）。
+   对着一座植物园点「喜欢」，这四条一条都接不上——用户想说的是「喜欢植物」
+   「喜欢自然」。而景点数据里本来就有这两样东西：spots[名].tags 是这处景点
+   自己的中文标签，cat 是它的品类。用它们拼理由，用户点的才是「我为什么喜欢这处」。
+
+   ★ 安全阀：理由必须带语义标签，否则就是一条死记忆
+
+   起作用的是标签，不是措辞（见 semantics.js 开头）。一条理由如果推不出
+   prefer / avoid / pace，它进了记忆列表也是死的：计数 +1、排线纹丝不动
+   （learn() 里写过这一条）。所以这里的理由全部由**已有的映射表**推：
+   中文标签 → SPOT_PREFER_MAP / SPOT_AVOID_MAP → 语义标签。
+   翻不出来的标签就不出现在理由里，不猜。
+
+   ★ 品类（cat）那张表额外加一道闸
+
+   只有当这处景点自己的标签**已经**落在同一个语义标签上时才放行。实测过：
+   119 个景点里 80 个的 cat 本身是语义词表里的词，但其中只有 44 个的本点标签
+   也对得上。剩下 36 个——景山公园 cat=garden，标签却是「观景 / 傍晚好 / 爬坡」——
+   无条件放行的话，「喜欢园林」会生成一条**在这处景点上根本不生效**的记忆：
+   用户对着景山公园说喜欢园林，系统却不认为景山公园是园林。
+   加了这道闸，品类理由只会在自洽时出现。
+
+   ★ 只在「推导出来的理由」内部按标签去重
+
+   大熊猫基地的标签是自然 / 公园 / 户外，三个都翻成 bamboo——三条都摆出来就是
+   把同一个约束说三遍，所以推导内部一枚语义标签只出一枚（留下标签表里靠前的那条）。
+
+   ★ 不去重预置词条
+
+   试过让预置词条「先占位、推出来的撞上就丢」，结果正好废掉这次要修的东西：
+   预置的「安静」规则里带 garden，「喜欢植物」就被它顶掉了——植物园反而看不到
+   「喜欢植物」。同一个语义标签由两条不同措辞的理由命中是无害的：
+   约束在 constraintsOf() 里按标签去重，记忆列表里多一条也是用户真的点过两次。 */
+
+/* 少数标签直接接「喜欢」读不通，只换措辞，语义标签不动 */
+const TAG_PHRASE = {
+  '可久坐': '能久坐', '傍晚好': '傍晚的光线', '人较少': '人不算多',
+  '免费区': '免费开放', '免费区大': '免费又开阔'
+};
+
+/* cat 是受控字段（全库 13 个取值），这里给它中文名和对应的语义标签。
+   station 是交通节点，语义词表里没有对应项，留空——它也就永远不出理由。 */
+const CAT_REASON = {
+  garden:  ['园林',  'prefer', 'garden'],
+  bamboo:  ['竹林',  'prefer', 'bamboo'],
+  river:   ['水岸',  'prefer', 'river'],
+  market:  ['市集',  'prefer', 'market'],
+  temple:  ['古建',  'prefer', 'temple'],
+  indoor:  ['展馆',  'prefer', 'indoor'],
+  tower:   ['地标',  'prefer', 'view'],
+  street:  ['街巷',  'prefer', 'old-town'],
+  path:    ['步道',  'prefer', 'river'],
+  castle:  ['城堡',  'prefer', 'temple'],
+  museum:  ['博物馆','avoid',  'museum'],
+  shopping:['商圈',  'avoid',  'mall']
+};
+
+/* 理由文案 → 记忆规则。预置词条在 REASON_TO_MEMORY 里，景点推出来的登记在这里。
+   文案 = 固定前缀 + 标签，同一处景点每次渲染得到的映射都一样，所以这张表是幂等的。
+   它只用于给点击事件反查规则，不参与任何展示。 */
+const SPOT_REASON_RULE = {};
+function reasonRule(r){
+  return REASON_TO_MEMORY[r] || SPOT_REASON_RULE[r] || null;
+}
+
+/**
+ * 由景点自身推出理由。只在推导内部按语义标签去重（见文件头）。
+ */
+function spotReasons(dir, spot){
+  const out = [];
+  if(!spot) return out;
+  const up  = dir !== 'down';
+  const map = up ? SPOT_PREFER_MAP : SPOT_AVOID_MAP;
+  const key = up ? 'prefer' : 'avoid';
+  const used = new Set();
+
+  const put = (r, rule) => {
+    if(used.has(rule[key][0])) return;
+    used.add(rule[key][0]);
+    SPOT_REASON_RULE[r] = rule;
+    out.push({ r, rule });
+  };
+
+  (spot.tags || []).forEach(t => {
+    if(out.length >= 4) return;              // 一屏最多四条，再多就是噪音
+    const sem = map[t];
+    if(!sem || SEMANTICS[key].indexOf(sem) < 0) return;
+    const word = up ? (TAG_PHRASE[t] || t) : t;
+    const rule = { text: (up ? '喜欢' : '不喜欢') + word, type:'景点' };
+    rule[key] = [sem];
+    put((up ? '喜欢' : '') + word, rule);
+  });
+
+  /* 品类理由——放行条件见文件头那道闸：本点自己的标签得落在这个语义标签上。
+     这里查的是「标签里有没有」，不是「上面用没用过」——否则植物园的
+     「喜欢园林」会被「喜欢植物」顶掉，而它正是这次要补的那种理由。 */
+  const cr = CAT_REASON[spot.cat];
+  if(cr && out.length < 4 && cr[1] === key &&
+     (spot.tags || []).some(t => map[t] === cr[2])){
+    const rule = { text: (up ? '喜欢' : '') + cr[0], type:'景点' };
+    rule[key] = [cr[2]];
+    const r = (up ? '喜欢' : '') + cr[0];
+    SPOT_REASON_RULE[r] = rule;      // 不过 put 的标签闸：品类理由就是要和
+    out.push({ r, rule });           //「喜欢植物」并存，那是两句话指向同一个偏好
+  }
+  return out.slice(0, 4);
+}
+
+/**
+ * 最终展示的理由池：景点自身推出来的排前面，预置词条补后面，上限 6 枚
+ * ——再多，这块面板比行程本身还长。
+ */
+function reasonPool(dir, kind, spot){
+  const own = (kind === 'spot') ? spotReasons(dir, spot) : [];
+  const preset = ((REASONS[dir] || {})[kind] || [])
+    .map(r => ({ r, rule: REASON_TO_MEMORY[r] || null }));
+  const out = [];
+  const put = x => { if(x && !out.some(y => y.r === x.r)) out.push(x); };
+  own.forEach(put);
+  preset.forEach(put);
+  return out.slice(0, 6);
+}
+
 /* ---------- Demo 动线提词 ----------
    seeded: false = 以游客（0 记忆）身份跑；true = 切到「林小满」预置档案看 20 条记忆的效果。
    演示动线会自己切换档案，不沿用用户当前的身份。 */

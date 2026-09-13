@@ -107,11 +107,29 @@ if [ "$MODE" = secrets ]; then
 fi
 
 # --------------------------------------------------------------------------
+# ★ 关于魔搭账号登录（OAuth）
+#
+# 这一节不需要在这里配任何东西：OAUTH_CLIENT_ID / OAUTH_CLIENT_SECRET /
+# OPENID_PROVIDER_URL / STUDIO_ID / STUDIO_HOST 都由**平台注入**，
+# 前提是在创空间设置里开启了 OAuth。
+#   · 没开 → server.js 的 OAUTH_ON 为 false，界面只显示预设身份，其余功能照旧
+#   · 改了 OAuth 设置 → 要重新部署才生效（所以改完记得重跑本脚本）
+#   · client secret 轮换会让已登录的会话全部失效（会话签名密钥由它派生），
+#     这是有意的：不额外多一个要维护的 SESSION_SECRET
+# --------------------------------------------------------------------------
+
+# --------------------------------------------------------------------------
 # 推代码
 # --------------------------------------------------------------------------
 need_token
+# 清掉上一次的残留。
+# ★ `git worktree prune` 处理不了「已注册但目录已失」这一种（这正是上次报
+#   `fatal: '.ms-studio-worktree' is a missing but already registered worktree`
+#   把 add 挡下来的原因）：prune 清的是 .git/worktrees 里的**陈旧记录**，
+#   而那条记录在它看来是新的。所以先显式注销，再删目录，最后才 prune。
+git worktree remove --force "$WT" 2>/dev/null || true
+rm -rf "$WT"
 git worktree prune
-[ -d "$WT" ] && rm -rf "$WT"
 
 git fetch modelscope "$BRANCH" --quiet 2>/dev/null || {
   echo "取不到 modelscope remote，先配一个："

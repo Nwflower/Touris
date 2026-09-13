@@ -28,3 +28,6 @@ tools/recheck-report.json
 
 # 魔搭创空间的临时 worktree
 .ms-studio-worktree/
+
+# 本地跑服务时的用户记忆落盘（魔搭账号用；容器里走 /mnt/workspace）
+.data/
