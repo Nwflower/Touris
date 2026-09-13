@@ -1,0 +1,26 @@
+{
+  "city": "威海",
+  "name": "葡萄滩浴场",
+  "query": "葡萄滩浴场 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "WeihaiGovMap:558",
+      "source": "https://www.weihai.gov.cn/szdt/web/mapIndex/3?area=&mapClassificationId=&mapClassificationPid=41&name=",
+      "download": "https://zhbypass.weihai.cn/minio/sciencetechnologymuseum/82fe3524d7084f7a8494d99311bd10dd1717753992196.png",
+      "original": "https://zhbypass.weihai.cn/minio/sciencetechnologymuseum/82fe3524d7084f7a8494d99311bd10dd1717753992196.png",
+      "mime": "image/png",
+      "author": "发布方：威海市人民政府数字便民地图；摄影作者未单列",
+      "description": "威海市政府数字便民地图点位 558（葡萄滩海水浴场），地址：威海市环翠区孙家疃镇环海路170-1号。使用该点位条目所配实景照片。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "威海市人民政府数字便民地图",
+      "modification": "Publisher photograph; no local visual edits.",
+      "placeId": "558",
+      "placeName": "葡萄滩海水浴场",
+      "latitude": "37.554130",
+      "longitude": "122.120610"
+    }
+  ]
+}

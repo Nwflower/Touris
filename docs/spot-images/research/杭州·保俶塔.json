@@ -1,0 +1,27 @@
+{
+  "city": "杭州",
+  "name": "保俶塔",
+  "query": "File:20250418_Baochu_Ta.jpg",
+  "review": "pending",
+  "existingFile": "assets/cities/hangzhou/baochu-pagoda.jpg",
+  "candidates": [
+    {
+      "title": "File:20250418 Baochu Ta.jpg",
+      "pageId": 170606569,
+      "source": "https://commons.wikimedia.org/wiki/File:20250418_Baochu_Ta.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/03/20250418_Baochu_Ta.jpg/960px-20250418_Baochu_Ta.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/0/03/20250418_Baochu_Ta.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3072,
+      "height": 4096,
+      "mime": "image/jpeg",
+      "description": "Baochu Pagoda",
+      "author": "Yumeto",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Baochu Pagoda|Self-published work|Unassessed QI candidates|Files with coordinates missing SDC location of creation|April 2025 in Hangzhou|User:Yumeto|Taken with Huawei Nova 11|Zhejiang photographs taken on 2025-04-18",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

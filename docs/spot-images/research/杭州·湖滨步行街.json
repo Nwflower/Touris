@@ -1,0 +1,22 @@
+{
+  "city": "杭州",
+  "name": "湖滨步行街",
+  "query": "湖滨步行街 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "EZhejiang:Hubin20190930",
+      "source": "https://www.ezhejiang.gov.cn/2019-09/30/c_412069.htm",
+      "download": "https://subsites.chinadaily.com.cn/ezhejiang/att/20190930/1569835423607095917.jpg",
+      "original": "https://subsites.chinadaily.com.cn/ezhejiang/att/20190930/1569835423607095917.jpg",
+      "mime": "image/jpeg",
+      "author": "IC（原页面 Photo/IC）",
+      "description": "浙江英文网湖滨步行街重开报道配图，明确为2019-09-27湖滨步行街夜景。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "作者或新闻来源",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ]
+}

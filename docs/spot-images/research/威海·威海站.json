@@ -1,0 +1,45 @@
+{
+  "city": "威海",
+  "name": "威海站",
+  "query": "File:Weihai_china.jpg",
+  "review": "pending",
+  "existingFile": "img/Weihai_china.jpg",
+  "candidates": [
+    {
+      "title": "File:Weihai china.jpg",
+      "pageId": 7354800,
+      "source": "https://commons.wikimedia.org/wiki/File:Weihai_china.jpg",
+      "download": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Weihai_china.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Weihai_china.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 637,
+      "height": 439,
+      "mime": "image/jpeg",
+      "description": "View of Happiness Gate from sea Weihai, Shandong, China",
+      "author": "Weihai",
+      "license": "Public domain",
+      "licenseUrl": "",
+      "categories": "Self-published work|PD-self|Happiness Gate|Cityscapes in Weihai",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    },
+    {
+      "title": "File:Weihai Railway Station 2020.jpg",
+      "pageId": 94863078,
+      "source": "https://commons.wikimedia.org/wiki/File:Weihai_Railway_Station_2020.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f6/Weihai_Railway_Station_2020.jpg/960px-Weihai_Railway_Station_2020.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/f/f6/Weihai_Railway_Station_2020.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 4032,
+      "height": 3024,
+      "mime": "image/jpeg",
+      "description": "​Weihai Railway Station in 2020",
+      "author": "Kmchang28",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "GFDL|License migration redundant|Weihai Railway Station|October 2020 in rail transport in China|Self-published work",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "拍摄于威海站"
+    }
+  ]
+}

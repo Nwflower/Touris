@@ -1,0 +1,62 @@
+{
+  "city": "广州",
+  "name": "珠江夜游",
+  "query": "广州 珠江夜游 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:Pearl River Sightseeing Boat (GZ Fortune).jpg",
+      "pageId": 112199655,
+      "source": "https://commons.wikimedia.org/wiki/File:Pearl_River_Sightseeing_Boat_(GZ_Fortune).jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/48/Pearl_River_Sightseeing_Boat_%28GZ_Fortune%29.jpg/960px-Pearl_River_Sightseeing_Boat_%28GZ_Fortune%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/4/48/Pearl_River_Sightseeing_Boat_%28GZ_Fortune%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 5955,
+      "height": 3350,
+      "mime": "image/jpeg",
+      "description": "​珠江夜游 · 广州财富号",
+      "author": "TONY LU",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "China photographs taken on 2021-10-31|Pearl River in Guangzhou|October 2021 in transport in China|Self-published work|Watercraft in Guangdong|Night in Pearl River (China)|Taikang Insurance advertisements",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    },
+    {
+      "title": "File:Pearl River Sightseeing Boat (Guangzhou Red).jpg",
+      "pageId": 112199659,
+      "source": "https://commons.wikimedia.org/wiki/File:Pearl_River_Sightseeing_Boat_(Guangzhou_Red).jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/41/Pearl_River_Sightseeing_Boat_%28Guangzhou_Red%29.jpg/960px-Pearl_River_Sightseeing_Boat_%28Guangzhou_Red%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/4/41/Pearl_River_Sightseeing_Boat_%28Guangzhou_Red%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 4625,
+      "height": 2602,
+      "mime": "image/jpeg",
+      "description": "​珠江夜游 · 广州红主题船",
+      "author": "TONY LU",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "China photographs taken on 2021-10-31|Pearl River in Guangzhou|October 2021 in transport in China|Self-published work|Watercraft in Guangdong|Night in Pearl River (China)",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    },
+    {
+      "title": "File:Pearl River Sightseeing Boat (Jin Fang).jpg",
+      "pageId": 112199662,
+      "source": "https://commons.wikimedia.org/wiki/File:Pearl_River_Sightseeing_Boat_(Jin_Fang).jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6f/Pearl_River_Sightseeing_Boat_%28Jin_Fang%29.jpg/960px-Pearl_River_Sightseeing_Boat_%28Jin_Fang%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/6/6f/Pearl_River_Sightseeing_Boat_%28Jin_Fang%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 5380,
+      "height": 3026,
+      "mime": "image/jpeg",
+      "description": "​珠江夜游 · 金舫号（广州好 · 水上茶居）",
+      "author": "TONY LU",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "China photographs taken on 2021-10-31|Pearl River in Guangzhou|Yihai Kerry Arawana Holdings Co., Ltd.|October 2021 in transport in China|Self-published work|Watercraft in Guangdong|Night in Pearl River (China)",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

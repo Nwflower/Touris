@@ -1,0 +1,27 @@
+{
+  "city": "上海",
+  "name": "南京东路",
+  "query": "File:20090705_Shanghai_Nanjing_Road_0602.jpg",
+  "review": "pending",
+  "existingFile": "img/20090705_Shanghai_Nanjing_Road_0602.jpg",
+  "candidates": [
+    {
+      "title": "File:20090705 Shanghai Nanjing Road 0602.jpg",
+      "pageId": 16640589,
+      "source": "https://commons.wikimedia.org/wiki/File:20090705_Shanghai_Nanjing_Road_0602.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a5/20090705_Shanghai_Nanjing_Road_0602.jpg/960px-20090705_Shanghai_Nanjing_Road_0602.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/a/a5/20090705_Shanghai_Nanjing_Road_0602.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 1844,
+      "height": 2772,
+      "mime": "image/jpeg",
+      "description": "Nanjing Road in Shanghai",
+      "author": "Jakub Hałun",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "categories": "Taken with Pentax K100D Super|Shimao International Plaza|Self-published work|July 2009 in Shanghai|East Nanjing Road",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

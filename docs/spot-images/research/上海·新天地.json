@@ -1,0 +1,27 @@
+{
+  "city": "上海",
+  "name": "新天地",
+  "query": "File:Xintiandi_Area_(6042357841).jpg",
+  "review": "pending",
+  "existingFile": "img/Xintiandi_Area_6042357841.jpg",
+  "candidates": [
+    {
+      "title": "File:Xintiandi Area (6042357841).jpg",
+      "pageId": 175464096,
+      "source": "https://commons.wikimedia.org/wiki/File:Xintiandi_Area_(6042357841).jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/34/Xintiandi_Area_%286042357841%29.jpg/960px-Xintiandi_Area_%286042357841%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/3/34/Xintiandi_Area_%286042357841%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3072,
+      "height": 2304,
+      "mime": "image/jpeg",
+      "description": "Again, more Shikuman architecture of Shanghai.\nShikumen refers to a unique blend of Western and Chinese architecture used for urban mansions in Shanghai between the 1860s and 1920s.\n\n<a href=\"http://en.wikipedia.org/wiki/Shikumen\" rel=\"nofollow\">en.wikipedia.org/wiki/Shikumen</a>",
+      "author": "Can Pac Swire from Toronto, Canada",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "categories": "Flickr images reviewed by FlickreviewR 2|Files from Can Pac Swire Flickr stream|Flickr images missing SDC published in",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Xintiandi Area"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "city": "广州",
+  "name": "六榕寺",
+  "query": "File:Temple_of_the_Six_Banyan_Trees_pagoda.jpg",
+  "review": "pending",
+  "existingFile": "assets/cities/guangzhou/six-banyan-temple.jpg",
+  "candidates": [
+    {
+      "title": "File:Temple of the Six Banyan Trees pagoda.jpg",
+      "pageId": 145863253,
+      "source": "https://commons.wikimedia.org/wiki/File:Temple_of_the_Six_Banyan_Trees_pagoda.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/59/Temple_of_the_Six_Banyan_Trees_pagoda.jpg/960px-Temple_of_the_Six_Banyan_Trees_pagoda.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/5/59/Temple_of_the_Six_Banyan_Trees_pagoda.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 1600,
+      "height": 2400,
+      "mime": "image/jpeg",
+      "description": "Pagoda in Temple of the Six Banyan Trees in Guangzhou, China",
+      "author": "Shujianyang",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "categories": "CC-Zero|Flowery Pagoda|Self-published work|Guangzhou photographs taken on 2024-02-13",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

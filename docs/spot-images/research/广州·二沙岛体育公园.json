@@ -1,0 +1,43 @@
+{
+  "city": "广州",
+  "name": "二沙岛体育公园",
+  "query": "二沙岛体育公园 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:Guangdong Ersha Sports Trainning Center.jpg",
+      "pageId": 62662064,
+      "source": "https://commons.wikimedia.org/wiki/File:Guangdong_Ersha_Sports_Trainning_Center.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6c/Guangdong_Ersha_Sports_Trainning_Center.jpg/960px-Guangdong_Ersha_Sports_Trainning_Center.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/6/6c/Guangdong_Ersha_Sports_Trainning_Center.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3264,
+      "height": 1836,
+      "mime": "image/jpeg",
+      "description": "廣東省二沙體育訓練中心",
+      "author": "PQ77wd",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Self-published work|Stadiums in Guangzhou",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    },
+    {
+      "title": "GuangzhouGov:ErshaSports31833",
+      "source": "https://www.eguangzhou.gov.cn/gzspecialreports/intlblocks/details/ersha/content/post_31833.html",
+      "download": "https://www.eguangzhou.gov.cn/img/0/22/22605/31833.jpg",
+      "original": "https://www.eguangzhou.gov.cn/img/0/22/22605/31833.jpg",
+      "mime": "image/jpeg",
+      "author": "来源：GDToday／广州英文网；摄影未单独署名",
+      "description": "二沙岛国际街区官方介绍配图，跑者雕塑下有二沙岛体育公园刻字。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "政府网站",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ],
+  "supplementalQueries": [
+    "\"Ersha\" \"sports\" filetype:bitmap -metro -station -地图"
+  ]
+}

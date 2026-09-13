@@ -1,0 +1,2263 @@
+[
+  {
+    "city": "北京",
+    "name": "故宫博物院",
+    "category": "museum",
+    "image": "img/Sunset_of_the_Forbidden_City_2006.jpg",
+    "exists": true
+  },
+  {
+    "city": "北京",
+    "name": "景山公园",
+    "category": "garden",
+    "image": "img/Forbidden_City_from_Jingshan_Park_6349214639.jpg",
+    "exists": true
+  },
+  {
+    "city": "北京",
+    "name": "天安门广场",
+    "category": "street",
+    "image": "img/Tiananmen_Square_5283031153.jpg",
+    "exists": true
+  },
+  {
+    "city": "北京",
+    "name": "天坛公园",
+    "category": "temple",
+    "image": "img/Temple_of_Heaven_Beijing_China_-_010.jpg",
+    "exists": true
+  },
+  {
+    "city": "北京",
+    "name": "颐和园",
+    "category": "garden",
+    "image": "img/Longevity_Hill_of_the_Summer_Palace.jpg",
+    "exists": true
+  },
+  {
+    "city": "北京",
+    "name": "圆明园",
+    "category": "garden",
+    "image": "img/commons-725bf73d.jpg",
+    "exists": true
+  },
+  {
+    "city": "北京",
+    "name": "慕田峪长城",
+    "category": "castle",
+    "image": "img/Great_Wall_of_China_July_2006.jpg",
+    "exists": true
+  },
+  {
+    "city": "北京",
+    "name": "什刹海",
+    "category": "river",
+    "image": "img/Peking_Gescha_ft_Shichahai_Subdistrict-20131231-RM-112827.jpg",
+    "exists": true
+  },
+  {
+    "city": "北京",
+    "name": "南锣鼓巷",
+    "category": "street",
+    "image": "img/Beijing_Nanluoguxiang_-_panoramio.jpg",
+    "exists": true
+  },
+  {
+    "city": "北京",
+    "name": "雍和宫",
+    "category": "temple",
+    "image": "img/Peking_Jonghe_Tempel_-20071022-RM-094926.jpg",
+    "exists": true
+  },
+  {
+    "city": "北京",
+    "name": "国子监",
+    "category": "museum",
+    "image": "img/panoramio.jpg",
+    "exists": true
+  },
+  {
+    "city": "北京",
+    "name": "798艺术区",
+    "category": "museum",
+    "image": "img/Beijing_798_Art_District.jpg",
+    "exists": true
+  },
+  {
+    "city": "北京",
+    "name": "三里屯",
+    "category": "shopping",
+    "image": "img/SOHO.jpg",
+    "exists": true
+  },
+  {
+    "city": "北京",
+    "name": "前门大街",
+    "category": "street",
+    "image": "img/Beijing_Qianmen_Street_-_panoramio.jpg",
+    "exists": true
+  },
+  {
+    "city": "北京",
+    "name": "大栅栏",
+    "category": "street",
+    "image": "img/Beijing_Qianmen_Street_-_panoramio.jpg",
+    "exists": true
+  },
+  {
+    "city": "北京",
+    "name": "国家博物馆",
+    "category": "museum",
+    "image": "img/National_Museum_of_China_building_wide.jpg",
+    "exists": true
+  },
+  {
+    "city": "北京",
+    "name": "北海公园",
+    "category": "garden",
+    "image": "img/Beijing_Beihai_park_Qionghua-Insel_Tor-20110104-RM-141208.jpg",
+    "exists": true
+  },
+  {
+    "city": "北京",
+    "name": "亮马河",
+    "category": "river",
+    "image": "img/Liangma_River_at_Xinyuan_St_20200808164518.jpg",
+    "exists": true
+  },
+  {
+    "city": "北京",
+    "name": "鼓楼",
+    "category": "tower",
+    "image": "img/The_Drum_Tower_of_Beijing.jpg",
+    "exists": true
+  },
+  {
+    "city": "北京",
+    "name": "牛街",
+    "category": "market",
+    "image": "img/Niujie_Mosque_-_CIMG3716.jpg",
+    "exists": true
+  },
+  {
+    "city": "北京",
+    "name": "北京南站",
+    "category": "station",
+    "image": "img/Beijing_South_Station_cropped.jpg",
+    "exists": true
+  },
+  {
+    "city": "北京",
+    "name": "王府井",
+    "category": "shopping",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "五道营胡同",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "恭王府",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "烟袋斜街",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "地坛公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "中国美术馆",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "奥林匹克公园",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "国家大剧院",
+    "category": "tower",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "首都博物馆",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "军事博物馆",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "玉渊潭公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "香山公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "国家植物园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "奥林匹克森林公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "明城墙遗址公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "三里河公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "潘家园旧货市场",
+    "category": "market",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "卢沟桥",
+    "category": "castle",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "世贸天阶",
+    "category": "shopping",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "朝阳公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "蓝色港湾",
+    "category": "shopping",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "北大校园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "清华校园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "白塔寺",
+    "category": "temple",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "法源寺",
+    "category": "temple",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "湖广会馆",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "红砖美术馆",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "龙潭中湖公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "天桥演艺区",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "北京",
+    "name": "正乙祠",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "外滩",
+    "category": "river",
+    "image": "img/Pudong_Shanghai_November_2017_panorama.jpg",
+    "exists": true
+  },
+  {
+    "city": "上海",
+    "name": "南京东路",
+    "category": "street",
+    "image": "img/20090705_Shanghai_Nanjing_Road_0602.jpg",
+    "exists": true
+  },
+  {
+    "city": "上海",
+    "name": "豫园",
+    "category": "garden",
+    "image": "img/Shanghai_-_Yu_Garden_-_0035.jpg",
+    "exists": true
+  },
+  {
+    "city": "上海",
+    "name": "城隍庙",
+    "category": "temple",
+    "image": "img/Shanghai_-_Yu_Garden_-_0035.jpg",
+    "exists": true
+  },
+  {
+    "city": "上海",
+    "name": "陆家嘴",
+    "category": "tower",
+    "image": "img/Pudong_Shanghai_November_2017_panorama.jpg",
+    "exists": true
+  },
+  {
+    "city": "上海",
+    "name": "上海博物馆",
+    "category": "museum",
+    "image": "img/Shanghai_Museum_exterior_1.jpg",
+    "exists": true
+  },
+  {
+    "city": "上海",
+    "name": "上海中心",
+    "category": "tower",
+    "image": "img/Pudong_Shanghai_November_2017_panorama.jpg",
+    "exists": true
+  },
+  {
+    "city": "上海",
+    "name": "武康路",
+    "category": "street",
+    "image": "img/Wukang_Mansion_20250504-2.jpg",
+    "exists": true
+  },
+  {
+    "city": "上海",
+    "name": "安福路",
+    "category": "street",
+    "image": "img/A_brunch_spot_at_Anfu_Rd.jpg",
+    "exists": true
+  },
+  {
+    "city": "上海",
+    "name": "思南公馆",
+    "category": "street",
+    "image": "img/Sinan_Mansions_Shanghai.jpg",
+    "exists": true
+  },
+  {
+    "city": "上海",
+    "name": "田子坊",
+    "category": "street",
+    "image": "img/Tianzifang_im_Sommer_2025.jpg",
+    "exists": true
+  },
+  {
+    "city": "上海",
+    "name": "新天地",
+    "category": "street",
+    "image": "img/Xintiandi_Area_6042357841.jpg",
+    "exists": true
+  },
+  {
+    "city": "上海",
+    "name": "愚园路",
+    "category": "street",
+    "image": "img/202001_608_Lane_of_Yuyuan_Road_Shanghai.jpg",
+    "exists": true
+  },
+  {
+    "city": "上海",
+    "name": "静安寺",
+    "category": "temple",
+    "image": "img/View_From_Jing-An-temple_Shanghai.jpg",
+    "exists": true
+  },
+  {
+    "city": "上海",
+    "name": "苏州河",
+    "category": "river",
+    "image": "img/Russian_Consulate_and_Suzhou_River_Shanghai.jpg",
+    "exists": true
+  },
+  {
+    "city": "上海",
+    "name": "朱家角古镇",
+    "category": "river",
+    "image": "img/Canal_in_Zhujiajiao_Qingpu_Shanghai_China.jpg",
+    "exists": true
+  },
+  {
+    "city": "上海",
+    "name": "中华艺术宫",
+    "category": "museum",
+    "image": "img/China_Art_Museum_Shanghai.jpg",
+    "exists": true
+  },
+  {
+    "city": "上海",
+    "name": "徐汇滨江",
+    "category": "river",
+    "image": "img/Xuhui_Riverside_Shanghai.jpg",
+    "exists": true
+  },
+  {
+    "city": "上海",
+    "name": "龙华寺",
+    "category": "temple",
+    "image": "img/Shanghai_-_Longhua_Tempel_-_0009.jpg",
+    "exists": true
+  },
+  {
+    "city": "上海",
+    "name": "上海南站",
+    "category": "station",
+    "image": "img/Shanghai_South_Railway_Station_metro_station_line_15_concourse.jpg",
+    "exists": true
+  },
+  {
+    "city": "上海",
+    "name": "虹口北外滩",
+    "category": "river",
+    "image": "img/Pudong_CBD_viewed_from_the_North_Bund_in_Shanghai.jpg",
+    "exists": true
+  },
+  {
+    "city": "上海",
+    "name": "武康大楼",
+    "category": "tower",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "复兴公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "鲁迅公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "多伦路",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "1933老场坊",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "M50创意园",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "世纪公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "上海科技馆",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "南京西路",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "静安雕塑公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "张园",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "吴江路",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "老码头",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "西岸美术馆",
+    "category": "museum",
+    "image": "img/West_Bund_Museum_Shanghai_Jun_2020.jpg",
+    "exists": true
+  },
+  {
+    "city": "上海",
+    "name": "龙美术馆",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "七宝古镇",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "上海动物园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "共青森林公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "杨浦滨江",
+    "category": "river",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "大世界",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "上海城市规划展示馆",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "世博文化公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "徐家汇书院",
+    "category": "indoor",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "徐家汇天主堂",
+    "category": "temple",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "衡山路",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "绍兴路",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "甜爱路",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "世博会博物馆",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "上海图书馆",
+    "category": "indoor",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "古城公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "上海",
+    "name": "苏州河华政段",
+    "category": "river",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "刘公岛",
+    "category": "river",
+    "image": "img/Weihai.port_de_Liugong_dao.jpg",
+    "exists": true
+  },
+  {
+    "city": "威海",
+    "name": "中国甲午战争博物院",
+    "category": "museum",
+    "image": "img/Weihai.port_de_Liugong_dao.jpg",
+    "exists": true
+  },
+  {
+    "city": "威海",
+    "name": "定远舰景区",
+    "category": "museum",
+    "image": "img/View_of_Weihai_Bay_from_Liugong_Island.jpg",
+    "exists": true
+  },
+  {
+    "city": "威海",
+    "name": "幸福门",
+    "category": "tower",
+    "image": "img/Weihai_china.jpg",
+    "exists": true
+  },
+  {
+    "city": "威海",
+    "name": "威海公园",
+    "category": "river",
+    "image": "img/Huancui_Weihai_Shandong_China_-_panoramio.jpg",
+    "exists": true
+  },
+  {
+    "city": "威海",
+    "name": "悦海公园",
+    "category": "river",
+    "image": "img/Huancui_Weihai_Shandong_China_-_panoramio_1.jpg",
+    "exists": true
+  },
+  {
+    "city": "威海",
+    "name": "国际海水浴场",
+    "category": "river",
+    "image": "img/Huancui_Weihai_Shandong_China_-_panoramio.jpg",
+    "exists": true
+  },
+  {
+    "city": "威海",
+    "name": "火炬八街",
+    "category": "street",
+    "image": "img/Huancui_Weihai_Shandong_China_-_panoramio_1.jpg",
+    "exists": true
+  },
+  {
+    "city": "威海",
+    "name": "猫头山",
+    "category": "garden",
+    "image": "img/Huancui_Weihai_Shandong_China_-_panoramio.jpg",
+    "exists": true
+  },
+  {
+    "city": "威海",
+    "name": "半月湾",
+    "category": "river",
+    "image": "img/Huancui_Weihai_Shandong_China_-_panoramio_1.jpg",
+    "exists": true
+  },
+  {
+    "city": "威海",
+    "name": "成山头",
+    "category": "garden",
+    "image": "img/altar-fountain_complex_with_statues_of_various_Chinese_gods_in_Weihai_Shandong.jpg",
+    "exists": true
+  },
+  {
+    "city": "威海",
+    "name": "那香海",
+    "category": "river",
+    "image": "img/Rongcheng_Weihai_Shandong_China_-_panoramio_1.jpg",
+    "exists": true
+  },
+  {
+    "city": "威海",
+    "name": "海驴岛",
+    "category": "river",
+    "image": "img/Rongcheng_Weihai_Shandong_China_-_panoramio_-_Roddy_Pfeiffer.jpg",
+    "exists": true
+  },
+  {
+    "city": "威海",
+    "name": "鸡鸣岛",
+    "category": "river",
+    "image": "img/Rongcheng_Weihai_Shandong_China_-_panoramio_1.jpg",
+    "exists": true
+  },
+  {
+    "city": "威海",
+    "name": "荣成海草房",
+    "category": "street",
+    "image": "img/Rongcheng_Weihai_Shandong_China_-_panoramio_2.jpg",
+    "exists": true
+  },
+  {
+    "city": "威海",
+    "name": "华夏城",
+    "category": "garden",
+    "image": "img/Weihai_china.jpg",
+    "exists": true
+  },
+  {
+    "city": "威海",
+    "name": "环翠楼公园",
+    "category": "garden",
+    "image": "img/Weihai_china.jpg",
+    "exists": true
+  },
+  {
+    "city": "威海",
+    "name": "威海站",
+    "category": "station",
+    "image": "img/Weihai_china.jpg",
+    "exists": true
+  },
+  {
+    "city": "威海",
+    "name": "金海滩浴场",
+    "category": "river",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "葡萄滩浴场",
+    "category": "river",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "孙家疃",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "远遥码头",
+    "category": "market",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "合庆码头",
+    "category": "market",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "里口山",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "仙姑顶",
+    "category": "temple",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "海上公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "金线顶公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "威海市博物馆",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "韩乐坊",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "烟墩角",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "天鹅湖",
+    "category": "river",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "神雕山野生动物园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "赤山景区",
+    "category": "temple",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "樱花湖体育公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "荣成博物馆",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "环海路观景段",
+    "category": "path",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "靖子头",
+    "category": "path",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "小石岛",
+    "category": "river",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "威高广场",
+    "category": "shopping",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "张村大集",
+    "category": "market",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "石岛渔港",
+    "category": "market",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "乳山银滩",
+    "category": "river",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "汤泊温泉",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "五渚河公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "逍遥湖",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "羊亭河湿地公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "威海市美术馆",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "人民广场",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "海鲜夜市",
+    "category": "market",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "摩天岭索道",
+    "category": "path",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "威海",
+    "name": "滨海步道",
+    "category": "path",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "西湖",
+    "category": "river",
+    "image": "assets/cities/hangzhou/west-lake.jpg",
+    "exists": true
+  },
+  {
+    "city": "杭州",
+    "name": "雷峰塔",
+    "category": "tower",
+    "image": "assets/cities/hangzhou/leifeng-pagoda.jpg",
+    "exists": true
+  },
+  {
+    "city": "杭州",
+    "name": "清河坊",
+    "category": "street",
+    "image": "assets/cities/hangzhou/qinghefang.jpg",
+    "exists": true
+  },
+  {
+    "city": "杭州",
+    "name": "灵隐寺",
+    "category": "temple",
+    "image": "assets/cities/hangzhou/lingyin-temple.jpg",
+    "exists": true
+  },
+  {
+    "city": "杭州",
+    "name": "西溪湿地",
+    "category": "garden",
+    "image": "assets/cities/hangzhou/xixi-wetland.jpg",
+    "exists": true
+  },
+  {
+    "city": "杭州",
+    "name": "良渚博物院",
+    "category": "museum",
+    "image": "assets/cities/hangzhou/liangzhu-museum.jpg",
+    "exists": true
+  },
+  {
+    "city": "杭州",
+    "name": "中国丝绸博物馆",
+    "category": "museum",
+    "image": "assets/cities/hangzhou/silk-museum.jpg",
+    "exists": true
+  },
+  {
+    "city": "杭州",
+    "name": "中国茶叶博物馆（双峰馆区）",
+    "category": "museum",
+    "image": "assets/cities/hangzhou/tea-museum.jpg",
+    "exists": true
+  },
+  {
+    "city": "杭州",
+    "name": "保俶塔",
+    "category": "tower",
+    "image": "assets/cities/hangzhou/baochu-pagoda.jpg",
+    "exists": true
+  },
+  {
+    "city": "杭州",
+    "name": "六和塔",
+    "category": "tower",
+    "image": "assets/cities/hangzhou/liuhe-pagoda.jpg",
+    "exists": true
+  },
+  {
+    "city": "杭州",
+    "name": "净慈寺",
+    "category": "temple",
+    "image": "assets/cities/hangzhou/jingci-temple.jpg",
+    "exists": true
+  },
+  {
+    "city": "杭州",
+    "name": "拱宸桥",
+    "category": "river",
+    "image": "assets/cities/hangzhou/gongchen-bridge.jpg",
+    "exists": true
+  },
+  {
+    "city": "杭州",
+    "name": "杭州博物馆",
+    "category": "museum",
+    "image": "assets/cities/hangzhou/hangzhou-museum.jpg",
+    "exists": true
+  },
+  {
+    "city": "杭州",
+    "name": "杭州大剧院",
+    "category": "tower",
+    "image": "assets/cities/hangzhou/grand-theatre.jpg",
+    "exists": true
+  },
+  {
+    "city": "杭州",
+    "name": "杭州植物园",
+    "category": "garden",
+    "image": "assets/cities/hangzhou/botanical-garden.jpg",
+    "exists": true
+  },
+  {
+    "city": "杭州",
+    "name": "浙江省博物馆（孤山馆区）",
+    "category": "museum",
+    "image": "assets/cities/hangzhou/zhejiang-museum-gushan.jpg",
+    "exists": true
+  },
+  {
+    "city": "杭州",
+    "name": "香积寺",
+    "category": "temple",
+    "image": "assets/cities/hangzhou/xiangji-temple.jpg",
+    "exists": true
+  },
+  {
+    "city": "杭州",
+    "name": "龙井村",
+    "category": "garden",
+    "image": "assets/cities/hangzhou/longjing-village.jpg",
+    "exists": true
+  },
+  {
+    "city": "杭州",
+    "name": "断桥残雪",
+    "category": "river",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "白堤",
+    "category": "river",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "苏堤",
+    "category": "river",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "花港观鱼",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "曲院风荷",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "柳浪闻莺",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "三潭印月",
+    "category": "river",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "太子湾公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "茅家埠",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "梅家坞",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "九溪十八涧",
+    "category": "river",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "云栖竹径",
+    "category": "bamboo",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "虎跑公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "满觉陇",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "南宋御街",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "吴山城隍阁",
+    "category": "tower",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "胡雪岩故居",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "万松书院",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "桥西历史街区",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "小河直街",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "大兜路历史街区",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "京杭大运河博物馆",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "浙江自然博物院",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "浙江博物馆之江馆",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "白塔公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "南山路",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "城市阳台",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "奥体中心",
+    "category": "tower",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "良渚古城遗址公园",
+    "category": "castle",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "法喜寺",
+    "category": "temple",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "京杭大运河",
+    "category": "river",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "钱王祠",
+    "category": "temple",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "孤山",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "湖滨步行街",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "杭州",
+    "name": "运河天地",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "陈家祠",
+    "category": "temple",
+    "image": "assets/cities/guangzhou/chen-clan-hall.jpg",
+    "exists": true
+  },
+  {
+    "city": "广州",
+    "name": "永庆坊",
+    "category": "street",
+    "image": "assets/cities/guangzhou/yongqingfang.jpg",
+    "exists": true
+  },
+  {
+    "city": "广州",
+    "name": "沙面",
+    "category": "street",
+    "image": "assets/cities/guangzhou/shamian.jpg",
+    "exists": true
+  },
+  {
+    "city": "广州",
+    "name": "越秀公园",
+    "category": "garden",
+    "image": "assets/cities/guangzhou/yuexiu-park.jpg",
+    "exists": true
+  },
+  {
+    "city": "广州",
+    "name": "广东省博物馆",
+    "category": "museum",
+    "image": "assets/cities/guangzhou/guangdong-museum.jpg",
+    "exists": true
+  },
+  {
+    "city": "广州",
+    "name": "广州塔",
+    "category": "tower",
+    "image": "assets/cities/guangzhou/canton-tower.jpg",
+    "exists": true
+  },
+  {
+    "city": "广州",
+    "name": "光孝寺",
+    "category": "temple",
+    "image": "assets/cities/guangzhou/guangxiao-temple.jpg",
+    "exists": true
+  },
+  {
+    "city": "广州",
+    "name": "六榕寺",
+    "category": "temple",
+    "image": "assets/cities/guangzhou/six-banyan-temple.jpg",
+    "exists": true
+  },
+  {
+    "city": "广州",
+    "name": "南越王博物院（王墓展区）",
+    "category": "museum",
+    "image": "assets/cities/guangzhou/nanyue-museum.jpg",
+    "exists": true
+  },
+  {
+    "city": "广州",
+    "name": "宝墨园",
+    "category": "garden",
+    "image": "assets/cities/guangzhou/baomo-garden.jpg",
+    "exists": true
+  },
+  {
+    "city": "广州",
+    "name": "广州动物园",
+    "category": "garden",
+    "image": "assets/cities/guangzhou/zoo.jpg",
+    "exists": true
+  },
+  {
+    "city": "广州",
+    "name": "广州图书馆",
+    "category": "museum",
+    "image": "assets/cities/guangzhou/library.jpg",
+    "exists": true
+  },
+  {
+    "city": "广州",
+    "name": "广州大剧院",
+    "category": "tower",
+    "image": "assets/cities/guangzhou/opera-house.jpg",
+    "exists": true
+  },
+  {
+    "city": "广州",
+    "name": "广州艺术博物院（新馆）",
+    "category": "museum",
+    "image": "assets/cities/guangzhou/art-museum.jpg",
+    "exists": true
+  },
+  {
+    "city": "广州",
+    "name": "白云山",
+    "category": "garden",
+    "image": "assets/cities/guangzhou/baiyun-mountain.jpg",
+    "exists": true
+  },
+  {
+    "city": "广州",
+    "name": "石室圣心大教堂",
+    "category": "temple",
+    "image": "assets/cities/guangzhou/sacred-heart-cathedral.jpg",
+    "exists": true
+  },
+  {
+    "city": "广州",
+    "name": "荔湾湖公园",
+    "category": "garden",
+    "image": "assets/cities/guangzhou/liwan-lake.jpg",
+    "exists": true
+  },
+  {
+    "city": "广州",
+    "name": "北京路步行街",
+    "category": "street",
+    "image": "assets/cities/guangzhou/beijing-road.jpg",
+    "exists": true
+  },
+  {
+    "city": "广州",
+    "name": "华南国家植物园",
+    "category": "garden",
+    "image": "assets/cities/guangzhou/south-china-botanical.jpg",
+    "exists": true
+  },
+  {
+    "city": "广州",
+    "name": "黄埔军校旧址纪念馆",
+    "category": "museum",
+    "image": "assets/cities/guangzhou/whampoa-academy.jpg",
+    "exists": true
+  },
+  {
+    "city": "广州",
+    "name": "中山纪念堂",
+    "category": "museum",
+    "image": "assets/cities/guangzhou/sun-yat-sen-hall.jpg",
+    "exists": true
+  },
+  {
+    "city": "广州",
+    "name": "上下九步行街",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "五仙观",
+    "category": "temple",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "广州博物馆",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "粤剧艺术博物馆",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "荔枝湾",
+    "category": "river",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "麓湖公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "二沙岛",
+    "category": "river",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "海心沙",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "花城广场",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "海珠国家湿地公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "太古仓码头",
+    "category": "river",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "珠江夜游",
+    "category": "river",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "长隆野生动物世界",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "长隆欢乐世界",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "天河路商圈",
+    "category": "shopping",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "天河公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "珠江公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "泮塘五约",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "沙湾古镇",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "小洲村",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "黄埔古港",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "广东美术馆",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "白鹅潭大湾区艺术中心",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "余荫山房",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "岭南印象园",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "永庆坊粤剧段",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "二沙岛体育公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "珠岛",
+    "category": "river",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "东山口",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "基督教东山堂",
+    "category": "temple",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "农讲所",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "城隍庙",
+    "category": "temple",
+    "image": "img/Shanghai_-_Yu_Garden_-_0035.jpg",
+    "exists": true
+  },
+  {
+    "city": "广州",
+    "name": "大佛寺",
+    "category": "temple",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "珠江琶醍",
+    "category": "river",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "海珠桥",
+    "category": "tower",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "天字码头",
+    "category": "river",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "流花湖公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "兰圃",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "越秀公园五羊",
+    "category": "tower",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "珠江夜跑绿道",
+    "category": "path",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "广州",
+    "name": "猎德大桥",
+    "category": "tower",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "宽窄巷子",
+    "category": "street",
+    "image": "img/Narrow_Lane_of_Chengdu.jpg",
+    "exists": true
+  },
+  {
+    "city": "成都",
+    "name": "锦里",
+    "category": "street",
+    "image": "img/2011.jpg",
+    "exists": true
+  },
+  {
+    "city": "成都",
+    "name": "成都武侯祠",
+    "category": "museum",
+    "image": "img/commons-298eaf7f.jpg",
+    "exists": true
+  },
+  {
+    "city": "成都",
+    "name": "杜甫草堂",
+    "category": "garden",
+    "image": "img/Du_Fu_cao_tang.jpg",
+    "exists": true
+  },
+  {
+    "city": "成都",
+    "name": "成都大熊猫繁育研究基地",
+    "category": "garden",
+    "image": "img/Chengdu_Research_Base_Eingang.jpg",
+    "exists": true
+  },
+  {
+    "city": "成都",
+    "name": "青羊宫",
+    "category": "temple",
+    "image": "img/Qingyang_Palace.jpg",
+    "exists": true
+  },
+  {
+    "city": "成都",
+    "name": "文殊院",
+    "category": "temple",
+    "image": "img/commons-8a2fbfe7.jpg",
+    "exists": true
+  },
+  {
+    "city": "成都",
+    "name": "春熙路",
+    "category": "shopping",
+    "image": "img/Chunxi_Road_seen_from_viaduct_Chengdu.jpg",
+    "exists": true
+  },
+  {
+    "city": "成都",
+    "name": "大慈寺",
+    "category": "temple",
+    "image": "img/Dacisi_Temple_in_chengdu.jpg",
+    "exists": true
+  },
+  {
+    "city": "成都",
+    "name": "人民公园",
+    "category": "garden",
+    "image": "img/commons-d20e4c48.jpg",
+    "exists": true
+  },
+  {
+    "city": "成都",
+    "name": "四川博物院",
+    "category": "museum",
+    "image": "img/commons-e66b49dc.jpg",
+    "exists": true
+  },
+  {
+    "city": "成都",
+    "name": "金沙遗址",
+    "category": "museum",
+    "image": "img/Jinsha_Site_2018.jpg",
+    "exists": true
+  },
+  {
+    "city": "成都",
+    "name": "成都博物馆",
+    "category": "museum",
+    "image": "img/commons-1123eba0.jpg",
+    "exists": true
+  },
+  {
+    "city": "成都",
+    "name": "望江楼公园",
+    "category": "garden",
+    "image": "img/Wangjianglou-Tower.jpg",
+    "exists": true
+  },
+  {
+    "city": "成都",
+    "name": "天府广场",
+    "category": "street",
+    "image": "img/Tianfu-Square-1.jpg",
+    "exists": true
+  },
+  {
+    "city": "成都",
+    "name": "成都东站",
+    "category": "station",
+    "image": "img/Chengdu_East_Railway_Station_2011-05-08.jpg",
+    "exists": true
+  },
+  {
+    "city": "成都",
+    "name": "成都南站",
+    "category": "station",
+    "image": "img/Chengdunan_Railway_Station_at_night_2017-09-18.jpg",
+    "exists": true
+  },
+  {
+    "city": "成都",
+    "name": "都江堰",
+    "category": "river",
+    "image": "img/Dujiang_Weir.jpg",
+    "exists": true
+  },
+  {
+    "city": "成都",
+    "name": "青城山",
+    "category": "temple",
+    "image": "img/panoramio-2.jpg",
+    "exists": true
+  },
+  {
+    "city": "成都",
+    "name": "新世纪环球中心",
+    "category": "shopping",
+    "image": "img/Chengdu_Global_Center.jpg",
+    "exists": true
+  },
+  {
+    "city": "成都",
+    "name": "玉林路",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "东郊记忆",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "望平街",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "猛追湾",
+    "category": "river",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "建设路小吃街",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "泡桐树街",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "小通巷",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "琴台路",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "浣花溪公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "百花潭公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "文化公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "新华公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "四川科技馆",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "太古里",
+    "category": "shopping",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "IFS国金中心",
+    "category": "shopping",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "九眼桥",
+    "category": "river",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "安顺廊桥",
+    "category": "tower",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "东门码头",
+    "category": "river",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "桂溪生态公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "交子公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "铁像寺水街",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "天府芙蓉园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "白鹭湾湿地",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "三圣花乡",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "洛带古镇",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "黄龙溪古镇",
+    "category": "street",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "青龙湖湿地公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "天府艺术公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "四川大学博物馆",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "东湖公园",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "成都自然博物馆",
+    "category": "museum",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "天府熊猫塔",
+    "category": "tower",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "麓湖",
+    "category": "garden",
+    "image": null,
+    "exists": false
+  },
+  {
+    "city": "成都",
+    "name": "奎星楼街",
+    "category": "street",
+    "image": null,
+    "exists": false
+  }
+]

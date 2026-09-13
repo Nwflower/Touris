@@ -1,0 +1,27 @@
+{
+  "city": "上海",
+  "name": "静安寺",
+  "query": "File:View_From_Jing-An-temple_Shanghai.JPG",
+  "review": "pending",
+  "existingFile": "img/View_From_Jing-An-temple_Shanghai.jpg",
+  "candidates": [
+    {
+      "title": "File:View From Jing-An-temple Shanghai.JPG",
+      "pageId": 1040597,
+      "source": "https://commons.wikimedia.org/wiki/File:View_From_Jing-An-temple_Shanghai.JPG",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d5/View_From_Jing-An-temple_Shanghai.JPG/960px-View_From_Jing-An-temple_Shanghai.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/d/d5/View_From_Jing-An-temple_Shanghai.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2560,
+      "height": 1920,
+      "mime": "image/jpeg",
+      "description": "View from Jing An Temple in Shanghai. Modern Buildings behind traditional Temple Buildings.",
+      "author": "David Block (pitti)",
+      "license": "CC BY-SA 2.5",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
+      "categories": "Taken with Praktica 5MP|Jing'an Temple|Self-published work",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

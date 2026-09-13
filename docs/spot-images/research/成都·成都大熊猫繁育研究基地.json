@@ -1,0 +1,27 @@
+{
+  "city": "成都",
+  "name": "成都大熊猫繁育研究基地",
+  "query": "File:Chengdu Research Base Eingang.jpg",
+  "review": "pending",
+  "existingFile": "img/Chengdu_Research_Base_Eingang.jpg",
+  "candidates": [
+    {
+      "title": "File:Chengdu Research Base Eingang.jpg",
+      "pageId": 45020900,
+      "source": "https://commons.wikimedia.org/wiki/File:Chengdu_Research_Base_Eingang.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4c/Chengdu_Research_Base_Eingang.jpg/960px-Chengdu_Research_Base_Eingang.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/4/4c/Chengdu_Research_Base_Eingang.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2560,
+      "height": 1920,
+      "mime": "image/jpeg",
+      "description": "Eingang der Chengdu Research Base of Giant Panda Breeding",
+      "author": "Kreisverkehrsampel",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "categories": "GFDL|CC-BY-SA-3.0,2.5,2.0,1.0|License migration redundant|Self-published work|Entrances of Chengdu Research Base of Giant Panda Breeding",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

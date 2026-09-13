@@ -1,0 +1,27 @@
+{
+  "city": "成都",
+  "name": "四川博物院",
+  "query": "File:四川博物院.JPG",
+  "review": "pending",
+  "existingFile": "img/commons-e66b49dc.jpg",
+  "candidates": [
+    {
+      "title": "File:四川博物院.JPG",
+      "pageId": 21042661,
+      "source": "https://commons.wikimedia.org/wiki/File:%E5%9B%9B%E5%B7%9D%E5%8D%9A%E7%89%A9%E9%99%A2.JPG",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5f/%E5%9B%9B%E5%B7%9D%E5%8D%9A%E7%89%A9%E9%99%A2.JPG/960px-%E5%9B%9B%E5%B7%9D%E5%8D%9A%E7%89%A9%E9%99%A2.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/5/5f/%E5%9B%9B%E5%B7%9D%E5%8D%9A%E7%89%A9%E9%99%A2.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2592,
+      "height": 1944,
+      "mime": "image/jpeg",
+      "description": "​四川博物院外观。(Sichuan Museum, Qingyang District, Chengdu, China.)",
+      "author": "历史研究",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "categories": "Taken with Sony DSC-W190|Self-published work|Architecture of the Sichuan Museum",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

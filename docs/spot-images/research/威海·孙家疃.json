@@ -1,0 +1,22 @@
+{
+  "city": "威海",
+  "name": "孙家疃",
+  "query": "威海 孙家疃 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "Ifeng:Sunjiatuan20171011",
+      "source": "https://sd.ifeng.com/a/20171011/6057964_0.shtml",
+      "download": "https://p2.ifengimg.com/a/2017_41/d18ae16e03e8fd9_size349_w900_h524.jpg",
+      "original": "https://p2.ifengimg.com/a/2017_41/d18ae16e03e8fd9_size349_w900_h524.jpg",
+      "mime": "image/jpeg",
+      "author": "凤凰网山东频道；摄影作者未单列",
+      "description": "凤凰网孙家疃油画小镇专题图集，使用小镇与湾区全景。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "凤凰网山东频道；摄影作者未单列",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ]
+}

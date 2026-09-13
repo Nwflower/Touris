@@ -1,0 +1,22 @@
+{
+  "city": "杭州",
+  "name": "满觉陇",
+  "query": "杭州 满觉陇 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "Nanjituzhu:Manjuelong20200930",
+      "source": "https://blog.sina.cn/dpool/blog/s/blog_7533c52c0102yzsw.html",
+      "download": "https://p5.itc.cn/images01/20200929/7c5cae2e37534d89979f8969e58c2fb0.jpeg",
+      "original": "https://p5.itc.cn/images01/20200929/7c5cae2e37534d89979f8969e58c2fb0.jpeg",
+      "mime": "image/jpeg",
+      "author": "南麂土著（新浪博客）",
+      "description": "作者满觉陇路实拍游记，画面为桂花与刻有满觉陇的石刻。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "作者或新闻来源",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ]
+}

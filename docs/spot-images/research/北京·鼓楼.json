@@ -1,0 +1,27 @@
+{
+  "city": "北京",
+  "name": "鼓楼",
+  "query": "File:The_Drum_Tower_of_Beijing.jpg",
+  "review": "pending",
+  "existingFile": "img/The_Drum_Tower_of_Beijing.jpg",
+  "candidates": [
+    {
+      "title": "File:The Drum Tower of Beijing.jpg",
+      "pageId": 112150071,
+      "source": "https://commons.wikimedia.org/wiki/File:The_Drum_Tower_of_Beijing.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1c/The_Drum_Tower_of_Beijing.jpg/960px-The_Drum_Tower_of_Beijing.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/1/1c/The_Drum_Tower_of_Beijing.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 1080,
+      "height": 1440,
+      "mime": "image/jpeg",
+      "description": "View of the Drum Tower of Beijing",
+      "author": "Terre Arctica",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Drum towers|Beijing in the 2010s|Drum towers in China|Self-published work|Taken with Vivo X21",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

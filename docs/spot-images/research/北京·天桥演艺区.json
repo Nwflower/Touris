@@ -1,0 +1,26 @@
+{
+  "city": "北京",
+  "name": "天桥演艺区",
+  "query": "天桥演艺区 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "BeijingGov:Tianqiao20230919",
+      "source": "https://www.beijing.gov.cn/renwen/rwzyd/qxdw/zmzhzhpgj/tqyshzhx/202309/t20230919_3262084.html",
+      "download": "https://www.beijing.gov.cn/renwen/rwzyd/qxdw/zmzhzhpgj/tqyshzhx/202309/W020240507594416116643.jpg",
+      "original": "https://www.beijing.gov.cn/renwen/rwzyd/qxdw/zmzhzhpgj/tqyshzhx/202309/W020240507594416116643.jpg",
+      "mime": "image/jpeg",
+      "author": "发布方：首都之窗；摄影作者未明确署名",
+      "description": "项目指天桥艺术中心一带；北京市政府艺术中心页面的剧场外立面实拍。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "机构或文旅来源",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ],
+  "supplementalQueries": [
+    "Tianqiao Performing Arts Center filetype:bitmap -metro -station -地图",
+    "Tianqiao Art Center filetype:bitmap -metro -station -地图"
+  ]
+}

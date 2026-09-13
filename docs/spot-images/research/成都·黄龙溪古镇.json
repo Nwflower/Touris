@@ -1,0 +1,62 @@
+{
+  "city": "成都",
+  "name": "黄龙溪古镇",
+  "query": "黄龙溪古镇 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:Lane of Huanglongxi.jpg",
+      "pageId": 4558735,
+      "source": "https://commons.wikimedia.org/wiki/File:Lane_of_Huanglongxi.jpg",
+      "download": "https://upload.wikimedia.org/wikipedia/commons/c/c1/Lane_of_Huanglongxi.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/c/c1/Lane_of_Huanglongxi.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 800,
+      "height": 600,
+      "mime": "image/jpeg",
+      "description": "A lane of the Huanglongxi Township near Chengdu, China",
+      "author": "BenBen/本本一世",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "categories": "GFDL|Taken with Canon Digital IXUS 750|License migration redundant|Huanglongxi|Streets in Chengdu|Self-published work",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    },
+    {
+      "title": "File:Entrance of Huanglongxi Ancient Town, Tianfu New Area of Chengdu, Sichuan, China.jpg",
+      "pageId": 69161241,
+      "source": "https://commons.wikimedia.org/wiki/File:Entrance_of_Huanglongxi_Ancient_Town,_Tianfu_New_Area_of_Chengdu,_Sichuan,_China.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0e/Entrance_of_Huanglongxi_Ancient_Town%2C_Tianfu_New_Area_of_Chengdu%2C_Sichuan%2C_China.jpg/960px-Entrance_of_Huanglongxi_Ancient_Town%2C_Tianfu_New_Area_of_Chengdu%2C_Sichuan%2C_China.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/0/0e/Entrance_of_Huanglongxi_Ancient_Town%2C_Tianfu_New_Area_of_Chengdu%2C_Sichuan%2C_China.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 1080,
+      "height": 1440,
+      "mime": "image/jpeg",
+      "description": "Entrance of Huanglongxi Ancient Town, Tianfu New Area of Chengdu, Sichuan, China.",
+      "author": "Huangdan2060",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "categories": "CC-Zero|Huanglongxi|Self-published work",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    },
+    {
+      "title": "File:Huanglongxi.jpg",
+      "pageId": 2370389,
+      "source": "https://commons.wikimedia.org/wiki/File:Huanglongxi.jpg",
+      "download": "https://upload.wikimedia.org/wikipedia/commons/6/62/Huanglongxi.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/6/62/Huanglongxi.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 800,
+      "height": 600,
+      "mime": "image/jpeg",
+      "description": "The histrical town of Huanglongxi near Chengdu, China",
+      "author": "BenBen/本本一世",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "categories": "GFDL|Taken with Canon Digital IXUS 750|CC-BY-SA-2.5,2.0,1.0|License migration redundant|Huanglongxi|Self-published work",
+      "attribution": "I, BenBen",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

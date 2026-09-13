@@ -1,0 +1,69 @@
+{
+  "city": "成都",
+  "name": "天府艺术公园",
+  "query": "天府艺术公园 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:The Chengdu Tianfu Art Museum.jpg",
+      "pageId": 112662201,
+      "source": "https://commons.wikimedia.org/wiki/File:The_Chengdu_Tianfu_Art_Museum.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/38/The_Chengdu_Tianfu_Art_Museum.jpg/960px-The_Chengdu_Tianfu_Art_Museum.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/3/38/The_Chengdu_Tianfu_Art_Museum.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3968,
+      "height": 2976,
+      "mime": "image/jpeg",
+      "description": "The Chengdu Tianfu Art Museum, during the 2021 Chengdu Biennale, looking across Yinggui Lake, located in the Tianfu Art Park in the Jinniu District of Chengdu, Sichuan, China.",
+      "author": "Huan Fan",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "categories": "November 2021 in China|CC-Zero|Yinggui Lake|Chengdu Biennale|Tianfu Art Park|Chengdu Tianfu Art Museum|Files with coordinates missing SDC location of creation|Flickr images reviewed by FlickreviewR 2|Flickr images missing SDC published in",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "https://www.flickr.com/photos/194442606@N06/51685682812/in/datetaken/",
+      "coordinates": [
+        {
+          "lat": 30.713902,
+          "lon": 104.021111,
+          "primary": "",
+          "globe": "earth"
+        }
+      ]
+    },
+    {
+      "title": "File:The lake in the Tianfu Art Park.jpg",
+      "pageId": 112662203,
+      "source": "https://commons.wikimedia.org/wiki/File:The_lake_in_the_Tianfu_Art_Park.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/64/The_lake_in_the_Tianfu_Art_Park.jpg/960px-The_lake_in_the_Tianfu_Art_Park.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/6/64/The_lake_in_the_Tianfu_Art_Park.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3968,
+      "height": 2976,
+      "mime": "image/jpeg",
+      "description": "Yinggui Lake in the Tianfu Art Park, Chengdu, China, during the 2021 Chengdu Biennale. The Chengdu Museum of Contemporary Art is visible across the lake.",
+      "author": "Huan Fan",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "categories": "November 2021 in China|CC-Zero|Yinggui Lake|Chengdu Biennale|Tianfu Art Park|Chengdu Museum of Contemporary Art|Flickr images missing SDC source of file|Files with coordinates missing SDC location of creation|Flickr images reviewed by FlickreviewR 2",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "https://www.flickr.com/photos/194442606@N06/51686746148/in/datetaken/",
+      "coordinates": [
+        {
+          "lat": 30.713287,
+          "lon": 104.019714,
+          "primary": "",
+          "globe": "earth"
+        }
+      ]
+    }
+  ],
+  "supplementalQueries": [
+    "Tianfu Art Park filetype:bitmap -metro -station -地图",
+    {
+      "generator": "categorymembers",
+      "gcmtitle": "Category:Tianfu Art Park",
+      "gcmtype": "file",
+      "gcmlimit": 12
+    }
+  ]
+}

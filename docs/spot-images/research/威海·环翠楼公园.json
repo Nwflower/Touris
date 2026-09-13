@@ -1,0 +1,45 @@
+{
+  "city": "威海",
+  "name": "环翠楼公园",
+  "query": "File:Weihai_china.jpg",
+  "review": "pending",
+  "existingFile": "img/Weihai_china.jpg",
+  "candidates": [
+    {
+      "title": "File:Weihai china.jpg",
+      "pageId": 7354800,
+      "source": "https://commons.wikimedia.org/wiki/File:Weihai_china.jpg",
+      "download": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Weihai_china.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Weihai_china.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 637,
+      "height": 439,
+      "mime": "image/jpeg",
+      "description": "View of Happiness Gate from sea Weihai, Shandong, China",
+      "author": "Weihai",
+      "license": "Public domain",
+      "licenseUrl": "",
+      "categories": "Self-published work|PD-self|Happiness Gate|Cityscapes in Weihai",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    },
+    {
+      "title": "WeihaiGovMap:642",
+      "source": "https://www.weihai.gov.cn/szdt/web/mapIndex/3?area=&mapClassificationId=&mapClassificationPid=42&name=",
+      "download": "https://zhbypass.weihai.cn/minio/sciencetechnologymuseum/fa25402703e441a9921467ed735b25141717594279162.jpg",
+      "original": "https://zhbypass.weihai.cn/minio/sciencetechnologymuseum/fa25402703e441a9921467ed735b25141717594279162.jpg",
+      "mime": "image/jpeg",
+      "author": "发布方：威海市人民政府数字便民地图；摄影作者未单列",
+      "description": "威海市政府数字便民地图点位 642（环翠楼公园（4A）），地址：威海市环翠区奈古山东。使用该点位条目所配实景照片。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "威海市人民政府数字便民地图",
+      "modification": "Publisher photograph; no local visual edits.",
+      "placeId": "642",
+      "placeName": "环翠楼公园（4A）",
+      "latitude": "37.503770",
+      "longitude": "122.108170"
+    }
+  ]
+}

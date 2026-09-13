@@ -1,0 +1,25 @@
+{
+  "city": "成都",
+  "name": "麓湖",
+  "query": "成都 麓湖 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "Redstar:Luhu20200118",
+      "source": "https://k.sina.cn/article_6105713761_16bedcc6102000nduy.html?from=news&subch=onews",
+      "download": "https://k.sinaimg.cn/n/spider2020118/536/w1856h1080/20200118/7b0b-inhcycc0758162.jpg/w700d1q75cms.jpg",
+      "original": "https://k.sinaimg.cn/n/spider2020118/536/w1856h1080/20200118/7b0b-inhcycc0758162.jpg/w700d1q75cms.jpg",
+      "mime": "image/jpeg",
+      "author": "麓湖社区供图；红星新闻发布",
+      "description": "红星新闻2020-01-18麓湖公园社区报道所配湖区航拍，文末注明图由社区提供。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "麓湖社区供图；红星新闻发布",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ],
+  "supplementalQueries": [
+    "Luxelakes Chengdu filetype:bitmap -metro -station -地图"
+  ]
+}

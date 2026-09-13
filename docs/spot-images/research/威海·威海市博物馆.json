@@ -1,0 +1,26 @@
+{
+  "city": "威海",
+  "name": "威海市博物馆",
+  "query": "威海市博物馆 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "WeihaiGovMap:980",
+      "source": "https://www.weihai.gov.cn/szdt/web/mapIndex/3?area=&mapClassificationId=&mapClassificationPid=33&name=",
+      "download": "https://www.weihai.gov.cn/szdt/uploadFile/20260727/f9a19110-9c68-4d8f-a541-fae3b31a9290.jpg",
+      "original": "https://www.weihai.gov.cn/szdt/uploadFile/20260727/f9a19110-9c68-4d8f-a541-fae3b31a9290.jpg",
+      "mime": "image/jpeg",
+      "author": "发布方：威海市人民政府数字便民地图；摄影作者未单列",
+      "description": "威海市政府数字便民地图点位 980（威海市博物馆），地址：环翠区即墨路2A文化艺术中心3楼。使用该点位条目所配实景照片。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "威海市人民政府数字便民地图",
+      "modification": "Publisher photograph; no local visual edits.",
+      "placeId": "980",
+      "placeName": "威海市博物馆",
+      "latitude": "37.466702",
+      "longitude": "122.135579"
+    }
+  ]
+}

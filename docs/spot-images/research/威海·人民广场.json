@@ -1,0 +1,29 @@
+{
+  "city": "威海",
+  "name": "人民广场",
+  "query": "威海 人民广场 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:Weihai Zhengfu.jpg",
+      "pageId": 18694202,
+      "source": "https://commons.wikimedia.org/wiki/File:Weihai_Zhengfu.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c5/Weihai_Zhengfu.jpg/960px-Weihai_Zhengfu.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Weihai_Zhengfu.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 4000,
+      "height": 2248,
+      "mime": "image/jpeg",
+      "description": "Weihai Townhall building, Shandong Province, China.",
+      "author": "Popolon",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "categories": "Taken with Canon PowerShot SX200 IS|Self-published work|Files with coordinates missing SDC location of creation|Weihai City Hall",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ],
+  "supplementalQueries": [
+    "\"Weihai\" \"square\" filetype:bitmap -metro -station -地图"
+  ]
+}

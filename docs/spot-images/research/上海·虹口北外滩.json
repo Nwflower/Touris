@@ -1,0 +1,27 @@
+{
+  "city": "上海",
+  "name": "虹口北外滩",
+  "query": "File:Pudong_CBD_viewed_from_the_North_Bund_in_Shanghai.jpg",
+  "review": "pending",
+  "existingFile": "img/Pudong_CBD_viewed_from_the_North_Bund_in_Shanghai.jpg",
+  "candidates": [
+    {
+      "title": "File:Pudong CBD viewed from the North Bund in Shanghai.jpg",
+      "pageId": 160854417,
+      "source": "https://commons.wikimedia.org/wiki/File:Pudong_CBD_viewed_from_the_North_Bund_in_Shanghai.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1e/Pudong_CBD_viewed_from_the_North_Bund_in_Shanghai.jpg/960px-Pudong_CBD_viewed_from_the_North_Bund_in_Shanghai.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/1/1e/Pudong_CBD_viewed_from_the_North_Bund_in_Shanghai.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 6272,
+      "height": 4158,
+      "mime": "image/jpeg",
+      "description": "Pudong CBD viewed from the North Bund in Shanghai",
+      "author": "David Zhang from Canada",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "categories": "China photographs taken on 2018-05-03|Tone-mapped HDR images of China|Water reflections of cityscapes in China|Flickr images reviewed by trusted users|Flickr images missing SDC creator|May 2018 in Shanghai|Clouds at sunset in China|Skylines of Shanghai|Files from David Zhang Flickr stream|Blue hour in Shanghai|Lujiazui from the Bund in night|Oriental Pearl Tower at night|Sunset skylines",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "https://www.flickr.com/photos/unidisk/27109487787"
+    }
+  ]
+}

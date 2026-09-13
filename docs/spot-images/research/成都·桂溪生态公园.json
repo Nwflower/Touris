@@ -1,0 +1,25 @@
+{
+  "city": "成都",
+  "name": "桂溪生态公园",
+  "query": "桂溪生态公园 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "TianfuGreenroad:GuixiEcoPark20190428",
+      "source": "https://www.tianfugreenroad.com/culture.aspx?t=43&page=2",
+      "download": "https://www.tianfugreenroad.com/Uploadfiles/Picture/2019-4-28/20194281715227964.jpg",
+      "original": "https://www.tianfugreenroad.com/Uploadfiles/Picture/2019-4-28/20194281715227964.jpg",
+      "mime": "image/jpeg",
+      "description": "官方页面条目“桂溪生态公园之运动时尚”的封面，入口标识为桂溪生态公园。",
+      "author": "发布方：成都天府绿道建设投资集团有限公司；摄影作者未署名",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "天府绿道官方网站",
+      "modification": "Original publisher image; no local visual edits. CSS crops in cards."
+    }
+  ],
+  "supplementalQueries": [
+    "Guixi Ecological Park filetype:bitmap -metro -station -地图"
+  ]
+}

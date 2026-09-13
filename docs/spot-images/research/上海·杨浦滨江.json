@@ -1,0 +1,61 @@
+{
+  "city": "上海",
+  "name": "杨浦滨江",
+  "query": "上海 杨浦滨江 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:DSC00228滨江绿化带夜景.jpg",
+      "pageId": 83178393,
+      "source": "https://commons.wikimedia.org/wiki/File:DSC00228%E6%BB%A8%E6%B1%9F%E7%BB%BF%E5%8C%96%E5%B8%A6%E5%A4%9C%E6%99%AF.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b6/DSC00228%E6%BB%A8%E6%B1%9F%E7%BB%BF%E5%8C%96%E5%B8%A6%E5%A4%9C%E6%99%AF.jpg/960px-DSC00228%E6%BB%A8%E6%B1%9F%E7%BB%BF%E5%8C%96%E5%B8%A6%E5%A4%9C%E6%99%AF.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/b/b6/DSC00228%E6%BB%A8%E6%B1%9F%E7%BB%BF%E5%8C%96%E5%B8%A6%E5%A4%9C%E6%99%AF.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 7952,
+      "height": 5304,
+      "mime": "image/jpeg",
+      "description": "Night view of riverside green belt. In the middle are the jogging and bicycle lanes.  Shanghai China.",
+      "author": "Ding Kezhong",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Landscapes of China|Yangpu District|Self-published work|October 2019 in Shanghai",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    },
+    {
+      "title": "File:Time Shipper.jpg",
+      "pageId": 93202871,
+      "source": "https://commons.wikimedia.org/wiki/File:Time_Shipper.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/Time_Shipper.jpg/960px-Time_Shipper.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/7/72/Time_Shipper.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2551,
+      "height": 1482,
+      "mime": "image/jpeg",
+      "description": "Sculpture to Yangpu Riverside Park, Shanghai. Image courtesy: ©Oscar Oiwa Studio, NY.",
+      "author": "Oscar Oiwa",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Sculptures|Oscar Oiwa|Self-published work",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    },
+    {
+      "title": "Sina:Yangpu20230629",
+      "source": "https://finance.sina.com.cn/jjxw/2023-06-29/doc-imyyxmnt1975765.shtml",
+      "download": "https://n.sinaimg.cn/spider20230629/290/w1080h810/20230629/68f9-49eff3e428989ec8b570d6e149f62c32.jpg",
+      "original": "https://n.sinaimg.cn/spider20230629/290/w1080h810/20230629/68f9-49eff3e428989ec8b570d6e149f62c32.jpg",
+      "mime": "image/jpeg",
+      "author": "新浪转载；摄影作者未明确署名",
+      "description": "杨浦滨江品质提升报道中的渔人码头滨江步道实景，可见临江步道及工业轨道。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "景点或新闻专页",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ],
+  "supplementalQueries": [
+    "Yangpu Riverside filetype:bitmap -metro -station -地图"
+  ]
+}

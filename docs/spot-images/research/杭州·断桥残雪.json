@@ -1,0 +1,44 @@
+{
+  "city": "杭州",
+  "name": "断桥残雪",
+  "query": "杭州 断桥残雪 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:West Lake 2025.06 02.jpg",
+      "pageId": 169427026,
+      "source": "https://commons.wikimedia.org/wiki/File:West_Lake_2025.06_02.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/00/West_Lake_2025.06_02.jpg/960px-West_Lake_2025.06_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/0/00/West_Lake_2025.06_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2400,
+      "height": 1350,
+      "mime": "image/jpeg",
+      "description": "Broken Bridge of West Lake, Hangzhou, China",
+      "author": "Shujianyang",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Broken Bridge (Hangzhou)|Self-published work|June 2025 in Hangzhou",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    },
+    {
+      "title": "File:West Lake 2025.06 03.jpg",
+      "pageId": 169427025,
+      "source": "https://commons.wikimedia.org/wiki/File:West_Lake_2025.06_03.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/West_Lake_2025.06_03.jpg/960px-West_Lake_2025.06_03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/2/23/West_Lake_2025.06_03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2400,
+      "height": 1350,
+      "mime": "image/jpeg",
+      "description": "Bai Causeway, Broken Bridge, Baoshi Mountain and Baochu Pagoda, West Lake, Hangzhou, China",
+      "author": "Shujianyang",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Baochu Pagoda|Broken Bridge (Hangzhou)|Bai Causeway|Self-published work|June 2025 in Hangzhou|Baoshi Hill",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

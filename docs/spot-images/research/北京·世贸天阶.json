@@ -1,0 +1,26 @@
+{
+  "city": "北京",
+  "name": "世贸天阶",
+  "query": "北京 世贸天阶 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:世贸天阶.jpg",
+      "pageId": 21850618,
+      "source": "https://commons.wikimedia.org/wiki/File:%E4%B8%96%E8%B4%B8%E5%A4%A9%E9%98%B6.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f3/%E4%B8%96%E8%B4%B8%E5%A4%A9%E9%98%B6.jpg/960px-%E4%B8%96%E8%B4%B8%E5%A4%A9%E9%98%B6.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/f/f3/%E4%B8%96%E8%B4%B8%E5%A4%A9%E9%98%B6.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2448,
+      "height": 3264,
+      "mime": "image/jpeg",
+      "description": "​北京世贸天阶",
+      "author": "螺钉",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "categories": "The Place|Self-published work",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

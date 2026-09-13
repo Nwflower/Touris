@@ -1,0 +1,22 @@
+{
+  "city": "威海",
+  "name": "远遥码头",
+  "query": "威海 远遥码头 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "WHNews:Yuanyao7290616",
+      "source": "https://www.whnews.cn/news/node/2023-09/02/content_7290616.htm",
+      "download": "https://www.whnews.cn/news/data/attachement/jpg/site2/20230902/30b49eb09981265cdcaa14.jpg",
+      "original": "https://www.whnews.cn/news/data/attachement/jpg/site2/20230902/30b49eb09981265cdcaa14.jpg",
+      "mime": "image/jpeg",
+      "author": "威海新闻网；摄影作者未单列",
+      "description": "威海新闻网远遥渔港开海实地报道，使用船队出港照片。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "威海新闻网；摄影作者未单列",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ]
+}

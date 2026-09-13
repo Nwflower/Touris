@@ -1,0 +1,27 @@
+{
+  "city": "广州",
+  "name": "广州艺术博物院（新馆）",
+  "query": "File:Aerial_View,_Guangzhou_Museum_of_Art_20241027-A.jpg",
+  "review": "pending",
+  "existingFile": "assets/cities/guangzhou/art-museum.jpg",
+  "candidates": [
+    {
+      "title": "File:Aerial View, Guangzhou Museum of Art 20241027-A.jpg",
+      "pageId": 154432734,
+      "source": "https://commons.wikimedia.org/wiki/File:Aerial_View,_Guangzhou_Museum_of_Art_20241027-A.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d4/Aerial_View%2C_Guangzhou_Museum_of_Art_20241027-A.jpg/960px-Aerial_View%2C_Guangzhou_Museum_of_Art_20241027-A.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Aerial_View%2C_Guangzhou_Museum_of_Art_20241027-A.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 5294,
+      "height": 3529,
+      "mime": "image/jpeg",
+      "description": "​广州艺术博物院",
+      "author": "Tim Wu",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Guangzhou Museum of Art|Self-published work|Files with coordinates missing SDC location of creation|Taken with DJI FC9184|Guangzhou photographs taken on 2024-10-27",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

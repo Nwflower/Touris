@@ -1,0 +1,47 @@
+{
+  "city": "成都",
+  "name": "洛带古镇",
+  "query": "成都 洛带古镇 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:Luodai-04.jpg",
+      "pageId": 12144448,
+      "source": "https://commons.wikimedia.org/wiki/File:Luodai-04.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/de/Luodai-04.jpg/960px-Luodai-04.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/d/de/Luodai-04.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3606,
+      "height": 2403,
+      "mime": "image/jpeg",
+      "description": "Main street of Luodai ancient town in Sichuan, China.",
+      "author": "This image was produced by me, David Castor (user:dcastor). The pictures I submit to the Wikipedia Project are released to the public domain. This gives you the right to use them in any way you like, without any kind of notification. This said, I would still appreciate to be mentioned as the originator whenever you think it complies well with your use of the picture. A message to me  about how it has been used would also be welcome. You are obviously not required to respond to these wishes of mine, just in a friendly manner encouraged to. (All my photos are placed in Category:Images by David Castor or a subcategory thereof.)",
+      "license": "Public domain",
+      "licenseUrl": "",
+      "categories": "Streets in China|Taken with Canon EOS 40D|Luodai|Self-published work|PD-self|Images by David Castor-cultural heritage",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    },
+    {
+      "title": "File:Luodai-09.jpg",
+      "pageId": 12144483,
+      "source": "https://commons.wikimedia.org/wiki/File:Luodai-09.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/97/Luodai-09.jpg/960px-Luodai-09.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/9/97/Luodai-09.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2404,
+      "height": 2404,
+      "mime": "image/jpeg",
+      "description": "Wall decoration in Luodai ancient town in Sichuan, China.",
+      "author": "This image was produced by me, David Castor (user:dcastor). The pictures I submit to the Wikipedia Project are released to the public domain. This gives you the right to use them in any way you like, without any kind of notification. This said, I would still appreciate to be mentioned as the originator whenever you think it complies well with your use of the picture. A message to me  about how it has been used would also be welcome. You are obviously not required to respond to these wishes of mine, just in a friendly manner encouraged to. (All my photos are placed in Category:Images by David Castor or a subcategory thereof.)",
+      "license": "Public domain",
+      "licenseUrl": "",
+      "categories": "Art of China|Taken with Canon EOS 40D|Luodai|Self-published work|PD-self|Images by David Castor-cultural heritage",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ],
+  "supplementalQueries": [
+    "Luodai Ancient Town filetype:bitmap -metro -station -地图"
+  ]
+}

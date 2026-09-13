@@ -1,0 +1,29 @@
+{
+  "city": "杭州",
+  "name": "梅家坞",
+  "query": "杭州 梅家坞 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:Longjing Tea field, Dragon Well area, Meijiawu China.jpg",
+      "pageId": 74601657,
+      "source": "https://commons.wikimedia.org/wiki/File:Longjing_Tea_field,_Dragon_Well_area,_Meijiawu_China.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6f/Longjing_Tea_field%2C_Dragon_Well_area%2C_Meijiawu_China.jpg/960px-Longjing_Tea_field%2C_Dragon_Well_area%2C_Meijiawu_China.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/6/6f/Longjing_Tea_field%2C_Dragon_Well_area%2C_Meijiawu_China.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2700,
+      "height": 1800,
+      "mime": "image/jpeg",
+      "description": "Meijiawu Village, Dragon Well Tea Plantation",
+      "author": "Peter K Burian",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Tea plantations in China|Longjing, Hangzhou|Self-published work",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ],
+  "directSources": [
+    "File:Longjing Tea field, Dragon Well area, Meijiawu China.jpg"
+  ]
+}

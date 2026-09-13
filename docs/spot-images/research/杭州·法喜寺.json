@@ -1,0 +1,65 @@
+{
+  "city": "杭州",
+  "name": "法喜寺",
+  "query": "杭州 法喜寺 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:Upper Tianzhu Temple in Hangzhou.jpg",
+      "pageId": 173706433,
+      "source": "https://commons.wikimedia.org/wiki/File:Upper_Tianzhu_Temple_in_Hangzhou.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b9/Upper_Tianzhu_Temple_in_Hangzhou.jpg/960px-Upper_Tianzhu_Temple_in_Hangzhou.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/b/b9/Upper_Tianzhu_Temple_in_Hangzhou.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 1653,
+      "height": 1186,
+      "mime": "image/jpeg",
+      "description": "​上天竺，摘自《西湖风景》，由杭州二我轩照相馆。",
+      "author": "杭州二我轩照相馆",
+      "license": "Public domain",
+      "licenseUrl": "",
+      "categories": "PD China|Historical images of Hangzhou|Faxi Temple",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "杭州二我轩照相馆《西湖风景》"
+    },
+    {
+      "title": "File:Gathering of Chinese Monks.jpeg",
+      "pageId": 11891325,
+      "source": "https://commons.wikimedia.org/wiki/File:Gathering_of_Chinese_Monks.jpeg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2b/Gathering_of_Chinese_Monks.jpeg/960px-Gathering_of_Chinese_Monks.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/2/2b/Gathering_of_Chinese_Monks.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 1600,
+      "height": 1898,
+      "mime": "image/jpeg",
+      "description": "Gathering of Chinese Buddhist monks at Faxi Temple in Hangzhou, Zhejiang province, China.",
+      "author": "Marco Varisco took the photo and published it on Flickr. User Tengu800 cropped and adjusted the image.",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "categories": "Buddhist monks of China|Taken with Canon EOS 350D|Flickr images reviewed by trusted users",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "https://www.flickr.com/photos/mava/1372936119/"
+    },
+    {
+      "title": "File:上天竺 - 法喜寺 - panoramio.jpg",
+      "pageId": 57754164,
+      "source": "https://commons.wikimedia.org/wiki/File:%E4%B8%8A%E5%A4%A9%E7%AB%BA_-_%E6%B3%95%E5%96%9C%E5%AF%BA_-_panoramio.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/11/%E4%B8%8A%E5%A4%A9%E7%AB%BA_-_%E6%B3%95%E5%96%9C%E5%AF%BA_-_panoramio.jpg/960px-%E4%B8%8A%E5%A4%A9%E7%AB%BA_-_%E6%B3%95%E5%96%9C%E5%AF%BA_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/1/11/%E4%B8%8A%E5%A4%A9%E7%AB%BA_-_%E6%B3%95%E5%96%9C%E5%AF%BA_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 1920,
+      "height": 1080,
+      "mime": "image/jpeg",
+      "description": "上天竺 - 法喜寺",
+      "author": "zhiyin586@163.com",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "categories": "China photographs taken on 2014-04-29|Panoramio files uploaded by Panoramio upload bot|Panoramio images reviewed by trusted users|Photos from Panoramio|Files with coordinates missing SDC location of creation|Faxi Temple",
+      "attribution": "zhiyin586@163.com",
+      "restrictions": "",
+      "credit": "https://web.archive.org/web/20161102144107/http://www.panoramio.com/photo/106375957"
+    }
+  ],
+  "directSources": [
+    "File:上天竺 - 法喜寺 - panoramio.jpg"
+  ]
+}

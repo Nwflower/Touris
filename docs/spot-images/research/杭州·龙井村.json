@@ -1,0 +1,27 @@
+{
+  "city": "杭州",
+  "name": "龙井村",
+  "query": "File:Dragon_Well_01_20161004.jpg",
+  "review": "pending",
+  "existingFile": "assets/cities/hangzhou/longjing-village.jpg",
+  "candidates": [
+    {
+      "title": "File:Dragon Well 01 20161004.jpg",
+      "pageId": 52346523,
+      "source": "https://commons.wikimedia.org/wiki/File:Dragon_Well_01_20161004.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/16/Dragon_Well_01_20161004.jpg/960px-Dragon_Well_01_20161004.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/1/16/Dragon_Well_01_20161004.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2560,
+      "height": 1920,
+      "mime": "image/jpeg",
+      "description": "​杭州西湖龙井狮峰山麓老龙井景区。",
+      "author": "Tyg728",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Longjing, Hangzhou|Self-published work",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

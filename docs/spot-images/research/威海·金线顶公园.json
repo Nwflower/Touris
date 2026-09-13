@@ -1,0 +1,26 @@
+{
+  "city": "威海",
+  "name": "金线顶公园",
+  "query": "金线顶公园 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "WeihaiGovMap:645",
+      "source": "https://www.weihai.gov.cn/szdt/web/mapIndex/3?area=&mapClassificationId=&mapClassificationPid=42&name=",
+      "download": "https://zhbypass.weihai.cn/minio/sciencetechnologymuseum/8545454a3f934b09896b8cf922b9553d1717594598488.jpg",
+      "original": "https://zhbypass.weihai.cn/minio/sciencetechnologymuseum/8545454a3f934b09896b8cf922b9553d1717594598488.jpg",
+      "mime": "image/jpeg",
+      "author": "发布方：威海市人民政府数字便民地图；摄影作者未单列",
+      "description": "威海市政府数字便民地图点位 645（金线顶公园），地址：山东省威海市环翠区金线顶路117号。使用该点位条目所配实景照片。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "威海市人民政府数字便民地图",
+      "modification": "Publisher photograph; no local visual edits.",
+      "placeId": "645",
+      "placeName": "金线顶公园",
+      "latitude": "37.489383",
+      "longitude": "122.136028"
+    }
+  ]
+}

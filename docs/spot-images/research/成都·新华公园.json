@@ -1,0 +1,25 @@
+{
+  "city": "成都",
+  "name": "新华公园",
+  "query": "成都 新华公园 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "Ctrip:Xinhua100j0s000000hzx6dCEA6",
+      "source": "https://you.ctrip.com/sight/chengdu104/1475875.html",
+      "download": "https://dimg04.c-ctrip.com/images/100j0s000000hzx6dCEA6_W_640_10000.jpg?proc=autoorient",
+      "original": "https://dimg04.c-ctrip.com/images/100j0s000000hzx6dCEA6_W_640_10000.jpg?proc=autoorient",
+      "mime": "image/jpeg",
+      "description": "公园入口新华公园刻字石，来源景点位于成都成华区双林路87号。",
+      "author": "发布平台：携程；摄影作者未明确署名",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "携程",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ],
+  "supplementalQueries": [
+    "Xinhua Park Chengdu filetype:bitmap -metro -station -地图"
+  ]
+}

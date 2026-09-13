@@ -1,0 +1,27 @@
+{
+  "city": "成都",
+  "name": "成都南站",
+  "query": "File:Chengdunan Railway Station at night, 2017-09-18.jpg",
+  "review": "pending",
+  "existingFile": "img/Chengdunan_Railway_Station_at_night_2017-09-18.jpg",
+  "candidates": [
+    {
+      "title": "File:Chengdunan Railway Station at night, 2017-09-18.jpg",
+      "pageId": 62613975,
+      "source": "https://commons.wikimedia.org/wiki/File:Chengdunan_Railway_Station_at_night,_2017-09-18.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cc/Chengdunan_Railway_Station_at_night%2C_2017-09-18.jpg/960px-Chengdunan_Railway_Station_at_night%2C_2017-09-18.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/c/cc/Chengdunan_Railway_Station_at_night%2C_2017-09-18.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 5722,
+      "height": 3820,
+      "mime": "image/jpeg",
+      "description": "​成都南站夜景",
+      "author": "Siyuwj",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Chengdunan Railway Station|September 2017 in rail transport in China|Self-published work",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

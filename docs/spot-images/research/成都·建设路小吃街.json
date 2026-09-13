@@ -1,0 +1,25 @@
+{
+  "city": "成都",
+  "name": "建设路小吃街",
+  "query": "建设路小吃街 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "LynnFu:JiansheRoad20200607",
+      "source": "https://k.sina.cn/article_7042261452_p1a3c061cc00100p83n.html",
+      "download": "https://n.sinaimg.cn/sinakd10110/352/w720h432/20200607/4d33-iurnkpr6865442.jpg",
+      "original": "https://n.sinaimg.cn/sinakd10110/352/w720h432/20200607/4d33-iurnkpr6865442.jpg",
+      "mime": "image/jpeg",
+      "description": "带署名的成都建设路摄影图集；实拍夜市沿街小吃商铺。",
+      "author": "摄影师琳恩 LYNN FU（米拍）",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "新浪摄影图集",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ],
+  "supplementalQueries": [
+    "Jianshe Road Chengdu filetype:bitmap -metro -station -地图"
+  ]
+}

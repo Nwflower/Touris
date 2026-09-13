@@ -1,0 +1,27 @@
+{
+  "city": "北京",
+  "name": "北海公园",
+  "query": "File:Beijing_Beihai_park_Qionghua-Insel_Tor-20110104-RM-141208.jpg",
+  "review": "pending",
+  "existingFile": "img/Beijing_Beihai_park_Qionghua-Insel_Tor-20110104-RM-141208.jpg",
+  "candidates": [
+    {
+      "title": "File:Beijing Beihai park Qionghua-Insel Tor-20110104-RM-141208.jpg",
+      "pageId": 189769496,
+      "source": "https://commons.wikimedia.org/wiki/File:Beijing_Beihai_park_Qionghua-Insel_Tor-20110104-RM-141208.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/Beijing_Beihai_park_Qionghua-Insel_Tor-20110104-RM-141208.jpg/960px-Beijing_Beihai_park_Qionghua-Insel_Tor-20110104-RM-141208.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Beijing_Beihai_park_Qionghua-Insel_Tor-20110104-RM-141208.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 4000,
+      "height": 3000,
+      "mime": "image/jpeg",
+      "description": "Entrance gate to Qionghua Island in Beihai Park, Beijing",
+      "author": "Reinhold Möller Ermell",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Taken with Panasonic Lumix DMC-G1|Taken with Panasonic Lumix G Vario HD 14-140mm F4.0-5.8 Asph Mega OIS|January 2011 in Beijing|Uploaded with LrMediaWiki|Photographs by Ermell|Files with coordinates missing SDC location of creation|Jade Island, Beihai Park|Paifangs in Beijing|White Pagoda of Beihai Park|Images of China by Ermell|Images by User:Ermell taken in 2011",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "city": "北京",
+  "name": "亮马河",
+  "query": "File:Liangma_River_at_Xinyuan_St_(20200808164518).jpg",
+  "review": "pending",
+  "existingFile": "img/Liangma_River_at_Xinyuan_St_20200808164518.jpg",
+  "candidates": [
+    {
+      "title": "File:Liangma River at Xinyuan St (20200808164518).jpg",
+      "pageId": 92970672,
+      "source": "https://commons.wikimedia.org/wiki/File:Liangma_River_at_Xinyuan_St_(20200808164518).jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6c/Liangma_River_at_Xinyuan_St_%2820200808164518%29.jpg/960px-Liangma_River_at_Xinyuan_St_%2820200808164518%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/6/6c/Liangma_River_at_Xinyuan_St_%2820200808164518%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3997,
+      "height": 2665,
+      "mime": "image/jpeg",
+      "description": "Here, the river serves as the border line between Zuojiazhuang and Sanlitun subdistricts.",
+      "author": "N509FZ",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Liangma River|Self-published work|Beijing photographs taken on 2020-08-08|Files with coordinates missing SDC location of creation|August 2020 in Beijing",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

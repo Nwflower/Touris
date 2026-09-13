@@ -1,0 +1,27 @@
+{
+  "city": "成都",
+  "name": "新世纪环球中心",
+  "query": "File:Chengdu Global Center.jpg",
+  "review": "pending",
+  "existingFile": "img/Chengdu_Global_Center.jpg",
+  "candidates": [
+    {
+      "title": "File:Chengdu Global Center.jpg",
+      "pageId": 109841624,
+      "source": "https://commons.wikimedia.org/wiki/File:Chengdu_Global_Center.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a6/Chengdu_Global_Center.jpg/960px-Chengdu_Global_Center.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/a/a6/Chengdu_Global_Center.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3264,
+      "height": 2448,
+      "mime": "image/jpeg",
+      "description": "New Century Global Center",
+      "author": "FMoo",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "categories": "China photographs taken on 2015-12-17|Taken with iPhone 6|CC-Zero|New Century Global Center|FoP-China|Images from Pixabay|Files with coordinates missing SDC location of creation",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "https://pixabay.com/photos/global-center-chengdu-building-sky-2362442/\nhttps://pixy.org/6468350/"
+    }
+  ]
+}

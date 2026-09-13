@@ -1,0 +1,48 @@
+{
+  "city": "杭州",
+  "name": "吴山城隍阁",
+  "query": "吴山城隍阁 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:City God Pavilion.jpg",
+      "pageId": 61678696,
+      "source": "https://commons.wikimedia.org/wiki/File:City_God_Pavilion.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/48/City_God_Pavilion.jpg/960px-City_God_Pavilion.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/4/48/City_God_Pavilion.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 5472,
+      "height": 3078,
+      "mime": "image/jpeg",
+      "description": "West Lake, Hangzhou: City God Pavilion and Wang Zhuang from Leifeng Temple",
+      "author": "Yinweichen",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "City God Pavilion|Views of Hangzhou|Self-published work|2017 in Hangzhou",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    },
+    {
+      "title": "File:City God Pavilion, Hangzhou.jpg",
+      "pageId": 84063367,
+      "source": "https://commons.wikimedia.org/wiki/File:City_God_Pavilion,_Hangzhou.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e6/City_God_Pavilion%2C_Hangzhou.jpg/960px-City_God_Pavilion%2C_Hangzhou.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/e/e6/City_God_Pavilion%2C_Hangzhou.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2448,
+      "height": 3264,
+      "mime": "image/jpeg",
+      "description": "City God Pavilion, Hangzhou",
+      "author": "钉钉",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "November 2019 China photographs|City God Pavilion|Self-published work|November 2019 in Hangzhou",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ],
+  "directSources": [
+    "File:City God Pavilion.jpg",
+    "File:City God Pavilion, Hangzhou.jpg"
+  ]
+}

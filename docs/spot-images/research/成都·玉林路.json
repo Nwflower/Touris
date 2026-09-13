@@ -1,0 +1,25 @@
+{
+  "city": "成都",
+  "name": "玉林路",
+  "query": "成都 玉林路 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "Trip:Yulin1mi7412000dmsrntqBCC3",
+      "source": "https://www.trip.com/moments/poi-yulin-west-road-56810109/",
+      "download": "https://ak-d.tripcdn.com/images/1mi7412000dmsrntqBCC3.jpg?proc=source%2Ftrip",
+      "original": "https://ak-d.tripcdn.com/images/1mi7412000dmsrntqBCC3.jpg?proc=source%2Ftrip",
+      "mime": "image/jpeg",
+      "author": "Trip.com 玉林西路图集；摄影作者未单列",
+      "description": "项目玉林路以小酒馆和社区生活为描述，使用玉林西路图集街道实景。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "Trip.com 玉林西路图集；摄影作者未单列",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ],
+  "supplementalQueries": [
+    "Yulin Road Chengdu filetype:bitmap -metro -station -地图"
+  ]
+}

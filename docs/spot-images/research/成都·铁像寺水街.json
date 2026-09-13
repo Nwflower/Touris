@@ -1,0 +1,25 @@
+{
+  "city": "成都",
+  "name": "铁像寺水街",
+  "query": "铁像寺水街 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "Ctrip:Tiexiangsi0106l1200099wdqgjF1E6",
+      "source": "https://you.ctrip.com/sight/chengdu104/1985837.html",
+      "download": "https://dimg04.c-ctrip.com/images/0106l1200099wdqgjF1E6_W_640_10000.jpg?proc=autoorient",
+      "original": "https://dimg04.c-ctrip.com/images/0106l1200099wdqgjF1E6_W_640_10000.jpg?proc=autoorient",
+      "mime": "image/jpeg",
+      "description": "铁像寺水街景点专页实拍廊桥、水道及题字，地址为铁像寺路88号。",
+      "author": "发布平台：携程；摄影作者未明确署名",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "携程",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ],
+  "supplementalQueries": [
+    "Tiexiang Temple Chengdu filetype:bitmap -metro -station -地图"
+  ]
+}

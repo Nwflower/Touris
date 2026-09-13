@@ -1,0 +1,27 @@
+{
+  "city": "广州",
+  "name": "光孝寺",
+  "query": "File:Guangzhou_Guangxiao_Si_2012.11.15_16-41-08.jpg",
+  "review": "pending",
+  "existingFile": "assets/cities/guangzhou/guangxiao-temple.jpg",
+  "candidates": [
+    {
+      "title": "File:Guangzhou Guangxiao Si 2012.11.15 16-41-08.jpg",
+      "pageId": 24662999,
+      "source": "https://commons.wikimedia.org/wiki/File:Guangzhou_Guangxiao_Si_2012.11.15_16-41-08.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/41/Guangzhou_Guangxiao_Si_2012.11.15_16-41-08.jpg/960px-Guangzhou_Guangxiao_Si_2012.11.15_16-41-08.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/4/41/Guangzhou_Guangxiao_Si_2012.11.15_16-41-08.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 4752,
+      "height": 3168,
+      "mime": "image/jpeg",
+      "description": "广州光孝寺 ——\n\n大雄宝殿东南角",
+      "author": "Zhangzhugang",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "categories": "GFDL|Taken with Canon EOS 500D|CC-BY-SA-3.0,2.5,2.0,1.0|License migration redundant|Self-published work|Files with coordinates missing SDC location of creation|Mahavira Hall, Guangxiao Temple (Guangzhou)",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

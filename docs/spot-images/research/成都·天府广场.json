@@ -1,0 +1,27 @@
+{
+  "city": "成都",
+  "name": "天府广场",
+  "query": "File:Tianfu-Square-1.JPG",
+  "review": "pending",
+  "existingFile": "img/Tianfu-Square-1.jpg",
+  "candidates": [
+    {
+      "title": "File:Tianfu-Square-1.JPG",
+      "pageId": 11189732,
+      "source": "https://commons.wikimedia.org/wiki/File:Tianfu-Square-1.JPG",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/Tianfu-Square-1.JPG/960px-Tianfu-Square-1.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/1/12/Tianfu-Square-1.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3888,
+      "height": 2592,
+      "mime": "image/jpeg",
+      "description": "Tianfu Sqaure, Chengdu",
+      "author": "AlexHe34",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "categories": "Mao Zedong Statue (Chengdu)|GFDL|Taken with Canon EOS 400D|Tianfu Square|Sichuan Science and Technology Museum|License migration redundant|Self-published work",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

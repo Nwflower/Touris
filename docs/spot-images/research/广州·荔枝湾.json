@@ -1,0 +1,25 @@
+{
+  "city": "广州",
+  "name": "荔枝湾",
+  "query": "广州 荔枝湾 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "LiwanGov:Lizhiwan9058758",
+      "source": "https://www.lw.gov.cn/zjlw/",
+      "download": "https://www.lw.gov.cn/img/0/924/924105/9058758.jpg",
+      "original": "https://www.lw.gov.cn/img/0/924/924105/9058758.jpg",
+      "mime": "image/jpeg",
+      "author": "广州市荔湾区政府网站；摄影作者未明确署名",
+      "description": "荔湾区政府走进荔湾页面的荔枝湾景区配图，水道及西关建筑实景。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "政府网站",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ],
+  "supplementalQueries": [
+    "\"Lizhiwan\" filetype:bitmap -metro -station -地图"
+  ]
+}

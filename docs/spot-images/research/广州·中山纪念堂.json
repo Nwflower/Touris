@@ -1,0 +1,27 @@
+{
+  "city": "广州",
+  "name": "中山纪念堂",
+  "query": "File:Guangzhou_Yuexiu_Zhongshan_Jinian_Tang_2024-09-19_14.55.41.jpg",
+  "review": "pending",
+  "existingFile": "assets/cities/guangzhou/sun-yat-sen-hall.jpg",
+  "candidates": [
+    {
+      "title": "File:Guangzhou Yuexiu Zhongshan Jinian Tang 2024-09-19 14.55.41.jpg",
+      "pageId": 153010151,
+      "source": "https://commons.wikimedia.org/wiki/File:Guangzhou_Yuexiu_Zhongshan_Jinian_Tang_2024-09-19_14.55.41.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e5/Guangzhou_Yuexiu_Zhongshan_Jinian_Tang_2024-09-19_14.55.41.jpg/960px-Guangzhou_Yuexiu_Zhongshan_Jinian_Tang_2024-09-19_14.55.41.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Guangzhou_Yuexiu_Zhongshan_Jinian_Tang_2024-09-19_14.55.41.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 5184,
+      "height": 3888,
+      "mime": "image/jpeg",
+      "description": "​中山纪念堂，位于中国广东省广州市越秀区北京街道莲花井社区东风中路295号。建于民国二十年（1931）。属于全国重点文物保护单位。",
+      "author": "古海岸遗址",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Sun Yat-sen Memorial Hall, Guangzhou|Self-published work|Featured pictures on Wikipedia, Chinese|Guangzhou photographs taken on 2024-09-19|Files with Assessments template missing SDC Commons no value quality assessment",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

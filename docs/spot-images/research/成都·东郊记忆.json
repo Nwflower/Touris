@@ -1,0 +1,25 @@
+{
+  "city": "成都",
+  "name": "东郊记忆",
+  "query": "成都 东郊记忆 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "Xuebiaogan:DongjiaoMemory2021",
+      "source": "https://www.xuebiaogan.com/a/xingyebiaogan/wenhuachuangyi/20210225/29.html",
+      "download": "https://www.xuebiaogan.com/uploads/allimg/210225/1-210225151KU59.jpg",
+      "original": "https://www.xuebiaogan.com/uploads/allimg/210225/1-210225151KU59.jpg",
+      "mime": "image/jpeg",
+      "description": "专文介绍成都东郊记忆，图片为带有东郊记忆标识的园区入口。",
+      "author": "发布方：学标杆网；摄影作者未署名",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "publisher",
+      "modification": "Publisher image; no local visual edits. CSS crops in cards."
+    }
+  ],
+  "supplementalQueries": [
+    "Eastern Suburb Memory Chengdu filetype:bitmap -metro -station -地图"
+  ]
+}

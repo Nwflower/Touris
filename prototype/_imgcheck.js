@@ -22,30 +22,40 @@
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+const crypto = require('crypto');
 
 const HERE = __dirname;
 const ctx = { console };
 vm.createContext(ctx);
-/* 加载顺序与 index.html 一致，少一个文件就会少检查一整座城：
-   这里曾经漏掉 city-chengdu.js 与 spots-expansion.js，于是成都、以及扩充出来的
-   那批景点（正是配图任务在填的）从来没被检查过，还一路显示「通过」。 */
-for(const f of ['semantics.js', 'images.js', 'data.js', 'city-data.js', 'city-expansion.js', 'city-hangzhou-guangzhou.js', 'city-chengdu.js', 'spots-expansion.js']){
+// 从入口读数据脚本顺序，确保扩充候选池也在检查范围内。
+const scripts = [...fs.readFileSync(path.join(HERE, 'index.html'), 'utf8')
+  .matchAll(/<script\s+src="([^"]+)"/g)].map(m => m[1]);
+const dataEnd = scripts.indexOf('coords.js');
+if(dataEnd < 0) throw new Error('入口的数据加载边界已改变，请更新图片检查器');
+for(const f of scripts.slice(0, dataEnd)){
   vm.runInContext(fs.readFileSync(path.join(HERE, f), 'utf8'), ctx, { filename: f });
 }
 const g = n => vm.runInContext(n, ctx);
 
 const SPOT_IMG = JSON.parse(g('JSON.stringify(SPOT_IMG)'));
 const CITY_DATA = JSON.parse(g('JSON.stringify(globalThis.CITY_DATA)'));
+const SPOT_PHOTOS = g('typeof SPOT_PHOTOS === "undefined" ? {} : JSON.parse(JSON.stringify(SPOT_PHOTOS))');
+const requireReviewed = process.argv.includes('--reviewed');
+const manifestFile = path.join(HERE, '../docs/spot-images/manifest.json');
+const manifest = fs.existsSync(manifestFile) ? JSON.parse(fs.readFileSync(manifestFile, 'utf8')) : [];
+const reviewed = new Map(manifest.map(r => [r.city + '·' + r.name, r]));
 
 /** 与 app.js 的 spotImages() 同一条规则：城市自带的图优先，其余从公共图库补 */
 function imageFor(city, name){
-  return (city && city.images && city.images[name]) || SPOT_IMG[name] || null;
+  return (SPOT_PHOTOS[city.name] && SPOT_PHOTOS[city.name][name] && SPOT_PHOTOS[city.name][name].src)
+    || (city && city.images && city.images[name]) || SPOT_IMG[name] || null;
 }
 
 const missing = [];
 const foreign = [];
 const imageless = [];
 let checked = 0;
+let spotCount = 0;
 
 function check(label, ref){
   /* 没配图不算失败：配图是「搜得到才配」，没搜到的点位按既定口径留 SVG 占位
@@ -59,7 +69,27 @@ function check(label, ref){
 /* ---- 1. 每个城市的每个景点 ---- */
 const cities = Object.entries(CITY_DATA).map(([k, v]) => ({ name:k, ...v }));
 cities.forEach(c => {
-  Object.keys(c.spots || {}).forEach(n => check(c.name + ' · ' + n, imageFor(c, n)));
+  Object.keys(c.spots || {}).forEach(n => {
+    spotCount++;
+    check(c.name + ' · ' + n, imageFor(c, n));
+    if(requireReviewed){
+      const label = c.name + '·' + n;
+      const record = reviewed.get(label);
+      const photo = SPOT_PHOTOS[c.name] && SPOT_PHOTOS[c.name][n];
+      if(!record || !photo || !record.author || !record.license || !record.source || !record.matchEvidence){
+        missing.push(label + ' → 缺少已核对的照片来源、作者、许可或景点匹配依据');
+      } else if(record.visualReview !== 'passed'){
+        missing.push(label + ' → 尚未完成照片视觉核对');
+      } else if(record.file !== photo.src || record.file !== imageFor(c, n)){
+        missing.push(label + ' → 页面使用的照片与核对清单不一致');
+      } else {
+        const file = path.join(HERE, record.file);
+        if(fs.existsSync(file) && crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex') !== record.sha256){
+          missing.push(label + ' → 图片字节已改变，需要重新核对');
+        }
+      }
+    }
+  });
 });
 
 /* ---- 2. 源码里出现的所有本地资源路径 ---- */
@@ -77,14 +107,14 @@ cities.forEach(c => {
 const uniq = a => [...new Set(a)];
 const miss = uniq(missing), fore = uniq(foreign), none = uniq(imageless);
 
-console.log(`检查 ${checked} 处图片引用（${cities.length} 座城市）；另有 ${none.length} 个景点未配图（留 SVG 占位）。`);
+console.log(`检查 ${spotCount} 个点位、${checked} 处已配置图片引用（${cities.length} 座城市）；未配图 ${none.length} 个。`);
 
 if(fore.length){
   console.log(`\n✗ 有 ${fore.length} 处仍指向外部地址 —— 图片本地化的目的是运行时零外部请求：`);
   fore.forEach(x => console.log('   ' + x));
 }
 if(miss.length){
-  console.log(`\n✗ 有 ${miss.length} 处引用的文件不在仓库里：`);
+  console.log(`\n✗ 有 ${miss.length} 处缺少可用图片或所要求的核对记录：`);
   miss.forEach(x => console.log('   ' + x));
 }
 if(!fore.length && !miss.length){

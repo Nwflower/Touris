@@ -38,7 +38,7 @@ const ctx = { document, window, history, console, setTimeout:()=>0, clearTimeout
   fetch: () => Promise.reject(new Error('no-backend')) };
 ctx.globalThis = ctx;
 vm.createContext(ctx);
-for(const f of ['semantics.js','images.js','data.js','city-data.js','city-expansion.js','city-hangzhou-guangzhou.js','city-chengdu.js','spots-expansion.js','coords.js','budget-data.js','planner.js','guides-data.js','rag.js','llm.js','account.js','app.js']){
+for(const f of ['semantics.js','images.js','data.js','city-data.js','city-expansion.js','city-hangzhou-guangzhou.js','city-chengdu.js','spots-expansion.js','coords.js','budget-data.js','time-rules.js','planner.js','weather.js','guides-data.js','rag.js','llm.js','account.js','app.js']){
   vm.runInContext(fs.readFileSync(f,'utf8'), ctx, { filename:f });
 }
 const g = n => vm.runInContext(n, ctx);
@@ -103,13 +103,24 @@ Object.entries(CITY_DATA).forEach(([name, c]) => {
         if(!day.length) bad.push(`${name} ${days}d ${p.id} D${di+1} 空白天`);
       });
       p.itinerary.days.forEach(d => {
-        let last = -1;
+        let last = -1, previousEnd = -1;
         d.items.forEach(it => {
           const [h, m] = it.time.split(':').map(Number);
           const cur = h*60+m;
           if(cur < last) bad.push(`${name} ${days}d ${p.id} D${d.day} 时间倒流 ${it.time}`);
           last = cur;
+          if (cur < previousEnd) bad.push(`${name} ${p.id} D${d.day} 活动重叠 ${it.time}`);
+          previousEnd = cur + (parseInt(it.dur, 10) || 0);
+          if(it.kind === 'spot') {
+            const w = g('TourisTime').spotWindow(it.name, c.spots[it.name]);
+            if(cur < w.start || previousEnd > w.end) bad.push(`${name} ${it.name} 超出规划时段 ${it.time}`);
+          }
+
           if(it.kind === 'food'){
+            const mealRule = g('TourisTime').MEALS[it.meal];
+            if(!mealRule || cur < mealRule.start || cur > mealRule.end) bad.push(`${name} 餐饮时段错误 ${it.time}`);
+            const filtered = g('TourisTime').diningForMeal(c.dining[it.name], it.meal);
+            if(!filtered?.picks.length) bad.push(`${name} 当前餐别没有合适候选 ${it.name}`);
             if(!c.dining[it.name]) bad.push(`未知餐饮组 ${it.name}`);
             else if(!c.restPoi[it.name]) bad.push(`餐饮组缺锚点 ${it.name}`);
           }
@@ -323,3 +334,14 @@ console.log('\n提示：有意无标签的记忆 ' + Object.keys(INERT).join('�
   console.log(bad.length ? '\n数据/结构问题:\n - ' + [...new Set(bad)].join('\n - ') : '\n数据交叉引用：全部通过');
   process.exit(fails || bad.length ? 1 : 0);
 })();
+
+/* Weather state rendering must never present fallback prose as a forecast. */
+g("S.req.dest='北京'; S.req.date='2026-12-01'; _WEATHER.key=weatherKey(); _WEATHER.result={status:'unavailable',rows:[{date:'2026-12-01',status:'out-of-range'}]}");
+const futureWeather = g('weatherContent()');
+assert(futureWeather.includes('超出未来 16 天预报范围') && futureWeather.includes('不是当天预报') && !futureWeather.includes('降雨概率'), '远期天气不伪造温度和降雨概率');
+g("_WEATHER.result={status:'error',rows:[{date:'2026-12-01',status:'error'}],message:'天气获取失败'}");
+assert(g('weatherContent()').includes('重试天气'), '天气失败提供重试');
+g("_WEATHER.result={status:'partial',rows:[{date:'2026-12-01',status:'forecast',min:20,max:30,code:0,probability:null,tips:['透气短袖']},{date:'2026-12-02',status:'missing'}]}");
+const partialWeather = g('weatherContent()');
+assert(partialWeather.includes('20—30℃') && partialWeather.includes('降雨概率 暂缺') && partialWeather.includes('该日预报暂缺'), '部分预报按日期显示，null 不变成 0');
+if(fails) process.exitCode = 1;

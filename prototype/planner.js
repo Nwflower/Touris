@@ -10,7 +10,7 @@
        ├─ 3. 选点            ：按风格配额（特种兵/适中/闲庭漫步）取 top-K
        ├─ 4. 分天聚类        ：确定性 k-means（k=天数，最远点初始化）+ 配额再平衡
        ├─ 5. 日内排序        ：最近邻 + 2-opt（目标=最小化通勤时间）
-       ├─ 6. 时间表          ：出发时间/就近午餐/慢节奏午后休息/宵禁前回退
+       ├─ 6. 时间表          ：活动窗口/餐别过滤/午后休息/回程前回退
        │                       当天放不下的点按顺序丢掉 —— 这就是「行为回退」
        └─ 7. 记忆溯源        ：每处取舍反查到具体记忆 id（whoContributes）
 
@@ -27,9 +27,6 @@
   const TRANSIT_FIXED_MIN = 10;  // 打车/等车固定开销
   const NEAR_WALK_KM = 1.5;      // 1.5km 内按步行算
   const TRANSIT_CAP_MIN = 85;    // 单段通勤上限（更远的点位会被宵禁挤掉）
-  const LUNCH_MIN = 75;
-  const LUNCH_EARLIEST = 11.4 * 60;
-  const DINNER_MIN = 60;
   const CURFEW = { fast: 21.2 * 60, mid: 20.3 * 60, slow: 19.4 * 60 };
   const START_HOUR = { fast: 8.0, mid: 8.75, slow: 9.5 };
   const PER_DAY = { fast: [4, 5], mid: [3, 4], slow: [2, 3] };
@@ -204,11 +201,11 @@
   }
 
   /* ---------------- 就近餐饮锚点 ---------------- */
-  function nearestDining(city, geo) {
+  function nearestDining(city, geo, meal) {
     let best = null, bd = Infinity;
     Object.entries(city.restPoi || {}).forEach(([id, anchor]) => {
       const g = city.geo[anchor];
-      if (!g) return;
+      if (!g || !TourisTime.diningForMeal(city.dining[id], meal)) return;
       const d = distKm(geo, g);
       if (d < bd) { bd = d; best = id; }
     });
@@ -231,45 +228,62 @@
     let lunchDone = false, restDone = false;
     let walkKm = 0, transitSum = 0, visitSum = 0, spots = 0;
 
-    for (const g of group) {
-      const gGeo = { lat: g.geo.lat, lng: g.geo.lng };
-      // 午餐：临近中午就地在最近餐饮锚点插入
-      if (!lunchDone && (clock + 0 >= LUNCH_EARLIEST || (g === group[group.length - 1] && clock >= LUNCH_EARLIEST - 60))) {
-        const dn = nearestDining(city, cur);
-        const dnG = diningGeo(city, dn) || cur;
-        const dkm = distKm(cur, dnG), dt = transitMin(dkm);
-        if (dn) items.push({ kind: 'food', id: dn, arrive: clock, transitKm: Math.round(dkm * 10) / 10, transitMin: dt, dinner: false });
-        clock += dt + LUNCH_MIN;
-        transitSum += dt;
-        cur = dnG;
-        lunchDone = true;
+    let dinnerDone = false;
+    const meals = TourisTime.MEALS;
+    const waitUntil = (until, name) => {
+      if (until <= clock) return;
+      items.push({ kind: 'free', name, dur: until - clock, arrive: clock });
+      clock = until;
+    };
+    const addMeal = meal => {
+      const rule = meals[meal];
+      const dn = nearestDining(city, cur, meal);
+      const dnG = diningGeo(city, dn) || cur;
+      const dkm = distKm(cur, dnG), dt = dn ? transitMin(dkm) : 0;
+      // 若区域太远导致错过餐别，留在当前区域自主用餐。
+      const reachable = dn && Math.max(clock + dt, rule.start) <= rule.end;
+      const travel = reachable ? dt : 0;
+      waitUntil(Math.max(clock, rule.start - travel), '自由活动 · 等待用餐时段');
+      const arrive = clock + travel;
+      if (arrive > rule.end || arrive + rule.duration > curfew) return false;
+      if (reachable) {
+        items.push({ kind: 'food', id: dn, meal, arrive,
+          transitKm: Math.round(dkm * 10) / 10, transitMin: dt, dur: rule.duration });
+        cur = dnG; transitSum += dt;
+      } else {
+        items.push({ kind: 'free', name: '就近自选' + rule.label, arrive, dur: rule.duration });
       }
-      // 慢节奏午后休息
+      clock = arrive + rule.duration;
+      if (meal === 'lunch') lunchDone = true; else dinnerDone = true;
+      return true;
+    };
+    // 先按可进入时间分组，组内保留距离排序。明确晚间活动放在日间之后。
+    const ordered = group.slice().sort((a, b) =>
+      TourisTime.spotWindow(a.name, a.spot).start - TourisTime.spotWindow(b.name, b.spot).start);
+    for (const g of ordered) {
+      const gGeo = { lat: g.geo.lat, lng: g.geo.lng };
+      const window = TourisTime.spotWindow(g.name, g.spot);
+      const stay = visitOf(g.spot, paceKey);
+      let estimated = Math.max(clock + transitMin(distKm(cur, gGeo)), window.start);
+      if (estimated + stay > Math.min(curfew, window.end)) { drops.push(g); continue; }
+      if (!lunchDone && (clock >= meals.lunch.start || estimated + stay > meals.lunch.end)) addMeal('lunch');
       if (!restDone && paceKey === 'slow' && clock >= 13.5 * 60) {
         items.push({ kind: 'free', name: '午后自由休息', dur: REST_MIN, arrive: clock });
-        clock += REST_MIN;
-        restDone = true;
+        clock += REST_MIN; restDone = true;
       }
+      estimated = Math.max(clock + transitMin(distKm(cur, gGeo)), window.start);
+      if (!dinnerDone && (clock >= meals.dinner.start || estimated + stay > meals.dinner.end)) addMeal('dinner');
       const km = distKm(cur, gGeo), tmin = transitMin(km);
-      const arrive = clock + tmin;
-      const stay = visitOf(g.spot, paceKey);
-      if (arrive + stay > curfew) { drops.push(g); continue; }   // ★ 行为回退
-      items.push({ kind: 'spot', g, arrive, transitKm: Math.round(km * 10) / 10, transitMin: tmin, dur: stay });
+      const arrive = Math.max(clock + tmin, window.start);
+      if (arrive + stay > Math.min(curfew, window.end)) { drops.push(g); continue; }
+      waitUntil(arrive - tmin, '自由活动 · 等待适宜参观时段');
+      items.push({ kind: 'spot', g, arrive, transitKm: Math.round(km * 10) / 10,
+        transitMin: tmin, dur: stay, timeNote: window.label });
       if (km <= NEAR_WALK_KM) walkKm += km; else transitSum += tmin;
-      visitSum += stay;
-      spots++;
-      clock = arrive + stay;
-      cur = gGeo;
+      visitSum += stay; spots++; clock = arrive + stay; cur = gGeo;
     }
-    // 特种兵档收尾晚饭
-    if (paceKey === 'fast' && spots > 0 && clock >= 17.5 * 60 && clock < CURFEW.fast - DINNER_MIN - 40) {
-      const dn = nearestDining(city, cur);
-      const dnG = diningGeo(city, dn) || cur;
-      const dkm = distKm(cur, dnG), dt = transitMin(dkm);
-      if (dn) items.push({ kind: 'food', id: dn, arrive: clock, transitKm: Math.round(dkm * 10) / 10, transitMin: dt, dinner: true });
-      clock += dt + DINNER_MIN;
-      transitSum += dt;
-    }
+    if (spots && !lunchDone && clock >= meals.lunch.start && clock <= meals.lunch.end) addMeal('lunch');
+    if (spots && !dinnerDone && clock >= meals.dinner.start && clock <= meals.dinner.end) addMeal('dinner');
     return { items, drops, walkKm: Math.round(walkKm * 10) / 10, transitSum: Math.round(transitSum), visitSum: Math.round(visitSum), spots };
   }
 
@@ -313,9 +327,9 @@
       const donor = dayResults[fullest];
       const transfer = donor.items.filter(x => x.kind === 'spot').slice(-1)[0];
       if (!transfer) return;
-      donor.items = donor.items.filter(x => x !== transfer);
-      donor.spots--;
       const redo = scheduleDay(city, [transfer.g], paceKey, opts, centerGeo);
+      if (!redo.spots) return;
+      dayResults[fullest] = scheduleDay(city, donor.items.filter(x => x.kind === 'spot' && x !== transfer).map(x => x.g), paceKey, opts, centerGeo);
       dayResults[i] = redo;
     });
 
@@ -329,7 +343,7 @@
         if (it.kind === 'spot') {
           const name = it.g.name;
           items.push(Object.assign(common, {
-            kind: 'spot', name, dur: `${it.dur} min`,
+            kind: 'spot', name, dur: `${it.dur} min`, timeNote: it.timeNote,
             note: dayRoute.length === 0 && items.every(x => x.kind !== 'spot')
               ? `从住处出发 · 通勤约 ${it.transitMin} 分钟`
               : `距上一站 ${it.transitKm} km · 约 ${it.transitMin} 分钟`,
@@ -340,15 +354,15 @@
           const gid = it.id;
           if (gid && city.dining[gid]) {
             items.push(Object.assign(common, {
-              kind: 'food', name: gid,
-              note: `${it.dinner ? '晚餐' : '午餐'} · 距上一站 ${it.transitKm} km · 约 ${it.transitMin} 分钟`,
+              kind: 'food', name: gid, meal: it.meal, dur: `${it.dur} min`,
+              note: `${TourisTime.MEALS[it.meal].label} · 距上一站 ${it.transitKm} km · 约 ${it.transitMin} 分钟`,
               memoryIds: opts.memIdsOf ? opts.memIdsOf('food') : []
             }));
           }
         } else {
           items.push(Object.assign(common, {
             kind: 'free', name: it.name, dur: `${it.dur} min`,
-            note: '按你的节奏偏好插入的休息空档',
+            note: '可在附近休息或自由活动，后续时间已计入此空档',
             memoryIds: opts.memIdsOf ? opts.memIdsOf('free') : []
           }));
         }
@@ -543,5 +557,5 @@
     return { def, mem, diffs: changes, diffSummary: summary, days, planId };
   }
 
-  globalThis.TourisPlanner = { run, compare, transitMin, distKm, fmtClock };
+  globalThis.TourisPlanner = { run, compare, transitMin, distKm, fmtClock, scheduleDay };
 })();

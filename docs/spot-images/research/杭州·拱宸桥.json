@@ -1,0 +1,27 @@
+{
+  "city": "杭州",
+  "name": "拱宸桥",
+  "query": "File:拱宸橋·浙江杭州·（航拍自東南往西北）.jpg",
+  "review": "pending",
+  "existingFile": "assets/cities/hangzhou/gongchen-bridge.jpg",
+  "candidates": [
+    {
+      "title": "File:拱宸橋·浙江杭州·（航拍自東南往西北）.jpg",
+      "pageId": 64770593,
+      "source": "https://commons.wikimedia.org/wiki/File:%E6%8B%B1%E5%AE%B8%E6%A9%8B%C2%B7%E6%B5%99%E6%B1%9F%E6%9D%AD%E5%B7%9E%C2%B7%EF%BC%88%E8%88%AA%E6%8B%8D%E8%87%AA%E6%9D%B1%E5%8D%97%E5%BE%80%E8%A5%BF%E5%8C%97%EF%BC%89.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1c/%E6%8B%B1%E5%AE%B8%E6%A9%8B%C2%B7%E6%B5%99%E6%B1%9F%E6%9D%AD%E5%B7%9E%C2%B7%EF%BC%88%E8%88%AA%E6%8B%8D%E8%87%AA%E6%9D%B1%E5%8D%97%E5%BE%80%E8%A5%BF%E5%8C%97%EF%BC%89.jpg/960px-%E6%8B%B1%E5%AE%B8%E6%A9%8B%C2%B7%E6%B5%99%E6%B1%9F%E6%9D%AD%E5%B7%9E%C2%B7%EF%BC%88%E8%88%AA%E6%8B%8D%E8%87%AA%E6%9D%B1%E5%8D%97%E5%BE%80%E8%A5%BF%E5%8C%97%EF%BC%89.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/1/1c/%E6%8B%B1%E5%AE%B8%E6%A9%8B%C2%B7%E6%B5%99%E6%B1%9F%E6%9D%AD%E5%B7%9E%C2%B7%EF%BC%88%E8%88%AA%E6%8B%8D%E8%87%AA%E6%9D%B1%E5%8D%97%E5%BE%80%E8%A5%BF%E5%8C%97%EF%BC%89.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3992,
+      "height": 2992,
+      "mime": "image/jpeg",
+      "description": "Gongchen Bridge on the Jing–Hang Grand Canal.",
+      "author": "Legolas1024",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Taken with DJI FC220|Gongchen Bridge|Self-published work|Files with coordinates missing SDC location of creation",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

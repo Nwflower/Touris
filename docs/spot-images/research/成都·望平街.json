@@ -1,0 +1,25 @@
+{
+  "city": "成都",
+  "name": "望平街",
+  "query": "成都 望平街 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "CNR:Wangping20231204",
+      "source": "https://sc.cnr.cn/scpd/jdt/20231204/t20231204_526507396.shtml",
+      "download": "https://mediabluk.cnr.cn/img/cnr/CNRCDP/2023/1204/9ac8718a1b379170167440421383118611.jpg?auth=7c129527b4269319e6548e42c0df883e",
+      "original": "https://mediabluk.cnr.cn/img/cnr/CNRCDP/2023/1204/9ac8718a1b379170167440421383118611.jpg?auth=7c129527b4269319e6548e42c0df883e",
+      "mime": "image/jpeg",
+      "author": "昌思荣 / 央广网",
+      "description": "央广网图片说明明确为猛追湾望平街街景，具有街区入口招牌。",
+      "license": "版权所有，转载需授权",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "昌思荣 / 央广网",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ],
+  "supplementalQueries": [
+    "Wangping Street Chengdu filetype:bitmap -metro -station -地图"
+  ]
+}

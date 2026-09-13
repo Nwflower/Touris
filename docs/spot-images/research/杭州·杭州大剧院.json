@@ -1,0 +1,27 @@
+{
+  "city": "杭州",
+  "name": "杭州大剧院",
+  "query": "File:Hangzhou_Grand_Theatre.jpg",
+  "review": "pending",
+  "existingFile": "assets/cities/hangzhou/grand-theatre.jpg",
+  "candidates": [
+    {
+      "title": "File:Hangzhou Grand Theatre.jpg",
+      "pageId": 84054182,
+      "source": "https://commons.wikimedia.org/wiki/File:Hangzhou_Grand_Theatre.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f5/Hangzhou_Grand_Theatre.jpg/960px-Hangzhou_Grand_Theatre.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/f/f5/Hangzhou_Grand_Theatre.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 4608,
+      "height": 2592,
+      "mime": "image/jpeg",
+      "description": "Hangzhou Grand Theatre, Zhejiang",
+      "author": "钉钉",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Hangzhou Grand Theatre|Self-published work|钉钉",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

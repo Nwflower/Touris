@@ -1,0 +1,27 @@
+{
+  "city": "广州",
+  "name": "广州图书馆",
+  "query": "File:Zhujiang_New_Town_02589-Guangzhou_(32894232332).jpg",
+  "review": "pending",
+  "existingFile": "assets/cities/guangzhou/library.jpg",
+  "candidates": [
+    {
+      "title": "File:Zhujiang New Town 02589-Guangzhou (32894232332).jpg",
+      "pageId": 139291594,
+      "source": "https://commons.wikimedia.org/wiki/File:Zhujiang_New_Town_02589-Guangzhou_(32894232332).jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/18/Zhujiang_New_Town_02589-Guangzhou_%2832894232332%29.jpg/960px-Zhujiang_New_Town_02589-Guangzhou_%2832894232332%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/1/18/Zhujiang_New_Town_02589-Guangzhou_%2832894232332%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 3000,
+      "height": 2003,
+      "mime": "image/jpeg",
+      "description": "02589-Guangzhou",
+      "author": "xiquinhosilva",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "categories": "Images with extracted images|Files with coordinates missing SDC location of creation|Flickr images reviewed by FlickreviewR 2|Buildings in Zhujiang New Town|Photographs by Xiquinho Silva",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "02589-Guangzhou"
+    }
+  ]
+}

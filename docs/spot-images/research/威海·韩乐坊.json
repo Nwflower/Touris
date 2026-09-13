@@ -1,0 +1,26 @@
+{
+  "city": "威海",
+  "name": "韩乐坊",
+  "query": "威海 韩乐坊 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "WeihaiGovMap:210",
+      "source": "https://www.weihai.gov.cn/szdt/web/mapIndex/3?area=&mapClassificationId=&mapClassificationPid=21&name=",
+      "download": "https://zhbypass.weihai.cn/minio/travel-wh/66ac140dcdfd4148aeb4bf900a601e671717566732435.jpg",
+      "original": "https://zhbypass.weihai.cn/minio/travel-wh/66ac140dcdfd4148aeb4bf900a601e671717566732435.jpg",
+      "mime": "image/jpeg",
+      "author": "发布方：威海市人民政府数字便民地图；摄影作者未单列",
+      "description": "威海市政府数字便民地图点位 210（威海韩乐坊景区（3A）），地址：威海经济技术开发区青岛中路附近。使用该点位条目所配实景照片。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "威海市人民政府数字便民地图",
+      "modification": "Publisher photograph; no local visual edits.",
+      "placeId": "210",
+      "placeName": "威海韩乐坊景区（3A）",
+      "latitude": "37.427180",
+      "longitude": "122.148980"
+    }
+  ]
+}

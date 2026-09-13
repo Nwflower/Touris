@@ -1,0 +1,27 @@
+{
+  "city": "杭州",
+  "name": "中国茶叶博物馆（双峰馆区）",
+  "query": "File:中国茶叶博物馆双峰馆区,_2022-05-01_01.jpg",
+  "review": "pending",
+  "existingFile": "assets/cities/hangzhou/tea-museum.jpg",
+  "candidates": [
+    {
+      "title": "File:中国茶叶博物馆双峰馆区, 2022-05-01 01.jpg",
+      "pageId": 117634092,
+      "source": "https://commons.wikimedia.org/wiki/File:%E4%B8%AD%E5%9B%BD%E8%8C%B6%E5%8F%B6%E5%8D%9A%E7%89%A9%E9%A6%86%E5%8F%8C%E5%B3%B0%E9%A6%86%E5%8C%BA,_2022-05-01_01.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bf/%E4%B8%AD%E5%9B%BD%E8%8C%B6%E5%8F%B6%E5%8D%9A%E7%89%A9%E9%A6%86%E5%8F%8C%E5%B3%B0%E9%A6%86%E5%8C%BA%2C_2022-05-01_01.jpg/960px-%E4%B8%AD%E5%9B%BD%E8%8C%B6%E5%8F%B6%E5%8D%9A%E7%89%A9%E9%A6%86%E5%8F%8C%E5%B3%B0%E9%A6%86%E5%8C%BA%2C_2022-05-01_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/b/bf/%E4%B8%AD%E5%9B%BD%E8%8C%B6%E5%8F%B6%E5%8D%9A%E7%89%A9%E9%A6%86%E5%8F%8C%E5%B3%B0%E9%A6%86%E5%8C%BA%2C_2022-05-01_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 6016,
+      "height": 4016,
+      "mime": "image/jpeg",
+      "description": "​中国茶叶博物馆双峰馆区",
+      "author": "Siyuwj",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "China National Tea Museum|Self-published work",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "city": "北京",
+  "name": "慕田峪长城",
+  "query": "File:Great_Wall_of_China_July_2006.JPG",
+  "review": "pending",
+  "existingFile": "img/Great_Wall_of_China_July_2006.jpg",
+  "candidates": [
+    {
+      "title": "File:Great Wall of China July 2006.JPG",
+      "pageId": 11726877,
+      "source": "https://commons.wikimedia.org/wiki/File:Great_Wall_of_China_July_2006.JPG",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Great_Wall_of_China_July_2006.JPG/960px-Great_Wall_of_China_July_2006.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/f/fa/Great_Wall_of_China_July_2006.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2288,
+      "height": 1712,
+      "mime": "image/jpeg",
+      "description": "The Great Wall of China at Mutianyu, near Beijing, in July 2006.",
+      "author": "Velatrix",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "categories": "Taken with Nikon Coolpix 4600|CC-Zero|Great Wall of China at Mutianyu|Files with derivative versions|Files with coordinates missing SDC location of creation",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

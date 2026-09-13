@@ -1,0 +1,27 @@
+{
+  "city": "成都",
+  "name": "春熙路",
+  "query": "File:Chunxi Road seen from viaduct, Chengdu.jpg",
+  "review": "pending",
+  "existingFile": "img/Chunxi_Road_seen_from_viaduct_Chengdu.jpg",
+  "candidates": [
+    {
+      "title": "File:Chunxi Road seen from viaduct, Chengdu.jpg",
+      "pageId": 6760777,
+      "source": "https://commons.wikimedia.org/wiki/File:Chunxi_Road_seen_from_viaduct,_Chengdu.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/Chunxi_Road_seen_from_viaduct%2C_Chengdu.jpg/960px-Chunxi_Road_seen_from_viaduct%2C_Chengdu.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/7/73/Chunxi_Road_seen_from_viaduct%2C_Chengdu.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2092,
+      "height": 1370,
+      "mime": "image/jpeg",
+      "description": "Chunxi Road seen from viaduct, Chengdu, China",
+      "author": "Gong Chen, Mlogic",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "GFDL|Taken with Canon EOS 450D|License migration redundant|Chunxi Road|CC-BY-SA-4.0,3.0,2.5,2.0,1.0|Self-published work|PNG created with GIMP",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Taken by Gong Chen, and touched by Mlogic."
+    }
+  ]
+}

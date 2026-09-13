@@ -1,0 +1,26 @@
+{
+  "city": "上海",
+  "name": "吴江路",
+  "query": "上海 吴江路 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:Wujiang Road Shanghai.JPG",
+      "pageId": 30146631,
+      "source": "https://commons.wikimedia.org/wiki/File:Wujiang_Road_Shanghai.JPG",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/53/Wujiang_Road_Shanghai.JPG/960px-Wujiang_Road_Shanghai.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/5/53/Wujiang_Road_Shanghai.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 4912,
+      "height": 3264,
+      "mime": "image/jpeg",
+      "description": "​上海吴江路",
+      "author": "Livelikerw",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "categories": "Taken with Sony NEX-3N|Self-published work|Wujiang Road (Shanghai)",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

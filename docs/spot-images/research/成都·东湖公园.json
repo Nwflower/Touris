@@ -1,0 +1,26 @@
+{
+  "city": "成都",
+  "name": "东湖公园",
+  "query": "File:Donghu Park - Chengdu, China - DSC05625.jpg",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:Donghu Park - Chengdu, China - DSC05625.jpg",
+      "pageId": 52005335,
+      "source": "https://commons.wikimedia.org/wiki/File:Donghu_Park_-_Chengdu,_China_-_DSC05625.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/58/Donghu_Park_-_Chengdu%2C_China_-_DSC05625.jpg/960px-Donghu_Park_-_Chengdu%2C_China_-_DSC05625.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/5/58/Donghu_Park_-_Chengdu%2C_China_-_DSC05625.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 4917,
+      "height": 3381,
+      "mime": "image/jpeg",
+      "description": "Donghu Park (东湖公园) - Chengdu, Sichuan, China.",
+      "author": "Daderot",
+      "license": "CC0",
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "categories": "CC-Zero|Self-published work|Files uploaded by Daderot|Donghu Park (Chengdu)",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

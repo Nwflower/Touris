@@ -1,0 +1,26 @@
+{
+  "city": "威海",
+  "name": "小石岛",
+  "query": "威海 小石岛 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "WeihaiGovMap:250",
+      "source": "https://www.weihai.gov.cn/szdt/web/mapIndex/3?area=&mapClassificationId=&mapClassificationPid=41&name=",
+      "download": "https://zhbypass.weihai.cn/minio/sciencetechnologymuseum/79442ddb439d4fb48432bac4dfd1b1061717660960659.jpg",
+      "original": "https://zhbypass.weihai.cn/minio/sciencetechnologymuseum/79442ddb439d4fb48432bac4dfd1b1061717660960659.jpg",
+      "mime": "image/jpeg",
+      "author": "发布方：威海市人民政府数字便民地图；摄影作者未单列",
+      "description": "威海市政府数字便民地图点位 250（威海小石岛旅游景区（3A）），地址：威海火炬高技术产业开发区小石岛大连路-2-8号。使用该点位条目所配实景照片。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "威海市人民政府数字便民地图",
+      "modification": "Publisher photograph; no local visual edits.",
+      "placeId": "250",
+      "placeName": "威海小石岛旅游景区（3A）",
+      "latitude": "37.524768",
+      "longitude": "122.01182"
+    }
+  ]
+}

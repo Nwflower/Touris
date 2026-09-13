@@ -1,0 +1,45 @@
+{
+  "city": "威海",
+  "name": "定远舰景区",
+  "query": "File:View_of_Weihai_Bay_from_Liugong_Island.jpg",
+  "review": "pending",
+  "existingFile": "img/View_of_Weihai_Bay_from_Liugong_Island.jpg",
+  "candidates": [
+    {
+      "title": "File:View of Weihai Bay from Liugong Island.jpg",
+      "pageId": 78880021,
+      "source": "https://commons.wikimedia.org/wiki/File:View_of_Weihai_Bay_from_Liugong_Island.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/06/View_of_Weihai_Bay_from_Liugong_Island.jpg/960px-View_of_Weihai_Bay_from_Liugong_Island.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/0/06/View_of_Weihai_Bay_from_Liugong_Island.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 4608,
+      "height": 3456,
+      "mime": "image/jpeg",
+      "description": "A sea view of Weihai Bay, off Yellow Sea.",
+      "author": "Super Wang",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Views of Shandong|Self-published work|Files with coordinates missing SDC location of creation|Taken with Oppo R17",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    },
+    {
+      "title": "File:定远号仿制品20120727.JPG",
+      "pageId": 24742993,
+      "source": "https://commons.wikimedia.org/wiki/File:%E5%AE%9A%E8%BF%9C%E5%8F%B7%E4%BB%BF%E5%88%B6%E5%93%8120120727.JPG",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/%E5%AE%9A%E8%BF%9C%E5%8F%B7%E4%BB%BF%E5%88%B6%E5%93%8120120727.JPG/960px-%E5%AE%9A%E8%BF%9C%E5%8F%B7%E4%BB%BF%E5%88%B6%E5%93%8120120727.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/9/9c/%E5%AE%9A%E8%BF%9C%E5%8F%B7%E4%BB%BF%E5%88%B6%E5%93%8120120727.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2592,
+      "height": 1944,
+      "mime": "image/jpeg",
+      "description": "​山东威海的定远号仿制品",
+      "author": "Makecat",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "categories": "GFDL|Taken with Sony DSC-T900|Dingyuan (ship, 1884)|Weihai|License migration redundant|Replicas of ships|Self-published work",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

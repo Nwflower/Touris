@@ -1,0 +1,25 @@
+{
+  "city": "成都",
+  "name": "青龙湖湿地公园",
+  "query": "青龙湖湿地公园 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "Longquanyi:QinglongLake20211015",
+      "source": "https://m.thepaper.cn/baijiahao_14929496?clientprefetch=1&sdkver=e06426d6",
+      "download": "https://imagepphcloud.thepaper.cn/pph/image/158/888/206.jpg",
+      "original": "https://imagepphcloud.thepaper.cn/pph/image/158/888/206.jpg",
+      "mime": "image/jpeg",
+      "description": "见证龙泉驿青龙湖湿地公园报道中的湖畔绿道实拍。",
+      "author": "发布方：见证龙泉驿；摄影作者未署名",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "见证龙泉驿（澎湃政务号）",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ],
+  "supplementalQueries": [
+    "Qinglong Lake Chengdu filetype:bitmap -metro -station -地图"
+  ]
+}

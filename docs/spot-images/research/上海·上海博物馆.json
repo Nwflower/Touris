@@ -1,0 +1,27 @@
+{
+  "city": "上海",
+  "name": "上海博物馆",
+  "query": "File:Shanghai_Museum_exterior_1.jpg",
+  "review": "pending",
+  "existingFile": "img/Shanghai_Museum_exterior_1.jpg",
+  "candidates": [
+    {
+      "title": "File:Shanghai Museum exterior 1.jpg",
+      "pageId": 20301461,
+      "source": "https://commons.wikimedia.org/wiki/File:Shanghai_Museum_exterior_1.jpg",
+      "download": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Shanghai_Museum_exterior_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Shanghai_Museum_exterior_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 842,
+      "height": 542,
+      "mime": "image/jpeg",
+      "description": "Exterior of the Shanghai Museum",
+      "author": "Hanjiang 2009 (寒江2009)",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "categories": "Flickr images reviewed by FlickreviewR|FoP-China|Shanghai Museum - Building",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "https://www.flickr.com/photos/transhow2002/4767679500/"
+    }
+  ]
+}

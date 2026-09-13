@@ -1,0 +1,26 @@
+{
+  "city": "威海",
+  "name": "仙姑顶",
+  "query": "威海 仙姑顶 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:Weihai-Xianguting-Temple.jpg",
+      "pageId": 18690928,
+      "source": "https://commons.wikimedia.org/wiki/File:Weihai-Xianguting-Temple.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/79/Weihai-Xianguting-Temple.jpg/960px-Weihai-Xianguting-Temple.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/7/79/Weihai-Xianguting-Temple.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 4000,
+      "height": 2248,
+      "mime": "image/jpeg",
+      "description": "Xian'guting taoist temple in Weihai, Shandong province, China",
+      "author": "Popolon",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "categories": "China photographs taken on 2011-04-14|Taoist temples in China|Taken with Canon PowerShot SX200 IS|Self-published work|Files with coordinates missing SDC location of creation|Temples in Weihai",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

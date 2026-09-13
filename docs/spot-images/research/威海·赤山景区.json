@@ -1,0 +1,26 @@
+{
+  "city": "威海",
+  "name": "赤山景区",
+  "query": "威海 赤山景区 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "File:Great statue of the God of the Red Mountain (Chishanshen 赤山神) in Rongcheng, Weihai, Shandong.jpg",
+      "pageId": 52253007,
+      "source": "https://commons.wikimedia.org/wiki/File:Great_statue_of_the_God_of_the_Red_Mountain_(Chishanshen_%E8%B5%A4%E5%B1%B1%E7%A5%9E)_in_Rongcheng,_Weihai,_Shandong.jpg",
+      "download": "https://upload.wikimedia.org/wikipedia/commons/4/4c/Great_statue_of_the_God_of_the_Red_Mountain_%28Chishanshen_%E8%B5%A4%E5%B1%B1%E7%A5%9E%29_in_Rongcheng%2C_Weihai%2C_Shandong.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/4/4c/Great_statue_of_the_God_of_the_Red_Mountain_%28Chishanshen_%E8%B5%A4%E5%B1%B1%E7%A5%9E%29_in_Rongcheng%2C_Weihai%2C_Shandong.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 960,
+      "height": 1280,
+      "mime": "image/jpeg",
+      "description": "Great statue of the God of the Red Mountain (赤山神 Chìshānshén) in Rongcheng, Weihai, Shandong.",
+      "author": "Roddy Pfeiffer",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+      "categories": "Rongcheng, Shandong|Panoramio files uploaded by Panoramio upload bot|Panoramio images reviewed by trusted users|Photos from Panoramio|Files with coordinates missing SDC location of creation",
+      "attribution": "Roddy Pfeiffer",
+      "restrictions": "",
+      "credit": "https://www.panoramio.com/photo/134190710"
+    }
+  ]
+}

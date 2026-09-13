@@ -1,0 +1,27 @@
+{
+  "city": "成都",
+  "name": "成都博物馆",
+  "query": "File:成都博物馆正门.jpg",
+  "review": "pending",
+  "existingFile": "img/commons-1123eba0.jpg",
+  "candidates": [
+    {
+      "title": "File:成都博物馆正门.jpg",
+      "pageId": 69959697,
+      "source": "https://commons.wikimedia.org/wiki/File:%E6%88%90%E9%83%BD%E5%8D%9A%E7%89%A9%E9%A6%86%E6%AD%A3%E9%97%A8.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/%E6%88%90%E9%83%BD%E5%8D%9A%E7%89%A9%E9%A6%86%E6%AD%A3%E9%97%A8.jpg/960px-%E6%88%90%E9%83%BD%E5%8D%9A%E7%89%A9%E9%A6%86%E6%AD%A3%E9%97%A8.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/2/23/%E6%88%90%E9%83%BD%E5%8D%9A%E7%89%A9%E9%A6%86%E6%AD%A3%E9%97%A8.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 4028,
+      "height": 3021,
+      "mime": "image/jpeg",
+      "description": "Chengdu Museum entrance",
+      "author": "来斤小仓鼠吧",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "China photographs taken on 2018-06-09|Chengdu Museum|Self-published work|Files with coordinates missing SDC location of creation",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}

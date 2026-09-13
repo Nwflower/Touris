@@ -1,0 +1,38 @@
+{
+  "city": "威海",
+  "name": "摩天岭索道",
+  "query": "摩天岭索道 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "WeihaiGovMap:279",
+      "source": "https://www.weihai.gov.cn/szdt/web/mapIndex/3?area=&mapClassificationId=&mapClassificationPid=21&name=",
+      "download": "https://zhbypass.weihai.cn/minio/sciencetechnologymuseum/9acf190a39fe4ac490ad8b8473fd12131717591336995.jpg",
+      "original": "https://zhbypass.weihai.cn/minio/sciencetechnologymuseum/9acf190a39fe4ac490ad8b8473fd12131717591336995.jpg",
+      "mime": "image/jpeg",
+      "author": "发布方：威海市人民政府数字便民地图；摄影作者未单列",
+      "description": "威海市政府数字便民地图 279 摩天岭，地址：。该条目所配照片，需视觉核对。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "威海市人民政府数字便民地图",
+      "modification": "Publisher photograph; no local visual edits.",
+      "latitude": "37.420837",
+      "longitude": "122.671866"
+    },
+    {
+      "title": "Ctrip:Motianling1mh0y12000sw7tzds01AA",
+      "source": "https://you.ctrip.com/sight/rongcheng899/135123403.html",
+      "download": "https://dimg04.c-ctrip.com/images/1mh0y12000sw7tzds01AA_W_640_10000.jpg?proc=autoorient",
+      "original": "https://dimg04.c-ctrip.com/images/1mh0y12000sw7tzds01AA_W_640_10000.jpg?proc=autoorient",
+      "mime": "image/jpeg",
+      "author": "携程景点图库；摄影作者未单列",
+      "description": "携程荣成摩天岭索道条目的跨海缆车照片。",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "携程景点图库；摄影作者未单列",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ]
+}

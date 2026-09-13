@@ -1,0 +1,25 @@
+{
+  "city": "成都",
+  "name": "泡桐树街",
+  "query": "成都 泡桐树街 filetype:bitmap -地铁 -metro -station -地图",
+  "review": "pending",
+  "candidates": [
+    {
+      "title": "Amap:PaotongshuA41c8b9",
+      "source": "https://www.aiyoutravel.com/article/detail/1837761614868353024",
+      "download": "https://aos-comment.amap.com/B001C7X1Z1/comment/a41c8b9e5e8fe04e234a241fce41a773_2048_2048_80.jpg",
+      "original": "https://aos-comment.amap.com/B001C7X1Z1/comment/a41c8b9e5e8fe04e234a241fce41a773_2048_2048_80.jpg",
+      "mime": "image/jpeg",
+      "description": "来源文章泡桐树街段的高德照片，蓝色路牌明确写泡桐树街。",
+      "author": "原图来自高德用户照片；摄影作者未明确署名",
+      "license": "未声明开放许可",
+      "licenseUrl": "",
+      "licenseStatus": "permission-not-stated",
+      "provider": "鹿线图引用高德照片",
+      "modification": "Publisher photograph; no local visual edits."
+    }
+  ],
+  "supplementalQueries": [
+    "Paotongshu Street Chengdu filetype:bitmap -metro -station -地图"
+  ]
+}

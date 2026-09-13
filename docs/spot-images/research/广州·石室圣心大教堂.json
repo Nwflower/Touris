@@ -1,0 +1,27 @@
+{
+  "city": "广州",
+  "name": "石室圣心大教堂",
+  "query": "File:Sacred_Heart_Cathedral_of_Guangzhou_2025.06_02.jpg",
+  "review": "pending",
+  "existingFile": "assets/cities/guangzhou/sacred-heart-cathedral.jpg",
+  "candidates": [
+    {
+      "title": "File:Sacred Heart Cathedral of Guangzhou 2025.06 02.jpg",
+      "pageId": 169264379,
+      "source": "https://commons.wikimedia.org/wiki/File:Sacred_Heart_Cathedral_of_Guangzhou_2025.06_02.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/18/Sacred_Heart_Cathedral_of_Guangzhou_2025.06_02.jpg/960px-Sacred_Heart_Cathedral_of_Guangzhou_2025.06_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original": "https://upload.wikimedia.org/wikipedia/commons/1/18/Sacred_Heart_Cathedral_of_Guangzhou_2025.06_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "width": 2417,
+      "height": 4683,
+      "mime": "image/jpeg",
+      "description": "Sacred Heart Cathedral of Guangzhou",
+      "author": "Shujianyang",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "categories": "Self-published work|Guangzhou photographs taken on 2025-06-07|Guangzhou photographs taken on 2025-06-14|2025 in Sacred Heart Cathedral of Guangzhou",
+      "attribution": "",
+      "restrictions": "",
+      "credit": "Own work"
+    }
+  ]
+}
