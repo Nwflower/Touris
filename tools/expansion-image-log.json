@@ -1,0 +1,36 @@
+{
+  "at": "2026-09-13T00:13:58.874Z",
+  "strictTls": false,
+  "rows": [
+    {
+      "name": "恭王府",
+      "city": "北京",
+      "ok": false,
+      "reason": "候选被排除（Gongwangfu.JPG）"
+    },
+    {
+      "name": "白塔寺",
+      "city": "北京",
+      "ok": false,
+      "reason": "候选被排除（Miaoyingsi_shanmen.jpg）"
+    },
+    {
+      "name": "断桥残雪",
+      "city": "杭州",
+      "ok": true,
+      "via": "搜索「断桥 (杭州)」",
+      "file": "Duanqiao_on_a_snowy_day,_Westlake,_Hangzhou_-_20181209.jpg",
+      "width": 1440,
+      "commons": "https://commons.wikimedia.org/wiki/File:Duanqiao_on_a_snowy_day%2C_Westlake%2C_Hangzhou_-_20181209.jpg"
+    },
+    {
+      "name": "泡桐树街",
+      "city": "成都",
+      "ok": true,
+      "via": "搜索「泡桐树街」",
+      "file": "Qingyang_Palace.jpg",
+      "width": 1134,
+      "commons": "https://commons.wikimedia.org/wiki/File:Qingyang_Palace.jpg"
+    }
+  ]
+}

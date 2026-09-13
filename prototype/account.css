@@ -1,21 +1,18 @@
 /* ==========================================================================
-   Touris 知途 · 账号层样式
+   Touris 知途 · 身份下拉样式（v2：预设档案制）
 
-   全站第一个模态层。z-index 取 400 —— 现有阶梯是
-   顶栏 100（home.css）/ .mem-pop 200 / .toast-wrap 300（styles.css），
-   必须盖过全部，所以取一个明显更大的值而不是贴边 +1。
-
-   显隐机制与 .mem-pop 保持一致：靠 hidden 属性（走 UA 默认 display:none），
-   不额外写 [hidden] 规则。设计令牌全部复用 styles.css 的 :root。
+   原先这里是全站第一个模态层（登录 / 注册面板，z-index 400）。
+   v2 改成轻量的锚定下拉：跟着 .acct-btn 走，不遮罩、不抢焦点，
+   点外面 / Esc 收起。层级盖过顶栏(100)与 mem-pop(200) 即可，取 320。
    ========================================================================== */
 
-/* ---------------- 顶栏账号入口 ---------------- */
+/* ---------------- 顶栏身份入口 ---------------- */
 
 .acct-btn{
   display:flex;align-items:center;gap:7px;
   padding:6px 12px;border-radius:999px;
   border:1px solid var(--line-2);background:transparent;
-  color:var(--ink-2);font-size:12.5px;
+  color:var(--ink-2);font-size:12.5px;cursor:pointer;transition:.15s;
 }
 .acct-btn:hover{border-color:var(--clay);color:var(--clay)}
 .acct-btn .em{font-size:14px}
@@ -26,98 +23,69 @@
 .acct-btn.guest .cnt{background:var(--paper-2);color:var(--ink-3)}
 .acct-btn b{font-weight:600;color:var(--ink)}
 
-/* ---------------- 遮罩与卡片 ---------------- */
+/* 锚定容器：下拉相对它定位（顶栏与首屏 hero 都适用） */
+.acct-wrap{position:relative;display:inline-flex}
 
-.auth-overlay{
-  position:fixed;inset:0;z-index:400;
-  display:flex;align-items:center;justify-content:center;
-  padding:20px;
-  background:rgba(36,31,27,.42);
-  backdrop-filter:blur(3px);
-  animation:authFade .18s ease-out;
-}
-@keyframes authFade{ from{opacity:0} to{opacity:1} }
-
-.auth-card{
-  width:100%;max-width:392px;max-height:calc(100vh - 40px);
-  overflow-y:auto;
+/* ---------------- 下拉面板 ---------------- */
+.acct-menu{
+  position:absolute;top:calc(100% + 8px);right:0;z-index:320;
+  width:264px;
   background:var(--card);
   border:1px solid var(--line);
-  border-radius:var(--r-l);
+  border-radius:14px;
   box-shadow:var(--shadow-pop);
-  padding:26px 26px 22px;
-  animation:authPop .2s cubic-bezier(.2,.9,.3,1.1);
+  padding:8px;
+  display:flex;flex-direction:column;
+  animation:acctPop .16s cubic-bezier(.2,.9,.3,1.1);
+  transform-origin:top right;
 }
-@keyframes authPop{ from{transform:translateY(8px) scale(.98);opacity:0} to{transform:none;opacity:1} }
+@keyframes acctPop{ from{transform:translateY(-5px) scale(.97);opacity:0} to{transform:none;opacity:1} }
 
-.auth-card h3{margin:0 0 6px;font-size:19px;font-weight:800;letter-spacing:.2px}
-.auth-card .auth-sub{margin:0 0 18px;font-size:12.5px;color:var(--ink-3);line-height:1.6}
+.am-head{
+  font-size:10.5px;font-weight:700;letter-spacing:1px;color:var(--ink-3);
+  padding:5px 8px 7px;
+}
+.am-item{
+  display:flex;align-items:center;gap:9px;
+  width:100%;border:none;background:transparent;cursor:pointer;
+  padding:8px;border-radius:10px;text-align:left;transition:.12s;
+}
+.am-item:hover{background:var(--paper-2)}
+.am-item.on{background:var(--indigo-soft)}
+.am-item .em{font-size:17px;flex:none}
+.am-item .tt{flex:1;min-width:0;line-height:1.3}
+.am-item .tt b{display:block;font-size:12.5px;color:var(--ink);font-weight:700}
+.am-item .tt small{display:block;font-size:10.5px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.am-item .cnt{
+  flex:none;font-size:10px;color:var(--ink-3);
+  background:var(--paper-2);border-radius:999px;padding:2px 7px;white-space:nowrap;
+}
+.am-item.on .cnt{background:#fff;color:var(--indigo)}
 
-/* 登录 / 注册切换 */
-.auth-tabs{display:flex;gap:6px;margin-bottom:16px}
-.auth-tabs button{
-  flex:1;padding:7px 10px;border-radius:999px;
-  border:1px solid var(--line);background:var(--paper);
-  font-size:12.5px;color:var(--ink-2);transition:.15s;
+.am-foot{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  margin-top:6px;padding:8px 8px 2px;border-top:1px dashed var(--line);
+  font-size:10px;color:var(--ink-3);
 }
-.auth-tabs button.on{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:600}
+.am-reset{
+  border:none;background:transparent;cursor:pointer;
+  font-size:10.5px;color:var(--red,#B4432E);font-weight:600;padding:2px 4px;border-radius:6px;
+}
+.am-reset:hover{background:rgba(180,67,46,.08)}
 
-/* 表单：沿用 styles.css 里 .field 的既有输入样式与 clay 聚焦环 */
-.auth-card .field{margin-bottom:12px}
-.auth-card .field label{
-  display:block;font-size:11.5px;color:var(--ink-3);
-  font-weight:600;margin-bottom:6px;letter-spacing:.4px;
+/* ---------------- 首屏 hero 上的反白适配 ----------------
+   与 .hero-top .acct-btn 的整体反白一致：下拉在 hero 上时底色加深。 */
+.hero-top .acct-menu{
+  background:rgba(24,22,20,.92);
+  border-color:rgba(255,255,255,.16);
+  backdrop-filter:blur(14px);
 }
-.auth-card .field input{
-  width:100%;padding:10px 11px;border-radius:10px;
-  border:1px solid var(--line-2);background:var(--paper);
-  font-size:14px;font-weight:600;transition:.15s;
-}
-.auth-card .field input:focus{
-  outline:none;border-color:var(--clay);background:#fff;
-  box-shadow:0 0 0 3px var(--clay-soft);
-}
-
-.auth-err{
-  font-size:12px;color:var(--red);background:var(--red-soft);
-  border:1px solid var(--red);border-radius:var(--r-s);
-  padding:8px 10px;margin-bottom:12px;
-}
-
-/* 按钮 */
-.auth-actions{display:flex;flex-direction:column;gap:9px;margin-top:16px}
-.auth-card .btn.xl{
-  width:100%;padding:12px;border-radius:11px;border:none;
-  background:linear-gradient(135deg,var(--clay),#D98A4E);color:#fff;
-  font-size:14.5px;font-weight:700;
-}
-.auth-card .btn.xl:hover{filter:brightness(1.05)}
-.auth-card .btn.ghost{
-  width:100%;padding:11px;border-radius:11px;
-  border:1px solid var(--line-2);background:transparent;
-  color:var(--ink-2);font-size:13.5px;
-}
-.auth-card .btn.ghost:hover{border-color:var(--clay);color:var(--clay)}
-
-/* 演示账号提示 */
-.auth-demo{
-  margin-top:16px;padding:11px 12px;border-radius:10px;
-  background:var(--indigo-soft);border:1px solid var(--indigo-line);
-  font-size:12px;color:var(--ink-2);line-height:1.65;
-}
-.auth-demo b{color:var(--indigo)}
-.auth-demo code{
-  background:rgba(255,255,255,.7);padding:1px 5px;border-radius:4px;
-  font-size:11.5px;
-}
-
-/* 页脚小字：演示声明 */
-.auth-note{
-  margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);
-  font-size:11px;color:var(--ink-3);line-height:1.65;
-}
-
-@media (max-width:480px){
-  .auth-card{padding:20px 18px 18px;max-width:none}
-  .auth-card h3{font-size:17px}
-}
+.hero-top .acct-menu .am-head{color:rgba(255,255,255,.55)}
+.hero-top .am-item:hover{background:rgba(255,255,255,.10)}
+.hero-top .am-item.on{background:rgba(255,255,255,.14)}
+.hero-top .am-item .tt b{color:#fff}
+.hero-top .am-item .tt small{color:rgba(255,255,255,.55)}
+.hero-top .am-item .cnt{background:rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
+.hero-top .am-foot{border-top-color:rgba(255,255,255,.14);color:rgba(255,255,255,.45)}
+.hero-top .am-reset{color:#FFA48C}
+.hero-top .am-reset:hover{background:rgba(255,164,140,.12)}

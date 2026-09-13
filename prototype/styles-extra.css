@@ -4,21 +4,28 @@
    品牌 LOGO · 左栏记忆区 · 景点缩略图 · 模拟地图 · 区域候选推荐组
    ========================================================================== */
 
-/* ============================ 品牌 LOGO ============================ */
-/* 顶栏只放「知途」二字标，英文名用实时文本，可选中、可被读屏识别，不与图重复 */
+/* ============================ 品牌 LOGO ============================
+   ★ 恢复完整 LOGO：原始素材 D:/Desktop/TOURIS.png 虽已遗失，
+   但 logo.css 里由它生成的三个位图变体还在——
+     --logo-mark  仅「知途」二字      641×324
+     --logo-word  仅「TOURIS」        643×138
+     --logo-lock  知途 + TOURIS 完整组合  177×134
+   此前界面只用 --logo-mark，英文字母不见了。现在顶栏与首屏统一用
+   --logo-lock（完整中英组合），品牌信息完整。宽高比 177:134 ≈ 1.32。 */
 .brand .logo{
-  width:62px;height:30px;flex:none;border-radius:0;
-  background:var(--logo-mark) center/contain no-repeat;
+  width:38px;height:29px;flex:none;border-radius:0;
+  background:var(--logo-lock) center/contain no-repeat;
 }
-/* 首页首屏的品牌位：只放商标，旁边不再有「Touris 知途」文字。
-   尺寸按墨迹包围盒的实际比例定——--logo-mark 画布 641x324，但墨迹只有 629x314，
-   宽高比 2.003。contain 只做等比缩放不会裁切，盒子给到 68x34（2.0）时几乎满幅。
+/* 首页首屏的品牌位：完整组合 LOGO，旁边不再有重复的文字。
    原 LOGO 是纯黑，首屏是深色遮罩配白字，整体反白使用。 */
 .hero-top .h-logo .logo{
-  width:68px;height:34px;flex:none;border-radius:0;
-  background:var(--logo-mark) center/contain no-repeat;
+  width:44px;height:33px;flex:none;border-radius:0;
+  background:var(--logo-lock) center/contain no-repeat;
   filter:brightness(0) invert(1);
 }
+/* 顶栏文字简称保留（可选中、可被读屏识别），英文小字让位给组合标 */
+.brand .brand-txt{line-height:1.08}
+.brand .brand-txt small{letter-spacing:.4px}
 
 /* ============================ 左栏记忆区 ============================ */
 .rail-head{display:flex;align-items:center;gap:8px;margin-bottom:4px}
@@ -217,3 +224,158 @@
 .city-guide ul {padding-left:20px;display:grid;gap:10px;}
 .city-guide a {color:var(--indigo);overflow-wrap:anywhere;}
 .city-guide small {display:block;color:var(--ink-3);}
+
+/* ============================================================
+   v2 追加：面包屑 + 返回键 · 生成流水线屏 · RAG 攻略屏
+   ============================================================ */
+
+/* ---------------- 顶栏面包屑与返回 ---------------- */
+.crumbs{
+  display:flex;align-items:center;gap:7px;
+  font-size:12.5px;color:var(--ink-3);
+  min-width:0;overflow:hidden;white-space:nowrap;
+}
+.crumbs i{color:var(--line-2);font-style:normal;font-size:11px}
+.crumb{
+  border:none;background:transparent;padding:3px 4px;border-radius:6px;
+  color:var(--ink-3);font-size:12.5px;cursor:pointer;
+}
+.crumb:hover{color:var(--clay);background:var(--clay-soft)}
+.crumbs b{color:var(--ink);font-weight:700;font-size:12.5px}
+.back-btn{
+  width:26px;height:26px;border-radius:8px;flex:none;
+  border:1px solid var(--line-2);background:var(--card);
+  color:var(--ink-2);font-size:14px;line-height:1;cursor:pointer;
+  display:grid;place-items:center;transition:.15s;
+}
+.back-btn:hover{border-color:var(--clay);color:var(--clay);background:var(--clay-soft)}
+
+/* 屏幕头部的辅助动作（← 修改需求 / 看相似攻略） */
+.head-actions{display:inline-flex;gap:14px;margin-left:6px;vertical-align:middle}
+.mini-link{
+  border:none;background:transparent;padding:2px 0;
+  color:var(--clay);font-size:12.5px;cursor:pointer;font-weight:600;
+  border-bottom:1px dashed transparent;
+}
+.mini-link:hover{border-bottom-color:var(--clay)}
+.gen-bits{display:inline-flex;gap:6px;margin-left:8px;vertical-align:middle}
+.gen-bits i{
+  font-style:normal;font-size:11px;color:var(--indigo);
+  background:var(--indigo-soft);border:1px solid var(--indigo-line);
+  border-radius:999px;padding:2px 8px;
+}
+.warn-chip{
+  font-size:11.5px;color:var(--clay);background:var(--clay-soft);
+  border:1px solid #E5C9B3;border-radius:999px;padding:2px 9px;margin-left:6px;
+}
+
+/* ---------------- 生成流水线屏 ---------------- */
+.gen-screen{display:flex;align-items:center;justify-content:center;min-height:70vh}
+.gen-card{
+  width:100%;max-width:620px;background:var(--card);
+  border:1px solid var(--line);border-radius:var(--r-l);
+  box-shadow:var(--shadow-pop);padding:30px 32px 26px;text-align:center;
+}
+.gen-title{font-size:16.5px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:22px}
+.spin{
+  width:16px;height:16px;border-radius:50%;flex:none;
+  border:2.5px solid var(--line-2);border-top-color:var(--clay);
+  animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.gen-steps{display:flex;flex-direction:column;gap:12px;text-align:left;margin-bottom:18px}
+.gen-step{
+  display:grid;grid-template-columns:30px 1fr;grid-template-rows:auto auto;
+  column-gap:12px;padding:11px 14px;border-radius:12px;
+  border:1px solid var(--line);background:var(--paper);opacity:.45;transition:.3s;
+}
+.gen-step.on{opacity:1;border-color:var(--clay);background:var(--clay-soft)}
+.gen-step.done{opacity:1}
+.gen-step .gs-num{
+  grid-row:1/3;width:30px;height:30px;border-radius:50%;
+  background:var(--line-2);color:#fff;font-weight:800;font-size:13px;
+  display:grid;place-items:center;transition:.3s;
+}
+.gen-step.on .gs-num{background:var(--clay)}
+.gen-step.done .gs-num{background:var(--green)}
+.gen-step .gs-t{font-weight:700;font-size:13.5px;color:var(--ink)}
+.gen-step .gs-d{font-size:11.5px;color:var(--ink-3);margin-top:2px}
+.gen-note{font-size:12px;color:var(--ink-3)}
+
+/* ---------------- RAG 攻略屏 ---------------- */
+.rag-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.rag-chips span{
+  font-size:12px;color:var(--ink-2);background:var(--paper-2);
+  border:1px solid var(--line);border-radius:999px;padding:4px 11px;
+}
+.rag-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:16px;margin:6px 0 20px;
+}
+.rag-card{
+  display:flex;gap:12px;background:var(--card);
+  border:1px solid var(--line);border-radius:16px;padding:18px;
+  box-shadow:var(--shadow);transition:transform .25s, box-shadow .25s;
+}
+.rag-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-pop)}
+.rag-card .rg-rank{
+  flex:none;font-size:15px;font-weight:800;color:var(--clay);
+  background:var(--clay-soft);border-radius:10px;padding:5px 9px;height:fit-content;
+}
+.rag-card .rg-title{font-weight:800;font-size:14.5px;line-height:1.4;margin-bottom:6px}
+.rag-card .rg-meta{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+.rag-card .rg-meta .tag{font-size:10.5px}
+.rag-card .rg-sum{font-size:12.5px;color:var(--ink-2);line-height:1.65;margin:0 0 8px}
+.rag-card .rg-why{font-size:11.5px;color:var(--ink-3);margin-bottom:8px}
+.rag-card .rg-why i{
+  font-style:normal;background:var(--indigo-soft);color:var(--indigo);
+  border-radius:999px;padding:1px 8px;margin-right:4px;font-size:10.5px;
+}
+.rag-card .rg-why i.dim{background:var(--paper-2);color:var(--ink-3)}
+.rag-card .rg-link{font-size:12px;color:var(--clay);text-decoration:none;font-weight:600}
+.rag-card .rg-link:hover{text-decoration:underline}
+
+.rag-composed{padding:24px 26px}
+.rag-composed .rc-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.rag-composed h3{margin:0;font-size:16px}
+.rc-badge{
+  font-size:11.5px;border-radius:999px;padding:3px 11px;font-weight:600;
+  background:var(--paper-2);color:var(--ink-3);border:1px solid var(--line);
+}
+.rc-badge.llm{background:var(--indigo-soft);color:var(--indigo);border-color:var(--indigo-line)}
+.rc-title{font-size:19px;font-weight:800;margin:14px 0 8px}
+.rc-overview{font-size:13px;color:var(--ink-2);line-height:1.7;margin:0 0 16px}
+.rc-daily{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:14px}
+.rc-day{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:13px 14px}
+.rc-dayhead{font-size:13px;font-weight:700;margin-bottom:9px}
+.rc-slot{display:flex;gap:8px;font-size:12px;color:var(--ink-2);line-height:1.55;margin-bottom:5px}
+.rc-slot i{
+  flex:none;font-style:normal;font-size:10px;color:var(--ink-3);
+  background:var(--paper-2);border-radius:5px;padding:1px 6px;margin-top:1px;
+}
+.rc-tips{font-size:12.5px;color:var(--ink-2);line-height:1.7}
+.rc-tips b{display:block;margin-bottom:5px;color:var(--ink)}
+.rc-tips ul{margin:0;padding-left:18px}
+.rc-based{margin-top:12px;font-size:11.5px;color:var(--ink-3);border-top:1px dashed var(--line);padding-top:10px}
+.guide-foot{display:flex;gap:12px;margin-top:6px}
+
+/* 触屏窄屏：面包屑隐藏中间环节，保留返回键 */
+@media (max-width:900px){
+  .crumbs .crumb{display:none}
+  .crumbs b{display:none}
+}
+
+/* ---------------- S5 对照条 ----------------
+   home.css 的首页统计条也叫 .stats-bar（白底、后加载），会把 styles.css 里
+   S5 的深蓝渐变盖掉，白字落在白底上不可见。这里用修饰类把 S5 那条还原。 */
+.stats-bar.s5-stats{
+  background:linear-gradient(120deg,var(--indigo),#2C3868);color:#fff;
+  border-bottom:none;border-radius:var(--r-m);padding:13px 16px;
+  max-width:920px;box-shadow:0 8px 24px rgba(46,60,114,.25);
+}
+.stats-bar.s5-stats .replay{background:rgba(255,255,255,.16);color:#fff}
+.stats-bar.s5-stats.plain{background:var(--paper-2);color:var(--ink-2);border:1px dashed var(--line-2);box-shadow:none}
+.stats-bar.s5-stats .n{
+  background:none;-webkit-background-clip:initial;background-clip:initial;
+  -webkit-text-fill-color:#fff;color:#fff;
+}

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Touris 知途 · 高保真原型</title>
+<title>Touris 知途 · 记忆驱动的旅行规划</title>
 <link rel="stylesheet" href="logo.css">
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="styles-extra.css">
@@ -28,12 +28,10 @@
 <!-- 记忆溯源悬浮卡 -->
 <div class="mem-pop" id="memPop" hidden></div>
 
-<!-- 登录 / 注册（静态声明 + hidden，与 #memPop 一致） -->
-<div id="authOverlay" hidden></div>
-
 <!-- toast -->
 <div class="toast-wrap" id="toastWrap"></div>
 
+<!-- 数据层：语义映射 → 图片 → 记忆档案 → 城市资料 → 候选景点扩充 -->
 <script src="semantics.js"></script>
 <script src="images.js"></script>
 <script src="data.js"></script>
@@ -41,7 +39,13 @@
 <script src="city-expansion.js"></script>
 <script src="city-hangzhou-guangzhou.js"></script>
 <script src="city-chengdu.js"></script>
+<script src="spots-expansion.js"></script>
 <script src="coords.js"></script>
+<!-- 引擎：算法排线 → RAG 攻略 → LLM 客户端 → 身份 → 地图 → 界面 -->
+<script src="planner.js"></script>
+<script src="guides-data.js"></script>
+<script src="rag.js"></script>
+<script src="llm.js"></script>
 <script src="account.js"></script>
 <script src="vendor/leaflet/leaflet.js"></script>
 <!-- 底图是预渲染好的本地栅格瓦片（tiles-raster/*.jpg），Leaflet 原生就能读，

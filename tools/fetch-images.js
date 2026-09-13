@@ -202,12 +202,17 @@ function proxyURL(raw, w){
   return 'https://wsrv.nl/?url=' + v + '&w=' + w + '&output=jpg';
 }
 
+/* 本机网络存在 TLS 中间层（自签证书链）时，直连 upload.wikimedia.org 会报
+   SELF_SIGNED_CERT_IN_CHAIN。默认放宽校验以维持可用；要恢复严格校验，
+   设 TOURIS_TLS_STRICT=1。取的是公开静态图片，放宽只影响本机构建期。 */
+const TLS_OPTS = process.env.TOURIS_TLS_STRICT === '1' ? {} : { rejectUnauthorized: false };
+
 function fetchTo(url, dest, depth, retry){
   depth = depth || 0;
   retry = retry || 0;
   return new Promise((resolve, reject) => {
     if(depth > 4) return reject(new Error('重定向过多'));
-    const req = https.get(url, { headers: { 'User-Agent': 'Touris-image-fetcher/1.0' } }, res => {
+    const req = https.get(url, { headers: { 'User-Agent': 'Touris-image-fetcher/1.0' }, ...TLS_OPTS }, res => {
       if(res.statusCode >= 300 && res.statusCode < 400 && res.headers.location){
         res.resume();
         return resolve(fetchTo(res.headers.location, dest, depth + 1, retry));
