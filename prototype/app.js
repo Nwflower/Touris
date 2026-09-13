@@ -748,23 +748,32 @@ function accountBtnHTML(n){
   </span>`;
 }
 
-/** 魔搭账号那一区。没开登录时给一行灰字说明，别让人以为按钮坏了。 */
+/** 魔搭账号那一区。
+ *
+ *  ★ 只在「真能用」或「已经登录」时才出现，其余情况整块不渲染。
+ *
+ *  这里一度有三行灰字，分别解释「没配」「配了但容器出不去网」「正在检查」。
+ *  那是诚实的，但**不该出现在这个位置**：身份下拉是演示动线的入口，摆一句
+ *  「登录做不完」在那儿，等于每次都先告诉观众一个坏消息，而它跟今天要讲的
+ *  「记忆 → 推荐差异」毫无关系。当前部署（免费 CPU 规格）恒等于第二种情况，
+ *  所以那段话永远不会消失。
+ *
+ *  改成按需出现：能登录就显示登录入口，登录过就显示账号行，否则什么都不显示——
+ *  下拉回到「游客 + 三份预设档案」，与接登录之前一模一样。
+ *  将来换成有外网出口的规格，这个入口会自己长出来，不用改代码。 */
 function msMenuHTML(){
-  const on = S.session.mode === 'ms';
   if(MS.user){
+    const on = S.session.mode === 'ms';
     const u = MS.user;
-    return `<button class="am-item ms ${on?'on':''}" data-act="acctpick" data-id="ms">
+    return `<div class="am-head am-head-2">魔搭账号 · 记忆存在云端</div>
+    <button class="am-item ms ${on?'on':''}" data-act="acctpick" data-id="ms">
       ${avatarHTML(u.avatar || '🪪')}
-      <span class="tt"><b>${esc(u.name || '魔搭用户')}</b><small>魔搭账号 · 记忆存在云端，换设备也在</small></span>
+      <span class="tt"><b>${esc(u.name || '魔搭用户')}</b><small>换设备也在，不跟这台机器绑</small></span>
       <span class="cnt">${(MS.memories||[]).length} 条记忆</span>
     </button>
     <button class="am-mini" data-act="mslogout">退出魔搭账号</button>`;
   }
-  if(!MS.ready) return `<div class="am-note">正在检查登录状态…</div>`;
-  /* 三种「不能登录」要说成三句不同的话，别一律推给用户：
-     没配 / 配了但容器出不去网 / 探测失败。第二种在免费规格的创空间上是常态。 */
-  if(!MS.configured) return `<div class="am-note">这个部署未开启魔搭登录，只能选下面的预设身份。</div>`;
-  if(!MS.oauth) return `<div class="am-note">服务端已配好魔搭登录，但这个容器访问不了外网（免费 CPU 规格的限制），登录做不完。先用下面的预设身份吧。</div>`;
+  if(!MS.oauth) return '';                 // 用不了就当它不存在（见上面的说明）
   return `<button class="am-item ms" data-act="mslogin">
       <span class="em">🪪</span>
       <span class="tt"><b>用魔搭账号登录</b><small>记忆存在云端，换设备也在 · 只取昵称与头像</small></span>
@@ -784,11 +793,14 @@ function acctMenuHTML(){
       <span class="cnt">${n} 条记忆</span>
     </button>`;
   }).join('');
-  const msLoggedOut = S.session.mode !== 'ms' && !MS.user;
+  const ms = msMenuHTML();
+  /* 魔搭那一段自带小标题；它不出现时，预设档案回到最上面那个标题底下 */
+  const presetHead = ms && MS.user
+    ? '<div class="am-head am-head-2">演示档案 · 记忆只在本机</div>'
+    : '';
   return `<span class="acct-menu" role="menu" aria-label="切换身份">
     <div class="am-head">选择身份 · 记忆跟着档案走</div>
-    ${msMenuHTML()}
-    <div class="am-head am-head-2">演示档案 · 记忆只在本机</div>
+    ${ms}${presetHead}
     <button class="am-item ${cur===null?'on':''}" data-act="acctpick" data-id="">
       <span class="em">🫥</span>
       <span class="tt"><b>游客</b><small>0 记忆 · 不落盘，刷新即散</small></span>
@@ -796,8 +808,8 @@ function acctMenuHTML(){
     </button>
     ${rows}
     <div class="am-foot">
-      <span>${msLoggedOut ? '预设身份的记忆只存在本机 localStorage' : '当前身份'}</span>
-      <button class="am-reset" data-act="reset">清空本机数据</button>
+      <span>记忆只存在本机 localStorage</span>
+      <button class="am-reset" data-act="reset">清空数据</button>
     </div>
   </span>`;
 }
@@ -1271,7 +1283,15 @@ function ticketTag(name){
 }
 
 function itemView(it, day){
-  const key = `d${day}-${it.id}`;
+  /* 表态的 key 必须稳定，不能用位置 id。
+
+     id 是 `d{天}-{当天第几条}`（planner.js 生成），而**记一条记忆就会重跑排线**：
+     整条时间轴重排，位置 id 全变。于是「原因：去过了」和「已记入记忆」会跟着
+     位置窜到另一处景点上——实测对故宫点「去过了」，重排后提示挂到了国家博物馆，
+     用户看到的是「你说你去过国家博物馆」，但他点的是故宫。
+     改用 kind + 名称：同一次行程里景点名唯一、餐饮组 id 唯一、空档名固定，
+     重排前后指的是同一处。 */
+  const key = `${it.kind}:${it.name}`;
   const isFood = it.kind === 'food';
   const isFree = it.kind === 'free';
   const g = isFood ? dining()[it.name] : null;

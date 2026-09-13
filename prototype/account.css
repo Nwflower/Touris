@@ -106,15 +106,10 @@
   text-align:left;font-family:inherit;
 }
 .am-mini:hover{background:var(--paper-2);color:var(--ink-2)}
-.am-note{
-  padding:8px 9px;font-size:11px;line-height:1.55;color:var(--ink-3);
-  background:var(--paper-2);border:1px dashed var(--line);border-radius:9px;
-}
 .acct-btn.ms .cnt{background:var(--indigo);color:#fff}
 
 .hero-top .am-item.ms{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.22)}
 .hero-top .am-item.ms .tt b{color:#fff}
 .hero-top .am-mini{color:rgba(255,255,255,.45)}
 .hero-top .am-mini:hover{background:rgba(255,255,255,.10);color:rgba(255,255,255,.8)}
-.hero-top .am-note{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.16);color:rgba(255,255,255,.5)}
 .hero-top .am-head-2{border-top-color:rgba(255,255,255,.14)}

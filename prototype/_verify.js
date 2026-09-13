@@ -200,6 +200,30 @@ console.log('--- 预置身份 ---');
   assert(true, '记忆 / 表态规则的语义标签全部合法');
 }
 
+/* --- 身份下拉：魔搭登录只在真能用的时候出现 ---
+   这段盯的是一个**体验**决定，不是功能：免费规格的创空间容器没有外网出口，
+   登录配齐了也走不完。曾经在那里摆了三行灰字解释原因——诚实，但身份下拉是
+   演示动线的入口，等于每次开场先告诉观众一个坏消息。现在用不了就整块不渲染，
+   下拉回到「游客 + 三份预设档案」。这几条断言防的就是那段话被加回来。 */
+{
+  const menu = g('acctMenuHTML()');
+  assert(g('MS.oauth') === false, '未登录且登录不可用时，MS.oauth 为 false');
+  assert(g('msMenuHTML()') === '', '登录用不了 → 那一区整块不渲染');
+  assert(!/am-note/.test(menu), '★ 身份下拉里没有「登录做不完」这类死路提示');
+  const ids = [...menu.matchAll(/data-act="acctpick" data-id="([^"]*)"/g)].map(m => m[1]);
+  assert(ids.join(',') === ',demo,iron,eve', `未登录时下拉就是 4 项（游客 + 三份预设档案）——实为 ${ids.join(',') || '(空)'}`);
+  assert(/记忆只存在本机 localStorage/.test(menu), '底注回到「记忆只存在本机」');
+
+  /* 换到有外网出口的规格后，入口要自己长出来，不用改代码 */
+  g('MS.oauth = true');
+  assert(g('msMenuHTML()').includes('data-act="mslogin"'), '真能用时登录入口自动出现');
+  g('MS.user = {sub:"u",name:"甲",avatar:""}');
+  const logged = g('msMenuHTML()');
+  assert(logged.includes('data-act="mslogout"') && logged.includes('data-id="ms"'), '已登录时显示账号行与退出');
+  assert(g('acctMenuHTML()').includes('am-head-2'), '已登录时预设档案才需要小标题分隔');
+  g('MS.user = null; MS.oauth = false');
+}
+
 /* ==================== 5. LLM 客户端降级 ====================
    fetch 桩永远 reject → available() 置 false → 两个接口都应降级并给原因。
    异步断言放进 async 主体，最后统一汇报退出。 */

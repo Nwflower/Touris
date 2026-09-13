@@ -30,9 +30,13 @@ CHECK=0
 
 [ -d "$SRC" ] || { echo "找不到源目录: $SRC"; exit 1; }
 
-# 清理上次异常中断留下的 worktree 目录
+# 清理上次异常中断留下的 worktree。
+# ★ 顺序有讲究：`git worktree prune` 处理不了「已注册但目录已失」这一种
+#   （会报 "is a missing but already registered worktree"，把下面的 add 挡下来）。
+#   所以先显式注销，再删目录，最后才 prune。与 sync-studio.sh 是同一处坑。
+git worktree remove --force "$WT" 2>/dev/null || true
+rm -rf "$WT"
 git worktree prune
-[ -d "$WT" ] && rm -rf "$WT"
 
 git fetch origin "refs/heads/$BRANCH:refs/remotes/origin/$BRANCH" --quiet
 git worktree add --detach "$WT" "origin/$BRANCH" --quiet
