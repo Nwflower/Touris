@@ -15,9 +15,12 @@
       前端降级到本地算法——路演当天服务挂了也不开天窗
 
    环境变量（只放服务端 / 创空间 Secrets）：
-   * DASHSCOPE_API_KEY   百炼 API Key（地域要配对）
-   * DASHSCOPE_BASE_URL  形如 https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/compatible-mode/v1
-   * DASHSCOPE_MODEL     可选，默认 qwen-plus
+   * LLM_API_KEY     模型服务的 Key。接魔搭 API-Inference 时就是访问令牌
+   * LLM_BASE_URL    https://api-inference.modelscope.cn/v1
+   * LLM_MODEL        魔搭 Model-Id，如 Qwen/Qwen3-235B-A22B
+                     ★ /v1/models 列出的模型不是都真在服务：有的返回
+                       choices:null，有的报 no provider supported，配之前先打一发
+   * （DASHSCOPE_API_KEY / _BASE_URL / _MODEL 仍兼容，但名字已不准确）
    * LLM_TIMEOUT_MS      可选，默认 8000
    * PORT                可选，默认 7860
    ========================================================================== */
@@ -29,9 +32,17 @@ const path = require('path');
 const ROOT = path.join(__dirname, 'prototype');
 const PORT = Number(process.env.PORT) || 7860;
 
-const API_KEY = process.env.DASHSCOPE_API_KEY || '';
-const BASE_URL = process.env.DASHSCOPE_BASE_URL || '';
-const MODEL = process.env.DASHSCOPE_MODEL || 'qwen-plus';
+/* LLM_API_KEY / LLM_BASE_URL / LLM_MODEL 是主名字；DASHSCOPE_* 保留兼容。
+   ★ 名字里不该再出现 DashScope：现在接的是**魔搭自己的 API-Inference**
+   （https://api-inference.modelscope.cn/v1），不是百炼。继续叫这个名字,
+   下一个人会拿百炼的 Key 和地域去配，然后对着 401 想不通。
+   callLLM 走的是标准 OpenAI chat/completions 形状，两家都吃得下。 */
+const API_KEY = process.env.LLM_API_KEY || process.env.DASHSCOPE_API_KEY || '';
+const BASE_URL = process.env.LLM_BASE_URL || process.env.DASHSCOPE_BASE_URL || '';
+/* 默认值换成 ModelScope 的 Model-Id 形式。注意：API-Inference 上
+   /v1/models 列出的模型**不是都真在服务**——有的返回 choices:null，有的
+   直接 no provider supported。这个实测可用。 */
+const MODEL = process.env.LLM_MODEL || process.env.DASHSCOPE_MODEL || 'Qwen/Qwen3-235B-A22B';
 const TIMEOUT_MS = Number(process.env.LLM_TIMEOUT_MS) || 8000;
 
 const MIME = {
@@ -239,9 +250,11 @@ const server = http.createServer((req, res) => {
 });
 
 if (require.main === module) {
-  server.listen(PORT, () => {
-    console.log(`Touris 知途 · http://localhost:${PORT}`);
-    console.log(`  LLM: ${(API_KEY && BASE_URL) ? '已接入（' + MODEL + '）' : '未配置 DASHSCOPE_API_KEY / DASHSCOPE_BASE_URL —— 前端自动降级为本地算法'}`);
+  /* Studio 要求端口在 0.0.0.0 上暴露。省略 host 时 Node 也会监听所有网卡，
+     但那是默认行为，写死更稳，也免得以后有人加了 host 参数把平台挡在外面。 */
+  server.listen(PORT, '0.0.0.0', () => {
+    console.log(`Touris 知途 · listening on 0.0.0.0:${PORT}`);
+    console.log(`  LLM: ${(API_KEY && BASE_URL) ? '已接入（' + MODEL + '）' : '未配置 LLM_API_KEY / LLM_BASE_URL —— 前端自动降级为本地算法'}`);
   });
 }
 

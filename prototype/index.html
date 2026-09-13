@@ -48,9 +48,14 @@
 <script src="llm.js"></script>
 <script src="account.js"></script>
 <script src="vendor/leaflet/leaflet.js"></script>
-<!-- 底图是预渲染好的本地栅格瓦片（tiles-raster/*.jpg），Leaflet 原生就能读，
-     不需要 pmtiles / basemaps / protomaps-leaflet 那三个库。
-     生成方式见 tools/render-tiles.js，署名见 tiles-raster/CREDITS.md。 -->
+<!-- 底图有两条路，real-maps.js 运行时自动挑一条（选法见该文件头）：
+     矢量走 tiles/*.pmtiles 归档、由 protomaps-leaflet 画进 canvas，
+       需要后端支持 HTTP Range（server.js 提供）；
+     拿不到 Range 就回退到 tiles-raster/*.jpg 那套预烤栅格。
+     这三件套约 190KB，只在矢量那条路上真正用上；署名见 tiles/CREDITS.md。 -->
+<script src="vendor/pmtiles.js"></script>
+<script src="vendor/basemaps.js"></script>
+<script src="vendor/protomaps-leaflet.js"></script>
 <script src="real-maps.js"></script>
 <script src="app.js"></script>
 </body>

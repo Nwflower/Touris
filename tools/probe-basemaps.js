@@ -1,3 +1,10 @@
+/* ⚠️ 已下线（第 0 代地图方案）
+   本工具服务于早期的 MapLibre + PMTiles 离线底图，配套的 tiles/ 与 tiles/assets/
+   已在 2026-09-13 的仓库整理中删除，现在没有任何引用。
+   现行方案是构建期预烤栅格——见 prototype/tiles-raster/CREDITS.md 与
+   prototype/real-maps.js 的文件头。重启矢量方案前不要使用本工具。
+   ========================================================================== */
+
 /* 探针：在 Node 里跑 @protomaps/basemaps，实测生成样式与字体栈。
    用法：node probe-basemaps.js */
 const fs = require('fs');

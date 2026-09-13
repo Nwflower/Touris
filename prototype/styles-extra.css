@@ -10,8 +10,10 @@
      --logo-mark  仅「知途」二字      641×324
      --logo-word  仅「TOURIS」        643×138
      --logo-lock  知途 + TOURIS 完整组合  177×134
-   此前界面只用 --logo-mark，英文字母不见了。现在顶栏与首屏统一用
-   --logo-lock（完整中英组合），品牌信息完整。宽高比 177:134 ≈ 1.32。 */
+      此前界面只用 --logo-mark，英文字母不见了。现在顶栏 / 首屏 / 页脚三处品牌位
+   统一用 --logo-lock（完整中英组合），宽高比 177:134 ≈ 1.32；只有 S0 的
+   kicker 那枚行内小标仍用 --logo-mark（行高太小，组合标会糊）。
+   三处旁边都不再挂文字字标——LOGO 里本来就有「知途 TOURIS」。 */
 .brand .logo{
   width:38px;height:29px;flex:none;border-radius:0;
   background:var(--logo-lock) center/contain no-repeat;
@@ -23,9 +25,6 @@
   background:var(--logo-lock) center/contain no-repeat;
   filter:brightness(0) invert(1);
 }
-/* 顶栏文字简称保留（可选中、可被读屏识别），英文小字让位给组合标 */
-.brand .brand-txt{line-height:1.08}
-.brand .brand-txt small{letter-spacing:.4px}
 
 /* ============================ 左栏记忆区 ============================ */
 .rail-head{display:flex;align-items:center;gap:8px;margin-bottom:4px}

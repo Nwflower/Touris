@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
+
+# ⚠️ 已下线（第 0 代地图方案）
+# 本工具服务于早期的 MapLibre + PMTiles 离线底图，配套的 tiles/ 与 tiles/assets/
+# 已在 2026-09-13 的仓库整理中删除，现在没有任何引用。
+# 现行方案是构建期预烤栅格——见 prototype/tiles-raster/CREDITS.md 与
+# prototype/real-maps.js 的文件头。重启矢量方案前不要使用本工具。
 # 生成 CJK 字形 PBF。前置：先构建镜像
 #   docker build -t touris-font-maker tools/font-maker
 #
-# 产物落在 tiles/assets/fonts/Noto Sans SC/ 下，与 Protomaps 的字体并排。
+# 产物原本落在 tiles/assets/fonts/Noto Sans SC/ 下，与 Protomaps 的字体并排（该目录已随第 0 代方案删除）。
 # 样式里靠 style-patch.js 把 "Noto Sans SC" 追加到每个字体栈末尾做逐字回退。
 set -euo pipefail
 

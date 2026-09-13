@@ -535,20 +535,22 @@ function viewHome(){
 
         <!-- 搜索框(模拟 Trip.com 搜索条) -->
         <div class="hero-search">
-          <div class="hs-field">
-            <span class="hs-ic">📍</span>
-            <input id="home-dest" value="成都" placeholder="去哪儿？">
-          </div>
-          <div class="hs-field">
-            <span class="hs-ic">📅</span>
-            <input id="home-date" type="date" value="2026-10-02">
-          </div>
-          <div class="hs-field hs-days">
-            <span class="hs-ic">⏱</span>
-            <select id="home-days">
-              ${[2,3,4,5,6,7].map(d=>`<option ${d===4?'selected':''}>${d} 天</option>`).join('')}
-            </select>
-          </div>
+          <div class="hs-field hs-dest">
+            <span class="hs-ic">📍</span>
+            <select id="home-dest" aria-label="目的地">
+              ${Object.keys(CITY_DATA).map(c=>`<option ${c===S.req.dest?'selected':''}>${c}</option>`).join('')}
+            </select>
+          </div>
+          <div class="hs-field hs-date">
+            <span class="hs-ic">📅</span>
+            <input id="home-date" type="date" value="${esc(S.req.date || '2026-10-02')}" aria-label="出发日期">
+          </div>
+          <div class="hs-field hs-days">
+            <span class="hs-ic">⏱</span>
+            <select id="home-days" aria-label="游玩天数">
+              ${[2,3,4,5,6,7].map(d=>`<option ${d===S.req.days?'selected':''}>${d} 天</option>`).join('')}
+            </select>
+          </div>
           <button class="hs-btn" data-act="start">
             <span>🧠 用记忆规划</span>
           </button>
@@ -685,11 +687,7 @@ function viewHome(){
     <!-- ========== Footer ========== -->
     <footer class="footer">
       <div class="f-brand">
-        <span>🧠</span>
-        <div>
-          <div class="f-name">Touris 知途</div>
-          <div class="f-sub">MEMORY-DRIVEN TRAVEL</div>
-        </div>
+        <span class="logo" role="img" aria-label="知途 Touris"></span>
       </div>
       <div class="f-links">
         <a data-act="home">首页</a>
@@ -852,7 +850,6 @@ function renderTop(){
   $('topbar').innerHTML = `
     <div class="brand" data-act="home" title="返回首页" style="cursor:pointer">
       <span class="logo" role="img" aria-label="知途 Touris"></span>
-      <span class="brand-txt">知途<br><small>MEMORY-DRIVEN TRAVEL</small></span>
     </div>
     ${crumbs}
     <div class="top-right">
@@ -962,7 +959,7 @@ function viewS0(){
   return `
   <div class="s0-wrap">
     <div class="s0-hero">
-      <span class="kicker">🧠 知途 · 老马识途，越走越懂你</span>
+      <span class="kicker"><span class="kicker-logo" role="img" aria-label="知途 Touris"></span>老马识途，越走越懂你</span>
       <h1>这次去哪儿？</h1>
       <p class="say">预算和具体路线<b>不用你操心</b>——只需回答两个意愿问题，其余交给记忆和算法。</p>
     </div>

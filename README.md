@@ -63,10 +63,16 @@
 | ├ `llm.js` | LLM 客户端（超时、缓存、闸门、降级） |
 | ├ `account.js` | 预置身份与会话（游客不落盘；localStorage 可用时记忆跨会话保留） |
 | ├ `app.js` | 渲染与交互（屏幕状态机：home/s0/guide/s1/s2/s5/generating） |
-| └ `styles*.css` / `home.css` / `logo.css` / `account.css` | 样式 |
+| ├ `styles*.css` / `home.css` / `logo.css` / `account.css` | 样式 |
+| ├ `real-maps.js` / `real-maps.css` | Leaflet 底图挂载——两条路自动选，离线、零外部请求 |
+| ├ `img/` + `assets/` | 景点照片，全部下载入库；署名见 `img/CREDITS.md` 与城市素材记录 |
+| ├ `vendor/leaflet/` | Leaflet 1.9.4（BSD-2-Clause），本地加载，不依赖 CDN |
+| ├ `tiles/` | **矢量底图**（首选）：PMTiles 归档 z0–15，运行时由后端按 HTTP Range 读 |
+| ├ `tiles-raster/` | **栅格底图**（回退）：构建期预烤的 z11–14 JPEG，后端不支持 Range 时用 |
+| └ `_verify.js` / `_imgcheck.js` / `_tile-render.html` | 自检与构建期工具，**不发布到 Pages** |
 | `server.js` | 薄后端（零依赖）：静态托管 + LLM 候选/攻略接口 + 健康检查 |
-| `tools/` | 图片抓取、瓦片渲染、`llm-ping` 联调自检 |
-| `docs/cities/` | 城市素材的来源与许可记录 |
+| `tools/` | 构建脚本：图片抓取、底图预烤（`fetch-pmtiles` → `render-tiles`）、`llm-ping` 自检。第 0 代矢量方案的工具已下线，见各文件头 |
+| `docs/cities/` | 城市素材的来源与许可记录 · 历史验证记录 |
 | `sync-pages.sh` | 镜像 `prototype/` 到 gh-pages 分支并推送（`--check` 只比对） |
 
 > `gh-pages` 分支是发布产物，不要手改；由 `./sync-pages.sh` 从 `prototype/` 生成。
@@ -114,8 +120,10 @@ npm run llm:ping                      # 真打一次接口，失败时打印 HTT
 
 - 坐标口径：杭州/广州/成都来自 Wikidata/OSM（可逐条核对），扩充景点为公开资料整理，
   统一标注「出行前核对」；车站类只作地图参照，不参与排线。
-- 真实底图为本地预渲染栅格瓦片（`tiles-raster/`），离线可用；
-  署名见 `tiles-raster/CREDITS.md`。
+- 底图有两条路，运行时自动选：首选**矢量**——后端按 HTTP Range 读出 `tiles/` 里的
+  PMTiles 归档，`protomaps-leaflet` 画进 canvas，归档含 z0–15 全级别；
+  拿不到 Range 就回退**栅格**——预烤的 `tiles-raster/*.jpg`。
+  两条路都是运行时零外部请求。署名见 `tiles/CREDITS.md` 与 `tiles-raster/CREDITS.md`。
 
 ## 交互约定（v2）
 

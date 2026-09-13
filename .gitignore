@@ -23,5 +23,8 @@ desktop.ini
 # 截图工具的产物（tools/_shot.js 生成，随手拍随手删，不入库）
 tools/_shots/
 
+# 配图复核报告（tools/search-expansion-images.js --recheck 生成，要看随时重跑）
+tools/recheck-report.json
+
 # 魔搭创空间的临时 worktree
 .ms-studio-worktree/

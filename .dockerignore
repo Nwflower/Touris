@@ -1,0 +1,29 @@
+# Docker 构建上下文里排除的东西。用 / 开头的绝对路径，避免误伤同名子目录
+# （比如裸写 assets 会连 prototype/assets 一起排掉，那是要用的）。
+
+# 版本控制与本地配置
+/.git
+/.gitignore
+/.gitattributes
+/.claude
+
+# 开发期工具与素材，运行时用不到（静态托管只服务 prototype/，见 server.js 的 ROOT）
+/tools
+/docs
+
+# 文档与发布脚本
+/*.md
+/sync-pages.sh
+/.ms-studio-worktree
+
+# 编辑器 / 系统
+.DS_Store
+Thumbs.db
+desktop.ini
+node_modules
+
+# ★ prototype/tiles/*.pmtiles（108MB）**不能**排除。
+#   底图有两条路，real-maps.js 优先走矢量——那条路要靠 server.js 支持 HTTP Range
+#   读出归档里的段。把它排掉等于废掉首选路径，只剩栅格回退。
+#   真要瘦身请先读 prototype/real-maps.js 的文件头，别在这里删。
+#   注意也别写成 /tiles —— 那是曾经的顶层目录，已删除；写错成裸 tiles 会误伤。

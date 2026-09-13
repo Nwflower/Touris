@@ -60,7 +60,6 @@ body.home-mode .home{
   box-shadow:0 1px 0 rgba(0,0,0,.05);
 }
 .topbar.home-top .brand{color:#fff}
-.topbar.home-top .brand small{color:rgba(255,255,255,.6)}
 /* 「知途」二字是位图（--logo-mark），不像旁边的文字那样能继承 color。
    所以首页反白时得单独把它翻过来——否则黑标压在深色照片上，旁边文字却是白的。
    滚过 hero 后顶栏变浅底深字，再翻回去。
@@ -69,8 +68,7 @@ body.home-mode .home{
 .topbar.home-top .brand .logo{filter:brightness(0) invert(1)}
 .topbar.home-top.scrolled .brand .logo{filter:brightness(1) invert(0)}
 /* 位图走 filter、文字走 color，给同一个时长才叫同步变色 */
-.topbar.home-top .brand,
-.topbar.home-top .brand small{transition:color .35s}
+.topbar.home-top .brand{transition:color .35s}
 .topbar.home-top .brand .logo{transition:filter .35s}
 .topbar.home-top .top-sep{background:rgba(255,255,255,.2)}
 .topbar.home-top .persona-sw .lbl{color:rgba(255,255,255,.7)}
@@ -111,7 +109,6 @@ body.home-mode .home{
   border:none;background:transparent;color:#fff;
 }
 .topbar.home-top.scrolled .brand{color:var(--ink)}
-.topbar.home-top.scrolled .brand small{color:var(--ink-3)}
 .topbar.home-top.scrolled .top-sep{background:var(--line-2)}
 .topbar.home-top.scrolled .acct-btn{
   color:var(--ink-2);border-color:var(--line-2);background:transparent;
@@ -162,8 +159,11 @@ body.home-mode .home{
 .hero-bg{position:absolute;inset:0;z-index:-1}
 
 /* Hero 内容：左对齐 + 左侧安全区 */
+/* ★ .hero-content 是 .hero（flex 容器）的 flex item，不写 width 时宽度按
+   内容的 max-content 算——搜索条里那个原生 date input 一换字体/语言，
+   固有宽度就变，整块 hero 文案的右边界跟着一起挪。把 660 写死，宽度就定了。 */
 .hero-content{
-  position:relative;z-index:3;text-align:left;max-width:660px;
+  position:relative;z-index:3;text-align:left;width:660px;max-width:100%;
   margin-left:clamp(24px, 7vw, 96px);
   padding:0 24px;transform:translateY(-10px);
   animation:heroFadeUp 1.2s cubic-bezier(.2,.8,.2,1) both;
@@ -228,6 +228,10 @@ body.home-mode .home{
   border-right:1px solid var(--line);
 }
 .hero-search .hs-field:last-of-type{border-right:none}
+/* 日期是这一排里唯一「内在宽度固定」的控件：原生 date input 至少要放下
+   「2026/10/02」加日历图标（约 112px）。原先三格一律 flex:1 平分，
+   它被压到 86px，界面上只剩「2026/10/」——所以单独让它不参与压缩。 */
+.hero-search .hs-field.hs-date{flex:0 0 auto}
 .hero-search .hs-ic{font-size:18px;flex-shrink:0}
 .hero-search input,
 .hero-search select{
@@ -600,10 +604,15 @@ body.home-mode .home{
   padding:28px 40px;background:var(--ink);color:rgba(255,255,255,.7);
   font-size:13px;flex-wrap:wrap;gap:20px;
 }
-.f-brand{display:flex;align-items:center;gap:12px}
-.f-brand > span{font-size:24px}
-.f-name{font-weight:700;color:#fff;font-size:14px}
-.f-sub{font-size:10px;letter-spacing:1.5px;color:rgba(255,255,255,.4)}
+/* 页脚品牌位只留位图 LOGO。原先这里是 🧠 +「Touris 知途 / MEMORY-DRIVEN TRAVEL」
+   两行字：大脑是换标前的老标，文字则跟 LOGO 位图里的「知途 TOURIS」重复。
+   深色底上把纯黑位图反白，尺寸沿用组合标的 177:134 ≈ 1.32。 */
+.f-brand{display:flex;align-items:center}
+.f-brand .logo{
+  width:42px;height:32px;flex:none;
+  background:var(--logo-lock) center/contain no-repeat;
+  filter:brightness(0) invert(1);
+}
 .f-links{display:flex;gap:24px}
 .f-links a{
   color:rgba(255,255,255,.65);cursor:pointer;background:none;border:none;
@@ -619,9 +628,6 @@ body.home-mode .home{
   .features .feat-grid,
   .dest-grid{grid-template-columns:repeat(2,1fr)}
   .demo-wrap{grid-template-columns:1fr}
-  .hero-search{flex-wrap:wrap;border-radius:12px}
-  .hero-search .hs-field{flex:1 1 40%;min-width:140px}
-  .hero-search .hs-btn{flex:1 1 100%;padding:14px}
   .hero-top{padding:16px}
   .hero-top .h-nav{gap:12px}
   .hero-top .h-link{display:none}
@@ -630,6 +636,24 @@ body.home-mode .home{
   .stats-bar .stat-item{flex:1 1 50%;border-right:none;border-bottom:1px solid var(--line)}
   .stats-bar .stat-item:nth-child(2){border-right:1px solid var(--line)}
 }
+/* ============================================================
+   搜索条：窄屏改竖排
+   横排四格最少要 ~560px（城市 94 + 日期 152 + 天数 110 + 按钮 172），
+   再窄就只能压日期。原先这里写的是 flex-wrap:wrap，结果挤成
+   「城市｜日期」一行、「天数」独占半行、按钮再一行，三处分隔线还都对不齐。
+   竖排后每格整宽、分隔线转横向，按钮整宽。
+   ============================================================ */
+@media (max-width: 760px){
+  .hero-search{flex-direction:column;border-radius:14px}
+  .hero-search .hs-field{
+    flex:0 0 auto;border-right:none;
+    border-bottom:1px solid var(--line);
+    padding:0 16px;min-height:48px;
+  }
+  .hero-search .hs-field:last-of-type{border-bottom:none}
+  .hero-search .hs-btn{width:100%;padding:15px;justify-content:center}
+}
+
 /* ============================================================
    页面切换过渡动画(通用,home.css 末尾)
    ============================================================ */
