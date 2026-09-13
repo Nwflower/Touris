@@ -82,6 +82,10 @@ const OVERRIDES = {
   '苏州河华政段': '华东政法大学长宁校区',
   '鲁迅公园': '鲁迅公园 (上海)',
   '多伦路': '多伦路 (上海)',
+  // 词条名与景点名对不上、但首图确实是这个点位（已逐张核对过 Commons 文件）：
+  // 徐家汇书院的重定向目标是「徐汇区图书馆」，七宝古镇的是「七宝镇」
+  '徐家汇书院': '徐汇区图书馆',
+  '七宝古镇': '七宝镇',
   // 广州
   '海珠国家湿地公园': '海珠湿地',
   '泮塘五约': '泮塘',
@@ -169,7 +173,9 @@ function titleRelevant(title, spotName, city) {
      标题里出现别的城市名，直接否掉。 */
   if (city && CITY_NAMES.some(c => c !== city && a.includes(c))) return false;
   const bare = s => s.replace(/[（(].*?[)）]/g, '');
-  if (ADMIN_TAIL_RE.test(bare(a)) && !ADMIN_TAIL_RE.test(bare(b))) return false;
+  /* 「地区/区域/地带」是描述性说法，不是行政区，别误伤「徐汇滨江地区」这种词条 */
+  const show = s => bare(s).replace(/(地区|区域|地带)$/, '');
+  if (ADMIN_TAIL_RE.test(show(a)) && !ADMIN_TAIL_RE.test(show(b))) return false;
   /* 词条是车站（「东郊记忆站」），景点却是那个地方（「东郊记忆」）——车站词条的
      首图是站名牌/站台，不是景点。车站类词条一律不能当景点图源。 */
   if (STATION_RE.test(bare(a)) && !STATION_RE.test(bare(b))) return false;

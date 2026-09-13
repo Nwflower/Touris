@@ -58,10 +58,56 @@ function serveStatic(req, res) {
   if (urlPath === '/') urlPath = '/index.html';
   const fp = path.join(ROOT, urlPath);
   if (!fp.startsWith(ROOT)) { res.writeHead(403); return res.end('403'); }
-  fs.readFile(fp, (err, data) => {
-    if (err) { res.writeHead(404); return res.end('404'); }
-    res.writeHead(200, { 'Content-Type': MIME[path.extname(fp)] || 'application/octet-stream', 'Cache-Control': 'no-store' });
-    res.end(data);
+  fs.stat(fp, (err, st) => {
+    if (err || !st.isFile()) { res.writeHead(404); return res.end('404'); }
+    const type = MIME[path.extname(fp)] || 'application/octet-stream';
+
+    /* ★ HTTP Range —— 这不是可有可无的优化，是**矢量底图的前置条件**。
+
+       PMTiles 是单文件归档（tiles/<城>.pmtiles，单城 9–21MB），浏览器靠 Range
+       只读它需要的那几段。不支持 Range 时 pmtiles.js 会退化成整包 GET——打开
+       详情页就是长时间白屏。所以 real-maps.js 启动时会先发一个 `bytes=0-1` 探测，
+       **只有拿到 206 才走矢量**，否则回退到 tiles-raster/ 那套预烤栅格。
+
+       这也正是当初从 Static 换成 Docker + 自建后端的原因：纯静态托管给不了 Range，
+       而这里几行就能给。没有它，「矢量优先」只是注释里的一句愿望。
+       （`Accept-Ranges: bytes` 在 200 响应上也要发，否则探测方不知道你支持。） */
+    const m = /^bytes=(\d*)-(\d*)$/.exec(String(req.headers.range || '').trim());
+    let start = null, end = null;
+    if (m) {
+      if (m[1] === '' && m[2] === '') {
+        m[0] = null;                                   // "bytes=-" 无效，当没有 Range 处理
+      } else if (m[1] === '') {
+        start = Math.max(0, st.size - Number(m[2]));   // 后缀范围 bytes=-N
+        end = st.size - 1;
+      } else {
+        start = Number(m[1]);
+        end = m[2] === '' ? st.size - 1 : Math.min(Number(m[2]), st.size - 1);
+      }
+    }
+
+    if (start !== null) {
+      if (start >= st.size || start > end) {
+        res.writeHead(416, { 'Content-Range': `bytes */${st.size}` });
+        return res.end();
+      }
+      res.writeHead(206, {
+        'Content-Type': type,
+        'Content-Range': `bytes ${start}-${end}/${st.size}`,
+        'Accept-Ranges': 'bytes',
+        'Content-Length': end - start + 1,
+        'Cache-Control': 'no-store'
+      });
+      return fs.createReadStream(fp, { start, end }).pipe(res);
+    }
+
+    res.writeHead(200, {
+      'Content-Type': type,
+      'Accept-Ranges': 'bytes',
+      'Content-Length': st.size,
+      'Cache-Control': 'no-store'
+    });
+    fs.createReadStream(fp).pipe(res);
   });
 }
 

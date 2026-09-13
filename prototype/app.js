@@ -134,7 +134,7 @@ function usedMemoryIds(){
 function toast(html, kind){
   const el = document.createElement('div');
   el.className = 'toast' + (kind ? ' ' + kind : '');
-  el.innerHTML = `<span class="ti">${kind === 'mem' ? '🧠' : '✓'}</span><div>${html}</div>`;
+  el.innerHTML = `<span class="ti">${kind === 'mem' ? '🧠' : kind === 'hint' ? '💡' : '✓'}</span><div>${html}</div>`;
   $('toastWrap').appendChild(el);
   setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 240); }, 3400);
 }
@@ -371,14 +371,16 @@ function mapBase(labels){
     </g>` : ''}`;
 }
 
-/** 概览图：整趟 4 天全部点位，按天配色
- *  opt.highlightDay: 1-based，高亮指定天的路线，淡化其他
+/** 概览 / 动线地图。两条路都传**全量**天数的数据：切天靠 data-highlight 就地更新，
+ *  不重建地图（重建得把 Leaflet 拆了重挂，鼠标划过时间轴时会闪，见 real-maps.js 的 setDay）。
+ *  opt.mode: 'overview'（默认，全部天都在、非当天淡化）| 'day'（只留当天）
+ *  opt.highlightDay: 1-based，当前是第几天
  */
 function realMapHTML(routeDays,opt={}){
   const c=city();
-  const data=routeDays.map((names,i)=>names.filter(n=>c.geo[n]).map(n=>({name:n,lat:c.geo[n].lat,lng:c.geo[n].lng,day:(opt.startDay||1)+i})));
+  const data=routeDays.map((names,i)=>names.filter(n=>c.geo[n]).map(n=>({name:n,lat:c.geo[n].lat,lng:c.geo[n].lng,day:i+1})));
   const p=data.flat()[0]||{lat:c.center[0],lng:c.center[1]};
-  return `<div class="real-map ${opt.small?'small':''}" data-city="${esc(c.name)}" data-routes="${esc(JSON.stringify(data))}" data-center="${esc(JSON.stringify(c.center))}">
+  return `<div class="real-map ${opt.small?'small':''}" data-city="${esc(c.name)}" data-routes="${esc(JSON.stringify(data))}" data-center="${esc(JSON.stringify(c.center))}" data-map-mode="${opt.mode||'overview'}" data-highlight="${opt.highlightDay||1}">
     <div class="real-map-canvas" role="region" aria-label="${esc(c.name)}真实地图"></div>
     <div class="real-map-status" role="status">正在加载真实底图…</div>
     <div class="real-map-foot"><span>虚线：游览顺序</span><button type="button" data-map-retry>重试</button><a href="https://www.openstreetmap.org/#map=12/${p.lat}/${p.lng}" target="_blank" rel="noopener noreferrer">打开地图 ↗</a></div>
@@ -410,8 +412,10 @@ function overviewMap(routeDays, opt){
 }
 
 /** 当日动线图：编号点位 + 悬停放大 */
-function dayMap(day){
-  if(city()?.geo) return realMapHTML([day.items.filter(i=>i.kind==='spot').map(i=>i.name)],{startDay:day.day});
+function dayMap(day, routeDays){
+  /* 传全量天数、由 mode 决定只显示当天——这样切天时可以用 setDay() 就地切换，
+     不必重建这张图。 */
+  if(city()?.geo) return realMapHTML(routeDays,{mode:'day',highlightDay:day.day});
   const pts = [];
   day.items.forEach(i => {
     const nm = i.kind === 'food' ? restPoi()[i.name] : (i.kind === 'free' ? null : i.name);
@@ -535,22 +539,22 @@ function viewHome(){
 
         <!-- 搜索框(模拟 Trip.com 搜索条) -->
         <div class="hero-search">
-          <div class="hs-field hs-dest">
-            <span class="hs-ic">📍</span>
-            <select id="home-dest" aria-label="目的地">
-              ${Object.keys(CITY_DATA).map(c=>`<option ${c===S.req.dest?'selected':''}>${c}</option>`).join('')}
-            </select>
-          </div>
-          <div class="hs-field hs-date">
-            <span class="hs-ic">📅</span>
-            <input id="home-date" type="date" value="${esc(S.req.date || '2026-10-02')}" aria-label="出发日期">
-          </div>
-          <div class="hs-field hs-days">
-            <span class="hs-ic">⏱</span>
-            <select id="home-days" aria-label="游玩天数">
-              ${[2,3,4,5,6,7].map(d=>`<option ${d===S.req.days?'selected':''}>${d} 天</option>`).join('')}
-            </select>
-          </div>
+          <div class="hs-field hs-dest">
+            <span class="hs-ic">📍</span>
+            <select id="home-dest" aria-label="目的地">
+              ${Object.keys(CITY_DATA).map(c=>`<option ${c===S.req.dest?'selected':''}>${c}</option>`).join('')}
+            </select>
+          </div>
+          <div class="hs-field hs-date">
+            <span class="hs-ic">📅</span>
+            <input id="home-date" type="date" value="${esc(S.req.date || '2026-10-02')}" aria-label="出发日期">
+          </div>
+          <div class="hs-field hs-days">
+            <span class="hs-ic">⏱</span>
+            <select id="home-days" aria-label="游玩天数">
+              ${[2,3,4,5,6,7].map(d=>`<option ${d===S.req.days?'selected':''}>${d} 天</option>`).join('')}
+            </select>
+          </div>
           <button class="hs-btn" data-act="start">
             <span>🧠 用记忆规划</span>
           </button>
@@ -687,7 +691,7 @@ function viewHome(){
     <!-- ========== Footer ========== -->
     <footer class="footer">
       <div class="f-brand">
-        <span class="logo" role="img" aria-label="知途 Touris"></span>
+        <span class="logo" role="img" aria-label="知途 Touris"></span>
       </div>
       <div class="f-links">
         <a data-act="home">首页</a>
@@ -959,7 +963,7 @@ function viewS0(){
   return `
   <div class="s0-wrap">
     <div class="s0-hero">
-      <span class="kicker"><span class="kicker-logo" role="img" aria-label="知途 Touris"></span>老马识途，越走越懂你</span>
+      <span class="kicker"><span class="kicker-logo" role="img" aria-label="知途 Touris"></span>老马识途，越走越懂你</span>
       <h1>这次去哪儿？</h1>
       <p class="say">预算和具体路线<b>不用你操心</b>——只需回答两个意愿问题，其余交给记忆和算法。</p>
     </div>
@@ -1135,6 +1139,22 @@ function viewS1(){
 }
 
 /* ============================ S2 ============================ */
+/* 「补充一句」的输入区。抽出来是因为它有两个入口：面板还开着的时候，
+   以及原因已经选完、面板收起之后（见下面的 free-standalone）。
+   原话只能挂在已选的原因上——没有标签的自由文本推不出约束，
+   提交时会被拦下，理由见 freesubmit 事件里的注释。 */
+function freeBoxHTML(key, st){
+  return `<div class="free-box">
+    <textarea class="free-text" placeholder="比如：这类馆子我一进去就头晕，下次别排了" data-act="freetext" data-key="${key}">${esc(st.note||'')}</textarea>
+    <div class="free-foot">
+      <span class="free-tip">${st.reason
+        ? '提交后，这句话会作为这条偏好的「出处」存下来，记忆中心能看到你的原话。'
+        : '先在上面点一个最接近的原因：只有带标签的表态才会真的改变排线；你写的这句话会一并记下。'}</span>
+      <button class="free-submit" data-act="freesubmit" data-key="${key}">提交</button>
+    </div>
+  </div>`;
+}
+
 function stanceCtl(key, kind){
   const st = S.stance[key] || {};
   const open = S.openReason === key;
@@ -1142,8 +1162,10 @@ function stanceCtl(key, kind){
   let html = `<div class="stance">
     <button class="thumb up ${dir==='up'?'on':''}" data-act="thumb" data-key="${key}" data-kind="${kind}" data-v="up">👍 喜欢</button>
     <button class="thumb down ${dir==='down'?'on':''}" data-act="thumb" data-key="${key}" data-kind="${kind}" data-v="down">👎 不喜欢</button>
-    ${st.reason ? `<span class="hintx">原因：${esc(st.reason)}</span>` : ''}
+    ${st.reason ? `<span class="hintx">原因：${esc(st.reason)}${(st.note && !S.openFree[key]) ? `｜你的补充：${esc(st.note)}` : ''}</span>` : ''}
   </div>`;
+
+  const freeToggle = `<button class="free-toggle" data-act="freetoggle" data-key="${key}">${S.openFree[key]?'收起':'＋ 补充一句（可选）'}</button>`;
 
   if(open && dir){
     const pool = (REASONS[dir]||{})[kind] || [];
@@ -1152,9 +1174,14 @@ function stanceCtl(key, kind){
       <div class="reason-chips">
         ${pool.map(r=>`<button class="rchip ${st.reason===r?'on':''}" data-act="reason" data-key="${key}" data-kind="${kind}" data-r="${esc(r)}">${esc(r)}</button>`).join('')}
       </div>
-      <button class="free-toggle" data-act="freetoggle" data-key="${key}">${S.openFree[key]?'收起':'＋ 补充一句（可选）'}</button>
-      ${S.openFree[key] ? `<textarea class="free-text" placeholder="比如：这类馆子我一进去就头晕，下次别排了" data-act="freetext" data-key="${key}">${esc(st.note||'')}</textarea>` : ''}
+      ${freeToggle}
+      ${S.openFree[key] ? freeBoxHTML(key, st) : ''}
     </div>`;
+  } else if(dir && st.reason){
+    /* 原因一选中，面板就收了（case 'reason' 把 openReason 置空）——
+       原先「补充一句」只长在面板里，于是这句话永远没地方写：想补，得先有面板；
+       选了原因才有出处可挂，而选了原因面板就没了。这里给它留一个收起后的入口。 */
+    html += `<div class="free-standalone">${freeToggle}${S.openFree[key] ? freeBoxHTML(key, st) : ''}</div>`;
   }
   if(st.reason){
     const mm = REASON_TO_MEMORY[st.reason];
@@ -1205,7 +1232,7 @@ function itemView(it, day){
 
   return `
   <div class="tl-item ${it.kind} ${(it.memoryIds&&it.memoryIds.length&&memActive())?'mem':''}"
-       data-act="hoverit" data-name="${esc(hoverName)}">
+       data-act="hoverit" data-name="${esc(hoverName)}" data-day="${day}">
     <div class="tl-time">${esc(it.time)}</div>
     <div class="tl-body">
       <span class="tl-dot"></span>
@@ -1243,33 +1270,41 @@ function itemView(it, day){
 function mapPanel(){
   const it = itin();
   const day = it.days.find(d => d.day === S.s2day) || it.days[0];
-  const routeDays = it.days.map(d => d.items
-    .map(i => i.kind === 'food' ? restPoi()[i.name] : (i.kind === 'free' ? null : i.name))
-    .filter(n => n && poi()[n]));
+  /* 概览只画**景点**——与分日卡片、📍当日动线、S1 方案卡保持同一口径。
+     早先这里把 items 里每种 kind 都映射一遍，于是每天的午餐 / 晚餐区域
+     （kind==='food'）也被当成景点串进了游览动线：总览上每天凭空多一个点，
+     跟分日卡片对不上。dayMap() 早就只取 spot 了，这是漏改的一处。 */
+  const routeDays = it.days.map(d => d.items.filter(i => i.kind === 'spot').map(i => i.name));
   return `
   <div class="map-col">
     <div class="card map-panel">
-      <h4>🗺 全程概览<span class="mini-lbl">${it.days.length} 天 · 按天配色 · 点击切换</span></h4>
+      <h4>🗺 全程概览<span class="mini-lbl">${it.days.length} 天 · 按天配色 · 划过时间轴或图上点位切换</span></h4>
       ${overviewMap(routeDays, { highlightDay: S.s2day })}
-      <div class="day-switch">
-        ${routeDays.map((d,i)=>`<button class="${S.s2day===i+1?'on':''}" data-act="s2day" data-d="${i+1}"><i style="background:${DAY_C[i]}"></i>D${i+1}</button>`).join('')}
-      </div>
     </div>
 
     <div class="card map-panel">
-      <h4>📍 第 ${day.day} 天动线<span class="mini-lbl">${esc(day.theme)}</span></h4>
-      ${dayMap(day)}
+      <h4>📍 <span data-map-day-title>第 ${day.day} 天动线</span><span class="mini-lbl" data-map-day-theme>${esc(day.theme)}</span></h4>
+      ${dayMap(day, routeDays)}
       <div class="map-legend">
         <span><i style="background:var(--clay)"></i>景点</span>
-        <span><i style="background:var(--green)"></i>餐饮区域</span>
+        ${city()?.geo ? '' : '<span><i style="background:var(--green)"></i>餐饮区域</span>'}
         ${memActive()?'<span><i style="background:var(--indigo)"></i>记忆影响</span>':''}
-      </div>
-      <div class="day-switch">
-        ${it.days.map(d=>`<button class="${d.day===S.s2day?'on':''}" data-act="s2day" data-d="${d.day}">D${d.day}</button>`).join('')}
       </div>
     </div>
     <p class="map-disclaim">${city()?.geo ? '底图 © OpenStreetMap；点位为景点参考位置，非入口导航。虚线连接游览顺序，不代表实际道路。' : '示意图，非真实比例；点位为区域中心，不代表具体门店位置。'}</p>
   </div>`;
+}
+
+/** 切天之后，只更新地图面板里那两处文字（标题和当天的主题）。
+    地图本身由 TourisMaps.setDay() 就地更新——不重绘：重绘会把 Leaflet
+    整个拆掉重挂，而切天是鼠标划过触发的，那样一划就闪。 */
+function syncDayChrome(){
+  const it = itin(); if(!it) return;
+  const day = it.days.find(d => d.day === S.s2day) || it.days[0];
+  const t = document.querySelector('[data-map-day-title]');
+  const th = document.querySelector('[data-map-day-theme]');
+  if(t) t.textContent = `第 ${day.day} 天动线`;
+  if(th) th.textContent = day.theme;
 }
 
 function viewS2(){
@@ -1936,6 +1971,31 @@ document.addEventListener('click', e => {
       S.openFree[t.dataset.key] = !S.openFree[t.dataset.key];
       render();
       break;
+    case 'freesubmit': {
+      /* 自由文本没有语义标签（标签只能由 REASONS 里的词条给），所以「补充一句」
+         不新建记忆——它是挂在已选原因上的一段出处。没点原因就提交的话，
+         用户这句话会变成一条**死记忆**：记忆列表里看得到、计数 +1，却推不出
+         任何约束（见 learn() 的注释）。与其静默产出一条不生效的记忆，
+         不如在这儿拦下来，把话留在框里。 */
+      const key = t.dataset.key;
+      const st = S.stance[key];
+      if(!st) break;
+      const text = (st.note || '').trim();
+      if(!text){ toast('先写一句再提交', 'hint'); break; }
+      if(!st.reason){
+        toast('这句话先给你留着——在上面点一个最接近的原因，它才会变成能改变排线的偏好', 'hint');
+        break;
+      }
+      st.note = text;
+      S.openFree[key] = false;
+      /* 用户原话比 chip 的词条更有说服力，覆盖成这条记忆的出处 */
+      const rule = REASON_TO_MEMORY[st.reason];
+      const m = rule && S.learned.find(x => x.text === rule.text);
+      if(m && m.source) m.source.quote = text;
+      render();
+      toast('已记入记忆：<b>' + esc(st.reason) + '</b> ·「' + esc(text) + '」', 'mem');
+      break;
+    }
     case 's2day':
       S.s2day = +t.dataset.d; render(); break;
 
@@ -1968,18 +2028,44 @@ document.addEventListener('input', e => {
   if(t){ const st = S.stance[t.dataset.key]; if(st) st.note = t.value; }
 });
 
-/* 时间轴 ↔ 当日地图联动 */
+/* 时间轴 ↔ 地图联动：鼠标落在第几天的景点上，地图就切到第几天。
+   D1/D2/D3 那排按钮已经去掉，这里是切天的主入口；直接在地图上划过点位
+   也能切（见下面注册的 TourisMaps.onSpotHover）。 */
 document.addEventListener('mouseover', e => {
   const t = e.target.closest('[data-act="hoverit"]');
   const nm = t ? t.dataset.name : null;
-  if(nm !== S.hoverItem && S.screen === 's2'){
+  const dayOfItem = t && t.dataset.day ? +t.dataset.day : null;
+  if(S.screen !== 's2') return;
+
+  /* 同一天里换景点不切天——否则划过一条时间轴会把地图来回切好几遍。 */
+  if(dayOfItem && dayOfItem !== S.s2day){
+    S.s2day = dayOfItem;
+    if(globalThis.TourisMaps) TourisMaps.setDay(dayOfItem);
+    syncDayChrome();
+  }
+
+  if(nm !== S.hoverItem){
     S.hoverItem = nm;
+    /* 只有手绘示意图（没有经纬度的城市）要整块重绘；真实地图由 setDay() 就地更新。 */
     const col = document.querySelector('.map-col');
     if(col && !city()?.geo) col.outerHTML = mapPanel();
     document.querySelectorAll('.tl-item.hovered').forEach(el => el.classList.remove('hovered'));
     if(t) t.classList.add('hovered');
   }
 });
+
+/* 地图上的标记被划过 → 同样切到那一天。real-maps.js 用回调把事件交出来，
+   底图那层不该知道 S.s2day 的存在。划出时 day 为 null，保持当前天不动。 */
+if(globalThis.TourisMaps && TourisMaps.onSpotHover){
+  TourisMaps.onSpotHover((day, name) => {
+    if(S.screen !== 's2' || !day) return;
+    if(day !== S.s2day){
+      S.s2day = day;
+      TourisMaps.setDay(day);
+      syncDayChrome();
+    }
+  });
+}
 
 /* 快捷键 */
 document.addEventListener('keydown', e => {

@@ -32,6 +32,13 @@
      node tools/fetch-images.js            解析地址 + 下载缺失的图 + 重新生成 images.js
      node tools/fetch-images.js --check    只报告缺哪些，不下载
      node tools/fetch-images.js --force    重下已有的
+
+   ★ 被限流时（upload.wikimedia.org 会对密集请求返回 429）：
+     脚本把每个文件都试过「直连 → wsrv.nl 代理」四条候选，全挂了才算失败，
+     但因为最后一条候选是代理，报出来的错误常是代理的 404、看着像文件不存在，
+     其实是 429。这时候把并发降到 1、隔一阵再跑即可——脚本只下缺失的图，
+     反复重跑会自然收敛，不会重复下载：
+       TOURIS_FETCH_CONCURRENCY=1 node tools/fetch-images.js
    ========================================================================== */
 
 const fs = require('fs');
@@ -317,18 +324,25 @@ async function pool(items, limit, worker){
   /* ---- 下载 ---- */
   let failed = [];
   if(todo.length){
-    await pool(todo, 3, async (e, idx) => {
+  /* 并发可调：Wikimedia 对密集请求会限流（429），默认 3 在被限流时只会火上浇油 */
+  const CONCURRENCY = Math.max(1, parseInt(process.env.TOURIS_FETCH_CONCURRENCY || '3', 10) || 3);
+  await pool(todo, CONCURRENCY, async (e, idx) => {
       const w = e.names.some(n => WIDE.includes(n)) ? W_WIDE : W_DEFAULT;
       const dest = path.join(IMG_DIR, e.local);
       try{
-        let size = null, lastErr = null;
+        let size = null, errs = [];
         for(const src of candidateSources(e.url, w)){
           /* 候选里已经排好了「直连 → 代理」，这里**不能再套一层 proxyURL**，
              否则直连也被包进 wsrv，直连优先就白设计了。 */
           try{ size = await fetchTo(src, dest); break; }
-          catch(err){ lastErr = err; }
+          catch(err){ errs.push(err.message); }
         }
-        if(size == null) throw lastErr || new Error('没有可用的取法');
+        if(size == null){
+          /* 最后一条候选是 wsrv.nl 代理，上游被限流时它会回 404——直接报出来
+             会让人以为文件不存在。真有 429 就如实说成限流。 */
+          throw new Error(errs.some(m => /429/.test(m)) ? '限流（429），降并发后再跑'
+            : (errs[errs.length - 1] || '没有可用的取法'));
+        }
         process.stdout.write(`  [${idx + 1}/${todo.length}] ${e.local} ${(size / 1024).toFixed(0)}KB\n`);
       }catch(err){
         failed.push({ local: e.local, err: err.message, names: e.names });

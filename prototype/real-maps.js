@@ -70,10 +70,18 @@
 
   const colors=['#b96843','#527b65','#586a99','#b59043','#946197','#367d8a','#a45564'];
   let maps=[], observer=null;
+  /* 每个容器一份实例：地图 + 按天索引的标记 / 连线 / 点位，供 setDay() 就地更新。
+     之所以按住引用而不是重绘，是因为**切天由鼠标划过触发**——重绘得把 Leaflet
+     整个拆掉重挂，划过时间轴时会一路闪。 */
+  const instances=new Map();
+  /* 鼠标划过地图上的标记时回调外面（app 侧据此切到那一天）。
+     底图这层不该知道 S.s2day 的存在，所以用回调，不直接依赖。 */
+  let spotHoverCb=null;
 
   function dispose(){
     if(observer) observer.disconnect(); observer=null;
     maps.forEach(m=>m.remove()); maps=[];
+    instances.clear();
   }
 
   /* ---------------- 两条路各自的图层 ---------------- */
@@ -173,9 +181,18 @@
     tiles.on('loading',()=>{loaded=0;failed=0;});
 
     const points=[];
+    const dayMarkers=new Map(), dayLines=new Map(), dayPoints=new Map();
+    const mode=container.dataset.mapMode||'overview';
     data.forEach((day,di)=>day.forEach((p,i)=>{
       const color=colors[(p.day-1)%colors.length]; points.push([p.lat,p.lng]);
+      if(!dayPoints.has(p.day)) dayPoints.set(p.day,[]);
+      dayPoints.get(p.day).push([p.lat,p.lng]);
       const marker=L.marker([p.lat,p.lng],{title:`第${p.day}天 · ${p.name}`,icon:L.divIcon({className:'touris-marker',html:`<span style="background:${color}">${p.day}.${i+1}</span>`,iconSize:[34,28],iconAnchor:[17,14]})}).addTo(map);
+      if(!dayMarkers.has(p.day)) dayMarkers.set(p.day,[]);
+      dayMarkers.get(p.day).push(marker);
+      /* 划过地图上的这个点 = 切到这一天（回调出去由 app 改 S.s2day） */
+      marker.on('mouseover',()=>{ if(spotHoverCb) spotHoverCb(p.day,p.name); });
+      marker.on('mouseout', ()=>{ if(spotHoverCb) spotHoverCb(null,null); });
       const label=document.createElement('div');
       const title=document.createElement('strong');title.textContent=p.name;label.appendChild(title);
       const desc=document.createElement('p');desc.textContent=`第 ${p.day} 天 · 第 ${i+1} 站`;label.appendChild(desc);
@@ -183,7 +200,10 @@
       marker.bindPopup(label);
     }));
     // Dashed connections convey visit order only, not road routing.
-    data.forEach(day=>{if(day.length>1)L.polyline(day.map(p=>[p.lat,p.lng]),{color:colors[(day[0].day-1)%colors.length],weight:3,dashArray:'6 7'}).addTo(map);});
+    data.forEach(day=>{if(day.length>1){
+      const line=L.polyline(day.map(p=>[p.lat,p.lng]),{color:colors[(day[0].day-1)%colors.length],weight:3,dashArray:'6 7'}).addTo(map);
+      dayLines.set(day[0].day,line);
+    }});
     if(points.length){
       const box=L.latLngBounds(points);
       /* 拖动范围锁在点位外扩 BOUNDS_PAD 度以内——拖出去只有空白，没有意义。
@@ -210,8 +230,39 @@
     container.querySelector('[data-map-retry]').addEventListener('click',()=>{status.hidden=false;status.textContent='正在重新加载底图…';tiles.redraw();});
     map.on('click',()=>map.scrollWheelZoom.enable());
     map.on('mouseout',()=>map.scrollWheelZoom.disable());
+    const inst={map,dayMarkers,dayLines,dayPoints,mode};
+    instances.set(container,inst);
+    applyTo(inst,Number(container.dataset.highlight)||null);
     requestAnimationFrame(()=>map.invalidateSize());
   }
+
+  /* ---------------- 切天 ----------------
+     两类图对「当前是第几天」的反应不同：
+       mode='overview'  全部点位与连线都在，只把非当天的**淡化**——总览要能一眼看到全城；
+       mode='day'       只留当天的线，其余隐藏——它就是「第 N 天动线」。
+     视野只有 day 那张跟着走：总览图要是也跟着当天放大，就不叫总览了。 */
+  function applyTo(inst,n){
+    if(!inst) return;
+    const only=inst.mode==='day';
+    for(const [day,markers] of inst.dayMarkers){
+      const on=!n||day===n;
+      markers.forEach(m=>{
+        const el=m.getElement(); if(!el) return;
+        if(only) el.style.display=on?'':'none';
+        else el.style.opacity=on?'':'0.28';
+      });
+    }
+    for(const [day,line] of inst.dayLines){
+      const on=!n||day===n;
+      line.setStyle({opacity: only ? (on?1:0) : (on?1:0.12)});
+    }
+    if(only&&n&&inst.dayPoints.get(n)){
+      inst.map.fitBounds(L.latLngBounds(inst.dayPoints.get(n)),{padding:[30,30],maxZoom:14});
+    }
+  }
+
+  /** 切到第 n 天，页面上所有底图一起响应。 */
+  function setDay(n){ instances.forEach(inst=>applyTo(inst,n)); }
 
   function mount(){
     const els=document.querySelectorAll('.real-map');
@@ -230,5 +281,9 @@
     els.forEach(el=>observer.observe(el));
   }
 
-  globalThis.TourisMaps={dispose,mount};
+  globalThis.TourisMaps={
+    dispose, mount, setDay,
+    /** app 侧注册：鼠标划过地图标记时收到 (day, name)；划出时 day 为 null。 */
+    onSpotHover(fn){ spotHoverCb=fn; }
+  };
 })();

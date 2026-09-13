@@ -129,10 +129,12 @@ for f in "${ROOT_FILES[@]}"; do
   cp -f "$f" "$WT/$f"
 done
 
-# prototype/ 整棵镜像过去，但排除运行时无人加载的 tiles/
+# prototype/ 整棵镜像过去。
+# ★ tiles/ （108MB 的 PMTiles 归档）**必须带上**：底图首选矢量那条路，
+#   浏览器靠 HTTP Range 只读归档里的段，而 Range 由 server.js 提供（已实现）。
+#   曾一度把它排除过——那是误判，见 real-maps.js 文件头。
 mkdir -p "$WT/prototype"
 ( cd prototype && for p in *; do
-    [ "$p" = tiles ] && continue
     cp -rf "$p" "../$WT/prototype/$p"
   done )
 
