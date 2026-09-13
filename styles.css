@@ -69,7 +69,6 @@ h1,h2,h3,h4{margin:0;font-weight:650;letter-spacing:.2px}
   background:linear-gradient(135deg,var(--clay),#D98A4E);
   color:#fff;display:grid;place-items:center;font-size:14px;
 }
-.brand small{font-weight:500;color:var(--ink-3);font-size:11px;letter-spacing:.5px}
 
 .top-sep{width:1px;height:24px;background:var(--line-2)}
 .top-right{margin-left:auto;display:flex;align-items:center;gap:12px}
@@ -233,9 +232,16 @@ body.present .work{padding:18px 34px 34px}
 .s0-wrap{max-width:720px;margin:26px auto 0}
 .s0-hero{text-align:center;margin-bottom:26px}
 .s0-hero .kicker{
-  display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;
+  display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;
   background:var(--clay-soft);color:var(--clay);border:1px solid var(--clay-line);
   padding:5px 13px;border-radius:999px;
+}
+/* kicker 里的品牌位：原本是 🧠（换标前的旧标），换成位图。
+   这里用「知途」单字标（--logo-mark）而不是中英组合——kicker 字高只有 12px，
+   组合标里的 TOURIS 缩到这个尺寸会糊成一团。纯黑位图配浅橘 chip 正好。 */
+.s0-hero .kicker .kicker-logo{
+  width:41px;height:21px;flex:none;
+  background:var(--logo-mark) center/contain no-repeat;
 }
 .s0-hero h1{font-size:31px;margin:16px 0 0;letter-spacing:-.4px}
 .s0-hero .say{
@@ -459,6 +465,20 @@ body.present .work{padding:18px 34px 34px}
 .free-toggle{margin-top:8px;font-size:11.5px;color:var(--indigo);font-weight:600}
 .free-text{margin-top:8px;width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--line-2);
   background:var(--card);font-size:12.5px;resize:vertical;min-height:52px;font-family:inherit}
+/* 「补充一句」：原先只有 textarea，没有提交按钮——输入被 input 事件悄悄写进
+   state，用户看不到任何回执，也不知道到底存没存。现在补上提交与说明。 */
+.free-box{margin-top:8px}
+/* 原因选完后面板收起，但「补充一句」的入口要留着（否则这句话永远没地方写） */
+.free-standalone{margin-top:6px}
+.free-box .free-text{margin-top:0}
+.free-foot{margin-top:6px;display:flex;align-items:flex-start;gap:10px}
+.free-tip{flex:1;font-size:11px;line-height:1.55;color:var(--ink-3)}
+.free-submit{
+  flex:none;font-size:12px;font-weight:650;padding:5px 14px;border-radius:8px;
+  background:var(--indigo);color:#fff;border:none;cursor:pointer;transition:.15s;
+}
+.free-submit:hover{filter:brightness(1.08)}
+.free-submit:active{transform:translateY(1px)}
 .learned-hint{
   margin-top:8px;display:flex;align-items:center;gap:7px;font-size:11.5px;
   color:var(--indigo);background:var(--indigo-soft);border-radius:8px;padding:7px 9px;font-weight:600;

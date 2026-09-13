@@ -42,19 +42,24 @@ body.home-mode .home{
   padding:0;
 }
 
-/* ========== TOPBAR 在首页上的表现 ========== */
+/* ========== TOPBAR 在首页上的表现 ==========
+   首屏不显示顶栏——首页自带 .hero-top（商标 + 账号入口），再来一条就重复了，
+   两条都在页面顶端，品牌位还会横向错开十几像素叠在一起。
+   下拉超过 60px 时 app.js 的 bindHomeScrollNav 会加上 .scrolled，顶栏从上方滑出来。
+   用 opacity + transform 而不是 display：display 不可过渡，会硬生生弹出来。 */
 .topbar.home-top{
   position:fixed;top:0;left:0;right:0;z-index:100;
   background:transparent;border-bottom:none;
-  transition:background .35s, box-shadow .35s;
+  opacity:0;pointer-events:none;transform:translateY(-100%);
+  transition:opacity .28s ease, transform .28s ease, background .35s, box-shadow .35s;
 }
 .topbar.home-top.scrolled{
+  opacity:1;pointer-events:auto;transform:none;
   background:rgba(251,247,241,.92);
   backdrop-filter:blur(14px);
   box-shadow:0 1px 0 rgba(0,0,0,.05);
 }
 .topbar.home-top .brand{color:#fff}
-.topbar.home-top .brand small{color:rgba(255,255,255,.6)}
 /* 「知途」二字是位图（--logo-mark），不像旁边的文字那样能继承 color。
    所以首页反白时得单独把它翻过来——否则黑标压在深色照片上，旁边文字却是白的。
    滚过 hero 后顶栏变浅底深字，再翻回去。
@@ -63,18 +68,9 @@ body.home-mode .home{
 .topbar.home-top .brand .logo{filter:brightness(0) invert(1)}
 .topbar.home-top.scrolled .brand .logo{filter:brightness(1) invert(0)}
 /* 位图走 filter、文字走 color，给同一个时长才叫同步变色 */
-.topbar.home-top .brand,
-.topbar.home-top .brand small{transition:color .35s}
+.topbar.home-top .brand{transition:color .35s}
 .topbar.home-top .brand .logo{transition:filter .35s}
-
-/* ---- 实验：首页隐掉整个顶栏 ----
-   首页自带 .hero-top（品牌位 + 首页 / 规划 / Demo / 开始规划），顶栏在首屏是重复的：
-   两者都在页面顶端（.hero 是首屏且 top:0），品牌位横向错开约 14px 叠在一起。
-   隐掉之后顶栏里的记忆开关 / 账号 / 全屏演示在首页就没有了——Demo 是从首页进 S1 再操作，
-   那些控件在后续屏上照常出现。
-   离开首页时 _doRender 会摘掉 .home-top，顶栏自动回来（见 app.js:1391）。
-   要恢复，把下面这条删掉即可。 */
-.topbar.home-top{display:none}
+/* 路牌挪到首屏右上角（见 .hero-sign），顶栏不再放它 */
 .topbar.home-top .top-sep{background:rgba(255,255,255,.2)}
 .topbar.home-top .persona-sw .lbl{color:rgba(255,255,255,.7)}
 /* Hero 顶部:去掉透明毛玻璃边框背景,只留文字(开关滑块保留) */
@@ -114,7 +110,6 @@ body.home-mode .home{
   border:none;background:transparent;color:#fff;
 }
 .topbar.home-top.scrolled .brand{color:var(--ink)}
-.topbar.home-top.scrolled .brand small{color:var(--ink-3)}
 .topbar.home-top.scrolled .top-sep{background:var(--line-2)}
 .topbar.home-top.scrolled .acct-btn{
   color:var(--ink-2);border-color:var(--line-2);background:transparent;
@@ -150,21 +145,27 @@ body.home-mode .home{
    ============================================================ */
 .hero{
   position:relative;height:100vh;min-height:640px;
-  display:flex;align-items:center;justify-content:center;
+  display:flex;align-items:center;justify-content:flex-start;
   overflow:hidden;color:#fff;
 }
-/* 幻灯片样式在下方"Hero 幻灯片切换动画"区块统一定义 */
+/* 文案改左对齐后，遮罩跟着改：左侧压暗保文字对比度，右侧留给轮播图主体。
+   原先居中排版时文字永远叠在图片视觉中心上，切到哪张都挡哪张。 */
 .hero-overlay{
   position:absolute;inset:0;z-index:1;
   background:
-    linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,.18) 40%, rgba(0,0,0,.55) 100%),
-    radial-gradient(ellipse at 30% 60%, rgba(196,98,45,.25), transparent 60%);
+    linear-gradient(90deg, rgba(8,10,16,.62) 0%, rgba(8,10,16,.34) 42%, rgba(8,10,16,.08) 68%, rgba(8,10,16,.22) 100%),
+    linear-gradient(180deg, rgba(0,0,0,.30) 0%, transparent 30%, rgba(0,0,0,.42) 100%),
+    radial-gradient(ellipse at 78% 62%, rgba(196,98,45,.18), transparent 55%);
 }
 .hero-bg{position:absolute;inset:0;z-index:-1}
 
-/* Hero 内容 */
+/* Hero 内容：左对齐 + 左侧安全区 */
+/* ★ .hero-content 是 .hero（flex 容器）的 flex item，不写 width 时宽度按
+   内容的 max-content 算——搜索条里那个原生 date input 一换字体/语言，
+   固有宽度就变，整块 hero 文案的右边界跟着一起挪。把 660 写死，宽度就定了。 */
 .hero-content{
-  position:relative;z-index:3;text-align:center;max-width:820px;
+  position:relative;z-index:3;text-align:left;width:660px;max-width:100%;
+  margin-left:clamp(24px, 7vw, 96px);
   padding:0 24px;transform:translateY(-10px);
   animation:heroFadeUp 1.2s cubic-bezier(.2,.8,.2,1) both;
 }
@@ -189,8 +190,8 @@ body.home-mode .home{
 }
 
 .hero-title{
-  font-size:clamp(32px, 5.6vw, 64px);
-  font-weight:800;line-height:1.1;letter-spacing:-.5px;
+  font-size:clamp(30px, 4.6vw, 56px);
+  font-weight:800;line-height:1.12;letter-spacing:-.5px;
   margin:0 0 14px;
   text-shadow:0 2px 20px rgba(0,0,0,.3);
 }
@@ -204,9 +205,9 @@ body.home-mode .home{
 @keyframes cursorBlink{50%{opacity:0}}
 
 .hero-sub{
-  font-size:clamp(14px, 1.7vw, 17px);
+  font-size:clamp(13.5px, 1.6vw, 16px);
   color:rgba(255,255,255,.82);
-  max-width:560px;margin:0 auto 32px;line-height:1.6;
+  max-width:560px;margin:0 0 30px;line-height:1.7;
 }
 
 /* Hero 搜索框(Trip.com 风格) */
@@ -215,7 +216,7 @@ body.home-mode .home{
   background:rgba(255,255,255,.97);
   border-radius:16px;overflow:hidden;
   box-shadow:0 12px 40px rgba(0,0,0,.25), 0 0 0 1px rgba(255,255,255,.2);
-  max-width:720px;margin:0 auto;
+  max-width:640px;margin:0;
   animation:searchPop .6s cubic-bezier(.3,1.2,.4,1) .4s both;
 }
 @keyframes searchPop{
@@ -228,6 +229,10 @@ body.home-mode .home{
   border-right:1px solid var(--line);
 }
 .hero-search .hs-field:last-of-type{border-right:none}
+/* 日期是这一排里唯一「内在宽度固定」的控件：原生 date input 至少要放下
+   「2026/10/02」加日历图标（约 112px）。原先三格一律 flex:1 平分，
+   它被压到 86px，界面上只剩「2026/10/」——所以单独让它不参与压缩。 */
+.hero-search .hs-field.hs-date{flex:0 0 auto}
 .hero-search .hs-ic{font-size:18px;flex-shrink:0}
 .hero-search input,
 .hero-search select{
@@ -254,7 +259,7 @@ body.home-mode .home{
 
 /* Hero 快速 chips */
 .hero-quick{
-  margin-top:16px;display:flex;align-items:center;justify-content:center;
+  margin-top:16px;display:flex;align-items:center;justify-content:flex-start;
   gap:10px;flex-wrap:wrap;
   animation:heroFadeUp 1s ease .7s both;
 }
@@ -290,7 +295,7 @@ body.home-mode .home{
   0%{top:-18px}100%{top:36px}
 }
 
-/* Hero 内嵌导航(移动端/默认都可见) */
+/* 首屏栏：左边只有商标，右边是账号入口 */
 .hero-top{
   position:absolute;top:0;left:0;right:0;z-index:10;
   display:flex;align-items:center;justify-content:space-between;
@@ -298,53 +303,50 @@ body.home-mode .home{
 }
 .hero-top > *{pointer-events:auto}
 .hero-top .h-logo{
-  font-size:16px;font-weight:800;color:#fff;
-  display:flex;align-items:center;gap:8px;text-shadow:0 2px 8px rgba(0,0,0,.3);
+  display:flex;align-items:center;
+  /* 浅色字符旁边的深色照片上要压得住，但只有一枚商标了，描边不用太重 */
+  filter:drop-shadow(0 2px 8px rgba(0,0,0,.35));
 }
-.hero-top .h-logo span{font-size:22px}
-.hero-top .h-nav{display:flex;align-items:center;gap:20px}
-.hero-top .h-link{
-  background:none;border:none;color:rgba(255,255,255,.9);
-  font-size:14px;font-weight:500;cursor:pointer;padding:6px 0;
-  position:relative;transition:color .2s;
-}
-.hero-top .h-link::after{
-  content:'';position:absolute;bottom:0;left:50%;width:0;height:1.5px;
-  background:#fff;transition:all .25s;transform:translateX(-50%);
-}
-.hero-top .h-link:hover::after{width:100%}
-.hero-top .h-btn{
-  padding:9px 20px;border-radius:999px;border:1px solid rgba(255,255,255,.5);
-  background:rgba(255,255,255,.12);color:#fff;font-weight:600;font-size:13.5px;
-  backdrop-filter:blur(10px);cursor:pointer;transition:all .2s;
-}
-.hero-top .h-btn:hover{
-  background:#fff;color:var(--clay);border-color:#fff;
-  box-shadow:0 4px 16px rgba(0,0,0,.25);transform:translateY(-1px);
+.hero-top .h-nav{display:flex;align-items:center;gap:12px}
+
+/* 「我在中客松很想你」路牌：首屏右下角。原图 747×200（带 Alpha），按高度 60px
+   缩放（宽约 224px）。那里已经被轮播控件占了（.hero-ctrl 贴 bottom:24 / right:24），
+   所以路牌叠在它**上方**、右边界与它对齐，两个元素不打架。
+   底色是深色照片，跟旁边的商标一样加投影压住。 */
+.hero-sign{
+  position:absolute;right:24px;bottom:72px;z-index:4;
+  height:60px;width:auto;display:block;pointer-events:none;
+  filter:drop-shadow(0 2px 8px rgba(0,0,0,.35));
 }
 
+/* 账号入口搬到首屏栏上。它原本在顶栏的浅色底上（account.css），
+   这里底色是深色照片，所以整体反白，跟旁边的商标一致。
+   点击事件是委托在 document 上的（app.js 的 data-act="account"），搬过来即生效。 */
+.hero-top .acct-btn{
+  color:rgba(255,255,255,.92);
+  border-color:rgba(255,255,255,.34);
+  background:rgba(255,255,255,.10);
+  backdrop-filter:blur(10px);
+}
+.hero-top .acct-btn:hover{
+  color:#fff;border-color:rgba(255,255,255,.75);background:rgba(255,255,255,.18);
+}
+.hero-top .acct-btn b{color:#fff}
+.hero-top .acct-btn .cnt{background:rgba(255,255,255,.20);color:#fff}
+.hero-top .acct-btn.guest .cnt{background:rgba(255,255,255,.14);color:rgba(255,255,255,.8)}
+
 /* ============================================================
-   Hero 滑动控制(箭头/圆点/播放/计数器)
+   Hero 轮播进度条(贴图片右下角)
    ============================================================ */
+/* 只有进度条，贴右下角。不设 left/right:0，靠 right 定位收成内容宽度。
+   底下垫一层很淡的暗色胶囊：圆点是半透明白，碰到雪景那种亮照片会糊没。 */
 .hero-ctrl{
-  position:absolute;bottom:72px;left:0;right:0;z-index:4;
-  display:flex;align-items:center;justify-content:center;gap:14px;
-  padding:0 24px;
+  position:absolute;bottom:24px;right:24px;z-index:4;
+  display:flex;align-items:center;
+  padding:7px 12px;border-radius:999px;
+  background:rgba(12,16,24,.28);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.14);
 }
-/* 箭头 */
-.hc-arrow{
-  width:40px;height:40px;border-radius:50%;
-  background:rgba(255,255,255,.14);backdrop-filter:blur(10px);
-  border:1px solid rgba(255,255,255,.28);
-  color:#fff;cursor:pointer;display:grid;place-items:center;
-  transition:background .2s, transform .15s, border-color .2s;
-}
-.hc-arrow:hover{
-  background:rgba(255,255,255,.28);border-color:rgba(255,255,255,.55);
-  transform:scale(1.08);
-}
-.hc-arrow:active{transform:scale(.95)}
-.hc-arrow svg{width:18px;height:18px}
 /* 圆点 */
 .hc-dots{display:flex;align-items:center;gap:8px}
 .hc-dot{
@@ -354,27 +356,6 @@ body.home-mode .home{
   padding:0;
 }
 .hc-dot.on{background:#fff;width:24px;border-radius:4px}
-/* 播放/暂停 */
-.hc-play{
-  width:32px;height:32px;border-radius:50%;
-  background:rgba(255,255,255,.14);backdrop-filter:blur(10px);
-  border:1px solid rgba(255,255,255,.28);
-  color:#fff;cursor:pointer;display:grid;place-items:center;
-  transition:background .2s;position:relative;
-}
-.hc-play:hover{background:rgba(255,255,255,.28)}
-.hc-play svg{width:14px;height:14px;position:absolute;transition:opacity .2s, transform .2s}
-.hc-play .hc-icon-play{opacity:1;transform:scale(1)}
-.hc-play .hc-icon-pause{opacity:0;transform:scale(.5)}
-.hc-play.paused .hc-icon-play{opacity:0;transform:scale(.5)}
-.hc-play.paused .hc-icon-pause{opacity:1;transform:scale(1)}
-/* 计数器 */
-.hc-label{
-  font-size:12px;color:rgba(255,255,255,.7);font-weight:600;
-  letter-spacing:1px;padding:0 2px;
-}
-.hc-label .hc-cur{color:#fff;font-size:13px}
-
 /* ============================================================
    Hero 幻灯片切换动画(核心!)
    ============================================================ */
@@ -634,10 +615,15 @@ body.home-mode .home{
   padding:28px 40px;background:var(--ink);color:rgba(255,255,255,.7);
   font-size:13px;flex-wrap:wrap;gap:20px;
 }
-.f-brand{display:flex;align-items:center;gap:12px}
-.f-brand > span{font-size:24px}
-.f-name{font-weight:700;color:#fff;font-size:14px}
-.f-sub{font-size:10px;letter-spacing:1.5px;color:rgba(255,255,255,.4)}
+/* 页脚品牌位只留位图 LOGO。原先这里是 🧠 +「Touris 知途 / MEMORY-DRIVEN TRAVEL」
+   两行字：大脑是换标前的老标，文字则跟 LOGO 位图里的「知途 TOURIS」重复。
+   深色底上把纯黑位图反白，尺寸沿用组合标的 177:134 ≈ 1.32。 */
+.f-brand{display:flex;align-items:center}
+.f-brand .logo{
+  width:42px;height:32px;flex:none;
+  background:var(--logo-lock) center/contain no-repeat;
+  filter:brightness(0) invert(1);
+}
 .f-links{display:flex;gap:24px}
 .f-links a{
   color:rgba(255,255,255,.65);cursor:pointer;background:none;border:none;
@@ -653,17 +639,34 @@ body.home-mode .home{
   .features .feat-grid,
   .dest-grid{grid-template-columns:repeat(2,1fr)}
   .demo-wrap{grid-template-columns:1fr}
-  .hero-search{flex-wrap:wrap;border-radius:12px}
-  .hero-search .hs-field{flex:1 1 40%;min-width:140px}
-  .hero-search .hs-btn{flex:1 1 100%;padding:14px}
   .hero-top{padding:16px}
   .hero-top .h-nav{gap:12px}
   .hero-top .h-link{display:none}
+  /* 路牌在小屏按比例收——224px 宽横在右上角会压到标题 */
+  .hero-sign{height:42px}
   .section{padding:60px 20px}
   .stats-bar{flex-wrap:wrap}
   .stats-bar .stat-item{flex:1 1 50%;border-right:none;border-bottom:1px solid var(--line)}
   .stats-bar .stat-item:nth-child(2){border-right:1px solid var(--line)}
 }
+/* ============================================================
+   搜索条：窄屏改竖排
+   横排四格最少要 ~560px（城市 94 + 日期 152 + 天数 110 + 按钮 172），
+   再窄就只能压日期。原先这里写的是 flex-wrap:wrap，结果挤成
+   「城市｜日期」一行、「天数」独占半行、按钮再一行，三处分隔线还都对不齐。
+   竖排后每格整宽、分隔线转横向，按钮整宽。
+   ============================================================ */
+@media (max-width: 760px){
+  .hero-search{flex-direction:column;border-radius:14px}
+  .hero-search .hs-field{
+    flex:0 0 auto;border-right:none;
+    border-bottom:1px solid var(--line);
+    padding:0 16px;min-height:48px;
+  }
+  .hero-search .hs-field:last-of-type{border-bottom:none}
+  .hero-search .hs-btn{width:100%;padding:15px;justify-content:center}
+}
+
 /* ============================================================
    页面切换过渡动画(通用,home.css 末尾)
    ============================================================ */
@@ -703,4 +706,5 @@ body:not(.home-mode) #work.page-fade-out{transition:opacity .14s ease}
   .stats-bar .stat-item:nth-child(2){border-right:none}
   .demo-steps{flex-wrap:wrap;gap:12px}
   .d-arrow{display:none}
+  .hero-sign{height:34px}
 }

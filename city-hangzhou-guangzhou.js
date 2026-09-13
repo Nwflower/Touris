@@ -33,6 +33,10 @@
     c.resolve = (req, selected, memories=[]) => {
       const dayCount = req.days == null ? 4 : Number(req.days);
       if(!c.durationRange.includes(dayCount)) throw new RangeError('杭州、广州支持 2—7 天行程');
+      /* slow 时一天压到几个点。取 3 是拿文案里「2–3 个」的**上限**：
+         宁可少裁一点，也不要为了叙事把行程掏空。
+         （app/memory/derive.js 的 PACE_CAP.slow 也是 3，同样的理由。） */
+      const PACE_CAP = 3;
       /* ★ 记忆 → 约束。判断依据是**语义标签**，不是记忆的中文措辞。
 
          旧实现是三条正则：/一天最多|一天塞太多/、/我晕博物馆/、/午后.*休息/。
@@ -70,9 +74,9 @@
             if(hit){ dropped.push({name,tag:hit}); whoContributes(memories,'avoid',hit).forEach(id=>ids.add(id)); }
             else picks.push({name,slot:i});
           });
-          /* 二、过 pace：slow 时一天压到 2 个。偏好决定「留谁」，不决定「先去哪」
+          /* 二、过 pace：slow 时一天压到 PACE_CAP 个。偏好决定「留谁」，不决定「先去哪」
                  ——裁完按原槽位还原顺序，否则时间轴就假了。 */
-          const cap = slow ? Math.min(2, day.length) : day.length;
+          const cap = slow ? Math.min(PACE_CAP, day.length) : day.length;
           if(picks.length>cap){
             const ranked=picks.slice().sort((a,b)=>rel(b.name).prefer.length-rel(a.name).prefer.length||a.slot-b.slot);
             const keep=new Set(ranked.slice(0,cap).map(x=>x.name));

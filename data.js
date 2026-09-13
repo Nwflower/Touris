@@ -7,461 +7,116 @@
    每个候选带人均、菜系/房型、评分与来源，供用户自己挑。
    ========================================================================== */
 
-/* ---------- 京都 POI 坐标（归一化 0-100 画布，用于伪地图） ---------- */
-const POI = {
-  '京都站':        { x: 56, y: 79 },
-  '清水寺':        { x: 73, y: 62 },
-  '二年坂三年坂':  { x: 71, y: 60 },
-  '祇园花见小路':  { x: 66, y: 54 },
-  '八坂神社':      { x: 69, y: 52 },
-  '伏见稻荷大社':  { x: 62, y: 93 },
-  '金阁寺':        { x: 28, y: 21 },
-  '龙安寺':        { x: 21, y: 25 },
-  '岚山竹林':      { x: 9,  y: 44 },
-  '天龙寺':        { x: 12, y: 47 },
-  '渡月桥':        { x: 11, y: 52 },
-  '锦市场':        { x: 52, y: 50 },
-  '二条城':        { x: 42, y: 39 },
-  '银阁寺':        { x: 79, y: 29 },
-  '哲学之道':      { x: 76, y: 34 },
-  '京都国立博物馆':{ x: 66, y: 67 },
-  '三十三间堂':    { x: 64, y: 69 },
-  '平安神宫':      { x: 72, y: 43 },
-  '河原町':        { x: 58, y: 51 },
-  '先斗町':        { x: 59, y: 53 },
-  '鸭川河畔':      { x: 60, y: 57 },
-  '西阵':          { x: 34, y: 33 },
-  '京都塔':        { x: 56, y: 75 },
-  '东寺':          { x: 47, y: 84 },
-  '南禅寺':        { x: 74, y: 39 },
-  '出町柳桝形商店街': { x: 63, y: 30 },
-  '嵯峨野':        { x: 13, y: 45 },
-  '京都站伊势丹':  { x: 56, y: 77 }
-};
-
-/* ---------- 景点资料（分数 / 一句话 / 标签 / 缩略图类别） ---------- */
-const SPOTS = {
-  '清水寺':        { score:4.7, count:12840, src:'大众点评', cat:'temple',
-    intro:'悬空木舞台俯瞰京都市区，傍晚人少还有夕照。', tags:['世界遗产','观景台','傍晚好','人多'] },
-  '二年坂三年坂':  { score:4.5, count:6210, src:'大众点评', cat:'street',
-    intro:'通往清水寺的石板坡道，两侧是伴手礼铺和茶屋。', tags:['石板街','伴手礼','拍照','坡道'] },
-  '京都国立博物馆':{ score:4.4, count:2180, src:'大众点评', cat:'museum',
-    intro:'大型综合馆，常设加特展走完要两小时以上。', tags:['大型馆','常设+特展','室内','费体力'] },
-  '三十三间堂':    { score:4.6, count:3140, src:'大众点评', cat:'temple',
-    intro:'1001 尊等身佛像排成一列的木造长堂。', tags:['国宝','室内','安静','雨天可'] },
-  '祇园花见小路':  { score:4.5, count:8900, src:'大众点评', cat:'street',
-    intro:'町屋木格子沿街排开，入夜灯笼亮起来最好看。', tags:['夜景','町屋','人多','免费'] },
-  '金阁寺':        { score:4.6, count:15200, src:'大众点评', cat:'temple',
-    intro:'金箔阁楼倒映在镜湖池上，绕池一圈约 40 分钟。', tags:['世界遗产','必看','人多','动线短'] },
-  '龙安寺':        { score:4.5, count:4300, src:'大众点评', cat:'garden',
-    intro:'十五块石头的枯山水方丈庭园，坐着看比走着看好。', tags:['枯山水','庭园','安静','可久坐'] },
-  '岚山竹林':      { score:4.6, count:11800, src:'大众点评', cat:'bamboo',
-    intro:'几百米高竹夹道，早上 9 点前几乎没人。', tags:['竹林','自然','清晨好','免费'] },
-  '天龙寺':        { score:4.6, count:5200, src:'大众点评', cat:'garden',
-    intro:'曹源池庭园借景岚山，坐在廊下看最舒服。', tags:['世界遗产','庭园','安静','可久坐'] },
-  '渡月桥':        { score:4.4, count:7600, src:'大众点评', cat:'river',
-    intro:'横跨桂川的木桥，桥头正对岚山山脊。', tags:['河川','拍照','免费','人多'] },
-  '二条城':        { score:4.5, count:5400, src:'大众点评', cat:'castle',
-    intro:'将军居城，二之丸御殿的走廊一踩就响。', tags:['世界遗产','室内','闭园早','动线长'] },
-  '伏见稻荷大社':  { score:4.7, count:18900, src:'大众点评', cat:'shrine',
-    intro:'千本鸟居一路上山，走到山顶来回约 2.5 小时。', tags:['鸟居','爬山','24 小时','体力活'] },
-  '东寺':          { score:4.4, count:3900, src:'马蜂窝', cat:'temple',
-    intro:'日本最高的五重塔，池边能看到塔的倒影。', tags:['五重塔','世界遗产','人少','动线短'] },
-  '锦市场':        { score:4.5, count:9200, src:'大众点评', cat:'market',
-    intro:'四百年的室内市场街，以边逛边吃为主。', tags:['市集','本地','小吃','雨天可'] },
-  '出町柳桝形商店街':{ score:4.5, count:1900, src:'马蜂窝', cat:'market',
-    intro:'本地人买菜的有顶商店街，早市名物多。', tags:['早市','本地','小吃','人少'] },
-  '平安神宫':      { score:4.3, count:5100, src:'大众点评', cat:'shrine',
-    intro:'朱红大殿加收费神苑，庭园比正殿更值得。', tags:['神社','庭园','拍照','动线短'] },
-  '银阁寺':        { score:4.5, count:6800, src:'大众点评', cat:'temple',
-    intro:'素色阁楼配苔庭，动线是一条上坡单行道。', tags:['世界遗产','苔庭','动线短','安静'] },
-  '哲学之道':      { score:4.6, count:5600, src:'大众点评', cat:'path',
-    intro:'沿水渠的两公里步道，慢走大约一小时。', tags:['步道','安静','免费','自然'] },
-  '南禅寺':        { score:4.6, count:4700, src:'大众点评', cat:'garden',
-    intro:'巨大三门加红砖水路阁，免费区就够逛。', tags:['庭园','水路阁','安静','免费区大'] },
-  '鸭川河畔':      { score:4.7, count:7300, src:'大众点评', cat:'river',
-    intro:'穿城而过的河岸草坡，傍晚本地人坐一整排。', tags:['河川','傍晚好','免费','散步'] },
-  '先斗町':        { score:4.4, count:6100, src:'大众点评', cat:'street',
-    intro:'一条只容两人并行的夜巷，两侧都是小馆。', tags:['夜巷','本地小馆','夜间','人多'] },
-  '京都塔':        { score:4.0, count:5900, src:'大众点评', cat:'tower',
-    intro:'车站对面的观景塔，主要是看夜景。', tags:['观景台','夜景','游客向','室内'] },
-  '京都站伊势丹':  { score:4.2, count:4200, src:'大众点评', cat:'shopping',
-    intro:'车站直连百货，地下食品层适合买了带走。', tags:['购物','车站直连','雨天可','游客向'] },
-  '京都站':        { score:4.3, count:8100, src:'大众点评', cat:'station',
-    intro:'大屋顶车站本身就是地标，也是返程集散点。', tags:['交通枢纽','购物','集散'] }
-};
-
-/* ---------- 预置记忆库（预置演示账号 demo 的 20 条） ----------
-   账号体系见 account.js：这份 MEMORIES 由 _seedDemo() 播种进演示账号，
-   原样引用不复制不删改。游客模式则完全不读它——游客 = 0 记忆模式。
-   想改演示账号的口令 / 名字，去 account.js 顶部的 DEMO_ACCOUNT。 */
+/* ---------- 预置身份档案 ----------
+   三份「用了一段时间」的记忆档案，登录下拉直接切换（account.js 播种）。
+   MEMORIES      = 林小满：慢节奏、安静自然、市集茶馆，晕博物馆
+   MEMORIES_IRON = 陈铁腿：特种兵、博物馆控、要景观与夜景
+   MEMORIES_EVE  = 周晚晚：自然风光、傍晚散步、怕人多
+   语义标签与 semantics.js 的词表一致；id 前缀区分档案（d/f/e）。 */
 const MEMORIES = [
   { id:'m01', text:'不喜欢早起赶路', type:'节奏', scope:'long', cited:3, used:true, pace:'slow',
-    source:{ trip:'2026-03 大阪 4 天', date:'2026-03-14', action:'你对第 2 天节奏点了不喜欢', quote:'太早出门' } },
+    source:{ trip:'2026-03 成都 4 天', date:'2026-03-14', action:'你对第 2 天节奏点了不喜欢', quote:'太早出门' } },
   { id:'m02', text:'喜欢逛本地菜市场、早市', type:'餐饮', scope:'long', cited:4, used:true, prefer:["market"],
-    source:{ trip:'2026-03 大阪 4 天', date:'2026-03-15', action:'你对「黑门市场」点了喜欢', quote:'想吃这个' } },
+    source:{ trip:'2026-03 成都 4 天', date:'2026-03-15', action:'你对玉林一带的菜市场点了喜欢', quote:'想吃这个' } },
   { id:'m03', text:'我晕博物馆（大型综合馆）', type:'景点', scope:'long', cited:5, used:true, avoid:["museum"],
-    source:{ trip:'2025-11 东京 5 天', date:'2025-11-08', action:'你对「江户东京博物馆」点了不喜欢', quote:'我晕博物馆' } },
+    source:{ trip:'2025-11 北京 5 天', date:'2025-11-08', action:'你对「成都博物馆」点了不喜欢', quote:'我晕博物馆' } },
   { id:'m04', text:'一天最多 3 个景点，超过就嫌赶', type:'节奏', scope:'long', cited:6, used:true, pace:'slow',
-    source:{ trip:'2025-11 东京 5 天', date:'2025-11-07', action:'你对第 1 天节奏点了不喜欢', quote:'太赶' } },
+    source:{ trip:'2025-11 北京 5 天', date:'2025-11-07', action:'你对第 1 天节奏点了不喜欢', quote:'太赶' } },
   { id:'m05', text:'偏好住在有夜间小馆的生活街区，而不是商圈中心', type:'住宿', scope:'long', cited:2, used:true, avoid:["mall"], prefer:["old-town"],
-    source:{ trip:'2026-03 大阪 4 天', date:'2026-03-16', action:'你把住宿从心斋桥一带改到福岛区一带后点了喜欢', quote:'晚上有地方吃饭' } },
-  { id:'m06', text:'喜欢抹茶与和式甜品', type:'餐饮', scope:'long', cited:3, used:true, prefer:["dessert"],
-    source:{ trip:'2025-06 京都 3 天', date:'2025-06-21', action:'你对祇园一带的一家抹茶茶寮点了喜欢', quote:'想吃这个' } },
-  { id:'m07', text:'不喜欢需要排队超过 30 分钟的网红店', type:'餐饮', scope:'long', cited:4, used:true, avoid:["queue","crowd"],
-    source:{ trip:'2026-03 大阪 4 天', date:'2026-03-15', action:'你对道顿堀一家排队网红店点了不喜欢', quote:'人太多' } },
+    source:{ trip:'2026-03 成都 4 天', date:'2026-03-16', action:'你把住宿从春熙路一带改到玉林一带后点了喜欢', quote:'晚上有地方吃饭' } },
+  { id:'m06', text:'喜欢盖碗茶与川式甜品', type:'餐饮', scope:'long', cited:3, used:true, prefer:["dessert"],
+    source:{ trip:'2025-06 上海 3 天', date:'2025-06-21', action:'你对人民公园鹤鸣茶社点了喜欢', quote:'想吃这个' } },
+  /* 只挂 queue。原先还挂了 crowd，但这条说的是「网红**店**」——是餐饮偏好，
+     crowd 会把它变成「避开人多的地方」，一次清掉五个热门景点。
+     语义标错了比不标更糟：界面会拿着一个错误理由去解释被砍掉的安排。 */
+  { id:'m07', text:'不喜欢需要排队超过 30 分钟的网红店', type:'餐饮', scope:'long', cited:4, used:true, avoid:["queue"],
+    source:{ trip:'2026-03 成都 4 天', date:'2026-03-15', action:'你对宽窄巷子一家排队网红店点了不喜欢', quote:'人太多' } },
   { id:'m08', text:'喜欢竹林、庭园这类安静的自然景观', type:'景点', scope:'long', cited:3, used:true, prefer:["bamboo","garden","quiet"],
-    source:{ trip:'2025-06 京都 3 天', date:'2025-06-22', action:'你对「岚山竹林」点了喜欢', quote:'想多待会儿' } },
+    source:{ trip:'2025-06 上海 3 天', date:'2025-06-22', action:'你对望江楼公园的竹林点了喜欢', quote:'想多待会儿' } },
   { id:'m09', text:'习惯午后留 2 小时自由休息', type:'节奏', scope:'long', cited:2, used:false, pace:'slow',
-    source:{ trip:'2025-11 东京 5 天', date:'2025-11-09', action:'你手动删掉了下午 3 点的行程' } },
+    source:{ trip:'2025-11 北京 5 天', date:'2025-11-09', action:'你手动删掉了下午 3 点的行程' } },
   { id:'m10', text:'不喜欢一天里换两次交通枢纽', type:'交通', scope:'long', cited:2, used:false, avoid:["walk-heavy"],
-    source:{ trip:'2025-11 东京 5 天', date:'2025-11-10', action:'你对第 4 天节奏点了不喜欢', quote:'太远' } },
+    source:{ trip:'2025-11 北京 5 天', date:'2025-11-10', action:'你对第 4 天的都江堰往返点了不喜欢', quote:'太远' } },
   { id:'m11', text:'喜欢傍晚沿河散步', type:'景点', scope:'long', cited:1, used:false, prefer:["river","evening"],
-    source:{ trip:'2025-06 京都 3 天', date:'2025-06-22', action:'你对「鸭川河畔」点了喜欢' } },
+    source:{ trip:'2025-06 上海 3 天', date:'2025-06-22', action:'你对锦江边的散步道点了喜欢' } },
   { id:'m12', text:'对购物中心、免税店兴趣很低', type:'购物', scope:'long', cited:3, used:false, avoid:["mall"],
-    source:{ trip:'2026-03 大阪 4 天', date:'2026-03-17', action:'你删掉了「心斋桥购物」这一段' } },
+    source:{ trip:'2026-03 成都 4 天', date:'2026-03-17', action:'你删掉了春熙路的购物这一段' } },
   { id:'m13', text:'小型有解说的展馆可以接受（与大型博物馆区分）', type:'景点', scope:'long', cited:1, used:false, prefer:["small-museum"],
-    source:{ trip:'2025-11 东京 5 天', date:'2025-11-09', action:'你对「刀剑博物馆」点了喜欢' } },
+    source:{ trip:'2025-11 北京 5 天', date:'2025-11-09', action:'你对一场小型专题展点了喜欢' } },
   { id:'m14', text:'愿意为一顿正式晚饭多花时间和预算', type:'餐饮', scope:'long', cited:2, used:false,
-    source:{ trip:'2025-06 京都 3 天', date:'2025-06-21', action:'你把晚餐从便利店改成了怀石料理' } },
-  { id:'m15', text:'不喜欢团队体验课程（和服体验、茶道班）', type:'景点', scope:'long', cited:2, used:false, avoid:["tour-group"],
-    source:{ trip:'2025-06 京都 3 天', date:'2025-06-23', action:'你对「和服体验」点了不喜欢', quote:'不感兴趣' } },
+    source:{ trip:'2025-06 上海 3 天', date:'2025-06-21', action:'你把晚餐从快餐改成了一顿正式的川菜' } },
+  { id:'m15', text:'不喜欢团队体验课程（汉服跟拍、茶艺班）', type:'景点', scope:'long', cited:2, used:false, avoid:["tour-group"],
+    source:{ trip:'2025-06 上海 3 天', date:'2025-06-23', action:'你对「汉服跟拍」点了不喜欢', quote:'不感兴趣' } },
   { id:'m16', text:'喜欢住二层以下带小庭院的旅馆', type:'住宿', scope:'long', cited:1, used:false, prefer:["garden","quiet"],
-    source:{ trip:'2025-06 京都 3 天', date:'2025-06-20', action:'你对一家町屋改造旅馆点了喜欢' } },
+    source:{ trip:'2025-06 上海 3 天', date:'2025-06-20', action:'你对一家老院落改造的民宿点了喜欢' } },
   { id:'m17', text:'偏好傍晚而非清晨游览寺庙', type:'节奏', scope:'long', cited:2, used:false, prefer:["evening","temple"],
-    source:{ trip:'2025-06 京都 3 天', date:'2025-06-22', action:'你把清水寺从早上挪到了傍晚' } },
+    source:{ trip:'2025-06 上海 3 天', date:'2025-06-22', action:'你把大慈寺从早上挪到了傍晚' } },
   { id:'m18', text:'不喜欢主题乐园', type:'景点', scope:'long', cited:1, used:false, avoid:["theme-park"],
-    source:{ trip:'2026-03 大阪 4 天', date:'2026-03-16', action:'你对「环球影城」点了不喜欢', quote:'不感兴趣' } },
+    source:{ trip:'2026-03 成都 4 天', date:'2026-03-16', action:'你对主题乐园点了不喜欢', quote:'不感兴趣' } },
   { id:'m19', text:'这次想控制在步行为主（仅本次）', type:'交通', scope:'session', cited:1, used:false,
     source:{ trip:'2026-09 本次规划', date:'2026-09-12', action:'你在需求里勾了「少坐车」' } },
   { id:'m20', text:'喜欢当地人开的小馆，不追米其林', type:'餐饮', scope:'long', cited:3, used:true, prefer:["local-food"],
-    source:{ trip:'2026-03 大阪 4 天', date:'2026-03-16', action:'你对福岛区一带的一家居酒屋点了喜欢' } }
+    source:{ trip:'2026-03 成都 4 天', date:'2026-03-16', action:'你对玉林一带的一家小馆点了喜欢' } }
 ];
 
-/* ---------- S1 三方案：默认版（空记忆 / 关闭记忆） ---------- */
-const PLANS_DEFAULT = [
-  {
-    id: 'p-packed',
-    style: '暴走打卡型',
-    tagline: '4 天走满 13 个必打卡点，一个不漏',
-    pace: 5,
-    density: 3.3,
-    stay: { area: '京都站前一带', dist: '距核心区 2.1km · 交通枢纽旁' },
-    food: ['网红店', '连锁便利'],
-    walk: [14200, 16800, 15400, 12600],
-    highlights: ['清水寺', '金阁寺', '伏见稻荷大社', '岚山竹林', '京都国立博物馆'],
-    routeDays: [
-      ['清水寺','二年坂三年坂','京都国立博物馆','三十三间堂','祇园花见小路'],
-      ['金阁寺','龙安寺','岚山竹林','渡月桥','二条城'],
-      ['伏见稻荷大社','东寺','锦市场','平安神宫','京都站伊势丹'],
-      ['银阁寺','哲学之道','京都塔','京都站']
-    ],
-    memoryIds: []
-  },
-  {
-    id: 'p-local',
-    style: '慢逛本地型',
-    tagline: '每天 2-3 个点，把时间留给街区和吃',
-    pace: 2,
-    density: 2.3,
-    stay: { area: '西阵一带', dist: '距核心区 1.6km · 生活街区' },
-    food: ['本地小馆', '市集'],
-    walk: [8600, 9200, 7800, 8100],
-    highlights: ['锦市场', '岚山竹林', '哲学之道', '先斗町', '鸭川河畔'],
-    routeDays: [
-      ['锦市场','清水寺','先斗町'],
-      ['岚山竹林','天龙寺','渡月桥'],
-      ['出町柳桝形商店街','哲学之道','银阁寺'],
-      ['南禅寺','鸭川河畔','京都站']
-    ],
-    memoryIds: []
-  },
-  {
-    id: 'p-resort',
-    style: '轻松度假型',
-    tagline: '睡到自然醒，一天一个大景点',
-    pace: 1,
-    density: 1.8,
-    stay: { area: '四条河原町一带', dist: '距核心区 0.3km · 商圈中心' },
-    food: ['酒店餐', '网红店'],
-    walk: [6200, 5800, 6600, 5200],
-    highlights: ['清水寺', '平安神宫', '京都塔', '京都站伊势丹'],
-    routeDays: [
-      ['清水寺','祇园花见小路'],
-      ['平安神宫','南禅寺'],
-      ['锦市场','京都塔'],
-      ['京都站伊势丹','京都站']
-    ],
-    memoryIds: []
-  }
+/* 陈铁腿：特种兵 · 博物馆控 · 早上精神最好 */
+const MEMORIES_IRON = [
+  { id:'f01', text:'喜欢早起赶首波，人少光线好', type:'节奏', scope:'long', cited:4, used:true, pace:'fast',
+    source:{ trip:'2026-05 西安 3 天', date:'2026-05-02', action:'你对第 1 天节奏点了喜欢', quote:'开门就进' } },
+  { id:'f02', text:'博物馆怎么都看不够，大馆优先', type:'景点', scope:'long', cited:5, used:true, prefer:["small-museum","indoor"],
+    source:{ trip:'2026-05 西安 3 天', date:'2026-05-02', action:'你对陕历博点了喜欢', quote:'再来三小时也行' } },
+  { id:'f03', text:'古建寺庙这类愿意多排几个', type:'景点', scope:'long', cited:4, used:true, prefer:["temple"],
+    source:{ trip:'2025-10 山西 5 天', date:'2025-10-03', action:'你对佛光寺点了喜欢' } },
+  { id:'f04', text:'喜欢登高看城市全景', type:'景点', scope:'long', cited:3, used:true, prefer:["view"],
+    source:{ trip:'2025-10 山西 5 天', date:'2025-10-04', action:'你对观景台点了喜欢', quote:'看得远' } },
+  { id:'f05', text:'夜景和灯光秀是每天的保留节目', type:'景点', scope:'long', cited:3, used:true, prefer:["evening"],
+    source:{ trip:'2026-05 西安 3 天', date:'2026-05-03', action:'你对大唐不夜城点了喜欢' } },
+  { id:'f06', text:'历史街区爱听讲解，愿意跟半日导览', type:'景点', scope:'long', cited:2, used:false, prefer:["old-town"],
+    source:{ trip:'2025-10 山西 5 天', date:'2025-10-05', action:'你请了平遥古城讲解' } },
+  { id:'f07', text:'步行不怕多，一天 15km 没问题', type:'交通', scope:'long', cited:2, used:true, pace:'fast',
+    source:{ trip:'2025-10 山西 5 天', date:'2025-10-05', action:'你对步行强度点了喜欢' } },
+  { id:'f08', text:'吃饭求快，小吃快餐优先', type:'餐饮', scope:'long', cited:2, used:false,
+    source:{ trip:'2026-05 西安 3 天', date:'2026-05-02', action:'你把正餐改成了肉夹馍快餐' } },
+  { id:'f09', text:'不喜欢纯休闲类（温泉、下午茶占行程）', type:'景点', scope:'long', cited:1, used:true,
+    /* 有意不挂标签：「太闲」落不进当前词表（walk-heavy 意思正好相反），
+       硬贴一个标签会反向生效——见 _verify.js 的 INERT_MEMORIES。 */
+    source:{ trip:'2026-05 西安 3 天', date:'2026-05-03', action:'你删掉了温泉半日', quote:'太闲了' } },
+  { id:'f10', text:'主题乐园可以接受', type:'景点', scope:'long', cited:1, used:false,
+    source:{ trip:'2024-08 珠海 2 天', date:'2024-08-11', action:'你对长隆点了喜欢' } },
+  { id:'f11', text:'喜欢市集淘宝（古玩、旧货）', type:'景点', scope:'long', cited:1, used:false, prefer:["market"],
+    source:{ trip:'2026-05 西安 3 天', date:'2026-05-03', action:'你对八仙庵古玩市集点了喜欢' } },
+  { id:'f12', text:'住宿就要交通枢纽旁，出门就是地铁', type:'住宿', scope:'long', cited:2, used:true,
+    source:{ trip:'2026-05 西安 3 天', date:'2026-05-01', action:'你把住宿改到地铁站旁' } }
 ];
 
-/* ---------- S1 三方案：记忆版（有记忆人设 / 开启记忆） ---------- */
-const PLANS_MEMORY = [
-  {
-    id: 'p-local',
-    style: '慢逛本地型',
-    tagline: '每天 2-3 个点，早市开场、傍晚寺庙收尾',
-    pace: 2,
-    density: 2.3,
-    stay: { area: '西阵一带 · 町屋旅馆', dist: '距核心区 1.6km · 夜间小馆多' },
-    food: ['本地小馆', '市集', '抹茶甜品'],
-    walk: [8600, 9200, 7800, 8100],
-    highlights: ['锦市场', '岚山竹林', '哲学之道', '先斗町', '出町柳桝形商店街'],
-    routeDays: [
-      ['锦市场','清水寺','先斗町'],
-      ['岚山竹林','天龙寺','渡月桥'],
-      ['出町柳桝形商店街','哲学之道','银阁寺'],
-      ['南禅寺','鸭川河畔','京都站']
-    ],
-    recommended: true,
-    memoryIds: ['m04', 'm02', 'm05', 'm08', 'm16'],
-    memoryNote: '这套方案的节奏、住宿、餐饮策略都由你的记忆推出来'
-  },
-  {
-    id: 'p-temple',
-    style: '古寺庭园型',
-    tagline: '避开人潮时段，专攻庭园与竹林',
-    pace: 3,
-    density: 2.5,
-    stay: { area: '西阵一带', dist: '距核心区 1.6km · 生活街区' },
-    food: ['本地小馆', '精进料理'],
-    walk: [10400, 11200, 9600, 9800],
-    highlights: ['龙安寺', '南禅寺', '天龙寺', '哲学之道'],
-    routeDays: [
-      ['龙安寺','金阁寺','二条城'],
-      ['天龙寺','岚山竹林','渡月桥'],
-      ['南禅寺','哲学之道','银阁寺'],
-      ['三十三间堂','清水寺','京都站']
-    ],
-    memoryIds: ['m08', 'm17'],
-    memoryNote: '按「喜欢庭园」「傍晚逛寺庙」排的时段'
-  },
-  {
-    id: 'p-packed',
-    style: '暴走打卡型',
-    tagline: '4 天 13 个点 · 与你的记录冲突较多',
-    pace: 5,
-    density: 3.3,
-    stay: { area: '京都站前一带', dist: '距核心区 2.1km · 交通枢纽旁' },
-    food: ['网红店', '连锁便利'],
-    walk: [14200, 16800, 15400, 12600],
-    highlights: ['清水寺', '金阁寺', '伏见稻荷大社', '京都国立博物馆'],
-    routeDays: [
-      ['清水寺','二年坂三年坂','京都国立博物馆','三十三间堂','祇园花见小路'],
-      ['金阁寺','龙安寺','岚山竹林','渡月桥','二条城'],
-      ['伏见稻荷大社','东寺','锦市场','平安神宫','京都站伊势丹'],
-      ['银阁寺','哲学之道','京都塔','京都站']
-    ],
-    conflict: true,
-    memoryIds: ['m04', 'm03', 'm07'],
-    memoryNote: '与 3 条记忆冲突：节奏过密、含大型博物馆、多家排队网红店'
-  }
-];
-
-/* ---------- 餐饮候选组（只给「某一带」+ 3-4 个候选，不给店名地址） ---------- */
-const DINING = {
-  'r-nishiki': {
-    area:'锦市场一带', theme:'市集小吃 · 边逛边吃', walk:'在景点动线上，无需绕路',
-    picks:[
-      { style:'渍物老铺', cuisine:'和食 · 渍物', price:'¥300-800',   score:4.5, count:1842, src:'大众点评', note:'可以试吃再决定买哪种' },
-      { style:'现烤海鲜摊', cuisine:'海鲜 · 烤物', price:'¥800-1,500', score:4.4, count:960,  src:'大众点评', note:'站着吃，9 点前几乎不排队' },
-      { style:'玉子烧专门店', cuisine:'和食 · 玉子烧', price:'¥400-900', score:4.3, count:1220, src:'大众点评', note:'现做，午后常售完' },
-      { style:'豆乳甜品摊', cuisine:'甜品 · 豆乳', price:'¥300-600',  score:4.2, count:540,  src:'大众点评', note:'适合边走边喝' }
-    ]
-  },
-  'r-tsujiri': {
-    area:'祇园一带', theme:'抹茶甜品 · 下午茶', walk:'从清水寺方向步行可达',
-    picks:[
-      { style:'老字号抹茶茶寮', cuisine:'甜品 · 抹茶', price:'¥1,200-1,800', score:4.6, count:3120, src:'大众点评', note:'平日 14 点后约排 15 分钟' },
-      { style:'町屋改造茶室', cuisine:'甜品 · 和菓子', price:'¥900-1,500',  score:4.5, count:870,  src:'Tabelog 转译', note:'座位少但周转快' },
-      { style:'宇治茶园直营店', cuisine:'甜品 · 抹茶', price:'¥800-1,400', score:4.4, count:1560, src:'大众点评', note:'可买茶叶带走' }
-    ]
-  },
-  'r-pontocho': {
-    area:'先斗町一带', theme:'本地小馆 · 夜饭', walk:'住宿区步行 12 分钟',
-    picks:[
-      { style:'二楼串烧小店', cuisine:'居酒屋 · 串烧', price:'¥2,500-3,500', score:4.4, count:967, src:'Tabelog 转译', note:'8 个座位，19 点前基本能坐' },
-      { style:'家庭式小料理', cuisine:'和食 · 家常', price:'¥2,000-3,000', score:4.3, count:420, src:'Tabelog 转译', note:'菜单当天写在墙上' },
-      { style:'河岸居酒屋', cuisine:'居酒屋', price:'¥3,000-4,000', score:4.2, count:610, src:'大众点评', note:'河边座位要早到' }
-    ]
-  },
-  'r-yudofu': {
-    area:'嵯峨野一带', theme:'汤豆腐午市 · 庭园座', walk:'竹林出来步行 6 分钟',
-    picks:[
-      { style:'庭园座汤豆腐店', cuisine:'和食 · 豆腐', price:'¥3,000-4,500', score:4.3, count:604, src:'Tabelog 转译', note:'午市套餐性价比高' },
-      { style:'精进料理小店', cuisine:'精进料理', price:'¥2,500-3,500', score:4.4, count:380, src:'Tabelog 转译', note:'全素，需提前一天订' },
-      { style:'荞麦面老铺', cuisine:'和食 · 荞麦', price:'¥1,200-1,800', score:4.2, count:720, src:'大众点评', note:'基本不用等位' }
-    ]
-  },
-  'r-demachi': {
-    area:'出町柳一带', theme:'早市名物 · 边逛边吃', walk:'商店街内，与景点同一段',
-    picks:[
-      { style:'豆饼老铺', cuisine:'和菓子', price:'¥200-500', score:4.7, count:2210, src:'大众点评', note:'10 点前排队 5 分钟内，卖完即止' },
-      { style:'商店街可乐饼摊', cuisine:'小吃 · 炸物', price:'¥150-400', score:4.4, count:690, src:'大众点评', note:'现炸，拿着走' },
-      { style:'町屋咖啡早餐', cuisine:'咖啡 · 早餐', price:'¥800-1,200', score:4.3, count:510, src:'大众点评', note:'有座位，可以歇脚' }
-    ]
-  },
-  'r-ichiran': {
-    area:'河原町一带', theme:'连锁快餐 · 午饭', walk:'商圈中心，选择多但高峰拥挤',
-    picks:[
-      { style:'人气连锁拉面', cuisine:'拉面', price:'¥1,000-1,500', score:4.1, count:5602, src:'大众点评', note:'午晚高峰排队 40-60 分钟' },
-      { style:'商场内牛丼连锁', cuisine:'丼饭', price:'¥600-900', score:3.9, count:2100, src:'大众点评', note:'出餐快，翻台紧' },
-      { style:'百货美食街定食', cuisine:'定食', price:'¥1,200-1,800', score:3.8, count:880, src:'大众点评', note:'评价集中在「方便但一般」' }
-    ]
-  },
-  'r-kyotower': {
-    area:'京都塔一带', theme:'游客向食堂 · 快',  walk:'车站对面，返程动线上',
-    picks:[
-      { style:'观光楼大食堂', cuisine:'美食广场', price:'¥1,000-1,600', score:3.8, count:1290, src:'大众点评', note:'出餐快，评价一般' },
-      { style:'车站便当卖场', cuisine:'便当', price:'¥800-1,300', score:4.0, count:3400, src:'大众点评', note:'可带上车吃' },
-      { style:'连锁咖啡简餐', cuisine:'简餐', price:'¥700-1,100', score:3.7, count:950, src:'大众点评', note:'有插座，可久坐' }
-    ]
-  },
-  'r-hotel': {
-    area:'住宿一带', theme:'酒店早午餐 · 晚起友好', walk:'不用出门',
-    picks:[
-      { style:'酒店自助早午餐', cuisine:'和洋自助', price:'¥2,000-3,000', score:4.0, count:432, src:'酒店官网', note:'11 点前供应' },
-      { style:'街角面包店', cuisine:'面包 · 咖啡', price:'¥600-1,000', score:4.3, count:280, src:'大众点评', note:'步行 3 分钟' }
-    ]
-  },
-  'r-kaiseki': {
-    area:'祇园一带', theme:'正式午间怀石 · 需预约', walk:'从鸭川步行 8 分钟',
-    picks:[
-      { style:'町屋怀石', cuisine:'怀石料理', price:'¥8,000-12,000', score:4.6, count:518, src:'Tabelog 转译', note:'需提前 3 天预约，午市比晚市便宜四成' },
-      { style:'老铺割烹', cuisine:'割烹', price:'¥6,000-9,000', score:4.5, count:340, src:'Tabelog 转译', note:'吧台位可看料理过程' },
-      { style:'庭园料亭午市', cuisine:'料亭', price:'¥10,000-15,000', score:4.7, count:260, src:'Tabelog 转译', note:'必须预约，含庭园参观' }
-    ]
-  }
-};
-
-/* ---------- 住宿候选组（同口径：只给一带 + 候选类型） ---------- */
-const STAY_DEFAULT = {
-  area:'京都站前一带', theme:'交通枢纽旁 · 商务酒店', note:'距核心区 2.1km · 换乘方便但夜里没什么吃的',
-  memoryIds: [],
-  picks:[
-    { style:'车站直连商务酒店', room:'双床房', price:'¥9,000-13,000/晚', score:4.0, count:2400, src:'大众点评', note:'步行 3 分钟到车站' },
-    { style:'连锁商务酒店', room:'标准双人', price:'¥7,500-11,000/晚', score:3.9, count:1800, src:'大众点评', note:'房间小，胜在便宜' },
-    { style:'车站南口新酒店', room:'双床房', price:'¥10,000-14,000/晚', score:4.2, count:640, src:'大众点评', note:'新装修，有自助洗衣' }
-  ]
-};
-const STAY_MEMORY = {
-  area:'西阵一带', theme:'生活街区 · 町屋改造小旅馆', note:'距核心区 1.6km · 夜间小馆多 · 多为二层带庭院',
-  memoryIds: ['m05', 'm16'],
-  picks:[
-    { style:'町屋改造旅馆', room:'和室双人', price:'¥12,000-16,000/晚', score:4.6, count:312, src:'大众点评', note:'二层带小庭院，夜间小馆步行可达' },
-    { style:'家庭经营民宿', room:'和室双人', price:'¥8,000-11,000/晚', score:4.5, count:208, src:'Booking 转译', note:'有小院，房东会给周边手绘图' },
-    { style:'老宅整栋出租', room:'两室一厅', price:'¥15,000-20,000/晚', score:4.7, count:96, src:'Booking 转译', note:'带厨房，适合住 3 晚以上' }
-  ]
-};
-
-/* ---------- 行程：默认版（不使用记忆） ---------- */
-const ITIN_DEFAULT = {
-  planId: 'p-packed',
-  stay: STAY_DEFAULT,
-  days: [
-    { day:1, date:'10-02', theme:'东山打卡线', pace:5, paceNote:'08:00 出发 · 步行 14.2km',
-      items:[
-        { id:'d1-1', kind:'spot', time:'08:00', name:'清水寺', dur:'90 min', note:'开门即入，人少' },
-        { id:'d1-2', kind:'spot', time:'10:00', name:'二年坂三年坂', dur:'60 min', note:'伴手礼一条街' },
-        { id:'d1-3', kind:'food', time:'11:30', name:'r-ichiran' },
-        { id:'d1-4', kind:'spot', time:'13:30', name:'京都国立博物馆', dur:'120 min', note:'常设展 + 特展' },
-        { id:'d1-5', kind:'spot', time:'16:00', name:'三十三间堂', dur:'60 min', note:'1001 尊佛像' },
-        { id:'d1-6', kind:'spot', time:'18:00', name:'祇园花见小路', dur:'60 min', note:'夜景' }
-      ] },
-    { day:2, date:'10-03', theme:'金阁 + 岚山',  pace:5, paceNote:'07:30 出发 · 步行 16.8km · 换乘 3 次',
-      items:[
-        { id:'d2-1', kind:'spot', time:'07:30', name:'金阁寺', dur:'60 min', note:'早班车避人' },
-        { id:'d2-2', kind:'spot', time:'09:30', name:'龙安寺', dur:'60 min', note:'枯山水' },
-        { id:'d2-3', kind:'spot', time:'11:30', name:'岚山竹林', dur:'60 min' },
-        { id:'d2-4', kind:'food', time:'13:00', name:'r-yudofu' },
-        { id:'d2-5', kind:'spot', time:'15:00', name:'渡月桥', dur:'45 min' },
-        { id:'d2-6', kind:'spot', time:'17:30', name:'二条城', dur:'60 min', note:'闭园前赶进' }
-      ] },
-    { day:3, date:'10-04', theme:'伏见稻荷 + 市区', pace:4, paceNote:'08:00 出发 · 步行 15.4km',
-      items:[
-        { id:'d3-1', kind:'spot', time:'08:00', name:'伏见稻荷大社', dur:'150 min', note:'爬到山顶' },
-        { id:'d3-2', kind:'spot', time:'11:30', name:'东寺', dur:'60 min' },
-        { id:'d3-3', kind:'food', time:'13:00', name:'r-kyotower' },
-        { id:'d3-4', kind:'spot', time:'14:30', name:'锦市场', dur:'60 min', note:'快速逛' },
-        { id:'d3-5', kind:'spot', time:'16:00', name:'平安神宫', dur:'60 min' },
-        { id:'d3-6', kind:'spot', time:'18:00', name:'京都站伊势丹', dur:'90 min', note:'购物' }
-      ] },
-    { day:4, date:'10-05', theme:'银阁寺 + 返程', pace:3, paceNote:'08:30 出发 · 步行 12.6km',
-      items:[
-        { id:'d4-1', kind:'spot', time:'08:30', name:'银阁寺', dur:'60 min' },
-        { id:'d4-2', kind:'spot', time:'10:00', name:'哲学之道', dur:'60 min' },
-        { id:'d4-3', kind:'food', time:'12:00', name:'r-tsujiri' },
-        { id:'d4-4', kind:'spot', time:'14:00', name:'京都塔', dur:'45 min' },
-        { id:'d4-5', kind:'spot', time:'16:00', name:'京都站', dur:'—', note:'返程' }
-      ] }
-  ]
-};
-
-/* ---------- 行程：记忆版（使用记忆） ---------- */
-const ITIN_MEMORY = {
-  planId: 'p-local',
-  stay: STAY_MEMORY,
-  days: [
-    { day:1, date:'10-02', theme:'锦市场开场 · 傍晚东山', pace:2, paceNote:'09:30 出发 · 步行 8.6km',
-      memoryIds:['m01','m04'],
-      items:[
-        { id:'d1-1', kind:'food', time:'09:30', name:'r-nishiki', memoryIds:['m02'] },
-        { id:'d1-2', kind:'spot', time:'11:00', name:'锦市场', dur:'90 min', note:'边逛边吃', memoryIds:['m02'] },
-        { id:'d1-3', kind:'free', time:'13:30', name:'回旅馆休息', dur:'120 min', memoryIds:['m09'] },
-        { id:'d1-4', kind:'spot', time:'16:30', name:'清水寺', dur:'90 min', note:'傍晚人少、有夕照', memoryIds:['m17'] },
-        { id:'d1-5', kind:'food', time:'19:00', name:'r-pontocho', memoryIds:['m20'] }
-      ] },
-    { day:2, date:'10-03', theme:'岚山竹林慢逛', pace:2, paceNote:'09:00 出发 · 步行 9.2km · 换乘 1 次',
-      memoryIds:['m10'],
-      items:[
-        { id:'d2-1', kind:'spot', time:'09:00', name:'岚山竹林', dur:'120 min', note:'留足停留时间', memoryIds:['m08'] },
-        { id:'d2-2', kind:'spot', time:'11:30', name:'天龙寺', dur:'75 min', note:'曹源池庭园', memoryIds:['m08'] },
-        { id:'d2-3', kind:'food', time:'13:00', name:'r-yudofu', memoryIds:['m20'] },
-        { id:'d2-4', kind:'spot', time:'15:00', name:'渡月桥', dur:'45 min' },
-        { id:'d2-5', kind:'free', time:'16:30', name:'回旅馆休息', dur:'90 min', memoryIds:['m09'] }
-      ] },
-    { day:3, date:'10-04', theme:'早市 + 哲学之道', pace:2, paceNote:'09:00 出发 · 步行 7.8km',
-      items:[
-        { id:'d3-1', kind:'food', time:'09:00', name:'r-demachi', memoryIds:['m02'] },
-        { id:'d3-2', kind:'spot', time:'10:30', name:'出町柳桝形商店街', dur:'60 min', note:'本地早市街', memoryIds:['m02'] },
-        { id:'d3-3', kind:'spot', time:'13:00', name:'哲学之道', dur:'90 min', note:'沿水道慢走', memoryIds:['m08'] },
-        { id:'d3-4', kind:'spot', time:'15:30', name:'银阁寺', dur:'60 min' },
-        { id:'d3-5', kind:'food', time:'17:00', name:'r-tsujiri', memoryIds:['m06'] }
-      ] },
-    { day:4, date:'10-05', theme:'鸭川散步 · 返程', pace:1, paceNote:'10:00 出发 · 步行 8.1km',
-      memoryIds:['m01'],
-      items:[
-        { id:'d4-1', kind:'spot', time:'10:00', name:'南禅寺', dur:'75 min', note:'水路阁庭园', memoryIds:['m08'] },
-        { id:'d4-2', kind:'food', time:'12:30', name:'r-kaiseki', memoryIds:['m14'] },
-        { id:'d4-3', kind:'spot', time:'15:00', name:'鸭川河畔', dur:'60 min', note:'傍晚沿河走回', memoryIds:['m11'] },
-        { id:'d4-4', kind:'spot', time:'17:00', name:'京都站', dur:'—', note:'返程' }
-      ] }
-  ]
-};
-
-/* ---------- S5 diff 清单（记忆 vs 默认，7 处） ---------- */
-const DIFFS = [
-  { id:'x1', day:1, kind:'removed', target:'京都国立博物馆',
-    text:'砍掉「京都国立博物馆」(120 min)', memoryIds:['m03'] },
-  { id:'x2', day:1, kind:'removed', target:'r-ichiran',
-    text:'午餐从河原町连锁拉面（排队 40-60 分钟）换成锦市场一带', memoryIds:['m07'] },
-  { id:'x3', day:1, kind:'changed', target:'清水寺',
-    text:'清水寺从 08:00 挪到 16:30', from:'08:00 开门即入', to:'16:30 傍晚', memoryIds:['m17','m01'] },
-  { id:'x4', day:0, kind:'changed', target:'stay',
-    text:'住宿从「京都站前一带」换到「西阵一带 · 町屋旅馆」', from:'京都站前一带 · 商务酒店', to:'西阵一带 · 町屋改造小旅馆', memoryIds:['m05','m16'] },
-  { id:'x5', day:3, kind:'added', target:'出町柳桝形商店街',
-    text:'新增「出町柳早市」半天', memoryIds:['m02'] },
-  { id:'x6', day:1, kind:'added', target:'free',
-    text:'每天插入午后 90-120 min 休息', memoryIds:['m09'] },
-  { id:'x7', day:0, kind:'changed', target:'pace',
-    text:'日均景点 3.3 → 2.3 个，日均步行 14.8km → 8.4km', from:'3.3 个 / 14.8km', to:'2.3 个 / 8.4km', memoryIds:['m04','m01'] }
+/* 周晚晚：自然风光 · 傍晚散步 · 怕人多 */
+const MEMORIES_EVE = [
+  { id:'e01', text:'不喜欢早起，10 点后再出门', type:'节奏', scope:'long', cited:5, used:true, pace:'slow',
+    source:{ trip:'2026-04 厦门 3 天', date:'2026-04-11', action:'你对第 2 天节奏点了不喜欢', quote:'起不来' } },
+  { id:'e02', text:'只喜欢自然风景，博物馆一概不去', type:'景点', scope:'long', cited:4, used:true, avoid:["museum"], prefer:["bamboo","garden"],
+    source:{ trip:'2026-04 厦门 3 天', date:'2026-04-11', action:'你删掉了市博物馆', quote:'我晕博物馆' } },
+  { id:'e03', text:'人多的地方待不住，避开网红打卡点', type:'景点', scope:'long', cited:4, used:true, avoid:["crowd"],
+    source:{ trip:'2026-04 厦门 3 天', date:'2026-04-12', action:'你对鼓浪屿核心圈点了不喜欢', quote:'全是人' } },
+  { id:'e04', text:'最爱傍晚的湖边和海边散步', type:'景点', scope:'long', cited:4, used:true, prefer:["river","evening"],
+    source:{ trip:'2026-04 厦门 3 天', date:'2026-04-12', action:'你对环岛路日落点了喜欢', quote:'想每天来' } },
+  { id:'e05', text:'日落是硬需求，行程要给日落留位', type:'景点', scope:'long', cited:3, used:true, prefer:["evening","view"],
+    source:{ trip:'2025-09 大理 4 天', date:'2025-09-14', action:'你手动加了洱海日落点位' } },
+  { id:'e06', text:'喜欢安静庭园与咖啡馆，能坐一下午', type:'景点', scope:'long', cited:3, used:true, prefer:["quiet","garden","dessert"],
+    source:{ trip:'2025-09 大理 4 天', date:'2025-09-15', action:'你对庭院咖啡馆点了喜欢' } },
+  { id:'e07', text:'一天最多 2 个点，多一个都累', type:'节奏', scope:'long', cited:3, used:true, pace:'slow',
+    source:{ trip:'2025-09 大理 4 天', date:'2025-09-14', action:'你对第 3 天节奏点了不喜欢', quote:'太赶' } },
+  { id:'e08', text:'费体力爬山之类统统不要', type:'景点', scope:'long', cited:2, used:true, avoid:["walk-heavy"],
+    source:{ trip:'2025-09 大理 4 天', date:'2025-09-16', action:'你对苍山徒步点了不喜欢', quote:'爬不动' } },
+  { id:'e09', text:'住宿要安静，别在商圈和酒吧街', type:'住宿', scope:'long', cited:2, used:true, avoid:["mall","crowd"], prefer:["quiet"],
+    source:{ trip:'2026-04 厦门 3 天', date:'2026-04-10', action:'你把住宿从中山路换到曾厝垵安静侧' } },
+  { id:'e10', text:'喜欢逛花卉、植物类的小园子', type:'景点', scope:'long', cited:1, used:true, prefer:["garden"],
+    source:{ trip:'2025-09 大理 4 天', date:'2025-09-15', action:'你对兰花小院点了喜欢' } }
 ];
 
 /* ---------- 反馈原因标签 ---------- */
 const REASONS = {
   down: {
-    spot: ['太赶', '太远', '我晕博物馆', '人太多', '不感兴趣', '不想早起'],
+    spot: ['太赶', '太远', '我晕博物馆', '人太多', '不感兴趣', '不想早起', '太贵'],
     food: ['要排队', '太贵', '游客向', '不合口味', '离得远'],
     pace: ['太赶', '太早出门', '换乘太多', '太松了'],
     stay: ['太远', '周边没吃的', '太吵', '不喜欢商圈'],
@@ -488,7 +143,10 @@ const REASON_TO_MEMORY = {
   '换乘太多':    { text:'不喜欢一天里换两次交通枢纽', type:'交通', avoid:["walk-heavy"] },
   '太松了':      { text:'希望行程再紧凑一点', type:'节奏', pace:'fast' },
   '要排队':      { text:'不喜欢需要排队超过 30 分钟的店', type:'餐饮', avoid:["queue"] },
-  '太贵':        { text:'不接受高价游客向餐厅', type:'餐饮' },
+  /* 「太贵」在景点与餐饮两处都能点，产出同一条**预算**记忆——
+     它本来就说的不是"这家餐厅不好"，而是"这一趟别花那么多"。
+     budget 与 pace 同级，都是单值维度（见 semantics.js 的 constraintsOf）。 */
+  '太贵':        { text:'预算有限，优先考虑便宜甚至免费的点', type:'预算', budget:'low' },
   '游客向':      { text:'不喜欢游客向餐厅，偏好本地小馆', type:'餐饮', avoid:["crowd"], prefer:["local-food"] },
   '不合口味':    { text:'不喜欢这类菜式', type:'餐饮' },
   '离得远':      { text:'希望吃饭地点在行程动线上', type:'餐饮' },
@@ -514,14 +172,150 @@ const REASON_TO_MEMORY = {
   '需要这个空档':{ text:'习惯午后留 2 小时自由休息', type:'节奏', pace:'slow' }
 };
 
+/* ---------- 理由池：预置词条 + 由景点自身推出 ----------
+
+   ★ 为什么要有「由景点推出」这一半
+
+   REASONS 是按 kind 分的通用词条（喜欢：想多待会儿 / 正是我想要的 / 安静 / 风景好）。
+   对着一座植物园点「喜欢」，这四条一条都接不上——用户想说的是「喜欢植物」
+   「喜欢自然」。而景点数据里本来就有这两样东西：spots[名].tags 是这处景点
+   自己的中文标签，cat 是它的品类。用它们拼理由，用户点的才是「我为什么喜欢这处」。
+
+   ★ 安全阀：理由必须带语义标签，否则就是一条死记忆
+
+   起作用的是标签，不是措辞（见 semantics.js 开头）。一条理由如果推不出
+   prefer / avoid / pace，它进了记忆列表也是死的：计数 +1、排线纹丝不动
+   （learn() 里写过这一条）。所以这里的理由全部由**已有的映射表**推：
+   中文标签 → SPOT_PREFER_MAP / SPOT_AVOID_MAP → 语义标签。
+   翻不出来的标签就不出现在理由里，不猜。
+
+   ★ 品类（cat）那张表额外加一道闸
+
+   只有当这处景点自己的标签**已经**落在同一个语义标签上时才放行。实测过：
+   119 个景点里 80 个的 cat 本身是语义词表里的词，但其中只有 44 个的本点标签
+   也对得上。剩下 36 个——景山公园 cat=garden，标签却是「观景 / 傍晚好 / 爬坡」——
+   无条件放行的话，「喜欢园林」会生成一条**在这处景点上根本不生效**的记忆：
+   用户对着景山公园说喜欢园林，系统却不认为景山公园是园林。
+   加了这道闸，品类理由只会在自洽时出现。
+
+   ★ 只在「推导出来的理由」内部按标签去重
+
+   大熊猫基地的标签是自然 / 公园 / 户外，三个都翻成 bamboo——三条都摆出来就是
+   把同一个约束说三遍，所以推导内部一枚语义标签只出一枚（留下标签表里靠前的那条）。
+
+   ★ 不去重预置词条
+
+   试过让预置词条「先占位、推出来的撞上就丢」，结果正好废掉这次要修的东西：
+   预置的「安静」规则里带 garden，「喜欢植物」就被它顶掉了——植物园反而看不到
+   「喜欢植物」。同一个语义标签由两条不同措辞的理由命中是无害的：
+   约束在 constraintsOf() 里按标签去重，记忆列表里多一条也是用户真的点过两次。 */
+
+/* 少数标签直接接「喜欢」读不通，只换措辞，语义标签不动 */
+const TAG_PHRASE = {
+  '可久坐': '能久坐', '傍晚好': '傍晚的光线', '人较少': '人不算多',
+  '免费区': '免费开放', '免费区大': '免费又开阔'
+};
+
+/* cat 是受控字段（全库 13 个取值），这里给它中文名和对应的语义标签。
+   中文名逐个对过实际命中的景点：
+     · temple 用「寺庙」而不是「古建」——26 处命中里大部分同时挂着「古建筑」标签，
+       叫「古建」会和「喜欢古建筑」并排出现，看着像重复。
+     · indoor 用「室内场馆」——命中的是徐家汇书院、上海图书馆，「展馆」不对。
+     · castle 整条删掉：命中的是慕田峪长城、卢沟桥、良渚古城遗址公园，
+       「喜欢城堡」三个都不对。语义标签能对上不等于中文说得通。
+     · station（车站）语义词表里没有对应项，本来就不该有理由。
+     · shopping 这条暂时不会生效：闸门要求本点标签落在 mall 上，而
+       SPOT_AVOID_MAP 里目前没有任何中文标签翻成 mall。留着等那张表补上。 */
+const CAT_REASON = {
+  garden:  ['园林',    'prefer', 'garden'],
+  bamboo:  ['竹林',    'prefer', 'bamboo'],
+  river:   ['水岸',    'prefer', 'river'],
+  market:  ['市集',    'prefer', 'market'],
+  temple:  ['寺庙',    'prefer', 'temple'],
+  indoor:  ['室内场馆','prefer', 'indoor'],
+  tower:   ['地标',    'prefer', 'view'],
+  street:  ['街巷',    'prefer', 'old-town'],
+  path:    ['步道',    'prefer', 'river'],
+  museum:  ['博物馆',  'avoid',  'museum'],
+  shopping:['商圈',    'avoid',  'mall']
+};
+
+/**
+ * 由景点自身推出理由。只在推导内部按语义标签去重（见文件头）。
+ * @param name 景点名。「去过了」这条要按名字精确记住是哪一处，光有 spot 对象不够。
+ *
+ * 每条理由把自己的记忆规则一起带出来（{ r, rule }），由渲染层写进 chip 的
+ * data-mem 上。早先试过用一张全局表按理由文案反查规则，但「去过了」在所有景点上
+ * 文案都一样、规则却各指各的景点，那张表按文案做键就必然串味。
+ */
+function spotReasons(dir, spot, name){
+  const out = [];
+  if(!spot) return out;
+  const up  = dir !== 'down';
+  const map = up ? SPOT_PREFER_MAP : SPOT_AVOID_MAP;
+  const key = up ? 'prefer' : 'avoid';
+  const used = new Set();
+
+  const put = (r, rule) => {
+    if(used.has(rule[key][0])) return;
+    used.add(rule[key][0]);
+    out.push({ r, rule });
+  };
+
+  /* 「去过了」排在不喜欢的第一条。对着一处已经排进行程的地方点踩，最常说的
+     就是这句；而且它和标签不是一回事——不该让「所有博物馆」出局，只该让这一处
+     出局。所以规则里带的是景点名（avoidSpots），不是语义标签，不参与上面那个
+     标签去重，也不占 4 条推导理由的额度。 */
+  if(!up && name){
+    out.push({ r:'去过了', rule: { text: name + ' 去过了', type:'景点', avoidSpots:[name] } });
+  }
+
+  (spot.tags || []).forEach(t => {
+    if(out.length >= 4) return;              // 一屏最多四条，再多就是噪音
+    const sem = map[t];
+    if(!sem || SEMANTICS[key].indexOf(sem) < 0) return;
+    const word = up ? (TAG_PHRASE[t] || t) : t;
+    const rule = { text: (up ? '喜欢' : '不喜欢') + word, type:'景点' };
+    rule[key] = [sem];
+    put((up ? '喜欢' : '') + word, rule);
+  });
+
+  /* 品类理由——放行条件见文件头那道闸：本点自己的标签得落在这个语义标签上。
+     这里查的是「标签里有没有」，不是「上面用没用过」——否则植物园的
+     「喜欢园林」会被「喜欢植物」顶掉，而它正是这次要补的那种理由。 */
+  const cr = CAT_REASON[spot.cat];
+  if(cr && out.length < 4 && cr[1] === key &&
+     (spot.tags || []).some(t => map[t] === cr[2])){
+    const rule = { text: (up ? '喜欢' : '') + cr[0], type:'景点' };
+    rule[key] = [cr[2]];
+    out.push({ r: (up ? '喜欢' : '') + cr[0], rule });   // 不过 put 的标签闸：
+  }                                                      // 品类理由就是要和「喜欢植物」
+  return out.slice(0, up ? 4 : 5);                       // 并存，那是两句话指向同一个偏好
+}
+
+/**
+ * 最终展示的理由池：景点自身推出来的排前面，预置词条补后面，上限 6 枚
+ * ——再多，这块面板比行程本身还长。
+ */
+function reasonPool(dir, kind, spot, name){
+  const own = (kind === 'spot') ? spotReasons(dir, spot, name) : [];
+  const preset = ((REASONS[dir] || {})[kind] || [])
+    .map(r => ({ r, rule: REASON_TO_MEMORY[r] || null }));
+  const out = [];
+  const put = x => { if(x && !out.some(y => y.r === x.r)) out.push(x); };
+  own.forEach(put);
+  preset.forEach(put);
+  return out.slice(0, 6);
+}
+
 /* ---------- Demo 动线提词 ----------
-   seeded: false = 以游客（0 记忆）身份跑；true = 登录预置演示账号看 20 条记忆的档案。
-   演示动线会自己切换档案，不沿用用户当前的登录状态。 */
+   seeded: false = 以游客（0 记忆）身份跑；true = 切到「林小满」预置档案看 20 条记忆的效果。
+   演示动线会自己切换档案，不沿用用户当前的身份。 */
 const DEMO_STEPS = [
-  { n:1, title:'空记忆开场',      hint:'停在游客模式（0 记忆），输入京都 4 天',        screen:'s0', seeded:false },
-  { n:2, title:'三套通用方案',    hint:'注意：没有一个 🧠 标签，和通用工具没区别',      screen:'s1', seeded:false },
-  { n:3, title:'元素级表态',      hint:'点开详情，对博物馆点踩、抹茶店点赞 3-4 次',     screen:'s2', seeded:false },
-  { n:4, title:'换到有记忆的账号', hint:'登录演示账号 demo，同样输入京都 4 天',          screen:'s1', seeded:true  },
-  { n:5, title:'对照开关一拨',    hint:'S5 切换记忆开关，7 处 diff 逐个亮起',           screen:'s5', seeded:true  },
+  { n:1, title:'空记忆开场',      hint:'停在游客模式（0 记忆），输入成都 4 天',        screen:'s0', seeded:false },
+  { n:2, title:'三套算法方案',    hint:'注意：没有一个 🧠 标签，和通用工具没区别',      screen:'s1', seeded:false },
+  { n:3, title:'元素级表态',      hint:'点开详情，对博物馆点踩、茶馆点赞 3-4 次',     screen:'s2', seeded:false },
+  { n:4, title:'换到有记忆的档案', hint:'身份下拉切到「林小满」，同样成都 4 天',        screen:'s1', seeded:true  },
+  { n:5, title:'对照开关一拨',    hint:'S5 切换记忆开关，记忆改动逐个亮起',            screen:'s5', seeded:true  },
   { n:6, title:'收尾',            hint:'“这些记忆换个 App 带不走。”按 F 进全屏演示',    screen:'s5', seeded:true  }
 ];
